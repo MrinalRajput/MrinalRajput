@@ -29,9 +29,10 @@ async def time(ctx):
     await ctx.send(f"Current Time is {currenttime}")
 
 @client.command()
-async def tell(ctx, msg):
+async def tell(ctx, SpecifiedChannel, msg):
     msg = str(msg)
-    await ctx.send(f"{msg}")
+    channel = client.get_channel(SpecifiedChannel)
+    await channel.send(f"{msg}")
 
 @client.event
 async def on_message(message):
