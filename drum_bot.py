@@ -31,7 +31,7 @@ async def time(ctx):
 @client.command()
 async def tell(ctx, msg):
     msg = str(msg)
-    await ctx.send(f"{ctx.author.mention} You Wrote {msg}")
+    await ctx.send(f"{msg}")
 
 @client.event
 async def on_message(message):
