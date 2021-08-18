@@ -1,1 +1,1 @@
-worker: python3 drum_bot.py
+worker: python drum_bot.py
