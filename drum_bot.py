@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-import datetime
+from datetime import datetime
 
 client = commands.Bot(command_prefix = ">")
 restricted_words = ["marina","gooh","totla","marja","kutta","kutte","harami"]
@@ -25,7 +25,7 @@ async def whoistattiman(ctx):
 
 @client.command()
 async def time(ctx):
-    currenttime = datetime.now("%H:%M")
+    currenttime = datetime.now()
     await ctx.send(f"Current Time is {currenttime}")
 
 @client.event
