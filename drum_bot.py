@@ -29,8 +29,7 @@ async def time(ctx):
     await ctx.send(f"Current Time is {currenttime}")
 
 @client.command()
-async def tell(ctx, msg):
-    msg = str(msg)
+async def tell(ctx, *, msg):
     await ctx.send(f"{msg}")
 
 @client.event
