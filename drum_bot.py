@@ -3,7 +3,7 @@ from discord.ext import commands
 from datetime import datetime
 
 client = commands.Bot(command_prefix = ">")
-restricted_words = ["marina","gooh","totla","marja","kutta","kutte","harami"]
+restricted_words = ["gooh","kutta","kutte","harami"]
 
 TOKEN = "ODMyODk3NjAyNzY4MDc2ODE2.YHqeVg.G6KU_qx6QV1O2mSLEv9ncaBKM-Y"
 
