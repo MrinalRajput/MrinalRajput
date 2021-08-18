@@ -28,6 +28,11 @@ async def time(ctx):
     currenttime = datetime.now()
     await ctx.send(f"Current Time is {currenttime}")
 
+@client.command()
+async def tell(ctx, msg):
+    msg = str(msg)
+    await ctx.send(f"{ctx.author.mention} You Wrote {msg}")
+
 @client.event
 async def on_message(message):
     message.content = message.content.lower()
