@@ -29,12 +29,11 @@ async def time(ctx):
     await ctx.send(f"Current Time is {currenttime}")
 
 @client.event
-async def on_message(message,ctx):
+async def on_message(message):
     message.content = message.content.lower()
     for word in restricted_words:
         if message.content.count(word)>0:
             await message.channel.purge(limit = 1)
     await client.process_commands(message)
-    await ctx.send(f"The Word you are Using is not Allowed Here")
 
 client.run(TOKEN)
