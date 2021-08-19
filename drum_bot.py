@@ -36,9 +36,11 @@ async def tell(ctx, *, msg):
 
 @bot.command()
 async def commands(ctx):
-    myEmbed = discord.Embed(title = 'Name', description = 'Desc', color = 0x00ff00)
-    myEmbed.add_field(name="Field1", value="hi", inline=False)
-    myEmbed.add_field(name="Field2", value="hi2", inline=False)
+    myEmbed = discord.Embed(title = 'Name', description = 'Desc', color = yellow)
+    myEmbed.add_field(name="hi", value="To get Reply From Tornax", inline=False)
+    myEmbed.add_field(name="ping", value="To get Ping by Tornax", inline=True)
+    myEmbed.add_field(name="tell", value="Chat something using Tornax", inline=False)
+    myEmbed.add_field(name="time", value="Get Current Time", inline=True)
     await ctx.send(embed=myEmbed)
 
 @bot.command()
