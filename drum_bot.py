@@ -28,6 +28,13 @@ async def whoistattiman(ctx):
 async def time(ctx):
     currenttime = datetime.now()
     await ctx.send(f"Current Time is {currenttime}")
+    
+@client.event
+async def on_message(message):
+    if "?" in message.content:
+        print("Working")
+        await message.channel.send(f"{ctx.author.mention} Please Check #smp-chat for Live Updates of Smp")
+        
 
 @client.command()
 async def tell(ctx, *, msg):
