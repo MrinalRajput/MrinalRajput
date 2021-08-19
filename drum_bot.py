@@ -27,7 +27,7 @@ async def time(ctx):
     
 @bot.listen()
 async def on_message(message):
-    if ("smp" or "server") in message.content.lower() and ("online" or "offline") in message.content.lower():
+    if ("smp" in message.content.lower() or "server" in message.content.lower()) and ("on" in message.content.lower() or "online" in message.content.lower() or "offline" in message.content.lower() or "off" in message.content.lower()):
         await message.channel.send(f"{message.author.mention} Please Check <#877777208108789770> for Live Updates of Smp")
         
 @bot.command()
