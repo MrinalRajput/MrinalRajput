@@ -30,10 +30,10 @@ async def on_message(message):
     if ("smp" in message.content.lower() or "server" in message.content.lower()) and (" on" in message.content.lower() or "online" in message.content.lower() or "offline" in message.content.lower() or "off" in message.content.lower()):
         await message.channel.send(f"{message.author.mention} Please Check <#877777208108789770> for Live Updates of Smp")
     
-# @bot.listen()
-# async def on_message(message):
-#     if ("smp" in message.content.lower() or "server" in message.content.lower()) or (" leaving" in message.content.lower() or "backup" in message.content.lower() or "baccha" in message.content.lower() or "cheater" in message.content.lower()):
-#         await message.channel.send(f"Dekho Dekho Baccha bola bola re bola")
+@bot.listen()
+async def on_message(message):
+    if ("smp" in message.content.lower() or "server" in message.content.lower()) or (" leaving" in message.content.lower() or "backup" in message.content.lower() or "baccha" in message.content.lower() or "cheater" in message.content.lower()):
+        await message.channel.send(f"Dekho Dekho Baccha bola bola re bola")
         
 @bot.command()
 async def tell(ctx, *, msg):
