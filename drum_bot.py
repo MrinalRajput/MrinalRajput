@@ -40,7 +40,7 @@ async def on_message(message):
 async def tell(ctx, channel:discord.TextChannel, *, msg):
     try:
         await channel.send(f"{msg}")
-    except Exception:
+    except:
         await ctx.send(f"{msg}")
 
 @bot.command()
