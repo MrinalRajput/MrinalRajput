@@ -39,8 +39,7 @@ async def on_message(message):
 @bot.command()
 async def tell(ctx, channel:discord.TextChannel, *, msg):
     if channel is None:
-        channel = ctx.channel
-        await channel.send(f"{msg}")
+        await ctx.send(f"{msg}")
     else:
         await channel.send(f"{msg}")
 
