@@ -36,7 +36,7 @@ async def tell(ctx, *, msg):
 
 @bot.command()
 async def commands(ctx):
-    myEmbed = discord.Embed(title = 'Name', description = 'Desc', color = yellow)
+    myEmbed = discord.Embed(title = 'Name', description = 'Desc', color = "#00FFFF")
     myEmbed.add_field(name="hi", value="To get Reply From Tornax", inline=False)
     myEmbed.add_field(name="ping", value="To get Ping by Tornax", inline=True)
     myEmbed.add_field(name="tell", value="Chat something using Tornax", inline=False)
