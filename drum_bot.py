@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from datetime import datetime
+import random
 
 client = commands.Bot(command_prefix = ">")
 restricted_words = ["gooh","kutta","kutte","harami","skyra"]
@@ -31,6 +32,16 @@ async def time(ctx):
 @client.command()
 async def tell(ctx, *, msg):
     await ctx.send(f"{msg}")
+
+@client.command()
+async def info(ctx):
+    Listedgreetings = ["Hello!","Hi!","Hey!","Heya!"]
+    RandomGreetings = random.choice(Listedgreetings)
+    await ctx.send(f"{RandomGreetings} I am Tornax a Multi-Talented Discord Bot, Designed, Created and Configured by MrinalSparks")
+
+@client.command()
+async def about(ctx):
+    await ctx.send(f"Tornax is a Multi-Talented and Friendly Bot, Use Tornax for moderation, server managements, streams and giveaways now!")
 
 @client.event
 async def on_message(message):
