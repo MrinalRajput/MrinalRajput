@@ -29,9 +29,8 @@ async def time(ctx):
 async def on_message(message):
     if "?" in message.content:
         print("Working")
-        await message.channel.send(f"{ctx.author.mention} Please Check #smp-chat for Live Updates of Smp")
+        await message.channel.send(f"{message.author.mention} Please Check #smp-chat for Live Updates of Smp")
         
-
 @bot.command()
 async def tell(ctx, *, msg):
     await ctx.send(f"{msg}")
