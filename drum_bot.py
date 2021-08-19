@@ -38,10 +38,7 @@ async def on_message(message):
         
 @bot.command()
 async def tell(ctx, channel:discord.TextChannel, *, msg):
-    try:
-        await channel.send(f"{msg}")
-    except:
-        await ctx.send(f"{msg}")
+    await channel.send(f"{msg}")
 
 @bot.command()
 async def commands(ctx):
