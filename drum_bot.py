@@ -4,7 +4,7 @@ from datetime import datetime
 import random
 
 bot = commands.Bot(command_prefix = ">")
-restricted_words = ["gooh","kutta","kutte","harami","skyra"]
+restricted_words = ["gooh","kutta","kutte","harami","skyra","wtf","frick","fuck"]
 
 TOKEN = "ODMyODk3NjAyNzY4MDc2ODE2.YHqeVg.yfzVgB8hHizDFH7hSMTORIv5weg"
 
@@ -65,7 +65,7 @@ async def on_message(message):
     for word in restricted_words:
         if message.content.count(word)>0:
             await message.channel.purge(limit = 1)
-            await message.channel.send(f":exclamation:  The Words you are Using is Not Allowed in this Server {message.author.mention}")
+            await message.channel.send(f":exclamation: The Word you are Using is Not Allowed in this Server {message.author.mention}")
     await bot.process_commands(message)
 
 bot.run(TOKEN)
