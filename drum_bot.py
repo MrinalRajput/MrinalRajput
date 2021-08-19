@@ -35,6 +35,13 @@ async def tell(ctx, *, msg):
     await ctx.send(f"{msg}")
 
 @bot.command()
+async def help(ctx):
+    myEmbed = discord.Embed(title = 'Name', description = 'Desc', color = 'red')
+    myEmbed.add_field(name="Field1", value="hi", inline=False)
+    myEmbed.add_field(name="Field2", value="hi2", inline=False)
+    await ctx.send(embed=myEmbed)
+
+@bot.command()
 async def info(ctx):
     Listedgreetings = ["Hello!","Hi!","Hey!","Heya!"]
     RandomGreetings = random.choice(Listedgreetings)
