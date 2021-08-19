@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from datetime import datetime
 import random
+from typing import Optional
 
 bot = commands.Bot(command_prefix = ">")
 restricted_words = ["gooh","kutta","kutte","harami","skyra","wtf","frick","fuck"]
@@ -37,8 +38,8 @@ async def on_message(message):
         await message.channel.send(f"{message.author.mention} Please Check <#877777208108789770> for Live Updates of Smp")
         
 @bot.command()
-async def tell(ctx, channel:discord.TextChannel, *, msg):
-    if channel == None:
+async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
+    if channel is None:
         channel = ctx.channel
     await channel.send(f"{msg}")
 
