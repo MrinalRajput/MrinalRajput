@@ -6,7 +6,7 @@ import random
 client = commands.Bot(command_prefix = ">")
 restricted_words = ["gooh","kutta","kutte","harami","skyra"]
 
-TOKEN = "ODMyODk3NjAyNzY4MDc2ODE2.YHqeVg.G6KU_qx6QV1O2mSLEv9ncaBKM-Y"
+TOKEN = "ODMyODk3NjAyNzY4MDc2ODE2.YHqeVg.yfzVgB8hHizDFH7hSMTORIv5weg"
 
 @client.event
 async def on_ready():
