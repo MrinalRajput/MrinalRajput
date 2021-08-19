@@ -25,11 +25,10 @@ async def time(ctx):
     currenttime = datetime.now()
     await ctx.send(f"Current Time is {currenttime}")
     
-@bot.event
+@bot.listen()
 async def on_message(message):
-    if "?" in message.content:
-        print("Working")
-        await message.channel.send(f"{message.author.mention} Please Check #smp-chat for Live Updates of Smp")
+    if ("smp" or "server") in message.content.lower() and ("online" or "offline") in message.content.lower():
+        await message.channel.send(f"{message.author.mention} Please Check <#877777208108789770> for Live Updates of Smp")
         
 @bot.command()
 async def tell(ctx, *, msg):
