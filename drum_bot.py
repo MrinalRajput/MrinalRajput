@@ -35,7 +35,7 @@ async def tell(ctx, *, msg):
     await ctx.send(f"{msg}")
 
 @bot.command()
-async def help(ctx):
+async def commands(ctx):
     myEmbed = discord.Embed(title = 'Name', description = 'Desc', color = 0x00ff00)
     myEmbed.add_field(name="Field1", value="hi", inline=False)
     myEmbed.add_field(name="Field2", value="hi2", inline=False)
