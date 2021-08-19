@@ -37,8 +37,11 @@ async def on_message(message):
         await message.channel.send(f"{message.author.mention} Please Check <#877777208108789770> for Live Updates of Smp")
         
 @bot.command()
-async def tell(ctx, *, msg):
-    await ctx.send(f"{msg}")
+async def tell(ctx, channel:discord.TextChannel, *, msg):
+    try:
+        await channel.send(f"{msg}")
+    except Exception:
+        await ctx.send(f"{msg}")
 
 @bot.command()
 async def commands(ctx):
