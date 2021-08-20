@@ -44,6 +44,13 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
     await channel.send(f"{msg}")
 
 @bot.command()
+async def avatar(ctx, owner: discord.Member):
+    embed = discord.Embed(color=discord.Color.from_rgb(255, 255, 0))
+    embed.set_image(url=member.avatar_url)
+    embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+
+
+@bot.command()
 async def commands(ctx):
     myEmbed = discord.Embed(title = 'Commands', description = "All Commands which you can use after using Tornax prefix '>'", color = discord.Color.from_rgb(255, 255, 0))
     myEmbed.add_field(name="hi", value="To get Reply From Tornax", inline=True)
