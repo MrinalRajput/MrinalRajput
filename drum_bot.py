@@ -45,9 +45,13 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
 
 @bot.command()
 async def avatar(ctx, owner: discord.Member):
-    embed = discord.Embed(color=discord.Color.from_rgb(255, 255, 0))
-    embed.set_image(url=member.avatar_url)
+    if owner is None:
+        owner = ctx.author
+    embed = discord.Embed(title="Avatar",color=discord.Color.from_rgb(255, 255, 0))
+    embed.set_author(icon_url=owner.avatar_url,name=owner)
+    embed.set_image(url=owner.avatar_url)
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+    await ctx.send(embed=embed)
 
 
 @bot.command()
