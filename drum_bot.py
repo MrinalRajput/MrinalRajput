@@ -44,6 +44,13 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
     await channel.send(f"{msg}")
 
 @bot.command()
+async def rule(ctx, ruleno):
+    if ruleno == "1":
+        embed = discord.Embed(title="Rule No. 1 - No Promotion",description='Discord Server, Youtube, Website and other Promotions are not Allowed',color = discord.Color.from_rgb(255, 255, 0))
+        await ctx.send(embed=embed)
+
+
+@bot.command()
 async def avatar(ctx, owner: Optional[discord.Member]=None):
     if owner is None:
         owner = ctx.author
