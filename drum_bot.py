@@ -46,8 +46,14 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
 @bot.command()
 async def rule(ctx, ruleno):
     if ruleno == "1":
-        embed = discord.Embed(title="Rule No. 1 - No Promotion",description='Discord Server, Youtube, Website and other Promotions are not Allowed \n \n No type of Promotion is Allowed here ',color = discord.Color.from_rgb(255, 255, 0))
-        await ctx.send(embed=embed)
+        embed = discord.Embed(title="Rule No. 1 - No Promotion",description='Discord Server, Youtube, Website and other Promotions are not Allowed \n \n No type of Promotion is Allowed, \n Emotionally or Friendly Blackmailing to Subscribe, Like or to join a Discord Server or others is type of Promotion and You can get warn, mute or ban from the Server.   ',color = discord.Color.from_rgb(255, 255, 0))
+    elif ruleno == "2":
+        embed = discord.Embed(title="Rule No. 1 - No Abuses",description="Abuses or any Kind of Abusing Languages are Not Allowed \n\n Abusing Words or even Targeting Someone's Family member is a kind of Abuse and you can get mute or ban from the Server.",color = discord.Color.from_rgb(255, 255, 0))
+    elif ruleno == "3":
+        embed = discord.Embed(title="Rule No. 3 - No Spamming",description='Discord Server, Youtube, Website and other Promotions are not Allowed \n \n No type of Promotion is Allowed, \n Emotionally or Friendly Blackmailing to Subscribe, Like or to join a Discord Server or others is type of Promotion and You can get warn, mute or ban from the Server.   ',color = discord.Color.from_rgb(255, 255, 0))
+    elif ruleno == "4":
+        embed = discord.Embed(title="Rule No. 2 - No Toxicity",description='',color = discord.Color.from_rgb(255, 255, 0))
+    await ctx.send(embed=embed)
 
 
 @bot.command()
