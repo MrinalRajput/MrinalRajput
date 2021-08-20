@@ -44,8 +44,10 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
     await channel.send(f"{msg}")
 
 @bot.command()
-async def rule(ctx, ruleno):
-    try:
+async def rule(ctx, ruleno: Optional[str]=None):
+    if ruleno is None:
+        await ctx.send(f":exclamation: Please Specify the Rule Number of the Rule which you want to Access,{ctx.author.mention}")
+    else:
         if ruleno == "1":
             embed = discord.Embed(title="Rule No. 1 - No Promotion",description='Discord Server, Youtube, Website and other Promotions are not Allowed \n \n No type of Promotion is Allowed, Emotionally or Friendly Blackmailing to Subscribe, Like or to join a Discord Server or others is type of Promotion and You can get warn, mute or ban from the Server.   ',color = discord.Color.from_rgb(255, 255, 0))
             await ctx.send(embed=embed)
@@ -59,9 +61,7 @@ async def rule(ctx, ruleno):
             embed = discord.Embed(title="Rule No. 4 - No Toxicity",description='Toxic Behaviour with Server Staff or Member is Not Tolerated \n\n Toxicity or rudeness with the Members of this Server without any necessary reason after getting warning can give warn or mute',color = discord.Color.from_rgb(255, 255, 0))
             await ctx.send(embed=embed)
         else:
-            await ctx.send(f"> :exclamation: There is no Rule Number {ruleno},{ctx.author.mention}")
-    except discord.ext.commands.errors.MissingRequiredArgument():
-        await ctx.send(f"> :exclamation: Please Specify the Rule Number of the Rule which you want to Access")
+            await ctx.send(f":exclamation: There is no Rule Number {ruleno},{ctx.author.mention}")
         
     
 
