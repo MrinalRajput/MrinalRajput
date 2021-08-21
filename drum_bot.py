@@ -90,9 +90,11 @@ async def avatar(ctx, owner: Optional[discord.Member]=None):
 async def commands(ctx):
     myEmbed = discord.Embed(title = 'Commands', description = "All Commands which you can use after using Tornax prefix '>'", color = embedTheme)
     myEmbed.add_field(name="hi", value="To get Reply From Tornax", inline=True)
-    myEmbed.add_field(name="ping", value="To get Ping by Tornax", inline=True)
-    myEmbed.add_field(name="tell", value="Chat something using Tornax", inline=False)
+    myEmbed.add_field(name="ping", value="To get Ping or Ping Someone by Tornax", inline=True)
+    myEmbed.add_field(name="tell", value="Chat something and anywhere using Tornax", inline=False)
     myEmbed.add_field(name="time", value="Get Current Time", inline=True)
+    myEmbed.add_field(name="avatar", value="See any Server member's Profile Picture", inline=True)
+    myEmbed.add_field(name="rules", value="Get all Rules of the server", inline=True)
     await ctx.send(embed=myEmbed)
 
 @bot.command()
