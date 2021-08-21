@@ -112,7 +112,7 @@ async def about(ctx):
 @bot.listen()
 async def on_message(message):
     if "start" in message.content.lower() and "smp" in message.content.lower():
-        await message.channel.send("+:nahi:")
+        await message.add_reaction("\:smiley: ")
 
 @bot.event
 async def on_message(message):
