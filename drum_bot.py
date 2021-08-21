@@ -9,6 +9,8 @@ restricted_words = ["gooh","kutta","kutte","harami","skyra","wtf","frick","fuck"
 
 TOKEN = "ODMyODk3NjAyNzY4MDc2ODE2.YHqeVg.yfzVgB8hHizDFH7hSMTORIv5weg"
 
+embedTheme = discord.Color.from_rgb(255, 255, 0)
+
 @bot.event
 async def on_ready():
     print("I m Ready!")
@@ -49,28 +51,34 @@ async def rule(ctx, ruleno: Optional[str]=None):
         await ctx.send(f":exclamation: Please Specify the Rule Number of the Rule which you want to Access,{ctx.author.mention}")
     else:
         if ruleno == "1":
-            embed = discord.Embed(title="Rule No. 1 - No Promotion",description='Discord Server, Youtube, Website and other Promotions are not Allowed \n \n No type of Promotion is Allowed, Emotionally or Friendly Blackmailing to Subscribe, Like or to join a Discord Server or others is type of Promotion and You can get warn, mute or ban from the Server.   ',color = discord.Color.from_rgb(255, 255, 0))
+            embed = discord.Embed(title="Rule No. 1 - No Promotion",description='Discord Server, Youtube, Website and other Promotions are not Allowed \n \n No type of Promotion is Allowed, Emotionally or Friendly Blackmailing to Subscribe, Like or to join a Discord Server or others is type of Promotion and You can get warn, mute or ban from the Server.   ',color = embedTheme)
             await ctx.send(embed=embed)
         elif ruleno == "2":
-            embed = discord.Embed(title="Rule No. 2 - No Abuses",description="Abuses or any Kind of Abusing Languages are Not Allowed \n\n Abusing Words or even Targeting Someone's Family member is a kind of Abuse and you can get mute or ban from the Server.",color = discord.Color.from_rgb(255, 255, 0))
+            embed = discord.Embed(title="Rule No. 2 - No Abuses",description="Abuses or any Kind of Abusing Languages are Not Allowed \n\n Abusing Words or even Targeting Someone's Family member is a kind of Abuse and you can get mute or ban from the Server.",color = embedTheme)
             await ctx.send(embed=embed)
         elif ruleno == "3":
-            embed = discord.Embed(title="Rule No. 3 - No Spamming",description="Spamming is Restricted here even while crazy or angry \n\n We will not coperate any type of Spamming here even you can get warn or mute for that",color = discord.Color.from_rgb(255, 255, 0))
+            embed = discord.Embed(title="Rule No. 3 - No Spamming",description="Spamming is Restricted here even while crazy or angry \n\n We will not coperate any type of Spamming here even you can get warn or mute for that",color = embedTheme)
             await ctx.send(embed=embed)
         elif ruleno == "4":
-            embed = discord.Embed(title="Rule No. 4 - No Toxicity",description='Toxic Behaviour with Server Staff or Member is Not Tolerated \n\n Toxicity or rudeness with the Members of this Server without any necessary reason after getting warning can give warn or mute',color = discord.Color.from_rgb(255, 255, 0))
+            embed = discord.Embed(title="Rule No. 4 - No Toxicity",description='Toxic Behaviour with Server Staff or Member is Not Tolerated \n\n Toxicity or rudeness with the Members of this Server without any necessary reason after getting warning can give warn or mute',color = embedTheme)
             await ctx.send(embed=embed)
         else:
             await ctx.send(f":exclamation: There is no Rule Number {ruleno},{ctx.author.mention}")
         
-    
-
+@bot.command()
+async def rules(ctx):
+    embed = discord.Embed(title="Server Rules", description="These are some Rules of this Server", color= embedTheme)
+    embed.add_field(name="1. No Promotion",value="type >rule 1 for more info",inline= False)
+    embed.add_field(name="2. No Abuses",value="type >rule 2 for more info",inline= False)
+    embed.add_field(name="3. No Spamming",value="type >rule 3 for more info",inline= False)
+    embed.add_field(name="4. No Toxicity",value="type >rule 4 for more info",inline= False)
+    await ctx.send(embed=embed)
 
 @bot.command()
 async def avatar(ctx, owner: Optional[discord.Member]=None):
     if owner is None:
         owner = ctx.author
-    embed = discord.Embed(title="Avatar",color=discord.Color.from_rgb(255, 255, 0))
+    embed = discord.Embed(title="Avatar",color=embedTheme)
     embed.set_author(icon_url=owner.avatar_url,name=owner)
     embed.set_image(url=owner.avatar_url)
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
@@ -79,7 +87,7 @@ async def avatar(ctx, owner: Optional[discord.Member]=None):
 
 @bot.command()
 async def commands(ctx):
-    myEmbed = discord.Embed(title = 'Commands', description = "All Commands which you can use after using Tornax prefix '>'", color = discord.Color.from_rgb(255, 255, 0))
+    myEmbed = discord.Embed(title = 'Commands', description = "All Commands which you can use after using Tornax prefix '>'", color = embedTheme)
     myEmbed.add_field(name="hi", value="To get Reply From Tornax", inline=True)
     myEmbed.add_field(name="ping", value="To get Ping by Tornax", inline=True)
     myEmbed.add_field(name="tell", value="Chat something using Tornax", inline=False)
