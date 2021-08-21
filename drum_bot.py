@@ -112,7 +112,7 @@ async def about(ctx):
 @bot.listen()
 async def on_message(message):
     if "start" in message.content.lower() and "smp" in message.content.lower():
-        await message.add_reaction(<:nahi:869447646866202624>)
+        await message.add_reaction("<:nahi:869447646866202624>")
 
 @bot.event
 async def on_message(message):
