@@ -88,7 +88,7 @@ async def avatar(ctx, owner: Optional[discord.Member]=None):
 
 @bot.command()
 async def commands(ctx):
-    myEmbed = discord.Embed(title = 'Commands', description = "All Commands which you can use after using Tornax prefix '>'", color = embedTheme)
+    myEmbed = discord.Embed(title = 'Commands', description = "These are all Commands, This Server prefix - '>' \n\n", color = embedTheme)
     myEmbed.add_field(name="hi", value="To get Reply From Tornax", inline=True)
     myEmbed.add_field(name="ping", value="To get Ping or Ping Someone by Tornax", inline=True)
     myEmbed.add_field(name="tell", value="Chat something and anywhere using Tornax", inline=True)
