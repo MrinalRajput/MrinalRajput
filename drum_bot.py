@@ -109,12 +109,12 @@ async def info(ctx):
 async def about(ctx):
     await ctx.send(f"> Tornax is a Multi-Talented and Friendly Bot, Use Tornax for moderation, server managements, streams and giveaways now!")
 
-@bot.command
+@bot.listen()
 async def on_message(message):
-    if "start" in message.content.lower():
-        emoji = '\N{THUMBS UP SIGN}'
+    if "start" in message.content.lower() and "smp" in message.content.lower():
         print("reacted")
-        await message.content.add_reaction(emoji)
+        await message.add_reaction("\U0001f1f3")
+        await message.add_reaction("\U0001f1f3")
 
 @bot.event
 async def on_message(message):
