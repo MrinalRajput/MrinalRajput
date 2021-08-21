@@ -71,7 +71,7 @@ async def rules(ctx):
     embed.add_field(name="1. No Promotion",value="  type >rule 1 for more info",inline= False)
     embed.add_field(name="2. No Abuses",value="  type >rule 2 for more info",inline= False)
     embed.add_field(name="3. No Spamming",value="  type >rule 3 for more info",inline= False)
-    embed.add_field(name="4. No Toxicity",value="  type >rule 4 for more info\n",inline= False)
+    embed.add_field(name="4. No Toxicity",value="  type >rule 4 for more info\n\n",inline= False)
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested by {ctx.author}")
     await ctx.send(embed=embed)
 
