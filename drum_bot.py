@@ -111,6 +111,12 @@ async def about(ctx):
 
 @bot.event
 async def on_message(message):
+    if "start" in message.content.lower() and "smp" in message.content.lower():
+        emoji = ':regional_indicator_n:'
+        await message.content.add_reaction(emoji)
+
+@bot.event
+async def on_message(message):
     message.content = message.content.lower()
     for word in restricted_words:
         if message.content.count(word)>0:
