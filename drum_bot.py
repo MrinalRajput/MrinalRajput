@@ -95,7 +95,8 @@ async def commands(ctx):
     myEmbed.add_field(name="time", value="Get Current Time", inline=True)
     myEmbed.add_field(name="avatar", value="See any Server member's Profile Picture", inline=True)
     myEmbed.add_field(name="rules", value="Get all Rules of the server", inline=True)
-    myEmbed.set_footer(text=f"Total Commands - 6 || {ctx.author.avatar_url} Requested by {ctx.author}")
+    myEmbed.set_footer(text=f"> Total Commands - 6")
+    myEmbed.set_footer(icon_url=ctx.author.avatar_url,text=f"Requested by {ctx.author}")
     await ctx.send(embed=myEmbed)
 
 @bot.command()
