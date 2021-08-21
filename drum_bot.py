@@ -91,10 +91,11 @@ async def commands(ctx):
     myEmbed = discord.Embed(title = 'Commands', description = "All Commands which you can use after using Tornax prefix '>'", color = embedTheme)
     myEmbed.add_field(name="hi", value="To get Reply From Tornax", inline=True)
     myEmbed.add_field(name="ping", value="To get Ping or Ping Someone by Tornax", inline=True)
-    myEmbed.add_field(name="tell", value="Chat something and anywhere using Tornax", inline=False)
+    myEmbed.add_field(name="tell", value="Chat something and anywhere using Tornax", inline=True)
     myEmbed.add_field(name="time", value="Get Current Time", inline=True)
     myEmbed.add_field(name="avatar", value="See any Server member's Profile Picture", inline=True)
     myEmbed.add_field(name="rules", value="Get all Rules of the server", inline=True)
+    myEmbed.set_footer(icon_url=ctx.author.avatar_url,text=f"Requested by {ctx.author}")
     await ctx.send(embed=myEmbed)
 
 @bot.command()
