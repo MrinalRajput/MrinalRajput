@@ -68,10 +68,11 @@ async def rule(ctx, ruleno: Optional[str]=None):
 @bot.command()
 async def rules(ctx):
     embed = discord.Embed(title="Server Rules", description="These are some Rules of this Server", color= embedTheme)
-    embed.add_field(name="1. No Promotion",value="type >rule 1 for more info",inline= False)
-    embed.add_field(name="2. No Abuses",value="type >rule 2 for more info",inline= False)
-    embed.add_field(name="3. No Spamming",value="type >rule 3 for more info",inline= False)
-    embed.add_field(name="4. No Toxicity",value="type >rule 4 for more info",inline= False)
+    embed.add_field(name="1. No Promotion",value="  type >rule 1 for more info",inline= False)
+    embed.add_field(name="2. No Abuses",value="  type >rule 2 for more info",inline= False)
+    embed.add_field(name="3. No Spamming",value="  type >rule 3 for more info",inline= False)
+    embed.add_field(name="4. No Toxicity",value="  type >rule 4 for more info\n",inline= False)
+    embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested by {ctx.author}")
     await ctx.send(embed=embed)
 
 @bot.command()
