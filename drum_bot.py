@@ -124,7 +124,7 @@ async def on_message(message):
         # embed.add_field(name="Message",value=f"{message.content}\n\n",inline=False)
         # embed.set_footer(icon_url=message.author.avatar_url,text=f"ID -> {message.author.id}")
         # await modmail.send(embed=embed)
-        await modmail.send(f"{message.author} || {message.author.id}\n {message.content}")
+        await modmail.send(f"```{message.author} || {message.author.id}\n -> {message.content}```")
         # print(f"{message.author} -> {message.content}")
 
 ###############
