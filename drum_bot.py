@@ -120,10 +120,11 @@ async def on_message(message):
     if message.channel == message.author.dm_channel:
         channelid = 874904257265008670
         modmail = bot.get_channel(channelid)
-        embed = discord.Embed(title=f"{message.author}", color=embedTheme)
-        embed.add_field(name="Message",value=f"{message.content}\n\n",inline=False)
-        embed.set_footer(icon_url=message.author.avatar_url,text=f"ID -> {message.author.id}")
-        await modmail.send(embed=embed)
+        # embed = discord.Embed(title=f"{message.author}", color=embedTheme)
+        # embed.add_field(name="Message",value=f"{message.content}\n\n",inline=False)
+        # embed.set_footer(icon_url=message.author.avatar_url,text=f"ID -> {message.author.id}")
+        # await modmail.send(embed=embed)
+        await modmail.send(f"{message.author} || {message.author.id}\n {message.content}")
         # print(f"{message.author} -> {message.content}")
 
 ###############
