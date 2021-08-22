@@ -87,7 +87,7 @@ async def avatar(ctx, owner: Optional[discord.Member]=None):
 
 
 @bot.command()
-async def commands(ctx):
+async def gethelp(ctx):
     myEmbed = discord.Embed(title = 'Commands', description = "These are all Commands, This Server prefix - '>' \n\n", color = embedTheme)
     myEmbed.add_field(name="hi", value="To get Reply From Tornax", inline=True)
     myEmbed.add_field(name="ping", value="To get Ping or Ping Someone by Tornax", inline=True)
@@ -108,6 +108,11 @@ async def info(ctx):
 @bot.command()
 async def about(ctx):
     await ctx.send(f"> Tornax is a Multi-Talented and Friendly Bot, Use Tornax for moderation, server managements, streams and giveaways now!")
+
+@bot.command()
+@commands.has_any_role("Access")
+async def dmuser(ctx, member: discord.User, *, chat):
+    await member.send(chat)
 
 @bot.listen()
 async def on_message(message):
