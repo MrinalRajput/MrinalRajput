@@ -109,10 +109,22 @@ async def info(ctx):
 async def about(ctx):
     await ctx.send(f"> Tornax is a Multi-Talented and Friendly Bot, Use Tornax for moderation, server managements, streams and giveaways now!")
 
+#############
 @bot.command()
 @commands.has_any_role("Access")
 async def dmuser(ctx, member: discord.User, *, chat):
     await member.send(chat)
+
+@bot.listen()
+async def on_message(message):
+    channelid = 874904257265008670
+    modmail = bot.get_channel(channelid)
+    embed = discord.Embed(title=message.author, description=message.id, color=embedTheme)
+    embed.add_field(name="Message",value=message.content,inline=False)
+    await modmail.send(embed=embed)
+    # print(f"{message.author} -> {message.content}")
+
+###############
 
 @bot.listen()
 async def on_message(message):
