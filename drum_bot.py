@@ -27,8 +27,9 @@ SmpStatus = False
 
 @bot.listen()
 async def on_message(message):
-    if ("smp" in message.content.lower() or "server" in message.content.lower()) and (" on " in message.content.lower() or "online" in message.content.lower() or "offline" in message.content.lower() or " off " in message.content.lower()):
-        await message.channel.send(f"{message.author.mention} Please Check <#877777208108789770> for Live Updates of Smp")
+    if message.author.id != 832897602768076816:
+        if ("smp" in message.content.lower() or "server" in message.content.lower()) and (" on " in message.content.lower() or "online" in message.content.lower() or "offline" in message.content.lower() or " off " in message.content.lower()):
+            await message.channel.send(f"{message.author.mention} Please Check <#877777208108789770> for Live Updates of Smp")
         
 @bot.command()
 @commands.has_any_role("Access")
@@ -57,20 +58,18 @@ async def on_message(message):
     if message.channel == Smpchannel:
         if message.author.id == 832897602768076816:
             if "server has started" in message.content.lower():
-                global SmpStatus
                 SmpStatus = True
                 print(f"Smp Status is {SmpStatus}")
             elif "server has stopped" in message.content.lower():
-                global SmpStatus
                 SmpStatus = False
                 print(f"Smp Status is {SmpStatus}")
 
 @bot.command()
 async def status(ctx):
     if SmpStatus == True:
-        await ctx.send(f":green_circle: Server Is Online")
+        await ctx.send(f":green_circle:  Server Is Online")
     elif SmpStatus == False:
-        await ctx.send(f":red_circle: Server Is Offline")
+        await ctx.send(f":red_circle:  Server Is Offline")
 
 ##############################
 #### All Servers Commands ####
