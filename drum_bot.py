@@ -23,7 +23,7 @@ async def hi(ctx):
 #### Only For My Smp Server
 #############
 
-SmpStatus = ""
+SmpStatus = False
 
 @bot.listen()
 async def on_message(message):
@@ -65,6 +65,12 @@ async def on_message(message):
                 SmpStatus = False
                 print(f"Smp Status is {SmpStatus}")
 
+@bot.command()
+async def status(ctx):
+    if SmpStatus == True:
+        await ctx.send(f":green_circle: Server Is Online")
+    elif SmpStatus == False:
+        await ctx.send(f":red_circle: Server Is Offline")
 
 ##############################
 #### All Servers Commands ####
