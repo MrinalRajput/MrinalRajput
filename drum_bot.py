@@ -54,6 +54,7 @@ async def on_message(message):
 
 @bot.listen()
 async def on_message(message):
+    global SmpStatus
     Smpchannel = bot.get_channel(877777208108789770)
     if message.channel == Smpchannel:
         if message.author.id == 832897602768076816:
