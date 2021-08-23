@@ -23,6 +23,8 @@ async def hi(ctx):
 #### Only For My Smp Server
 #############
 
+SmpStatus = ""
+
 @bot.listen()
 async def on_message(message):
     if ("smp" in message.content.lower() or "server" in message.content.lower()) and (" on " in message.content.lower() or "online" in message.content.lower() or "offline" in message.content.lower() or " off " in message.content.lower()):
@@ -48,6 +50,21 @@ async def on_message(message):
 async def on_message(message):
     if "start" in message.content.lower() and "smp" in message.content.lower():
         await message.add_reaction("<:nahi:869447646866202624>")
+
+@bot.listen()
+async def on_message(message):
+    Smpchannel = bot.get_channel(877777208108789770)
+    if message.channel == Smpchannel:
+        if message.author.id == 832897602768076816:
+            if "server has started" in message.content.lower():
+                global SmpStatus
+                SmpStatus = True
+                print(f"Smp Status is {SmpStatus}")
+            elif "server has stopped" in message.content.lower():
+                global SmpStatus
+                SmpStatus = False
+                print(f"Smp Status is {SmpStatus}")
+
 
 ##############################
 #### All Servers Commands ####
