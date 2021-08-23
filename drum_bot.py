@@ -32,9 +32,11 @@ async def on_message(message):
             await message.channel.send(f"{message.author.mention} Please Check <#877777208108789770> for Live Updates of Smp")
         
 @bot.command()
-@commands.has_any_role("Access")
 async def dmuser(ctx, member: discord.User, *, chat):
-    await member.send(chat)
+    if ctx.author.id == 758941956600102943:
+        await member.send(chat)
+    else:
+        await ctx.send(f":exclamation: Sorry {ctx.author.mention}, You Don't have Acess to use this Command")
 
 @bot.listen()
 async def on_message(message):
