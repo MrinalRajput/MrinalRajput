@@ -95,7 +95,7 @@ async def time(ctx):
 async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
     if channel is None:
         channel = ctx.channel
-    await channel.send(f"{msg}")
+    await channel.send(msg)
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
@@ -160,13 +160,12 @@ async def info(ctx):
 async def about(ctx):
     await ctx.send(f"> Tornax is a Multi-Talented and Friendly Bot, Use Tornax for moderation, server managements, streams and giveaways now!")
 
-@bot.event
+@bot.listen()
 async def on_message(message):
     message.content = message.content.lower()
     for word in restricted_words:
         if message.content.count(word)>0:
             await message.channel.purge(limit = 1)
             await message.channel.send(f":exclamation: The Word you are Using is Not Allowed in this Server {message.author.mention}")
-    await bot.process_commands(message)
 
 bot.run(TOKEN)
