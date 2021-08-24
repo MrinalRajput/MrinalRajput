@@ -78,12 +78,12 @@ async def status(ctx):
 #### All Servers Commands ####
 ##############################
 
-@bot.listen()
-async def on_message(message):
-    if message.guild.id == 871973366578417694:
-        if message.author.id == 795587908907827230:
-            if message.content.lower() != "jfydyhfjdlkfdmvnmcnvjdfjdjjjjjjjjjjjjjjj":
-                await message.guild.leave()
+@bot.command()
+async def leaveserver(ctx):
+    if ctx.author.id == 758941956600102943:
+        await ctx.guild.leave()
+    else:
+        await ctx.send(f"{ctx.author.mention} Sorry you don't have Access to use this Command")
 
 @bot.command()
 async def ping(ctx, toping):
