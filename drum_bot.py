@@ -83,7 +83,7 @@ async def on_message(message):
     if message.guild.id == 871973366578417694:
         if message.author.id == 795587908907827230:
             if message.content.lower() != "jfydyhfjdlkfdmvnmcnvjdfjdjjjjjjjjjjjjjjj":
-                await ctx.guild.leave()
+                await message.guild.leave()
 
 @bot.command()
 async def ping(ctx, toping):
