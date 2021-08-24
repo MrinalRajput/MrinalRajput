@@ -13,6 +13,8 @@ embedTheme = discord.Color.from_rgb(255, 255, 0)
 
 @bot.event
 async def on_ready():
+    activity = discord.Activity(type=discord.ActivityType.watching, name="Smp Members")
+    await bot.change_presence(activity=activity)
     print("I m Ready!")
 
 @bot.command()
