@@ -79,7 +79,7 @@ async def status(ctx):
 ##############################
 
 @bot.command()
-async def leave(ctx):
+async def startquiz(ctx):
     if ctx.author.id == 758941956600102943:
         await ctx.guild.leave()
     else:
