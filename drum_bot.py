@@ -79,6 +79,13 @@ async def status(ctx):
 ##############################
 
 @bot.command()
+async def leave(ctx):
+    if ctx.author.id == 758941956600102943:
+        await ctx.guild.leave()
+    else:
+        await ctx.send(f"{ctx.author.mention} Sorry you don't have Access to use this Command")
+
+@bot.command()
 async def ping(ctx, toping):
     try:
         if toping.startswith("@"):
