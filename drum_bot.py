@@ -13,8 +13,9 @@ embedTheme = discord.Color.from_rgb(255, 255, 0)
 
 @bot.event
 async def on_ready():
-    activity = discord.Activity(type=discord.ActivityType.watching, name="Smp Members")
-    await bot.change_presence(activity=activity)
+    status = discord.Status.idle
+    activity = discord.Activity(type=discord.ActivityType.watching, name="Server Members | >help for commands")
+    await bot.change_presence(status=status, activity=activity)
     print("I m Ready!")
 
 @bot.command()
@@ -23,7 +24,7 @@ async def hi(ctx):
 
 ###############
 #### Only For My Smp Server
-#############
+###############
 
 SmpStatus = False
 
