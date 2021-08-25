@@ -27,17 +27,18 @@ async def hi(ctx):
 ###############
 
 SmpStatus = False
+LegendServer = 869439705714933780
 
 @bot.listen()
 async def on_message(message):
-    if ctx.guild.id == 869439705714933780:
+    if message.guild.id == LegendServer:
         if message.author.id != 832897602768076816:
             if ("smp" in message.content.lower() or "server" in message.content.lower()) and (" on " in message.content.lower() or "online" in message.content.lower() or "offline" in message.content.lower() or " off " in message.content.lower()):
                 await message.channel.send(f"{message.author.mention} Please Check <#877777208108789770> for Live Updates of Smp")
         
 @bot.command()
 async def dmuser(ctx, member: discord.User, *, chat):
-    if ctx.guild.id == 869439705714933780:
+    if ctx.guild.id == LegendServer:
         if ctx.author.id == 758941956600102943:
             await member.send(chat)
         else:
@@ -45,7 +46,7 @@ async def dmuser(ctx, member: discord.User, *, chat):
 
 @bot.listen()
 async def on_message(message):
-    if ctx.guild.id == 869439705714933780:
+    if message.guild.id == LegendServer:
         if message.channel == message.author.dm_channel:
             channelid = 874904257265008670
             modmail = bot.get_channel(channelid)
@@ -57,14 +58,14 @@ async def on_message(message):
 
 @bot.listen()
 async def on_message(message):
-    if ctx.guild.id == 869439705714933780:
+    if message.guild.id == LegendServer:
         if "start" in message.content.lower() and "smp" in message.content.lower():
             await message.add_reaction("<:nahi:869447646866202624>")
 
 @bot.listen()
 async def on_message(message):
     global SmpStatus
-    if ctx.guild.id == 869439705714933780:
+    if message.guild.id == LegendServer:
         Smpchannel = bot.get_channel(877777208108789770)
         if message.channel == Smpchannel:
             if message.author.id == 832897602768076816:
@@ -77,7 +78,7 @@ async def on_message(message):
 
 @bot.command()
 async def status(ctx):
-    if ctx.guild.id == 869439705714933780:
+    if ctx.guild.id == LegendServer:
         if SmpStatus == True:
             await ctx.send(f":green_circle:  Server Is Online")
         elif SmpStatus == False:
