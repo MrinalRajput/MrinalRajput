@@ -26,56 +26,57 @@ async def hi(ctx):
 #### Only For My Smp Server
 ###############
 
-SmpStatus = False
+if ctx.guild.id == 869439705714933780:
+    SmpStatus = False
 
-@bot.listen()
-async def on_message(message):
-    if message.author.id != 832897602768076816:
-        if ("smp" in message.content.lower() or "server" in message.content.lower()) and (" on " in message.content.lower() or "online" in message.content.lower() or "offline" in message.content.lower() or " off " in message.content.lower()):
-            await message.channel.send(f"{message.author.mention} Please Check <#877777208108789770> for Live Updates of Smp")
-        
-@bot.command()
-async def dmuser(ctx, member: discord.User, *, chat):
-    if ctx.author.id == 758941956600102943:
-        await member.send(chat)
-    else:
-        await ctx.send(f":exclamation: Sorry {ctx.author.mention}, You Don't have Acess to use this Command")
+    @bot.listen()
+    async def on_message(message):
+        if message.author.id != 832897602768076816:
+            if ("smp" in message.content.lower() or "server" in message.content.lower()) and (" on " in message.content.lower() or "online" in message.content.lower() or "offline" in message.content.lower() or " off " in message.content.lower()):
+                await message.channel.send(f"{message.author.mention} Please Check <#877777208108789770> for Live Updates of Smp")
+            
+    @bot.command()
+    async def dmuser(ctx, member: discord.User, *, chat):
+        if ctx.author.id == 758941956600102943:
+            await member.send(chat)
+        else:
+            await ctx.send(f":exclamation: Sorry {ctx.author.mention}, You Don't have Acess to use this Command")
 
-@bot.listen()
-async def on_message(message):
-    if message.channel == message.author.dm_channel:
-        channelid = 874904257265008670
-        modmail = bot.get_channel(channelid)
-        embed = discord.Embed(title=f"{message.author}", color=embedTheme)
-        embed.add_field(name="Message\n",value=f"{message.content}\n\n--------------------------",inline=False)
-        embed.set_footer(icon_url=message.author.avatar_url,text=f"ID -> {message.author.id}")
-        await modmail.send(embed=embed)
-        # print(f"{message.author} -> {message.content}")
+    @bot.listen()
+    async def on_message(message):
+        if message.channel == message.author.dm_channel:
+            channelid = 874904257265008670
+            modmail = bot.get_channel(channelid)
+            embed = discord.Embed(title=f"{message.author}", color=embedTheme)
+            embed.add_field(name="Message\n",value=f"{message.content}\n\n--------------------------",inline=False)
+            embed.set_footer(icon_url=message.author.avatar_url,text=f"ID -> {message.author.id}")
+            await modmail.send(embed=embed)
+            # print(f"{message.author} -> {message.content}")
 
-@bot.listen()
-async def on_message(message):
-    if "start" in message.content.lower() and "smp" in message.content.lower():
-        await message.add_reaction("<:nahi:869447646866202624>")
+    @bot.listen()
+    async def on_message(message):
+        if "start" in message.content.lower() and "smp" in message.content.lower():
+            await message.add_reaction("<:nahi:869447646866202624>")
 
-@bot.listen()
-async def on_message(message):
-    global SmpStatus
-    Smpchannel = bot.get_channel(877777208108789770)
-    if message.channel == Smpchannel:
-        if message.author.id == 832897602768076816:
-            if "server has started" in message.content.lower():
-                SmpStatus = True
-                # print(f"Smp Status is {SmpStatus}")
-            elif "server has stopped" in message.content.lower():
-                SmpStatus = False
-                # print(f"Smp Status is {SmpStatus}")
+    @bot.listen()
+    async def on_message(message):
+        global SmpStatus
+        Smpchannel = bot.get_channel(877777208108789770)
+        if message.channel == Smpchannel:
+            if message.author.id == 832897602768076816:
+                if "server has started" in message.content.lower():
+                    SmpStatus = True
+                    # print(f"Smp Status is {SmpStatus}")
+                elif "server has stopped" in message.content.lower():
+                    SmpStatus = False
+                    # print(f"Smp Status is {SmpStatus}")
 
-@bot.command()
-async def status(ctx):
-    if SmpStatus == True:
-        await ctx.send(f":green_circle:  Server Is Online")
-    elif SmpStatus == False:
-        await ctx.send(f":red_circle:  Server Is Offline")
+    @bot.command()
+    async def status(ctx):
+        if SmpStatus == True:
+            await ctx.send(f":green_circle:  Server Is Online")
+        elif SmpStatus == False:
+            await ctx.send(f":red_circle:  Server Is Offline")
 
 ##############################
 #### All Servers Commands ####
