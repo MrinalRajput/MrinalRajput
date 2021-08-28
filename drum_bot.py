@@ -88,13 +88,9 @@ async def status(ctx):
 #### All Servers Commands ####
 ##############################
 
-@bot.listen()
-async def on_message(message):
-    emojilist = [":poop:"]
-    for emoji in emojilist:
-        if any(emojilist) in message.content.lower():
-            await message.delete()
-            await message.send(f":exclamation: The Emoji you are using is Not Allowed, {message.author.mention}")
+@bot.command()
+async def warn(ctx, member:discord.Member, *, reason=None):
+    await ctx.send(f"Warned: {member.mention} is Warned by {ctx.author.mention}" if reason is None else f"Warned: {member.mention} is Warned by {ctx.author.mention} with Reason of {reason}")
 
 @bot.command()
 async def leaveserver(ctx):
