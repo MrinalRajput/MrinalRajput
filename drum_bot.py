@@ -5,7 +5,7 @@ import random
 from typing import Optional
 
 bot = commands.Bot(command_prefix = ">")
-restricted_words = ["gooh","kutta","kutte","harami","skyra","wtf","frick","fuck"]
+restricted_words = ["gooh","kutta","kutte","harami","skyra","wtf","frick","fuck","fuk"]
 
 TOKEN = "ODMyODk3NjAyNzY4MDc2ODE2.YHqeVg.yfzVgB8hHizDFH7hSMTORIv5weg"
 
@@ -87,6 +87,14 @@ async def status(ctx):
 ##############################
 #### All Servers Commands ####
 ##############################
+
+@bot.listen()
+async def on_message(message):
+    emojilist = [":poop:"]
+    for emoji in emojilist:
+        if any(emojilist) in message.content.lower():
+            await message.delete()
+            await message.send(f":exclamation: The Emoji you are using is Not Allowed, {message.author.mention}")
 
 @bot.command()
 async def leaveserver(ctx):
