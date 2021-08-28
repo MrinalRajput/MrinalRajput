@@ -90,8 +90,8 @@ async def status(ctx):
 
 @bot.command()
 async def warn(ctx, member:discord.Member, *, reason=None):
-    # if
-    await ctx.send(f"Warned: {member.mention} has been Warned by {ctx.author.mention}" if reason is None else f"Warned: {member.mention} has been Warned by {ctx.author.mention} \n With Reason of {reason}")
+    if memb
+    await ctx.send(f"Warned: {member.mention} has been Warned by {ctx.author.mention}" if reason is None else f"Warned: {member.mention} has been Warned by {ctx.author.mention} \n\t With the Reason of :\t{reason}")
 
 @bot.command()
 async def leaveserver(ctx):
