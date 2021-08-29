@@ -6,7 +6,7 @@ from typing import Optional
 
 from discord.ext.commands.core import has_permissions
 
-bot = commands.Bot(command_prefix = ">")
+bot = commands.Bot(command_prefix = ">", help_command=None)
 restricted_words = ["gooh","kutta","kutte","harami","skyra","wtf","frick","fuck","fuk"]
 
 TOKEN = "ODMyODk3NjAyNzY4MDc2ODE2.YHqeVg.yfzVgB8hHizDFH7hSMTORIv5weg"
