@@ -6,7 +6,7 @@ from typing import Optional
 
 from discord.ext.commands.core import has_permissions
 
-bot = commands.Bot(command_prefix = ">", help_command=None)
+bot = commands.Bot(command_prefix = ">")
 restricted_words = ["gooh","kutta","kutte","harami","skyra","wtf","frick","fuck","fuk"]
 
 TOKEN = "ODMyODk3NjAyNzY4MDc2ODE2.YHqeVg.yfzVgB8hHizDFH7hSMTORIv5weg"
@@ -102,9 +102,9 @@ async def leaveserver(ctx):
         # await ctx.send(f"{ctx.author.mention} Sorry you don't have Access to use this Command")
 
 @bot.command()
-async def ping(ctx, toping:discord.Member=None):
-    await ctx.delete()
-    await ctx.send(f"{toping}")
+async def ping(ctx, toping:Optional[discord.Member]=None):
+    await ctx.message.delete()
+    await ctx.send(toping.mention if toping is not None else ctx.author.mention)
 
 @bot.command()
 @commands.bot_has_permissions(send_messages=True)
