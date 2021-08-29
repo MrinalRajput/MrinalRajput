@@ -4,6 +4,8 @@ from datetime import datetime
 import random
 from typing import Optional
 
+from discord.ext.commands.core import has_permissions
+
 bot = commands.Bot(command_prefix = ">")
 restricted_words = ["gooh","kutta","kutte","harami","skyra","wtf","frick","fuck","fuk"]
 
@@ -89,16 +91,15 @@ async def status(ctx):
 ##############################
 
 @bot.command()
+@commands.has_permissions(administrator=True)
 async def warn(ctx, member:discord.Member, *, reason=None):
-    # if memb
     await ctx.send(f"Warned: {member.mention} has been Warned by {ctx.author.mention}" if reason is None else f"Warned: {member.mention} has been Warned by {ctx.author.mention} \n\t With the Reason of :\t{reason}")
 
 @bot.command()
+@commands.has_permissions(manage_guild=True)
 async def leaveserver(ctx):
-    if ctx.author.id == 758941956600102943:
         await ctx.guild.leave()
-    else:
-        await ctx.send(f"{ctx.author.mention} Sorry you don't have Access to use this Command")
+        # await ctx.send(f"{ctx.author.mention} Sorry you don't have Access to use this Command")
 
 @bot.command()
 async def ping(ctx, toping):
