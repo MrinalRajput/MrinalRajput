@@ -100,8 +100,8 @@ async def warn(ctx, member:discord.Member, *, reason=None):
 
 @bot.command()
 @commands.has_permissions(kick_members=True)
-async def kick(ctx, member:discord.Member, reason=None):
-    await bot.kick(member)
+async def kick(ctx, member:discord.Member, *, reason=None):
+    await member.kick(member)
     await ctx.send(f"Kicked: {member.mention} has been Kicked from the Server by {ctx.author.mention}" if reason is None else f"Kicked: {member.mention} has been Kicked from the Server by {ctx.author.mention} \n\t With the Reason of :\t{reason}")
 
 @bot.command()
