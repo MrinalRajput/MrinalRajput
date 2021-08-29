@@ -102,16 +102,12 @@ async def leaveserver(ctx):
         # await ctx.send(f"{ctx.author.mention} Sorry you don't have Access to use this Command")
 
 @bot.command()
-async def ping(ctx, toping):
-    try:
-        if toping.startswith("@"):
-            await ctx.send(f"{toping}")
-        else:
-            await ctx.send(f"@{toping}")
-    except Exception:        
-        await ctx.send(f"Please Specify the User Whom I have to Ping")
+async def ping(ctx, toping:discord.Member=None):
+    await ctx.delete()
+    await ctx.send(f"{toping}")
 
 @bot.command()
+@commands.bot_has_permissions(send_messages=True)
 async def time(ctx):
     currenttime = datetime.now()
     await ctx.send(f"Current Time is {currenttime}")
