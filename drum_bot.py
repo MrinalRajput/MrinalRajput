@@ -20,16 +20,19 @@ async def on_ready():
     await bot.change_presence(status=status, activity=activity)
     print("I m Ready!")
 
-@bot.command()
-async def hi(ctx):
-    await ctx.send(f"Hello {ctx.author.mention}")
-
 ###############
 #### Only For My Smp Server
 ###############
 
 SmpStatus = False
 LegendServer = 869439705714933780
+
+@bot.event
+async def on_member_join(member):
+    role1 = discord.utils.get(member.server.roles, id=875247780535345222)
+    role2 = discord.utils.get(member.server.roles, id=875259339072491541)
+    await bot.add_roles(member, role1)
+    await bot.add_roles(member, role2)
 
 @bot.listen()
 async def on_message(message):
@@ -96,6 +99,12 @@ async def warn(ctx, member:discord.Member, *, reason=None):
     await ctx.send(f"Warned: {member.mention} has been Warned by {ctx.author.mention}" if reason is None else f"Warned: {member.mention} has been Warned by {ctx.author.mention} \n\t With the Reason of :\t{reason}")
 
 @bot.command()
+@commands.has_permissions(kick_members=True)
+async def kick(ctx, member:discord.Member, reason=None):
+    await bot.kick(member)
+    await ctx.send(f"Kicked: {member.mention} has been Kicked from the Server by {ctx.author.mention}" if reason is None else f"Kicked: {member.mention} has been Kicked from the Server by {ctx.author.mention} \n\t With the Reason of :\t{reason}")
+
+@bot.command()
 @commands.has_permissions(manage_guild=True)
 async def leaveserver(ctx):
         await ctx.guild.leave()
@@ -111,7 +120,7 @@ async def ping(ctx, toping:Optional[discord.Member]=None):
 async def time(ctx):
     currenttime = datetime.now()
     await ctx.send(f"Current Time is {currenttime}")
-    
+
 @bot.command()
 async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
     if channel is None:
