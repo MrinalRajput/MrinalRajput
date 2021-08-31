@@ -96,19 +96,36 @@ async def status(ctx):
 @bot.command()
 @commands.has_permissions(administrator=True)
 async def warn(ctx, member:discord.Member, *, reason=None):
-    await ctx.send(f"Warned: {member.mention} has been Warned by {ctx.author.mention}" if reason is None else f"Warned: {member.mention} has been Warned by {ctx.author.mention} \n\t With the Reason of :\t{reason}")
+    if member is not None:
+        await ctx.send(f"Warned: {member.mention} has been Warned by {ctx.author.mention}" if reason is None else f"Warned: {member.mention} has been Warned by {ctx.author.mention} \n\t With the Reason of :\t{reason}")
+    else:
+        await ctx.send(f"You must Specify the User whom you want to Warn")
 
 @bot.command()
 @commands.has_permissions(kick_members=True)
 async def kick(ctx, member:discord.Member, *, reason=None):
-    await member.kick(reason=reason)
-    await ctx.send(f"Kicked: {member.mention} has been Kicked from the Server by {ctx.author.mention}" if reason is None else f"Kicked: {member.mention} has been Kicked from the Server by {ctx.author.mention} \n\t With the Reason of :\t{reason}")
+    if member is not None:
+        await member.kick(reason=reason)
+        await ctx.send(f"Kicked: {member.mention} has been Kicked from the Server by {ctx.author.mention}" if reason is None else f"Kicked: {member.mention} has been Kicked from the Server by {ctx.author.mention} \n\t With the Reason of :\t{reason}")
+    else:
+        await ctx.send(f"You must Specify the User whom you want to Kick from the Server")
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
 async def leaveserver(ctx):
         await ctx.guild.leave()
         # await ctx.send(f"{ctx.author.mention} Sorry you don't have Access to use this Command")
+
+@bot.command()
+async def react(ctx, msg:discord.Message.id, emoji:discord.Emoji):
+    if msg is not None:
+        if emoji is not None:
+            message = msg
+            await message.add_reaction(emoji)
+        else:
+            await ctx.send(f":exclamation: {ctx.author.mention} Please Specify the Emoji which you want to React")  
+    else:
+        await ctx.send(f":exclamation: {ctx.author.mention} Please Specify the Message on which you Want to React")
 
 @bot.command()
 async def ping(ctx, toping:Optional[discord.Member]=None):
