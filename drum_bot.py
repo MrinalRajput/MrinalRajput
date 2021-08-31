@@ -117,10 +117,10 @@ async def leaveserver(ctx):
         # await ctx.send(f"{ctx.author.mention} Sorry you don't have Access to use this Command")
 
 @bot.command()
-async def react(ctx, msg:discord.Message.id, emoji:discord.Emoji):
-    if msg is not None:
+async def react(ctx, chat:discord.Message.id, emoji:discord.Emoji):
+    if chat is not None:
         if emoji is not None:
-            message = msg
+            message = chat
             await message.add_reaction(emoji)
         else:
             await ctx.send(f":exclamation: {ctx.author.mention} Please Specify the Emoji which you want to React")  
