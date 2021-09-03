@@ -5,6 +5,7 @@ import random
 from typing import Optional
 
 from discord.ext.commands.core import has_permissions
+from discord.ext.commands.errors import MessageNotFound
 
 bot = commands.Bot(command_prefix = ">")
 
@@ -118,15 +119,14 @@ async def leaveserver(ctx):
         # await ctx.send(f"{ctx.author.mention} Sorry you don't have Access to use this Command")
 
 @bot.command()
-async def react(ctx, chat:discord.Message, emoji):
+async def react(ctx, chat:Optional[discord.Message], emoji):
     if chat is None:
-        await ctx.send(f":exclamation: {ctx.author.mention} Please Specify the Message on which you Want to React")
+        chat = ctx.channel.last_message
+    if emoji is None:
+        await ctx.send(f":exclamation: {ctx.author.mention} Please Specify the Emoji which you want to React")  
     else:
-        if emoji is None:
-            await ctx.send(f":exclamation: {ctx.author.mention} Please Specify the Emoji which you want to React")  
-        else:
-            message = chat
-            await message.add_reaction(emoji)
+        message = chat
+        await message.add_reaction(emoji)
 
 @bot.command()
 async def ping(ctx, toping:Optional[discord.Member]=None):
@@ -184,13 +184,6 @@ async def avatar(ctx, owner: Optional[discord.Member]=None):
     embed.set_image(url=owner.avatar_url)
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=embed)
-
-@bot.command()
-async def reaction(ctx, emoji):
-    if emoji is None:
-        await ctx.send("Please Specify the Emoji")
-    else: 
-        await ctx.send(f"+{emoji}")
 
 @bot.command()
 async def gethelp(ctx):
