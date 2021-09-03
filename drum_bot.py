@@ -117,15 +117,15 @@ async def leaveserver(ctx):
         # await ctx.send(f"{ctx.author.mention} Sorry you don't have Access to use this Command")
 
 @bot.command()
-async def react(ctx, chat:discord.Message.id, emoji:discord.Emoji):
-    if chat is not None:
-        if emoji is not None:
+async def react(ctx, chat:discord.Message, emoji):
+    if chat is None:
+        await ctx.send(f":exclamation: {ctx.author.mention} Please Specify the Message on which you Want to React")
+    else:
+        if emoji is None:
+            await ctx.send(f":exclamation: {ctx.author.mention} Please Specify the Emoji which you want to React")  
+        else:
             message = chat
             await message.add_reaction(emoji)
-        else:
-            await ctx.send(f":exclamation: {ctx.author.mention} Please Specify the Emoji which you want to React")  
-    else:
-        await ctx.send(f":exclamation: {ctx.author.mention} Please Specify the Message on which you Want to React")
 
 @bot.command()
 async def ping(ctx, toping:Optional[discord.Member]=None):
