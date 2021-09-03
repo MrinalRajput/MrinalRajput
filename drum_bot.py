@@ -121,6 +121,7 @@ async def leaveserver(ctx):
 @bot.command()
 async def react(ctx, chat:Optional[discord.Message], emoji):
     if chat is None:
+        await ctx.message.delete()
         chat = ctx.channel.last_message
     if emoji is None:
         await ctx.send(f":exclamation: {ctx.author.mention} Please Specify the Emoji which you want to React")  
