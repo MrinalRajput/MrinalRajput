@@ -186,6 +186,13 @@ async def avatar(ctx, owner: Optional[discord.Member]=None):
     await ctx.send(embed=embed)
 
 @bot.command()
+async def reaction(ctx, emoji):
+    if emoji is None:
+        ctx.send("Please Specify the Emoji")
+    else: 
+        ctx.send(f"+{emoji}")
+
+@bot.command()
 async def gethelp(ctx):
     myEmbed = discord.Embed(title = 'Commands', description = "These are all Commands, This Server prefix - '>' \n\n", color = embedTheme)
     myEmbed.add_field(name="hi", value="To get Reply From Tornax", inline=True)
