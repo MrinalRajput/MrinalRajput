@@ -188,9 +188,9 @@ async def avatar(ctx, owner: Optional[discord.Member]=None):
 @bot.command()
 async def reaction(ctx, emoji):
     if emoji is None:
-        ctx.send("Please Specify the Emoji")
+        await ctx.send("Please Specify the Emoji")
     else: 
-        ctx.send(f"+{emoji}")
+        await ctx.send(f"+{emoji}")
 
 @bot.command()
 async def gethelp(ctx):
