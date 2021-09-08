@@ -139,7 +139,7 @@ class Giveaway():
             GiveawayActive = True
             StopTime = endtime
             GiveawayChannel = Channel
-            await ctx.send(f":loudspeaker: Giveaway has been Started by {ctx.author.mention} and Will End After {endtime} Minutes :partying_face:")
+            await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After {int(endtime)} Minutes :partying_face:")
         else:
             await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
 
@@ -164,7 +164,7 @@ class Giveaway():
         await ctx.send(Participants)
 
     @tasks.loop(seconds=StopTime)
-    async def closetime(ctx):
+    async def closetime():
         global GiveawayActive, Participants, StopTime, GiveawayChannel
         if GiveawayActive == True:
             winner = random.choice(Participants)
@@ -176,6 +176,7 @@ class Giveaway():
             StopTime = 100
             GiveawayChannel = None
 
+    closetime.start()
 
     @bot.command()
     @commands.has_role("Giveaway Handler")
