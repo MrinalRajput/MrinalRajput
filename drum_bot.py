@@ -118,6 +118,34 @@ async def leaveserver(ctx):
         await ctx.guild.leave()
         # await ctx.send(f"{ctx.author.mention} Sorry you don't have Access to use this Command")
 
+class Giveaway():
+    global GiveawayActive
+    GiveawayActive = False
+
+    @bot.command()
+    @commands.has_role("GiveawayHandler")
+    async def gstart(ctx, endtime:int):
+        global GiveawayActive
+        if GiveawayActive == False:
+            GiveawayActive = True
+            await ctx.send(f"Giveaway has been Started by {ctx.author.mention} and Will Stop at {endtime}")
+        else:
+            await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
+
+    @bot.command()
+    async def gparticipate(ctx):
+        pass
+
+    @bot.command()
+    @commands.has_role("GiveawayHandler")
+    async def gstop(ctx):
+        global GiveawayActive
+        if GiveawayActive == True:
+            GiveawayActive = False
+            await ctx.send(f"Giveaway has been Stopped by {ctx.author.mention}")
+        else:
+            await ctx.send(":exclamation: There is No Giveaway Active in this Server")
+
 @bot.command()
 async def react(ctx, chat:Optional[discord.Message], emoji):
     message = chat
