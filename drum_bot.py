@@ -122,8 +122,10 @@ class Giveaway():
     global GiveawayActive
     global StopTime
     global Participants
+    global GiveawayChannel
     GiveawayActive = False
     StopTime = None
+    GiveawayChannel = None
 
     Participants = {
 
@@ -131,11 +133,12 @@ class Giveaway():
 
     @bot.command()
     @commands.has_role("Giveaway Handler")
-    async def gstart(ctx, endtime:int):
-        global GiveawayActive, StopTime
+    async def gstart(ctx, Channel, endtime:int):
+        global GiveawayActive, StopTime, GiveawayChannel
         if GiveawayActive == False:
             GiveawayActive = True
             StopTime = endtime
+            GiveawayChannel = Channel
             await ctx.send(f":loudspeaker: Giveaway has been Started by {ctx.author.mention} and Will Stop at {endtime} :partying_face:")
         else:
             await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
@@ -155,8 +158,14 @@ class Giveaway():
             await ctx.send(":exclamation: There is No Giveaway Active in this Server")
     
     @bot.command()
+    @commands.has_role("Giveaway Handler")
     async def getpart(ctx):
         await ctx.send(Participants)
+
+    async def closetime(ctx):
+        currenttime = now.strftime("%H")
+        if currenttime == StopTime:
+            await GiveawayChannel.send("Giveaway has been Finished")  
 
     @bot.command()
     @commands.has_role("Giveaway Handler")
@@ -168,6 +177,8 @@ class Giveaway():
             await ctx.send(f"Giveaway has been Stopped by {ctx.author.mention}")
         else:
             await ctx.send(":exclamation: There is No Giveaway Active in this Server")
+
+    closetime.start()
 
 @bot.command()
 async def react(ctx, chat:Optional[discord.Message], emoji):
