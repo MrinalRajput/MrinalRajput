@@ -163,21 +163,22 @@ class Giveaway():
         print(StopTime,GiveawayChannel)
         await ctx.send(Participants)
 
-    @tasks.loop(minutes=StopTime)
-    async def closetime(ctx):
-        global GiveawayActive, Participants, StopTime, GiveawayChannel
-        if GiveawayActive == True:
-            now = datetime.now()
-            currenttime = now.strftime("%H")
-            if StopTime <= currenttime < StopTime+1:
-                winner = random.choice(Participants)
-                embed = discord.Embed(title=":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:",color=embedTheme)
-                embed.add_field(name="Winner of the Giveaway",value=f"{winner}\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
-                GiveawayActive = False
-                await GiveawayChannel.send(embed=embed)
-                Participants.clear()
-                StopTime = None
-                GiveawayChannel = None
+    if GiveawayActive == True:
+        @tasks.loop(minutes=StopTime)
+        async def closetime(ctx):
+            global GiveawayActive, Participants, StopTime, GiveawayChannel
+            if GiveawayActive == True:
+                now = datetime.now()
+                currenttime = now.strftime("%H")
+                if StopTime <= currenttime < StopTime+1:
+                    winner = random.choice(Participants)
+                    embed = discord.Embed(title=":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:",color=embedTheme)
+                    embed.add_field(name="Winner of the Giveaway",value=f"{winner}\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
+                    GiveawayActive = False
+                    await GiveawayChannel.send(embed=embed)
+                    Participants.clear()
+                    StopTime = None
+                    GiveawayChannel = None
 
 
     @bot.command()
