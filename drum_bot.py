@@ -154,7 +154,9 @@ class Giveaway():
         else:
             await ctx.send(":exclamation: There is No Giveaway Active in this Server")
     
-    print(Participants)
+    @bot.command()
+    async def getpart(ctx):
+        await ctx.send(Participants)
 
     @bot.command()
     @commands.has_role("Giveaway Handler")
