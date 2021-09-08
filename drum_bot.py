@@ -138,7 +138,7 @@ class Giveaway():
         if GiveawayActive == False:
             GiveawayActive = True
             StopTime = endtime
-            GiveawayChannel = Channel
+            GiveawayChannel = bot.get_channel(Channel)
             await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After {int(endtime)} Minutes :partying_face:")
         else:
             await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
