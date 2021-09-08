@@ -163,7 +163,7 @@ class Giveaway():
         print(StopTime,GiveawayChannel)
         await ctx.send(Participants)
 
-    @tasks.loop(minutes=StopTime)
+    @tasks.loop(seconds=StopTime)
     async def closetime(ctx):
         global GiveawayActive, Participants, StopTime, GiveawayChannel
         if GiveawayActive == True:
