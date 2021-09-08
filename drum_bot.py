@@ -147,7 +147,7 @@ class Giveaway():
             if ctx.author not in Participants:
                 code = random.randint(000000,999999)
                 Participants[ctx.author] = code
-                await ctx.author.send(f":partying_face: You have Successfully Participated in the Giveaway and Your Special Code for The Giveaway is {code}")
+                await ctx.author.send(f":partying_face: You have Successfully Participated in the Giveaway and Your Special Code for The Giveaway is `{code}`")
                 await ctx.send(f"{ctx.author.mention} We Accepted you Request, Please Check your Dm")
             else:
                 await ctx.send(f"{ctx.author.mention} You have Already Participated in the Giveaway, you cannot Participate again")
