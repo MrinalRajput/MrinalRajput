@@ -148,7 +148,7 @@ class Giveaway():
                 for removingChar in removingChars:
                     winnerName = winnerName.replace(removingChar,"")
                 winner = f"{winnerName} || {winnerCode}"
-                embed = discord.Embed(title=":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:",color=embedTheme)
+                embed = discord.Embed(title=":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||@everyone||",color=embedTheme)
                 embed.add_field(name="Winner of the Giveaway",value=f"{winner}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
                 await GiveawayChannel.send(embed=embed)
                 Participants.clear()
