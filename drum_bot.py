@@ -133,12 +133,12 @@ class Giveaway():
 
     @bot.command()
     @commands.has_role("Giveaway Handler")
-    async def gstart(ctx, Channel, endtime:float):
+    async def gstart(ctx, Channel:discord.TextChannel, endtime:float):
         global GiveawayActive, StopTime, GiveawayChannel
         if GiveawayActive == False:
             GiveawayActive = True
             StopTime = endtime
-            GiveawayChannel = bot.get_channel(Channel)
+            GiveawayChannel = Channel
             await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After {int(endtime)} Minutes :partying_face:")
         else:
             await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
