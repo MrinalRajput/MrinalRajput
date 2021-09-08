@@ -167,7 +167,7 @@ class Giveaway():
     async def closetime():
         global GiveawayActive, Participants, StopTime, GiveawayChannel
         if GiveawayActive == True:
-            winner = random.choice(Participants)
+            winner = random.choice(Participants.items())
             embed = discord.Embed(title=":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:",color=embedTheme)
             embed.add_field(name="Winner of the Giveaway",value=f"{winner}\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
             GiveawayActive = False
