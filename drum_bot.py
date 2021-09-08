@@ -160,6 +160,7 @@ class Giveaway():
     @bot.command()
     @commands.has_role("Giveaway Handler")
     async def getpart(ctx):
+        print(StopTime,GiveawayChannel)
         await ctx.send(Participants)
 
     @bot.event
@@ -168,10 +169,10 @@ class Giveaway():
         if GiveawayActive == True:
             now = datetime.now()
             currenttime = now.strftime("%H")
-            if currenttime == StopTime:
+            if StopTime <= currenttime < StopTime+1:
                 winner = random.choice(Participants)
                 embed = discord.Embed(title=":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:",color=embedTheme)
-                embed.add_field(name="Winner of the Giveaway",value="winner\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
+                embed.add_field(name="Winner of the Giveaway",value=f"{winner}\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
                 GiveawayActive = False
                 await GiveawayChannel.send(embed=embed)
                 Participants.clear()
