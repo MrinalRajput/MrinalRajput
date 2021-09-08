@@ -120,24 +120,31 @@ async def leaveserver(ctx):
 
 class Giveaway():
     global GiveawayActive
+    global StopTime
     GiveawayActive = False
+    StopTime = None
+
+    Participants = {
+
+    }
 
     @bot.command()
-    @commands.has_role("GiveawayHandler")
+    @commands.has_role("Giveaway Handler")
     async def gstart(ctx, endtime:int):
-        global GiveawayActive
+        global GiveawayActive, StopTime
         if GiveawayActive == False:
             GiveawayActive = True
+            StopTime = endtime
             await ctx.send(f"Giveaway has been Started by {ctx.author.mention} and Will Stop at {endtime}")
         else:
             await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
 
     @bot.command()
     async def gparticipate(ctx):
-        pass
+        
 
     @bot.command()
-    @commands.has_role("GiveawayHandler")
+    @commands.has_role("Giveaway Handler")
     async def gstop(ctx):
         global GiveawayActive
         if GiveawayActive == True:
