@@ -121,6 +121,7 @@ async def leaveserver(ctx):
 class Giveaway():
     global GiveawayActive
     global StopTime
+    global Participants
     GiveawayActive = False
     StopTime = None
 
@@ -135,13 +136,22 @@ class Giveaway():
         if GiveawayActive == False:
             GiveawayActive = True
             StopTime = endtime
-            await ctx.send(f"Giveaway has been Started by {ctx.author.mention} and Will Stop at {endtime}")
+            await ctx.send(f":loudspeaker: Giveaway has been Started by {ctx.author.mention} and Will Stop at {endtime} :partying_face:")
         else:
             await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
 
     @bot.command()
     async def gparticipate(ctx):
-        
+        global Participants
+
+        if ctx.author not in Participants:
+            code = random.randint(000000,999999)
+            Participants[ctx.author] = code
+            await ctx.author.send(f":partying_face: You have Successfully Participated in the Giveaway and Your Special Code for The Giveaway is {code}")
+            await ctx.send(f"{ctx.author.mention} We Accepted you Request, Please Check your Dm")
+            print(Participants)
+        else:
+            await ctx.send(f"{ctx.author.mention} You have Already Participated in the Giveaway, you cannot Participate again")
 
     @bot.command()
     @commands.has_role("Giveaway Handler")
