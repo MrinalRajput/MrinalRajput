@@ -9,7 +9,7 @@ from discord.ext.commands.errors import MessageNotFound
 
 bot = commands.Bot(command_prefix = ">")
 
-restricted_words = ["gooh","kutta","kutte","harami","skyra","wtf","frick","fuck","fuk","tatti","baap"]
+restricted_words = ["gooh","kutta","kutte","harami","skyra","wtf","frick","fuck","fuk","tatti","baap","stfu"]
 
 TOKEN = "ODMyODk3NjAyNzY4MDc2ODE2.YHqeVg.yfzVgB8hHizDFH7hSMTORIv5weg"
 
@@ -123,9 +123,6 @@ async def react(ctx, chat:Optional[discord.Message], emoji):
     if chat is None:
         await ctx.message.delete()
         chat = ctx.channel.last_message
-    if emoji is None:
-        await ctx.send(f":exclamation: {ctx.author.mention} Please Specify the Emoji which you want to React")  
-    else:
         message = chat
         await message.add_reaction(emoji)
 
