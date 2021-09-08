@@ -120,11 +120,8 @@ async def leaveserver(ctx):
 
 @bot.command()
 async def react(ctx, chat:Optional[discord.Message], emoji):
-    if chat is None:
-        await ctx.message.delete()
-        chat = ctx.channel.last_message
-        message = chat
-        await message.add_reaction(emoji)
+    message = chat
+    await message.add_reaction(emoji)
 
 @bot.command()
 async def solve(ctx, num1, operation, num2):
