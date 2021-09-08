@@ -151,7 +151,7 @@ class Giveaway():
                 code = random.randint(000000,999999)
                 Participants[ctx.author.name] = code
                 await ctx.author.send(f":partying_face: You have Successfully Participated in the Giveaway and Your Special Code for The Giveaway is `{code}`")
-                await ctx.send(f"{ctx.author.mention} We Accepted you Request, Please Check your Dm")
+                await ctx.send(f"{ctx.author.mention} We Accepted your Request, Please Check your Dm")
             else:
                 await ctx.send(f"{ctx.author.mention} You have Already Participated in the Giveaway, you cannot Participate again")
         else:
@@ -162,11 +162,22 @@ class Giveaway():
     async def getpart(ctx):
         await ctx.send(Participants)
 
+    @bot.event
     async def closetime(ctx):
-        now = datetime.now()
-        currenttime = now.strftime("%H")
-        if currenttime == StopTime:
-            await GiveawayChannel.send("Giveaway has been Finished")  
+        global GiveawayActive, Participants, StopTime, GiveawayChannel
+        if GiveawayActive == True:
+            now = datetime.now()
+            currenttime = now.strftime("%H")
+            if currenttime == StopTime:
+                winner = random.choice(Participants)
+                embed = discord.Embed(title=":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:",color=embedTheme)
+                embed.add_field(name="Winner of the Giveaway",value="winner\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
+                GiveawayActive = False
+                await GiveawayChannel.send(embed=embed)
+                Participants.clear()
+                StopTime = None
+                GiveawayChannel = None
+
 
     @bot.command()
     @commands.has_role("Giveaway Handler")
