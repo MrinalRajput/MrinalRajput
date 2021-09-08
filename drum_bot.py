@@ -133,7 +133,7 @@ class Giveaway():
 
     @bot.command()
     @commands.has_role("Giveaway Handler")
-    async def gstart(ctx, Channel, endtime:int):
+    async def gstart(ctx, Channel, endtime:float):
         global GiveawayActive, StopTime, GiveawayChannel
         if GiveawayActive == False:
             GiveawayActive = True
@@ -163,7 +163,7 @@ class Giveaway():
         print(StopTime,GiveawayChannel)
         await ctx.send(Participants)
 
-    @tasks.loop(minutes=float(StopTime))
+    @tasks.loop(minutes=StopTime)
     async def closetime(ctx):
         global GiveawayActive, Participants, StopTime, GiveawayChannel
         if GiveawayActive == True:
