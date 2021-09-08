@@ -163,6 +163,7 @@ class Giveaway():
         await ctx.send(Participants)
 
     async def closetime(ctx):
+        now = datetime.now()
         currenttime = now.strftime("%H")
         if currenttime == StopTime:
             await GiveawayChannel.send("Giveaway has been Finished")  
