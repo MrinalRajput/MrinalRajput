@@ -127,7 +127,7 @@ async def react(ctx, chat:Optional[discord.Message], emoji):
         await message.add_reaction(emoji)
 
 @bot.command()
-async def solve(ctx, num1:int, operation, num2:int):
+async def solve(ctx, num1, operation, num2):
     try:
         if "." in num1:
             num1 = float(num1)
