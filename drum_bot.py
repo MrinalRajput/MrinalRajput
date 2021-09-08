@@ -161,9 +161,10 @@ class Giveaway():
     @bot.command()
     @commands.has_role("Giveaway Handler")
     async def gstop(ctx):
-        global GiveawayActive
+        global GiveawayActive, Participants
         if GiveawayActive == True:
             GiveawayActive = False
+            Participants.clear()
             await ctx.send(f"Giveaway has been Stopped by {ctx.author.mention}")
         else:
             await ctx.send(":exclamation: There is No Giveaway Active in this Server")
