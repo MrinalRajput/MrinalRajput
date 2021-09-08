@@ -167,7 +167,7 @@ class Giveaway():
     async def closetime():
         global GiveawayActive, Participants, StopTime, GiveawayChannel
         if GiveawayActive == True:
-            winner = random.choice(Participants.items())
+            winner = random.choice(Participants.values())
             embed = discord.Embed(title=":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:",color=embedTheme)
             embed.add_field(name="Winner of the Giveaway",value=f"{winner}\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
             GiveawayActive = False
@@ -181,9 +181,11 @@ class Giveaway():
     @bot.command()
     @commands.has_role("Giveaway Handler")
     async def gstop(ctx):
-        global GiveawayActive, Participants
+        global GiveawayActive, Participants, StopTime, GiveawayChannel
         if GiveawayActive == True:
             GiveawayActive = False
+            StopTime = 100
+            GiveawayChannel = None
             Participants.clear()
             await ctx.send(f"Giveaway has been Stopped by {ctx.author.mention}")
         else:
