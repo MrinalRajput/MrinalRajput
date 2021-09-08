@@ -1,5 +1,5 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from datetime import datetime
 import random
 from typing import Optional
@@ -139,7 +139,7 @@ class Giveaway():
             GiveawayActive = True
             StopTime = endtime
             GiveawayChannel = Channel
-            await ctx.send(f":loudspeaker: Giveaway has been Started by {ctx.author.mention} and Will Stop at {endtime} :partying_face:")
+            await ctx.send(f":loudspeaker: Giveaway has been Started by {ctx.author.mention} and Will End After {endtime} Minutes :partying_face:")
         else:
             await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
 
@@ -163,7 +163,7 @@ class Giveaway():
         print(StopTime,GiveawayChannel)
         await ctx.send(Participants)
 
-    @bot.event
+    @tasks.loop(minutes=StopTime)
     async def closetime(ctx):
         global GiveawayActive, Participants, StopTime, GiveawayChannel
         if GiveawayActive == True:
