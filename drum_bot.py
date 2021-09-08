@@ -144,11 +144,9 @@ class Giveaway():
                     Participants["No One"] = "No one Participated"
                 winnerCode = random.choice(list(Participants.values()))
                 winnerName = [k for k, v in Participants.items() if v == winnerCode]
-                removingChars = "'[]"
-                for removingChar in removingChars:
-                    winnerName = [s.replace(removingChar,"") for s in winnerName]
+                winnerName = [s.replace("'","") and s.replace("[","") and s.replace("]","") for s in winnerName]
                 winner = f"{winnerName} || {winnerCode}"
-                embed = discord.Embed(title=":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||@everyone||",color=embedTheme)
+                embed = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||",color=embedTheme)
                 embed.add_field(name="Winner of the Giveaway",value=f"{winner}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
                 await GiveawayChannel.send(embed=embed)
                 Participants.clear()
