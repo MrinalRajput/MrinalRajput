@@ -143,15 +143,18 @@ class Giveaway():
     @bot.command()
     async def gparticipate(ctx):
         global Participants
-
-        if ctx.author not in Participants:
-            code = random.randint(000000,999999)
-            Participants[ctx.author] = code
-            await ctx.author.send(f":partying_face: You have Successfully Participated in the Giveaway and Your Special Code for The Giveaway is {code}")
-            await ctx.send(f"{ctx.author.mention} We Accepted you Request, Please Check your Dm")
-            print(Participants)
+        if GiveawayActive == True:
+            if ctx.author not in Participants:
+                code = random.randint(000000,999999)
+                Participants[ctx.author] = code
+                await ctx.author.send(f":partying_face: You have Successfully Participated in the Giveaway and Your Special Code for The Giveaway is {code}")
+                await ctx.send(f"{ctx.author.mention} We Accepted you Request, Please Check your Dm")
+            else:
+                await ctx.send(f"{ctx.author.mention} You have Already Participated in the Giveaway, you cannot Participate again")
         else:
-            await ctx.send(f"{ctx.author.mention} You have Already Participated in the Giveaway, you cannot Participate again")
+            await ctx.send(":exclamation: There is No Giveaway Active in this Server")
+    
+    print(Participants)
 
     @bot.command()
     @commands.has_role("Giveaway Handler")
