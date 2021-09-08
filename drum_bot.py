@@ -157,15 +157,16 @@ class Giveaway():
     @bot.command()
     async def gparticipate(ctx):
         if GiveawayActive == True:
-            if ctx.author.name not in Participants:
-                code = random.randint(000000,999999)
-                if code in Participants:
+            if ctx.channel == GiveawayChannel:
+                if ctx.author.name not in Participants:
                     code = random.randint(000000,999999)
-                Participants[ctx.author.name] = code
-                await ctx.author.send(f":partying_face: You have Successfully Participated in the Giveaway and Your Special Code for The Giveaway is `{code}`")
-                await ctx.send(f"{ctx.author.mention} We Accepted your Request, Please Check your Dm")
-            else:
-                await ctx.send(f"{ctx.author.mention} You have Already Participated in the Giveaway, you cannot Participate again")
+                    if code in Participants:
+                        code = random.randint(000000,999999)
+                    Participants[ctx.author.name] = code
+                    await ctx.author.send(f":partying_face: You have Successfully Participated in the Giveaway and Your Special Code for The Giveaway is `{code}`")
+                    await ctx.send(f"{ctx.author.mention} We Accepted your Request, Please Check your Dm")
+                else:
+                    await ctx.send(f"{ctx.author.mention} You have Already Participated in the Giveaway, you cannot Participate again")
         else:
             await ctx.send(":exclamation: There is No Giveaway Active in this Server")
     
