@@ -142,9 +142,11 @@ class Giveaway():
             if GiveawayActive == True:
                 if len(Participants) == 0:
                     Participants["No One"] = "No one Participated"
-                winner = random.choice(list(Participants.values()))
+                winnerCode = random.choice(list(Participants.values()))
+                winnerName = [k for k, v in Participants.items() if v == winnerCode]
+                winner = f"{winnerName} || {winnerCode}"
                 embed = discord.Embed(title=":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:",color=embedTheme)
-                embed.add_field(name="Winner of the Giveaway",value=f"{winner}\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
+                embed.add_field(name="Winner of the Giveaway",value=f"{winner}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
                 await GiveawayChannel.send(embed=embed)
                 Participants.clear()
                 GiveawayActive = False
