@@ -128,7 +128,7 @@ async def react(ctx, chat:Optional[discord.Message], emoji):
 
 @bot.command()
 async def solve(ctx, num1:int, operation, num2:int):
-    try:
+    if num1 is not None and operation is not None and num2 is not None:
         if operation == "+":
             await ctx.send(f"{ctx.author.mention}  {num1} + {num2} = {num1 + num2}")
         elif operation == "-":
@@ -137,7 +137,7 @@ async def solve(ctx, num1:int, operation, num2:int):
             await ctx.send(f"{ctx.author.mention}  {num1} x {num2} = {num1 * num2}")
         elif operation == "/" or operation == "÷":
             await ctx.send(f"{ctx.author.mention}  {num1} ÷ {num2} = {num1 / num2}")
-    except:
+    elif num1 is None or operation is None or num2 is None:
         embed = discord.Embed(title="Command : >solve", description=f"Usage : >solve [Number1] [Operation: +,-,*,/] [Number2]",color=embedTheme)
         await ctx.send(embed=embed)
 
