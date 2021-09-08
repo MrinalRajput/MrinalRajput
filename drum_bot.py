@@ -127,8 +127,16 @@ async def react(ctx, chat:Optional[discord.Message], emoji):
         await message.add_reaction(emoji)
 
 @bot.command()
-async def solve(ctx, num1, operation, num2):
+async def solve(ctx, num1:int, operation, num2:int):
     try:
+        if "." in num1:
+            num1 = float(num1)
+        else:
+            num1 = int(num1)
+        if "." in num2:
+            num2 = float(num2)
+        else:
+            num2 = int(num2)
         if operation == "+":
             await ctx.send(f"{ctx.author.mention}  {num1} + {num2} = {num1 + num2}")
         elif operation == "-":
