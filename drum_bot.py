@@ -143,7 +143,7 @@ class Giveaway():
                 if len(Participants) == 0:
                     Participants["No One"] = "No one Participated"
                 winnerCode = random.choice(list(Participants.values()))
-                winnerName = [k for k, v in Participants.items() if v == winnerCode]
+                winnerName = str([k for k, v in Participants.items() if v == winnerCode])
                 removingChars = "'[]"
                 for removingChar in removingChars:
                     winnerName = str(winnerName.replace)(removingChar,"")
