@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands, tasks
 from datetime import datetime
+import asyncio
 import random
 from typing import Optional
 
@@ -49,7 +50,7 @@ async def dmuser(ctx, member: discord.User, *, chat):
         if ctx.author.id == 758941956600102943:
             await member.send(chat)
         else:
-            await ctx.send(f":exclamation: Sorry {ctx.author.mention}, You Don't have Acess to use this Command")
+            await ctx.send(f":exclamation: Sorry {ctx.author.mention}, You Don't have Access to use this Command")
 
 @bot.listen()
 async def on_message(message):
@@ -120,11 +121,9 @@ async def leaveserver(ctx):
 
 class Giveaway():
     global GiveawayActive
-    global StopTime
-    global Participants
     global GiveawayChannel
+    global Participants
     GiveawayActive = False
-    StopTime = 100
     GiveawayChannel = None
 
     Participants = {
@@ -133,19 +132,28 @@ class Giveaway():
 
     @bot.command()
     @commands.has_role("Giveaway Handler")
-    async def gstart(ctx, Channel:discord.TextChannel, endtime:float):
-        global GiveawayActive, StopTime, GiveawayChannel
+    async def gstart(ctx, Channel:discord.TextChannel, endtime:int):
+        global GiveawayActive, GiveawayChannel
         if GiveawayActive == False:
             GiveawayActive = True
-            StopTime = endtime
             GiveawayChannel = Channel
-            await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After {int(endtime)} Minutes :partying_face:")
+            await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After {endtime} Minutes :partying_face:")
+            await asyncio.sleep(int(endtime))
+            if GiveawayActive == True:
+                if len(Participants) == 0:
+                    Participants["No One"] = "No one Participated"
+                winner = random.choice(list(Participants.values()))
+                embed = discord.Embed(title=":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:",color=embedTheme)
+                embed.add_field(name="Winner of the Giveaway",value=f"{winner}\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
+                await GiveawayChannel.send(embed=embed)
+                Participants.clear()
+                GiveawayActive = False
+                GiveawayChannel = None
         else:
             await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
 
     @bot.command()
     async def gparticipate(ctx):
-        global Participants
         if GiveawayActive == True:
             if ctx.author.name not in Participants:
                 code = random.randint(000000,999999)
@@ -160,31 +168,14 @@ class Giveaway():
     @bot.command()
     @commands.has_role("Giveaway Handler")
     async def getpart(ctx):
-        print(StopTime,GiveawayChannel)
-        await ctx.send(Participants)
-
-    @tasks.loop(seconds=StopTime)
-    async def closetime():
-        global GiveawayActive, Participants, StopTime, GiveawayChannel
-        if GiveawayActive == True:
-            winner = random.choice(Participants.values())
-            embed = discord.Embed(title=":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:",color=embedTheme)
-            embed.add_field(name="Winner of the Giveaway",value=f"{winner}\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
-            GiveawayActive = False
-            await GiveawayChannel.send(embed=embed)
-            Participants.clear()
-            StopTime = 100
-            GiveawayChannel = None
-
-    closetime.start()
+        await ctx.send(Participants,GiveawayChannel)
 
     @bot.command()
     @commands.has_role("Giveaway Handler")
     async def gstop(ctx):
-        global GiveawayActive, Participants, StopTime, GiveawayChannel
+        global GiveawayActive, Participants, GiveawayChannel
         if GiveawayActive == True:
             GiveawayActive = False
-            StopTime = 100
             GiveawayChannel = None
             Participants.clear()
             await ctx.send(f"Giveaway has been Stopped by {ctx.author.mention}")
