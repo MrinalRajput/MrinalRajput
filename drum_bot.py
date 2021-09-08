@@ -178,8 +178,6 @@ class Giveaway():
         else:
             await ctx.send(":exclamation: There is No Giveaway Active in this Server")
 
-    closetime.start()
-
 @bot.command()
 async def react(ctx, chat:Optional[discord.Message], emoji):
     message = chat
