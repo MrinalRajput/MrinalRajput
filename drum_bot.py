@@ -144,7 +144,7 @@ class Giveaway():
     async def gparticipate(ctx):
         global Participants
         if GiveawayActive == True:
-            if ctx.author not in Participants:
+            if ctx.author.name not in Participants:
                 code = random.randint(000000,999999)
                 Participants[ctx.author.name] = code
                 await ctx.author.send(f":partying_face: You have Successfully Participated in the Giveaway and Your Special Code for The Giveaway is `{code}`")
