@@ -126,8 +126,7 @@ class Giveaway():
     GiveawayChannel = None
 
     Participants = {
-        "already" : 243434,
-        "already2" : 232323,
+
     }
 
     @bot.command()
@@ -138,24 +137,11 @@ class Giveaway():
             GiveawayActive = True
             GiveawayChannel = Channel
             # await asyncio.sleep(int(endtime))
-            ParticipantsName = list(Participants.keys())
-            ParticipantsName = ','.join([str(elem) for elem in ParticipantsName])
-            
-            embedStart = discord.Embed(title=f":loudspeaker: Giveaway has been Started :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||",color=embedTheme)
-            embedStart.add_field(name="Winner of the Giveaway",value=f"\t ?",inline=True)
-            embedStart.add_field(name="Time Left",value=f"{endtime}",inline=True)
-            embedStart.add_field(name="Participants",value=f"{ParticipantsName} \n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline= False)
-            StartAnnounce = await ctx.send(embed=embedStart)
-            
-            embedStart1 = discord.Embed(title=f":loudspeaker: Giveaway has been Started :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||",color=embedTheme)
-            embedStart1.add_field(name="Winner of the Giveaway",value=f"\t ?",inline=True)
-            embedStart1.add_field(name="Time Left",value=f"{endtime}",inline=True)
-            embedStart1.add_field(name="Participants",value=f"{ParticipantsName} \n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline= False)
-
+            StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After {endtime} Seconds :partying_face:")
             while -1 < endtime < endtime+1:
                 if GiveawayActive ==True:
                     await asyncio.sleep(0.7)
-                    await StartAnnounce.edit(embed=embedStart1)
+                    await StartAnnounce.edit(content=f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After {endtime} Seconds :partying_face:")
                     endtime -= 1
 
             if GiveawayActive == True:
@@ -166,9 +152,9 @@ class Giveaway():
                 print(CodeOwner)
                 winnerName = str(CodeOwner[0])
                 winner = f"{winnerName} || {winnerCode}"
-                embedStop = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||",color=embedTheme)
-                embedStop.add_field(name="Winner of the Giveaway",value=f"{winner}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
-                await GiveawayChannel.send(embed=embedStop)
+                embed = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||",color=embedTheme)
+                embed.add_field(name="Winner of the Giveaway",value=f"{winner}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
+                await GiveawayChannel.send(embed=embed)
                 Participants.clear()
                 GiveawayActive = False
                 GiveawayChannel = None
