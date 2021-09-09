@@ -265,7 +265,9 @@ async def timerstart(ctx, seconds:int):
         started = await ctx.send(f"Timer has Started : {seconds}")
         while -1 < seconds < seconds+1:
             if timer == True:
+                await asyncio.sleep(0.7)
                 await started.edit(content=f"Timer has Started : {seconds}")
+                seconds-=1
             else:
                 break
     else:
