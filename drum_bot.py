@@ -140,7 +140,7 @@ class Giveaway():
             StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After {endtime} Seconds :partying_face:")
             while -1 < endtime < endtime+1:
                 if GiveawayActive ==True:
-                    await asyncio.sleep(0.6)
+                    await asyncio.sleep(0.7)
                     await StartAnnounce.edit(content=f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After {endtime} Seconds :partying_face:")
                     endtime -= 1
 
