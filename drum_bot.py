@@ -188,7 +188,11 @@ class Giveaway():
                         code = random.randint(000000,999999)
                     Participants[ctx.author.name] = code
                     await ctx.author.send(f":partying_face: You have Successfully Participated in the Giveaway and Your Special Code for The Giveaway is `{code}`")
-                    await ctx.send(f"{ctx.author.mention} We Accepted your Request, Please Check your Dm")
+                    botSays = await ctx.send(f"{ctx.author.mention} We Accepted your Request, Please Check your Dm")
+                    await asyncio.sleep(4)
+                    await ctx.delete()
+                    await asyncio.sleep(1)
+                    await botSays.delete()
                 else:
                     await ctx.send(f"{ctx.author.mention} You have Already Participated in the Giveaway, you cannot Participate again")
         else:
