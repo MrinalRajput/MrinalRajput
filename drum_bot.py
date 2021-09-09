@@ -136,8 +136,11 @@ class Giveaway():
         if GiveawayActive == False:
             GiveawayActive = True
             GiveawayChannel = Channel
-            await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After {endtime} Seconds :partying_face:")
-            await asyncio.sleep(int(endtime))
+            # await asyncio.sleep(int(endtime))
+            while -1 < endtime < endtime+1:
+                await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After {endtime} Seconds :partying_face:")
+                endtime -= 1
+
             if GiveawayActive == True:
                 if len(Participants) == 0:
                     Participants["No One"] = "No one Participated"
