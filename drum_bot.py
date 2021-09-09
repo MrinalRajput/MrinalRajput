@@ -137,11 +137,15 @@ class Giveaway():
             GiveawayActive = True
             GiveawayChannel = Channel
             # await asyncio.sleep(int(endtime))
-            StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After {endtime} Seconds :partying_face:")
+            ParticipantsName = list(Participants.key())
+            embedStart = discord.Embed(title=f":loudspeaker: Giveaway has been Started :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||",color=embedTheme)
+            embedStart.add_field(name="Winner of the Giveaway",value=f"    ? \n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
+            embedStart.add_field(name="Participants",value=f"{ParticipantsName}",inline= False)
+            StartAnnounce = await ctx.send(embed=embedStart)
             while -1 < endtime < endtime+1:
                 if GiveawayActive ==True:
                     await asyncio.sleep(0.7)
-                    await StartAnnounce.edit(content=f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After {endtime} Seconds :partying_face:")
+                    await StartAnnounce.edit(embed=embedStart)
                     endtime -= 1
 
             if GiveawayActive == True:
@@ -152,9 +156,9 @@ class Giveaway():
                 print(CodeOwner)
                 winnerName = str(CodeOwner[0])
                 winner = f"{winnerName} || {winnerCode}"
-                embed = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||",color=embedTheme)
-                embed.add_field(name="Winner of the Giveaway",value=f"{winner}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
-                await GiveawayChannel.send(embed=embed)
+                embedStop = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||",color=embedTheme)
+                embedStop.add_field(name="Winner of the Giveaway",value=f"{winner}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
+                await GiveawayChannel.send(embed=embedStop)
                 Participants.clear()
                 GiveawayActive = False
                 GiveawayChannel = None
