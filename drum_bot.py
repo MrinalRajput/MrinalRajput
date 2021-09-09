@@ -137,7 +137,7 @@ class Giveaway():
             GiveawayActive = True
             GiveawayChannel = Channel
             # await asyncio.sleep(int(endtime))
-            ParticipantsName = list(Participants.key())
+            ParticipantsName = list(Participants.keys())
             embedStart = discord.Embed(title=f":loudspeaker: Giveaway has been Started :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||",color=embedTheme)
             embedStart.add_field(name="Winner of the Giveaway",value=f"    ? \n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
             embedStart.add_field(name="Participants",value=f"{ParticipantsName}",inline= False)
