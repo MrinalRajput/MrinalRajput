@@ -131,7 +131,7 @@ class Giveaway():
 
     @bot.command()
     @commands.has_role("Giveaway Handler")
-    async def gstart(ctx, Channel:discord.TextChannel, endtime:int):
+    async def gstart(ctx, Channel:discord.TextChannel, prize:str, endtime:int):
         global GiveawayActive, GiveawayChannel
         if GiveawayActive == False:
             GiveawayActive = True
@@ -153,7 +153,9 @@ class Giveaway():
                 winnerName = str(CodeOwner[0])
                 winner = f"{winnerName} || {winnerCode}"
                 embed = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||",color=embedTheme)
-                embed.add_field(name="Winner of the Giveaway",value=f"{winner}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
+                embed.add_field(name="Winner of the Giveaway",value=f"{winner}",inline=True)
+                embed.add_field(name="Prize",value=f"{prize}",inline=True)
+                embed.add_field(name="Participants",value=f"{Participants.keys()}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
                 await GiveawayChannel.send(embed=embed)
                 Participants.clear()
                 GiveawayActive = False
