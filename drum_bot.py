@@ -122,12 +122,12 @@ async def leaveserver(ctx):
 class Giveaway():
     global GiveawayActive
     global GiveawayChannel
-    global List
+    global StartAnnounce
     global Participants
     GiveawayActive = False
     GiveawayChannel = None
 
-    List = ""
+    StartAnnounce = ""
 
     Participants = {
 
@@ -136,7 +136,7 @@ class Giveaway():
     @bot.command()
     @commands.has_role("Giveaway Handler")
     async def gstart(ctx, Channel:discord.TextChannel, prize:str, endtime:int):
-        global GiveawayActive, GiveawayChannel, List
+        global GiveawayActive, GiveawayChannel, StartAnnounce
         if GiveawayActive == False:
             GiveawayActive = True
             GiveawayChannel = Channel
@@ -147,8 +147,7 @@ class Giveaway():
             members = members.replace("[","") 
             members = members.replace("]","")
             # await asyncio.sleep(int(endtime))
-            StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:")
-            List = await ctx.send(f":busts_in_silhouette: Participants - {members}")
+            StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:\n :busts_in_silhouette: Participants - {members}")
 
             while -1 < endtime < endtime+1:
                 if GiveawayActive ==True:
@@ -179,7 +178,7 @@ class Giveaway():
 
     @bot.command()
     async def gparticipate(ctx):
-        global List
+        global StartAnnounce
         if GiveawayActive == True:
             if ctx.channel == GiveawayChannel:
                 if ctx.author.name not in Participants:
@@ -197,9 +196,9 @@ class Giveaway():
 
                     await ctx.author.send(f":partying_face: You have Successfully Participated in the Giveaway and Your Special Code for The Giveaway is `{code}`")
                     botSays = await ctx.send(f"{ctx.author.mention} We Accepted your Request, Please Check your Dm")
-                    await List.edit(content=f":busts_in_silhouette: Participants - {members}")
+                    await StartAnnounce.edit(content=f":busts_in_silhouette: Participants - {members}")
                     await asyncio.sleep(4)
-                    await ctx.delete()
+                    await ctx.message.delete()
                     await asyncio.sleep(1)
                     await botSays.delete()
                 else:
