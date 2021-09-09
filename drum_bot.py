@@ -169,7 +169,7 @@ class Giveaway():
                 embed = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||\n",color=embedTheme)
                 embed.add_field(name="Winner of the Giveaway",value=f"{winner}",inline=True)
                 embed.add_field(name="Prize",value=f"{prize}",inline=True)
-                embed.add_field(name="Participants",value=f"{members}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
+                embed.add_field(name="Participants",value=f"{MembersList}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
 
                 await GiveawayChannel.send(embed=embed)
                 Participants.clear()
