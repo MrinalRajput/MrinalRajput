@@ -137,9 +137,11 @@ class Giveaway():
             GiveawayActive = True
             GiveawayChannel = Channel
             # await asyncio.sleep(int(endtime))
+            StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After {endtime} Seconds :partying_face:")
             while -1 < endtime < endtime+1:
-                await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After {endtime} Seconds :partying_face:")
-                endtime -= 1
+                if GiveawayActive ==True:
+                    await bot.edit_message(StartAnnounce, f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After {endtime} Seconds :partying_face:")
+                    endtime -= 1
 
             if GiveawayActive == True:
                 if len(Participants) == 0:
