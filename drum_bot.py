@@ -123,11 +123,13 @@ class Giveaway():
     global GiveawayActive
     global GiveawayChannel
     global StartAnnounce
+    global MembersList
     global Participants
     GiveawayActive = False
     GiveawayChannel = None
 
     StartAnnounce = ""
+    MembersList = ""
 
     Participants = {
 
@@ -136,7 +138,7 @@ class Giveaway():
     @bot.command()
     @commands.has_role("Giveaway Handler")
     async def gstart(ctx, Channel:discord.TextChannel, prize:str, endtime:int):
-        global GiveawayActive, GiveawayChannel, StartAnnounce
+        global GiveawayActive, GiveawayChannel, StartAnnounce, MembersList
         if GiveawayActive == False:
             GiveawayActive = True
             GiveawayChannel = Channel
@@ -147,12 +149,12 @@ class Giveaway():
             members = members.replace("[","") 
             members = members.replace("]","")
             # await asyncio.sleep(int(endtime))
-            StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:\n :busts_in_silhouette: Participants - {members}")
+            StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:\n :busts_in_silhouette: Participants - {MembersList}")
 
             while -1 < endtime < endtime+1:
                 if GiveawayActive ==True:
                     await asyncio.sleep(0.7)
-                    await StartAnnounce.edit(content=f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:\n :busts_in_silhouette: Participants - {members}")
+                    await StartAnnounce.edit(content=f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:\n :busts_in_silhouette: Participants - {MembersList}")
                     endtime -= 1
 
             if GiveawayActive == True:
@@ -178,7 +180,7 @@ class Giveaway():
 
     @bot.command()
     async def gparticipate(ctx):
-        global StartAnnounce
+        global StartAnnounce, MembersList
         if GiveawayActive == True:
             if ctx.channel == GiveawayChannel:
                 if ctx.author.name not in Participants:
@@ -193,10 +195,11 @@ class Giveaway():
                     members = members.replace("'","") 
                     members = members.replace("[","") 
                     members = members.replace("]","")
+                    MembersList = members
 
                     await ctx.author.send(f":partying_face: You have Successfully Participated in the Giveaway and Your Special Code for The Giveaway is `{code}`")
                     await ctx.send(f"{ctx.author.mention} We Accepted your Request, Please Check your Dm", delete_after=15)
-                    await StartAnnounce.edit(content=f":busts_in_silhouette: Participants - {members}")
+                    # await StartAnnounce.edit(content=f":busts_in_silhouette: Participants - {members}")
                 else:
                     await ctx.send(f"{ctx.author.mention} You have Already Participated in the Giveaway, you cannot Participate again", delete_after=15)
         else:
