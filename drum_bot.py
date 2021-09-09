@@ -73,7 +73,7 @@ async def on_message(message):
 @bot.listen()
 async def on_message(message):
     global SmpStatus
-    if discord.Message.guild.id == LegendServer:
+    if message.guild.id == 869439705714933780:
         Smpchannel = bot.get_channel(877777208108789770)
         if message.channel == Smpchannel:
             if message.author.id == 832897602768076816:
