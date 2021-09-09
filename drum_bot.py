@@ -146,9 +146,16 @@ class Giveaway():
             StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:\n Participants - {members}")
             while -1 < endtime < endtime+1:
                 if GiveawayActive ==True:
-                    await asyncio.sleep(0.7)
+                    await asyncio.sleep(0.5)
                     await StartAnnounce.edit(content=f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:\n Participants - {members}")
                     endtime -= 1
+                    listtostr = list(Participants.keys())
+                    members = str(listtostr)
+
+                    members = members.replace("'","") 
+                    members = members.replace("[","") 
+                    members = members.replace("]","")
+                    
 
             if GiveawayActive == True:
                 if len(Participants) == 0:
