@@ -268,7 +268,7 @@ async def timerstart(ctx, seconds:int, *, reason: Optional[str]=None):
                 await asyncio.sleep(0.7)
                 await started.edit(content=f"Timer has Started : `{seconds}`"if reason is None else f"{reason} `{seconds}`")
                 seconds-=1
-        await started.edit(context=f"Timer has Stopped {ctx.author.mention}")
+        started.edit(context=f"Timer has Stopped {ctx.author.mention}")
         if timer == True:
             timer = False
     else:
