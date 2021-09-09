@@ -258,7 +258,7 @@ async def solve(ctx, num1, operation, num2):
 timer = False
 
 @bot.command()
-async def timerstart(ctx, seconds:int, reason: Optional[str]=None):
+async def timerstart(ctx, seconds:int, *, reason: Optional[str]=None):
     global timer
     if timer == False:
         timer = True
