@@ -136,12 +136,18 @@ class Giveaway():
         if GiveawayActive == False:
             GiveawayActive = True
             GiveawayChannel = Channel
+            listtostr = list(Participants.keys())
+            members = str(listtostr)
+
+            members = members.replace("'","") 
+            members = members.replace("[","") 
+            members = members.replace("]","")
             # await asyncio.sleep(int(endtime))
-            StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:")
+            StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:\n Participants - {members}")
             while -1 < endtime < endtime+1:
                 if GiveawayActive ==True:
                     await asyncio.sleep(0.7)
-                    await StartAnnounce.edit(content=f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:")
+                    await StartAnnounce.edit(content=f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:\n Participants - {members}")
                     endtime -= 1
 
             if GiveawayActive == True:
@@ -152,12 +158,6 @@ class Giveaway():
                 print(CodeOwner)
                 winnerName = str(CodeOwner[0])
                 winner = f"{winnerName} || {winnerCode}"
-                listtostr = list(Participants.keys())
-                members = str(listtostr)
-
-                members = members.replace("'","") 
-                members = members.replace("[","") 
-                members = members.replace("]","")
 
                 embed = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||\n",color=embedTheme)
                 embed.add_field(name="Winner of the Giveaway",value=f"{winner}",inline=True)
