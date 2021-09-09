@@ -173,6 +173,7 @@ class Giveaway():
 
                 await GiveawayChannel.send(embed=embed)
                 Participants.clear()
+                MembersList = ""
                 GiveawayActive = False
                 GiveawayChannel = None
         else:
