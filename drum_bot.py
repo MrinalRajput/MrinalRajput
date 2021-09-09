@@ -177,9 +177,9 @@ class Giveaway():
     
     @bot.command()
     @commands.has_role("Giveaway Handler")
-    async def getpart(ctx):
+    async def gstatus(ctx):
         if GiveawayActive:
-            await ctx.send(f"Number of Particpants :- {Participants}\n Giveaway Channel :- {GiveawayChannel}")
+            await ctx.send(f"A Giveaway is Currently Active in this Server \n Number of Participants :- {Participants}\n Giveaway Channel :- {GiveawayChannel}")
         else:
             await ctx.send(":exclamation: There is No Giveaway Active in this Server")
 
