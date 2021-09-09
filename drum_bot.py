@@ -152,7 +152,7 @@ class Giveaway():
             while -1 < endtime < endtime+1:
                 if GiveawayActive ==True:
                     await asyncio.sleep(0.7)
-                    await StartAnnounce.edit(content=f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:")
+                    await StartAnnounce.edit(content=f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:\n :busts_in_silhouette: Participants - {members}")
                     endtime -= 1
 
             if GiveawayActive == True:
@@ -198,7 +198,7 @@ class Giveaway():
                     await ctx.send(f"{ctx.author.mention} We Accepted your Request, Please Check your Dm", delete_after=15)
                     await StartAnnounce.edit(content=f":busts_in_silhouette: Participants - {members}")
                 else:
-                    await ctx.send(f"{ctx.author.mention} You have Already Participated in the Giveaway, you cannot Participate again")
+                    await ctx.send(f"{ctx.author.mention} You have Already Participated in the Giveaway, you cannot Participate again", delete_after=15)
         else:
             await ctx.send(":exclamation: There is No Giveaway Active in this Server")
     
