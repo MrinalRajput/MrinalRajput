@@ -54,15 +54,14 @@ async def dmuser(ctx, member: discord.User, *, chat):
 
 @bot.listen()
 async def on_message(message):
-    if message.guild.id == LegendServer:
-        if message.channel == message.author.dm_channel:
-            channelid = 874904257265008670
-            modmail = bot.get_channel(channelid)
-            embed = discord.Embed(title=f"{message.author}", color=embedTheme)
-            embed.add_field(name="Message\n",value=f"{message.content}\n\n--------------------------",inline=False)
-            embed.set_footer(icon_url=message.author.avatar_url,text=f"ID -> {message.author.id}")
-            await modmail.send(embed=embed)
-            # print(f"{message.author} -> {message.content}")
+    if message.channel == message.author.dm_channel:
+        channelid = 874904257265008670
+        modmail = bot.get_channel(channelid)
+        embed = discord.Embed(title=f"{message.author}", color=embedTheme)
+        embed.add_field(name="Message\n",value=f"{message.content}\n\n--------------------------",inline=False)
+        embed.set_footer(icon_url=message.author.avatar_url,text=f"ID -> {message.author.id}")
+        await modmail.send(embed=embed)
+        # print(f"{message.author} -> {message.content}")
 
 @bot.listen()
 async def on_message(message):
@@ -173,7 +172,10 @@ class Giveaway():
     @bot.command()
     @commands.has_role("Giveaway Handler")
     async def getpart(ctx):
-        await ctx.send(f"Number of Particpants :- {Participants}\n Giveaway Channel :- {GiveawayChannel}")
+        if GiveawayActive:
+            await ctx.send(f"Number of Particpants :- {Participants}\n Giveaway Channel :- {GiveawayChannel}")
+        else:
+            await ctx.send(":exclamation: There is No Giveaway Active in this Server")
 
     @bot.command()
     @commands.has_role("Giveaway Handler")
