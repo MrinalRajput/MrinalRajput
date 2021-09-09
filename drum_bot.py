@@ -140,13 +140,14 @@ class Giveaway():
             # await asyncio.sleep(int(endtime))
             ParticipantsName = list(Participants.keys())
             embedStart = discord.Embed(title=f":loudspeaker: Giveaway has been Started :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||",color=embedTheme)
-            embedStart.add_field(name="Winner of the Giveaway \t \t Time Left",value=f"\t ? \t\t\t {endtime}",inline=False)
+            embedStart.add_field(name="Winner of the Giveaway",value=f"\t ?",inline=True)
+            embedStart.add_field(name="Time Left",value=f"{endtime}",inline=True)
             embedStart.add_field(name="Participants",value=f"{ParticipantsName} \n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline= False)
             StartAnnounce = await ctx.send(embed=embedStart)
             while -1 < endtime < endtime+1:
                 if GiveawayActive ==True:
                     await asyncio.sleep(0.7)
-                    await StartAnnounce.edit(embed=embedStart)
+                    await StartAnnounce.edit(content=embedStart)
                     endtime -= 1
 
             if GiveawayActive == True:
