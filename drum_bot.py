@@ -255,6 +255,31 @@ async def solve(ctx, num1, operation, num2):
         embed = discord.Embed(title="Command : >solve", description=f"Usage : >solve [Number1] [Operation: +,-,*,/] [Number2]",color=embedTheme)
         await ctx.send(embed=embed)
 
+timer = False
+
+@bot.command()
+async def timerstart(ctx, seconds:int):
+    global timer
+    if timer == False:
+        timer = True
+        started = await ctx.send(f"Timer has Started : {seconds}")
+        while -1 < seconds < seconds+1:
+            if timer == True:
+                await started.edit(content=f"Timer has Started : {seconds}")
+            else:
+                break
+    else:
+        await ctx.send(f":exclamation: {ctx.author.mention} A Timer is already Running in this Server")
+
+@bot.command()
+async def timerstop(ctx):
+    global timer
+    if timer == True:
+        timer = False
+        ctx.send(f"Timer has Stopped by {ctx.author.mention}")
+    else:
+        ctx.send(f":exclamation: {ctx.author.mention} Currently No Timer is Running in this Server")
+
 @bot.command()
 async def ping(ctx, toping:Optional[discord.Member]=None):
     await ctx.message.delete()
