@@ -272,7 +272,7 @@ async def timerstart(ctx, seconds:int):
                 break
         if timer == True:
             timer = False
-        await ctx.send(f"Timer has Stopped by {ctx.author.mention}")
+        await started.edit(context=f"Timer has Stopped {ctx.author.mention}")
     else:
         await ctx.send(f":exclamation: {ctx.author.mention} A Timer is already Running in this Server")
 
