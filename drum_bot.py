@@ -270,6 +270,9 @@ async def timerstart(ctx, seconds:int):
                 seconds-=1
             else:
                 break
+        if timer == True:
+            timer = False
+        await ctx.send(f"Timer has Stopped by {ctx.author.mention}")
     else:
         await ctx.send(f":exclamation: {ctx.author.mention} A Timer is already Running in this Server")
 
@@ -278,9 +281,9 @@ async def timerstop(ctx):
     global timer
     if timer == True:
         timer = False
-        ctx.send(f"Timer has Stopped by {ctx.author.mention}")
+        await ctx.send(f"Timer has Stopped by {ctx.author.mention}")
     else:
-        ctx.send(f":exclamation: {ctx.author.mention} Currently No Timer is Running in this Server")
+        await ctx.send(f":exclamation: {ctx.author.mention} Currently No Timer is Running in this Server")
 
 @bot.command()
 async def ping(ctx, toping:Optional[discord.Member]=None):
