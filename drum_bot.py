@@ -263,7 +263,7 @@ async def timerstart(ctx, seconds:int, *, reason: Optional[str]=None):
     if timer == False:
         timer = True
         started = await ctx.send(f"Timer has Started : `{seconds}`"if reason is None else f"{reason} `{seconds}`")
-        while -1 < seconds < seconds+1:
+        while 0 < seconds < seconds+1:
             if timer == True:
                 await asyncio.sleep(0.7)
                 seconds-=1
