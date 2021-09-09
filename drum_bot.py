@@ -150,7 +150,7 @@ class Giveaway():
                 winnerCode = random.choice(list(Participants.values()))
                 CodeOwner = [k for k, v in Participants.items() if v == winnerCode]
                 print(CodeOwner)
-                winnerName = str(CodeOwner[1])
+                winnerName = str(CodeOwner[0])
                 winner = f"{winnerName} || {winnerCode}"
                 embed = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||",color=embedTheme)
                 embed.add_field(name="Winner of the Giveaway",value=f"{winner}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
