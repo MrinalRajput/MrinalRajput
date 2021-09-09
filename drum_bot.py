@@ -173,7 +173,7 @@ class Giveaway():
     @bot.command()
     @commands.has_role("Giveaway Handler")
     async def getpart(ctx):
-        await ctx.send(Participants,GiveawayChannel)
+        await ctx.send(f"Number of Particpants :- {Participants}\n Giveaway Channel :- {GiveawayChannel}")
 
     @bot.command()
     @commands.has_role("Giveaway Handler")
