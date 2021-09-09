@@ -198,7 +198,7 @@ class Giveaway():
                     await ctx.send(f"{ctx.author.mention} We Accepted your Request, Please Check your Dm", delete_after=15)
                     await StartAnnounce.edit(content=f":busts_in_silhouette: Participants - {members}")
                 else:
-                    await ctx.send(f"{ctx.author.mention} You have Already Participated in the Giveaway, you cannot Participate again", delete_after=15)
+                    await ctx.send(f"{ctx.author.mention} You have Already Participated in the Giveaway, you cannot Participate again")
         else:
             await ctx.send(":exclamation: There is No Giveaway Active in this Server")
     
