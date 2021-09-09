@@ -195,12 +195,10 @@ class Giveaway():
                     members = members.replace("]","")
 
                     await ctx.author.send(f":partying_face: You have Successfully Participated in the Giveaway and Your Special Code for The Giveaway is `{code}`")
-                    await ctx.send(f"{ctx.author.mention} We Accepted your Request, Please Check your Dm", delete_after=7)
+                    await ctx.send(f"{ctx.author.mention} We Accepted your Request, Please Check your Dm", delete_after=15)
                     await StartAnnounce.edit(content=f":busts_in_silhouette: Participants - {members}")
-                    await asyncio.sleep(4)
-                    await bot.delete_message(ctx.message)
                 else:
-                    await ctx.send(f"{ctx.author.mention} You have Already Participated in the Giveaway, you cannot Participate again", delete_after=8)
+                    await ctx.send(f"{ctx.author.mention} You have Already Participated in the Giveaway, you cannot Participate again", delete_after=15)
         else:
             await ctx.send(":exclamation: There is No Giveaway Active in this Server")
     
