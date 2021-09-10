@@ -328,6 +328,18 @@ async def kill(ctx,member: Optional[discord.Member]=None):
     await ctx.send(embed=choice)
 
 @bot.command()
+async def punch(ctx,member: Optional[discord.Member]=None):
+    if member is None:
+        member = bot.user
+    embed1 = discord.Embed(description=f"** Punched: {ctx.author.mention} Punched {member.mention} **", color=embedTheme)
+    embed2 = discord.Embed(description=f"** Punched: {ctx.author.mention} Punched {member.mention} because {ctx.author.name} was Crazy **", color=embedTheme)
+    embed3 = discord.Embed(description=f"** Punched: {ctx.author.mention} Punched {member.mention} on his Nose **", color=embedTheme)
+    embed4 = discord.Embed(description=f"** Punched: {ctx.author.mention} Punched {member.mention} in Voilence **", color=embedTheme)
+    allEmbeds = [embed1,embed2,embed3,embed4]
+    choice = random.choice(allEmbeds)
+    await ctx.send(embed=choice)
+
+@bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
     if ruleno is None:
         await ctx.send(f":exclamation: Please Specify the Rule Number of the Rule which you want to Access,{ctx.author.mention}")
