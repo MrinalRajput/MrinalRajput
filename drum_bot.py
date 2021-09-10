@@ -5,8 +5,7 @@ import asyncio
 import random
 from typing import Optional
 
-from discord.ext.commands.core import has_permissions
-from discord.ext.commands.errors import MessageNotFound
+from discord.ext.commands import *
 from discord.member import Member
 
 bot = commands.Bot(command_prefix = ">")
@@ -104,6 +103,11 @@ async def warn(ctx, member:discord.Member, *, reason=None):
     else:
         await ctx.send(f"You must Specify the User whom you want to Warn")
 
+@warn.error
+async def warn_error(error, ctx):
+   if isinstance(error, MissingPermissions):
+       await ctx.send("You don't have permission to do that!")
+
 @bot.command()
 @commands.has_permissions(kick_members=True)
 async def kick(ctx, member:discord.Member, *, reason=None):
@@ -113,11 +117,21 @@ async def kick(ctx, member:discord.Member, *, reason=None):
     else:
         await ctx.send(f"You must Specify the User whom you want to Kick from the Server")
 
+@kick.error
+async def kick_error(error, ctx):
+   if isinstance(error, MissingPermissions):
+       await ctx.send("You don't have permission to do that!")
+
 @bot.command()
 @commands.has_permissions(manage_guild=True)
 async def leaveserver(ctx):
         await ctx.guild.leave()
         # await ctx.send(f"{ctx.author.mention} Sorry you don't have Access to use this Command")
+
+@leaveserver.error
+async def leaverserver_error(error, ctx):
+   if isinstance(error, MissingPermissions):
+       await ctx.send("You don't have permission to do that!")
 
 @bot.command()
 @commands.has_permissions(manage_nicknames=True)
@@ -125,6 +139,13 @@ async def setnick(ctx, member: Optional[discord.Member]=None, *, newname):
     if member is None:
         member = ctx.author
     await member.edit(nick=newname)
+    embed = discord.Embed(description=f"** Done: Nickname Changed to {newname} Successfully! **")
+    embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+
+@setnick.error
+async def setnick_error(error, ctx):
+   if isinstance(error, MissingPermissions):
+       await ctx.send("You don't have permission to do that!")
 
 @bot.command()
 @commands.has_permissions(manage_nicknames=True)
@@ -132,6 +153,13 @@ async def resetnick(ctx, member: Optional[discord.Member]=None):
     if member is None:
         member = ctx.author
     await member.edit(nick=None)
+    embed = discord.Embed(description=f"** Done: Nickname Reset Successfully! **")
+    embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+
+@resetnick.error
+async def resetnick_error(error, ctx):
+   if isinstance(error, MissingPermissions):
+       await ctx.send("You don't have permission to do that!")
 
 class Giveaway():
     global GiveawayActive
@@ -192,6 +220,11 @@ class Giveaway():
                 GiveawayChannel = None
         else:
             await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
+    
+    @gstart.error
+    async def gstart_error(error, ctx):
+        if isinstance(error, MissingPermissions):
+            await ctx.send('You must have "Giveaway Handler" Role to do that')
 
     @bot.command()
     async def gparticipate(ctx):
@@ -240,6 +273,11 @@ class Giveaway():
             await ctx.send(f"Giveaway has been Stopped by {ctx.author.mention}")
         else:
             await ctx.send(":exclamation: There is No Giveaway Active in this Server")
+
+    @gstop.error
+    async def gstop_error(error, ctx):
+        if isinstance(error, MissingPermissions):
+            await ctx.send('You must have "Giveaway Handler" Role to do that')
 
 @bot.command()
 async def react(ctx, chat:Optional[discord.Message], emoji):
