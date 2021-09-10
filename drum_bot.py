@@ -225,7 +225,7 @@ class Giveaway():
     
     @gstart.error
     async def gstart_error(error, ctx):
-        if isinstance(error, MissingPermissions):
+        if isinstance(error, MissingRole):
             await ctx.send('You must have "Giveaway Handler" Role to do that')
 
     @bot.command()
@@ -278,7 +278,7 @@ class Giveaway():
 
     @gstop.error
     async def gstop_error(error, ctx):
-        if isinstance(error, MissingPermissions):
+        if isinstance(error, MissingRole):
             await ctx.send('You must have "Giveaway Handler" Role to do that')
 
 @bot.command()
