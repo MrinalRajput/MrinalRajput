@@ -303,7 +303,7 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
 
 @bot.command()
 async def slap(ctx,member: Optional[discord.Member]=None):
-    target = member.mention if member is not None else <@832897602768076816>
+    target = f"{member.mention}" if member is not None else f"{bot.user.mention}"
     embed1 = discord.Embed(title=f"Slapped: {ctx.author.mention} Slapped {member}", color=embedTheme)
     embed2 = discord.Embed(title=f"Slapped: {ctx.author.mention} Slapped {member} because {ctx.author.name} was Crazy", color=embedTheme)
     embed3 = discord.Embed(title=f"Slapped: {ctx.author.mention} Slapped {member} because {ctx.author.name} went Angry", color=embedTheme)
