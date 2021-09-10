@@ -166,6 +166,14 @@ async def resetnick_error(error, ctx):
        await ctx.send("You don't have permission to do that!")
 
 @bot.command()
+@command.has_permissions(manage_messages=True)
+async def clean(ctx, limit:int):
+    await ctx.channel.purge(limit=limit)
+    await ctx.message.delete()
+    embed = discord.Embed(title=f"_Successfully Deleted {limit} from this Channel_", color=embedTheme)
+    await ctx.send(embed=embed)
+
+@bot.command()
 @commands.has_permissions(manage_channels=True)
 async def lock(ctx, channel: Optional[discord.TextChannel]=None):
     if channel is None:
