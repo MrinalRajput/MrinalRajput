@@ -119,6 +119,20 @@ async def leaveserver(ctx):
         await ctx.guild.leave()
         # await ctx.send(f"{ctx.author.mention} Sorry you don't have Access to use this Command")
 
+@bot.command()
+@commands.has_permissions(manage_nicknames=True)
+async def setnick(ctx, member: Optional[discord.Member]=None, *, newname):
+    if member is None:
+        member = ctx.author
+    await member.edit(nick=newname)
+
+@bot.command()
+@commands.has_permissions(manage_nicknames=True)
+async def resetnick(ctx, member: Optional[discord.Member]=None):
+    if member is None:
+        member = ctx.author
+    await member.edit(nick=None)
+
 class Giveaway():
     global GiveawayActive
     global GiveawayChannel
