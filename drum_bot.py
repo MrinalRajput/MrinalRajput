@@ -169,7 +169,7 @@ async def resetnick_error(error, ctx):
 @commands.has_permissions(manage_messages=True)
 async def clean(ctx, limit:int):
     await ctx.channel.purge(limit=limit+1)
-    embed = discord.Embed(title=f"\:wastebasket:  Successfully Deleted {limit} Messages from this Channel", color=embedTheme)
+    embed = discord.Embed(title=f"🗑️ Successfully Deleted {limit} Messages from this Channel", color=embedTheme)
     await ctx.send(embed=embed,delete_after=5)
 
 @bot.command()
