@@ -138,8 +138,9 @@ async def leaverserver_error(error, ctx):
 async def setnick(ctx, member: Optional[discord.Member]=None, *, newname):
     if member is None:
         member = ctx.author
+    membername = member.name
     await member.edit(nick=newname)
-    embed = discord.Embed(description=f"** Done: Nickname Changed to {newname} Successfully! **")
+    embed = discord.Embed(title=f"** Done : {membername}'s Nick is Changed to {newname} Successfully! **")
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=embed)
 
@@ -154,7 +155,7 @@ async def resetnick(ctx, member: Optional[discord.Member]=None):
     if member is None:
         member = ctx.author
     await member.edit(nick=None)
-    embed = discord.Embed(description=f"** Done: Nickname Reset Successfully! **")
+    embed = discord.Embed(title=f"** Done : Nickname Reset Successfully! **")
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=embed)
 
