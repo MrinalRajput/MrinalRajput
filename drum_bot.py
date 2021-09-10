@@ -165,6 +165,32 @@ async def resetnick_error(error, ctx):
    if isinstance(error, MissingPermissions):
        await ctx.send("You don't have permission to do that!")
 
+@bot.command()
+@commands.has_permissions(manage_channels=True)
+async def lock(ctx, channel: Optional[discord.TextChannel]=None):
+    if channel is None:
+        channel = ctx.channel
+    overwrite = channel.overwrites_for(ctx.guild.default_role)
+    if overwrite.send_messages == True:
+        overwrite.send_messages=False
+        await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
+        await ctx.send(f"{channel} has been Locked by {ctx.author.mention}")
+    else:
+        await ctx.send(f"{channel} is Already Locked, {ctx.author.mention}")
+
+@bot.command()
+@commands.has_permissions(manage_channels=True)
+async def unlock(ctx, channel: Optional[discord.TextChannel]=None):
+    if channel is None:
+        channel = ctx.channel
+    overwrite = channel.overwrites_for(ctx.guild.default_role)
+    if overwrite.send_messages == False:
+        overwrite.send_messages=True
+        await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
+        await ctx.send(f"{channel} has been Unlocked by {ctx.author.mention}")
+    else:
+        await ctx.send(f"{channel} is Not Locked, {ctx.author.mention}")
+
 class Giveaway():
     global GiveawayActive
     global GiveawayChannel
