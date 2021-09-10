@@ -305,11 +305,10 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
 async def slap(ctx,member: Optional[discord.Member]=None):
     if member is None:
         member = bot.user
-    target = {member.mention}
-    embed1 = discord.Embed(description=f"** Slapped: {ctx.author.mention} Slapped {member} **", color=embedTheme)
-    embed2 = discord.Embed(description=f"** Slapped: {ctx.author.mention} Slapped {member} because {ctx.author.name} was Crazy **", color=embedTheme)
-    embed3 = discord.Embed(description=f"** Slapped: {ctx.author.mention} Slapped {member} because {ctx.author.name} went Angry **", color=embedTheme)
-    embed4 = discord.Embed(description=f"** {ctx.author.mention} Jumped from High Place and Slapped {member} **", color=embedTheme)
+    embed1 = discord.Embed(description=f"** Slapped: {ctx.author.mention} Slapped {member.mention} **", color=embedTheme)
+    embed2 = discord.Embed(description=f"** Slapped: {ctx.author.mention} Slapped {member.mention} because {ctx.author.name} was Crazy **", color=embedTheme)
+    embed3 = discord.Embed(description=f"** Slapped: {ctx.author.mention} Slapped {member.mention} because {ctx.author.name} went Angry **", color=embedTheme)
+    embed4 = discord.Embed(description=f"** {ctx.author.mention} Jumped from High Place and Slapped {member.mention} **", color=embedTheme)
     allEmbeds = [embed1,embed2,embed3,embed4]
     choice = random.choice(allEmbeds)
     await ctx.send(embed=choice)
