@@ -171,12 +171,11 @@ async def lock(ctx, channel: Optional[discord.TextChannel]=None):
     if channel is None:
         channel = ctx.channel
     overwrite = channel.overwrites_for(ctx.guild.default_role)
-    if overwrite.send_messages == True:
-        overwrite.send_messages=False
-        await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
-        await ctx.send(f"{channel} has been Locked by {ctx.author.mention}")
-    else:
-        await ctx.send(f"{channel} is Already Locked, {ctx.author.mention}")
+    overwrite.send_messages=False
+    await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
+    embed = discord.Embed(title=f"** Locked : {channel.mention} has been Locked by {ctx.author.mention} **", color=embedTheme)
+    embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+    await ctx.send(embed=embed)
 
 @bot.command()
 @commands.has_permissions(manage_channels=True)
@@ -184,12 +183,11 @@ async def unlock(ctx, channel: Optional[discord.TextChannel]=None):
     if channel is None:
         channel = ctx.channel
     overwrite = channel.overwrites_for(ctx.guild.default_role)
-    if overwrite.send_messages == False:
-        overwrite.send_messages=True
-        await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
-        await ctx.send(f"{channel} has been Unlocked by {ctx.author.mention}")
-    else:
-        await ctx.send(f"{channel} is Not Locked, {ctx.author.mention}")
+    overwrite.send_messages=True
+    await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
+    embed = discord.Embed(title=f"** Unlocked : {channel.mention} has been Unlocked by {ctx.author.mention} **", color=embedTheme)
+    embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+    await ctx.send(embed=embed)
 
 class Giveaway():
     global GiveawayActive
