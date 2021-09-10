@@ -141,6 +141,7 @@ async def setnick(ctx, member: Optional[discord.Member]=None, *, newname):
     await member.edit(nick=newname)
     embed = discord.Embed(description=f"** Done: Nickname Changed to {newname} Successfully! **")
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+    await ctx.send(embed=embed)
 
 @setnick.error
 async def setnick_error(error, ctx):
@@ -155,6 +156,7 @@ async def resetnick(ctx, member: Optional[discord.Member]=None):
     await member.edit(nick=None)
     embed = discord.Embed(description=f"** Done: Nickname Reset Successfully! **")
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+    await ctx.send(embed=embed)
 
 @resetnick.error
 async def resetnick_error(error, ctx):
