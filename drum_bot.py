@@ -490,11 +490,13 @@ async def gethelp(ctx):
 async def info(ctx):
     Listedgreetings = ["Hello!","Hi!","Hey!","Heya!"]
     RandomGreetings = random.choice(Listedgreetings)
-    await ctx.send(f"> {RandomGreetings} I am Tornax a Multi-Talented Discord Bot, Designed, Created and Configured by MrinalSparks")
+    embed = discord.Embed(description=f"{RandomGreetings} I am Tornax a Multi-Talented Discord Bot, Designed, Created and Configured by MrinalSparks", color=embedTheme)
+    await ctx.send(embed=embed)
 
 @bot.command()
 async def about(ctx):
-    await ctx.send(f"> Tornax is a Multi-Talented and Friendly Bot, Use Tornax for moderation, server managements, streams and giveaways now!")
+    embed = discord.Embed(description="Tornax is a Multi-Talented and Friendly Bot, Use Tornax for moderation, server managements, streams and giveaways now!", color=embedTheme)
+    await ctx.send(embed=embed)
 
 @bot.listen()
 async def on_message(message):
