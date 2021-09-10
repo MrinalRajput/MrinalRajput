@@ -154,8 +154,8 @@ class Giveaway():
             while -1 < endtime < endtime+1:
                 if GiveawayActive ==True:
                     await asyncio.sleep(0.7)
-                    await StartAnnounce.edit(content=f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:\n :busts_in_silhouette: Participants - {MembersList}")
                     endtime -= 1
+                    await StartAnnounce.edit(content=f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:\n :busts_in_silhouette: Participants - {MembersList}")
 
             if GiveawayActive == True:
                 if len(Participants) == 0:
@@ -247,8 +247,8 @@ async def solve(ctx, num1, operation, num2):
             await ctx.send(f"{ctx.author.mention}  {num1} + {num2} = {num1 + num2}")
         elif operation == "-":
             await ctx.send(f"{ctx.author.mention}  {num1} - {operation}{num2} = {num1 - num2}")
-        elif operation == "*" or operation.lower() == "x":
-            await ctx.send(f"{ctx.author.mention}  {num1} x {num2} = {num1 * num2}")
+        elif operation == "*" or operation.lower() == "x" or operation == "×":
+            await ctx.send(f"{ctx.author.mention}  {num1} × {num2} = {num1 * num2}")
         elif operation == "/" or operation == "÷":
             await ctx.send(f"{ctx.author.mention}  {num1} ÷ {num2} = {num1 / num2}")
     except:
@@ -300,6 +300,17 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
     if channel is None:
         channel = ctx.channel
     await channel.send(msg)
+
+@bot.command()
+async def slap(ctx,member: Optional[discord.Member]=None):
+    target = member.mention if member is not None else <@832897602768076816>
+    embed1 = discord.Embed(title=f"Slapped: {ctx.author.mention} Slapped {member}", color=embedTheme)
+    embed2 = discord.Embed(title=f"Slapped: {ctx.author.mention} Slapped {member} because {ctx.author.name} was Crazy", color=embedTheme)
+    embed3 = discord.Embed(title=f"Slapped: {ctx.author.mention} Slapped {member} because {ctx.author.name} went Angry", color=embedTheme)
+    embed4 = discord.Embed(title=f"{ctx.author.mention} Jumped from High Place and Slapped {member}", color=embedTheme)
+    allEmbeds = [embed1,embed2,embed3,embed4]
+    choice = random.choice(allEmbeds)
+    await ctx.send(embed=choice)
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
