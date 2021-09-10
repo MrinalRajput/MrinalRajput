@@ -308,8 +308,22 @@ async def slap(ctx,member: Optional[discord.Member]=None):
     embed1 = discord.Embed(description=f"** Slapped: {ctx.author.mention} Slapped {member.mention} **", color=embedTheme)
     embed2 = discord.Embed(description=f"** Slapped: {ctx.author.mention} Slapped {member.mention} because {ctx.author.name} was Crazy **", color=embedTheme)
     embed3 = discord.Embed(description=f"** Slapped: {ctx.author.mention} Slapped {member.mention} because {ctx.author.name} went Angry **", color=embedTheme)
-    embed4 = discord.Embed(description=f"** {ctx.author.mention} Jumped from High Place and Slapped {member.mention} **", color=embedTheme)
+    embed4 = discord.Embed(description=f"** Slapped: {ctx.author.mention} Jumped from High Place and Slapped {member.mention} **", color=embedTheme)
     allEmbeds = [embed1,embed2,embed3,embed4]
+    choice = random.choice(allEmbeds)
+    await ctx.send(embed=choice)
+
+@bot.command()
+async def kill(ctx,member: Optional[discord.Member]=None):
+    if member is None:
+        member = bot.user
+    embed1 = discord.Embed(description=f"** Killed: {ctx.author.mention} Killed {member.mention} **", color=embedTheme)
+    embed2 = discord.Embed(description=f"** Killed: {ctx.author.mention} Killed {member.mention} for his Last Birth's Revenge **", color=embedTheme)
+    embed3 = discord.Embed(description=f"** Killed: {ctx.author.mention} Killed {member.mention} because {ctx.author.name} went Mad **", color=embedTheme)
+    embed4 = discord.Embed(description=f"** Killed: {ctx.author.mention} Killed {member.mention} by Knife **", color=embedTheme)
+    embed5 = discord.Embed(description=f"** Killed: {ctx.author.mention} Shooted {member.mention} by Shotgun **", color=embedTheme)
+    embed6 = discord.Embed(description=f"** Killed: {ctx.author.mention} Stabbed Knife to {member.mention} **", color=embedTheme)
+    allEmbeds = [embed1,embed2,embed3,embed4,embed5,embed6]
     choice = random.choice(allEmbeds)
     await ctx.send(embed=choice)
 
