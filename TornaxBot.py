@@ -16,9 +16,6 @@ TOKEN = "ODMyODk3NjAyNzY4MDc2ODE2.YHqeVg.yfzVgB8hHizDFH7hSMTORIv5weg"
 
 embedTheme = discord.Color.from_rgb(255, 255, 0)
 
-embedContent = "hello"
-defaultEmbed = discord.Embed(description=embedContent, color=embedTheme)
-
 @bot.event
 async def on_ready():
     status = discord.Status.online
@@ -131,7 +128,8 @@ async def unban(ctx, id:int):
         user = await bot.fetch_user(id)
         await ctx.guild.unban(user)
         embedContent = f"Unbanned : Successfully Unbanned {user} from {ctx.guild.name}"
-        await ctx.send(embed=defaultEmbed)
+        embed = discord.Embed(description=embedContent, color=embedTheme)
+        await ctx.send(embed=embed)
     except MissingPermissions and Exception as e:
         print(e)
         await ctx.send(f":exclamation: {ctx.author.mention} You don't have Permissions to do that")
