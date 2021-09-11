@@ -5,7 +5,7 @@ import asyncio
 import random
 from typing import Optional
 
-from discord.ext.commands import has_permissions,MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError
+from discord.ext.commands import has_permissions,has_role,MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError
 from discord.member import Member
 
 bot = commands.Bot(command_prefix = ">")
@@ -352,10 +352,15 @@ async def leave(ctx):
 async def addrole(ctx, member: Optional[discord.Member]=None, role: discord.Role=None):
     if member is None:
         member = ctx.author
-    await member.add_roles(role)
-    embed = discord.Embed(description=f"** Successfully Added {role} Role to {member} **", color=embedTheme)
-    embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-    await ctx.send(embed=embed)
+    if member.has_role(role):
+        embed = discord.Embed(description=f"** :exclamation: {member} Already have {role} Role **", color=embedTheme)
+        embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+        await ctx.send(embed=embed)
+    else:
+        await member.add_roles(role)
+        embed = discord.Embed(description=f"** Successfully Added {role} Role to {member} **", color=embedTheme)
+        embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+        await ctx.send(embed=embed)
 
 @bot.command()
 @commands.has_permissions(manage_roles=True)
