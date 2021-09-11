@@ -255,7 +255,7 @@ async def unlock(ctx, channel: Optional[discord.TextChannel]=None):
 @bot.command()
 async def thought(ctx, *, word):
     if " " in word:
-        word = f"You cannot use More than one Word"
+        word = discord.Embed(description=f"You cannot use More than one Word",color=embedTheme)
         await ctx.send(word,delete_after=8)
     else:
         embed = discord.Embed(title=f"\t{word.upper()}", color=embedTheme)
