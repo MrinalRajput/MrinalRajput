@@ -658,6 +658,14 @@ async def help(ctx):
     myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creater}")
     await ctx.send(embed=myEmbed)
 
+@bot.event
+async def on_guild_join(guild):
+    for channel in guild.text_channels:
+        if channel.permissions_for(guild.me).send_messages:
+            await channel.send(f'Hey there! Thanks for Adding me in {guild.name}')
+            help()
+        break
+
 @bot.command()
 async def info(ctx):
     Listedgreetings = ["Hello!","Hi!","Hey!","Heya!"]
