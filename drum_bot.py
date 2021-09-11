@@ -350,10 +350,11 @@ async def solve(ctx, num1, operation, num2):
         await ctx.send(embed=embed)
 
 timer = False
+started = ""
 
 @bot.command()
 async def timerstart(ctx, seconds:int, *, reason: Optional[str]=None):
-    global timer
+    global timer, started
     if timer == False:
         timer = True
         started = await ctx.send(f"Timer has Started : `{seconds}`"if reason is None else f"{reason} `{seconds}`")
@@ -362,19 +363,24 @@ async def timerstart(ctx, seconds:int, *, reason: Optional[str]=None):
                 await asyncio.sleep(0.7)
                 seconds-=1
                 await started.edit(content=f"Timer has Started : `{seconds}`"if reason is None else f"{reason} `{seconds}`")
+            else:
+                break
         await asyncio.sleep(1)
         if timer == True:
             await started.edit(content=f"Timer has Stopped {ctx.author.mention}")
             timer = False
+        else:
+            await started.edit(content=f"Timer has Stopped {ctx.author.mention}")
+
     else:
         await ctx.send(f":exclamation: {ctx.author.mention} A Timer is already Running in this Server")
 
 @bot.command()
 async def timerstop(ctx):
-    global timer
+    global timer, started
     if timer == True:
         timer = False
-        await ctx.send(f"Timer has Stopped by {ctx.author.mention}")
+        await started.edit(content=f"Timer has Stopped by {ctx.author.mention}")
     else:
         await ctx.send(f":exclamation: {ctx.author.mention} Currently No Timer is Running in this Server")
 
