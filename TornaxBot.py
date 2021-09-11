@@ -16,7 +16,7 @@ TOKEN = "ODMyODk3NjAyNzY4MDc2ODE2.YHqeVg.yfzVgB8hHizDFH7hSMTORIv5weg"
 
 embedTheme = discord.Color.from_rgb(255, 255, 0)
 
-embedContent = ""
+embedContent = "hello"
 defaultEmbed = discord.Embed(description=embedContent, color=embedTheme)
 
 @bot.event
