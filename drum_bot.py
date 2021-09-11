@@ -356,12 +356,12 @@ async def addrole(ctx, member: Optional[discord.Member]=None, role: discord.Role
     if role in member.roles:
         embed = discord.Embed(description=f"** :exclamation: {member.mention} Already have {role.mention} Role **", color=embedTheme)
         embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=8)
     else:
         await member.add_roles(role)
         embed = discord.Embed(description=f"** Successfully Added {role.mention} Role to {member.mention} **", color=embedTheme)
         embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=8)
 
 @bot.command()
 @commands.has_permissions(manage_roles=True)
@@ -372,11 +372,11 @@ async def removerole(ctx, member: Optional[discord.Member]=None, role: discord.R
         await member.remove_roles(role)
         embed = discord.Embed(description=f"** Successfully Removed {role.mention} Role from {member.mention} **", color=embedTheme)
         embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=8)
     else:
         embed = discord.Embed(description=f"** :exclamation: {member.mention} Doesn't have {role.mention} Role **", color=embedTheme)
         embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=8)
 
 @bot.command()
 async def solve(ctx, num1, operation, num2):
