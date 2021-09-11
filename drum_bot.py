@@ -30,18 +30,13 @@ async def on_ready():
 SmpStatus = False
 LegendServer = 869439705714933780
 
-@bot.listen()
-async def on_message(message):
-    if message.guild.id == LegendServer:
-        if message.content is not None:
-            member = message.author
-            role1 = discord.utils.get(member.roles, id=875247780535345222)
-            role2 = discord.utils.get(member.roles, id=875259339072491541)
-            if role1 in member.roles and role2 in member.roles:
-                pass
-            else:
-                await bot.add_roles(member, role1)
-                await bot.add_roles(member, role2)
+@bot.event
+async def on_member_join(member):
+    if member.guild.id == LegendServer:
+        role1 = discord.utils.get(member.guild.roles, id=875247780535345222)
+        role2 = discord.utils.get(member.guild.roles, id=875259339072491541)
+        await member.add_roles(member, role1)
+        await member.add_roles(member, role2)
 
 @bot.listen()
 async def on_message(message):
