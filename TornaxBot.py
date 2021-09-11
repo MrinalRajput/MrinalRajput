@@ -663,7 +663,7 @@ async def on_guild_join(guild):
     for channel in guild.text_channels:
         if channel.permissions_for(guild.me).send_messages:
             await channel.send(f'Hey there! Thanks for Adding me in {guild.name}')
-            help()
+            await help()
         break
 
 @bot.command()
