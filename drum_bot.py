@@ -400,7 +400,7 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
     await channel.send(msg)
 
 @bot.command()
-async def slap(ctx,member: Optional[discord.Member]=None):
+async def slap(ctx,member: Optional[discord.Member]=None, *, reason: Optional[str]=None):
     if member is None:
         member = bot.user
     embed1 = discord.Embed(description=f"** Slapped: {ctx.author.mention} Slapped {member.mention} **", color=embedTheme)
@@ -409,10 +409,16 @@ async def slap(ctx,member: Optional[discord.Member]=None):
     embed4 = discord.Embed(description=f"** Slapped: {ctx.author.mention} Jumped from High Place and Slapped {member.mention} **", color=embedTheme)
     allEmbeds = [embed1,embed2,embed3,embed4]
     choice = random.choice(allEmbeds)
+    if reason is None:
+        choice = random.choice(allEmbeds)
+    else:
+        arguments = [f"Slapped {member.mention}",f"Jumped from High Place and Slapped {member.mention}"]
+        randomArgu = random.choice(arguments)
+        choice = discord.Embed(description=f"** Slapped: {ctx.author.mention} {randomArgu} because {reason} **", color=embedTheme)
     await ctx.send(embed=choice)
 
 @bot.command()
-async def kill(ctx,member: Optional[discord.Member]=None):
+async def kill(ctx,member: Optional[discord.Member]=None, *, reason: Optional[str]=None):
     if member is None:
         member = bot.user
     embed1 = discord.Embed(description=f"** Killed: {ctx.author.mention} Killed {member.mention} **", color=embedTheme)
@@ -423,10 +429,16 @@ async def kill(ctx,member: Optional[discord.Member]=None):
     embed6 = discord.Embed(description=f"** Killed: {ctx.author.mention} Stabbed Knife to {member.mention} **", color=embedTheme)
     allEmbeds = [embed1,embed2,embed3,embed4,embed5,embed6]
     choice = random.choice(allEmbeds)
+    if reason is None:
+        choice = random.choice(allEmbeds)
+    else:
+        arguments = [f"Killed {member.mention}",f"Shooted {member.mention} by Shotgun",f"Stabbed Knife to {member.mention}",f"Pushed {member.mention} from High Building"]
+        randomArgu = random.choice(arguments)
+        choice = discord.Embed(description=f"** Killed: {ctx.author.mention} {randomArgu} because {reason} **", color=embedTheme)
     await ctx.send(embed=choice)
 
 @bot.command()
-async def punch(ctx,member: Optional[discord.Member]=None):
+async def punch(ctx,member: Optional[discord.Member]=None, *, reason: Optional[str]=None):
     if member is None:
         member = bot.user
     embed1 = discord.Embed(description=f"** Punched: {ctx.author.mention} Punched {member.mention} **", color=embedTheme)
@@ -434,8 +446,13 @@ async def punch(ctx,member: Optional[discord.Member]=None):
     embed3 = discord.Embed(description=f"** Punched: {ctx.author.mention} Punched {member.mention} on his Nose **", color=embedTheme)
     embed4 = discord.Embed(description=f"** Punched: {ctx.author.mention} Punched {member.mention} in Voilence **", color=embedTheme)
     allEmbeds = [embed1,embed2,embed3,embed4]
-    choice = random.choice(allEmbeds)
-    await ctx.send(embed=choice)
+    if reason is None:
+        choice = random.choice(allEmbeds)
+    else:
+        arguments = [f"Punched {member.mention}",f"Punched on {member.mention}'s Nose",f"Punched {member.mention} in Voilence"]
+        randomArgu = random.choice(arguments)
+        choice = discord.Embed(description=f"** Punched: {ctx.author.mention} {randomArgu} because {reason} **", color=embedTheme)
+    await ctx.send(embed=choice)  
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
