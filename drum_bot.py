@@ -252,6 +252,15 @@ async def unlock(ctx, channel: Optional[discord.TextChannel]=None):
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=embed)
 
+@bot.command()
+async def thought(ctx, *, word):
+    if " " in word:
+        word = f"You cannot use More than one Word"
+        await ctx.send(word,delete_after=8)
+    else:
+        embed = discord.Embed(title=f"\t{word.upper()}", color=embedTheme)
+        await ctx.send(embed=embed)
+
 class Giveaway():
     global GiveawayActive
     global GiveawayChannel
