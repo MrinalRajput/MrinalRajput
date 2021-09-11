@@ -100,7 +100,7 @@ async def status(ctx):
 @commands.has_permissions(kick_members=True)
 async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: Optional[str]=None, *, reason: Optional[str]=None ):
     try:
-        mutedRole = discord.utilis.get(ctx.message.guild.roles, name="Muted")
+        mutedRole = discord.utils.get(ctx.message.guild.roles, name="Muted")
         if duration is not None and unit is not None:
             if unit == "s":
                 wait = 1 * duration 
