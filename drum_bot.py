@@ -106,15 +106,15 @@ async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: O
         if duration is not None and unit is not None:
             if unit == "s":
                 wait = 1 * duration 
-                embed = discord.Embed(description = f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Seconds **" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Seconds \n\t With the Reason of :\t{reason}**")
+                embed = discord.Embed(description = f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Seconds **" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Seconds \n\t With the Reason of :\t{reason}**",color=embedTheme)
                 dmAlert = f"You are Muted in the Server by an Admin for `{duration}` Seconds"if reason is None else f"You are Muted in the Server by an Admin for `{duration}`` Seconds\n\t With the Reason of {reason}"
             elif unit == "m":
                 wait = 60 * duration 
-                embed = discord.Embed(description = f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Minutes **" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Minutes \n\t With the Reason of :\t{reason}**")
+                embed = discord.Embed(description = f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Minutes **" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Minutes \n\t With the Reason of :\t{reason}**",color=embedTheme)
                 dmAlert = f"You are Muted in the Server by an Admin for `{duration}` Minutes"if reason is None else f"You are Muted in the Server by an Admin for `{duration}`` Minutes\n\t With the Reason of {reason}"
             elif unit == "h":
                 wait = 60 * 60 * duration 
-                embed = discord.Embed(description = f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Hours **" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Hours \n\t With the Reason of :\t{reason}**")
+                embed = discord.Embed(description = f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Hours **" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Hours \n\t With the Reason of :\t{reason}**",color=embedTheme)
                 dmAlert = f"You are Muted in the Server by an Admin for `{duration}` Hours"if reason is None else f"You are Muted in the Server by an Admin for `{duration}`` Hours\n\t With the Reason of {reason}"
             await member.add_roles(mutedRole)
             await ctx.send(embed=embed,delete_after=15)
@@ -122,7 +122,7 @@ async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: O
             await asyncio.sleep(wait)
             await member.remove_roles(mutedRole)
         else:
-            embed = discord.Embed(description=f"** {member.mention} has been Muted Successfully by {ctx.author.mention}**" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention}\n\t With the Reason of :\t{reason}**")
+            embed = discord.Embed(description=f"** {member.mention} has been Muted Successfully by {ctx.author.mention}**" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention}\n\t With the Reason of :\t{reason}**",color=embedTheme)
             await member.add_roles(mutedRole)
             await ctx.send(embed=embed,delete_after=15)
             await member.send(f"You are Muted in the Server by an Admin"if reason is None else f"You are Muted in the Server by an Admin\n\t With the Reason of {reason}")
@@ -135,11 +135,11 @@ async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: O
 async def unmute(ctx, member:discord.Member, reason: Optional[str]=None):
     mutedRole = discord.utils.get(ctx.message.guild.roles, name="Muted")
     if mutedRole in member.roles:
-        embed = discord.Embed(description=f"** {member.mention} has been Unmuted Successfully by {ctx.author.mention}**" if reason is None else f"** {member.mention} has been Unmuted Successfully by {ctx.author.mention}\n\t With the Reason of :\t{reason}**")
+        embed = discord.Embed(description=f"** {member.mention} has been Unmuted Successfully by {ctx.author.mention}**" if reason is None else f"** {member.mention} has been Unmuted Successfully by {ctx.author.mention}\n\t With the Reason of :\t{reason}**",color=embedTheme)
         await member.remove_roles(mutedRole)
         await ctx.send(embed=embed,delete_after=15)
     else:
-        embed = discord.Embed(description=f"** :exclamation: {member.mention} is Not Muted in this Server **")
+        embed = discord.Embed(description=f"** :exclamation: {member.mention} is Not Muted in this Server **",color=embedTheme)
         await ctx.send(embed=embed,delete_after=15)
 
 
