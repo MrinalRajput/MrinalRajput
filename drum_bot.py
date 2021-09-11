@@ -353,12 +353,12 @@ async def addrole(ctx, member: Optional[discord.Member]=None, role: discord.Role
     if member is None:
         member = ctx.author
     if member.has_role(role):
-        embed = discord.Embed(description=f"** :exclamation: {member} Already have {role} Role **", color=embedTheme)
+        embed = discord.Embed(description=f"** :exclamation: {member.mention} Already have {role.mention} Role **", color=embedTheme)
         embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
         await ctx.send(embed=embed)
     else:
         await member.add_roles(role)
-        embed = discord.Embed(description=f"** Successfully Added {role} Role to {member} **", color=embedTheme)
+        embed = discord.Embed(description=f"** Successfully Added {role.mention} Role to {member.mention} **", color=embedTheme)
         embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
         await ctx.send(embed=embed)
 
@@ -367,10 +367,15 @@ async def addrole(ctx, member: Optional[discord.Member]=None, role: discord.Role
 async def removerole(ctx, member: Optional[discord.Member]=None, role: discord.Role=None):
     if member is None:
         member = ctx.author
-    await member.remove_roles(role)
-    embed = discord.Embed(description=f"** Successfully Remove {role} Role from {member} **", color=embedTheme)
-    embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-    await ctx.send(embed=embed)
+    if member.has_role(role):
+        await member.remove_roles(role)
+        embed = discord.Embed(description=f"** Successfully Removed {role.mention} Role from {member.mention} **", color=embedTheme)
+        embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+        await ctx.send(embed=embed)
+    else:
+        embed = discord.Embed(description=f"** :exclamation: {member.mention} Doesn't have {role.mention} Role **", color=embedTheme)
+        embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+        await ctx.send(embed=embed)
 
 @bot.command()
 async def solve(ctx, num1, operation, num2):
