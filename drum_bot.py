@@ -329,23 +329,16 @@ async def react(ctx, chat:Optional[discord.Message], emoji):
 @bot.command()
 async def join(ctx):
     try:        
-        if not ctx.voice_client.isconnected():
-            channel = ctx.author.voice.channel
-            await channel.connect()
-        else:
-            await ctx.send(f":exclamation: {ctx.author.mention} Tornax is Already Connected to a Voice Channel")
+        channel = ctx.author.voice.channel
+        await channel.connect()
     except CommandInvokeError:
         await ctx.send(f":exclamation: {ctx.author.mention} You must be in a Voice Channel to do that!")
 
 @bot.command()
 async def leave(ctx):
     try:
-        if ctx.voice_client.is_connected():
-            await ctx.voice_client.disconnect()
-        else:
-            await ctx.send(f":exclamation: {ctx.author.mention} Tornax is Not Connected to any Voice Channel")
+        await ctx.voice_client.disconnect()
     except CommandInvokeError:
-        print(e)
         await ctx.send(f":exclamation: {ctx.author.mention} You must be in a Voice Channel to do that!")
 
 @bot.command()
