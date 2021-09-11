@@ -327,12 +327,12 @@ async def react(ctx, chat:Optional[discord.Message], emoji):
     await message.add_reaction(emoji)
 
 @bot.command()
-async def connect(ctx):
+async def join(ctx):
     channel = ctx.author.voice.channel
     await channel.connect()
 
 @bot.command()
-async def disconnect(ctx):
+async def leave(ctx):
     await ctx.voice_client.disconnect()
 
 @bot.command()
