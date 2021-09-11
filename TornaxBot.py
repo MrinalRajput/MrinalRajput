@@ -107,7 +107,7 @@ async def ban(ctx, member:discord.Member, days: Optional[int]=None, *, reason:Op
         if days is not None:
             wait = days * 86400
             embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} for `{days}` Days **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} for `{days}` Days \n\t With the Reason of :\t{reason}**",color=embedTheme)
-            dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.server} for `{days}` Days **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.server} for `{days}` Days \n\t With the Reason of :\t{reason}**",color=embedTheme)
+            dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.name} for `{days}` Days **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.name} for `{days}` Days \n\t With the Reason of :\t{reason}**",color=embedTheme)
             await ctx.send(embed=embed)
             await member.send(embed=dmuser)
             await member.ban(reason=reason)
@@ -115,7 +115,7 @@ async def ban(ctx, member:discord.Member, days: Optional[int]=None, *, reason:Op
             await ctx.guild.unban(memberId)
         else:
             embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} \n\t With the Reason of :\t{reason}**",color=embedTheme)
-            dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.server} **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.server} \n\t With the Reason of :\t{reason}**",color=embedTheme)
+            dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.name} **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.name} \n\t With the Reason of :\t{reason}**",color=embedTheme)
             await ctx.send(embed=embed)
             await member.send(embed=dmuser)
             await member.ban(reason=reason)
@@ -156,7 +156,7 @@ async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: O
             elif unit == "h":
                 wait = 60 * 60 * duration 
                 embed = discord.Embed(description = f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Hours **" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Hours \n\t With the Reason of :\t{reason}**",color=embedTheme)
-                dmAlert = f"You are Muted in the {ctx.guild.name} Server by an Admin for `{duration}` Hours"if reason is None else f"You are Muted in the {ctx.guild.server} Server by an Admin for `{duration}`` Hours\n\t With the Reason of {reason}"
+                dmAlert = f"You are Muted in the {ctx.guild.name} Server by an Admin for `{duration}` Hours"if reason is None else f"You are Muted in the {ctx.guild.name} Server by an Admin for `{duration}`` Hours\n\t With the Reason of {reason}"
             await member.add_roles(mutedRole)
             await ctx.send(embed=embed,delete_after=15)
             await member.send(dmAlert)
