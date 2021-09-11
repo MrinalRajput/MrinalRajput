@@ -73,16 +73,15 @@ async def on_message(message):
 @bot.listen()
 async def on_message(message):
     global SmpStatus
-    if message.guild.id == LegendServer:
-        Smpchannel = bot.get_channel(877777208108789770)
-        if message.channel == Smpchannel:
-            if message.author.id == 832897602768076816:
-                if "server has started" in message.content.lower():
-                    SmpStatus = True
-                    # print(f"Smp Status is {SmpStatus}")
-                elif "server has stopped" in message.content.lower():
-                    SmpStatus = False
-                    # print(f"Smp Status is {SmpStatus}")
+    Smpchannel = bot.get_channel(877777208108789770)
+    if message.channel == Smpchannel:
+        if message.author.id == 832897602768076816:
+            if "server has started" in message.content.lower():
+                SmpStatus = True
+                # print(f"Smp Status is {SmpStatus}")
+            elif "server has stopped" in message.content.lower():
+                SmpStatus = False
+                # print(f"Smp Status is {SmpStatus}")
 
 @bot.command()
 async def status(ctx):
