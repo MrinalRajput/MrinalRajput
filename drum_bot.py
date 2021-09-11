@@ -134,10 +134,14 @@ async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: O
 @commands.has_permissions(kick_members=True)
 async def unmute(ctx, member:discord.Member, reason: Optional[str]=None):
     mutedRole = discord.utils.get(ctx.message.guild.roles, name="Muted")
-    if mutedRole not in member.roles:
+    if mutedRole in member.roles:
         embed = discord.Embed(description=f"** {member.mention} has been Unmuted Successfully by {ctx.author.mention}**" if reason is None else f"** {member.mention} has been Unmuted Successfully by {ctx.author.mention}\n\t With the Reason of :\t{reason}**")
         await member.remove_roles(mutedRole)
         await ctx.send(embed=embed,delete_after=15)
+    else:
+        embed = discord.Embed(description=f"** :exclamation: {member.mention} is Not Muted in this Server **")
+        await ctx.send(embed=embed,delete_after=15)
+
 
 
 @bot.command()
