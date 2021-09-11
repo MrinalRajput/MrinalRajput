@@ -35,9 +35,9 @@ async def on_message(message):
     if message.guild.id == LegendServer:
         if message.content is not None:
             member = message.author
-            role1 = discord.utils.get(member.server.roles, id=875247780535345222)
-            role2 = discord.utils.get(member.server.roles, id=875259339072491541)
-            if message.author.has_role(role1) and message.author.has_role(role2):
+            role1 = discord.utils.get(member.roles, id=875247780535345222)
+            role2 = discord.utils.get(member.roles, id=875259339072491541)
+            if role1 in member.roles and role2 in member.roles:
                 pass
             else:
                 await bot.add_roles(member, role1)
@@ -358,7 +358,7 @@ async def leave(ctx):
 async def addrole(ctx, member: Optional[discord.Member]=None, role: discord.Role=None):
     if member is None:
         member = ctx.author
-    if member.has_role(role):
+    if role in member.roles:
         embed = discord.Embed(description=f"** :exclamation: {member.mention} Already have {role.mention} Role **", color=embedTheme)
         embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
         await ctx.send(embed=embed)
@@ -373,7 +373,7 @@ async def addrole(ctx, member: Optional[discord.Member]=None, role: discord.Role
 async def removerole(ctx, member: Optional[discord.Member]=None, role: discord.Role=None):
     if member is None:
         member = ctx.author
-    if member.has_role(role):
+    if role in member.roles:
         await member.remove_roles(role)
         embed = discord.Embed(description=f"** Successfully Removed {role.mention} Role from {member.mention} **", color=embedTheme)
         embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
