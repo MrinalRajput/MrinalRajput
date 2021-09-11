@@ -8,7 +8,7 @@ from typing import Optional
 from discord.ext.commands import has_permissions,has_role,MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError
 from discord.member import Member
 
-bot = commands.Bot(command_prefix = ">")
+bot = commands.Bot(command_prefix = ">",help_command=None)
 
 restricted_words = ["gooh","kutta","kutte","harami","skyra","wtf","frick","fuck","fuk","tatti","baap","stfu"]
 
@@ -29,6 +29,7 @@ async def on_ready():
 
 SmpStatus = False
 LegendServer = 869439705714933780
+Creater = "MrinalSparks#8633"
 
 @bot.event
 async def on_member_join(member):
@@ -604,16 +605,15 @@ async def avatar(ctx, owner: Optional[discord.Member]=None):
     await ctx.send(embed=embed)
 
 @bot.command()
-async def gethelp(ctx):
-    myEmbed = discord.Embed(title = 'Commands', description = "These are all Commands, This Server prefix - '>' \n\n", color = embedTheme)
-    myEmbed.add_field(name="hi", value="To get Reply From Tornax", inline=True)
-    myEmbed.add_field(name="ping", value="To get Ping or Ping Someone by Tornax", inline=True)
-    myEmbed.add_field(name="tell", value="Chat something and anywhere using Tornax", inline=True)
-    myEmbed.add_field(name="time", value="Get Current Time", inline=True)
-    myEmbed.add_field(name="avatar", value="See any Server member's Profile Picture", inline=True)
-    myEmbed.add_field(name="rules", value="Get all Rules of the server", inline=True)
-    myEmbed.add_field(name="Total Commands - 6", value="More Coming Soon", inline=False)
-    myEmbed.set_footer(icon_url=ctx.author.avatar_url,text=f"Requested by {ctx.author}")
+async def help(ctx):
+    randomGreet = random.choice(["Hi","Hey","Hello"])
+    myEmbed = discord.Embed(color = embedTheme)
+    myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax\n",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=0&scope=bot)")
+    myEmbed.add_field(name="Miscellaneous",value="** tell, ping, thought, avatar, react, rule, rules, solve, time, timerstart, timerstop **", inline=False)
+    myEmbed.add_field(name="Management",value="** addrole, removerole, clean, gstart, gstatus, gstop, gpaticipate, info, join, leave, leaverserver, lock, resetnick, setnick, unlock **", inline=False)
+    myEmbed.add_field(name="Moderation",value="** dmuser, kick, mute, warn, unmute, ban **", inline=False)
+    myEmbed.add_field(name="Moderation",value="** slap, kill, punch **", inline=False)
+    myEmbed.set_footer(icon_url=bot.avatar_url,text=f"Made by {Creater}")
     await ctx.send(embed=myEmbed)
 
 @bot.command()
