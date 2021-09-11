@@ -327,7 +327,7 @@ async def react(ctx, chat:Optional[discord.Message], emoji):
     await message.add_reaction(emoji)
 
 @bot.command()
-async def connect(ctx, channel:discord.VoiceChannel):
+async def connect(ctx):
     channel = ctx.author.voice.channel
     await channel.connect()
 
@@ -534,6 +534,6 @@ async def on_message(message):
     for word in restricted_words:
         if message.content.count(word)>0:
             await message.channel.purge(limit = 1)
-            await message.channel.send(f":exclamation: The Word you are Using is Not Allowed in this Server {message.author.mention}")
+            await message.channel.send(f":exclamation: The Word you are Using is Not Allowed in this Server {message.author.mention}",delete_after=8)
 
 bot.run(TOKEN)
