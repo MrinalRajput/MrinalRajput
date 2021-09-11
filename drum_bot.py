@@ -328,12 +328,24 @@ async def react(ctx, chat:Optional[discord.Message], emoji):
 
 @bot.command()
 async def join(ctx):
-    channel = ctx.author.voice.channel
-    await channel.connect()
+    if not ctx.author.voice.channel:
+        await ctx.send(f":exclamation: {ctx.author.mention} You must be in a Voice Channel to do that!")
+    else:
+        if not ctx.voice_client.isconnected():
+            channel = ctx.author.voice.channel
+            await channel.connect()
+        else:
+            await ctx.send(f":exclamation: {ctx.author.mention} Tornax is Already Connected to a Voice Channel")
 
 @bot.command()
 async def leave(ctx):
-    await ctx.voice_client.disconnect()
+    if not ctx.author.voice.channel:
+        await ctx.send(f":exclamation: {ctx.author.mention} You must be in a Voice Channel to do that!")
+    else:
+        if ctx.voice_client.is_connected():
+            await ctx.voice_client.disconnect()
+        else:
+            await ctx.send(f":exclamation: {ctx.author.mention} Tornax is Not Connected to any Voice Channel")
 
 @bot.command()
 async def solve(ctx, num1, operation, num2):
