@@ -97,7 +97,7 @@ async def status(ctx):
 ############0##################
 
 @bot.command()
-@commands.has_permissions(mute_members=True)
+@commands.has_permissions(manage_server=True)
 async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: Optional[str]=None, *, reason: Optional[str]=None ):
     try:
         mutedRole = discord.utilis.get(ctx.message.guild.roles, name="Muted")
