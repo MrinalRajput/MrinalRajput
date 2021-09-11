@@ -613,7 +613,7 @@ async def help(ctx):
     myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gpaticipate, info, join, leave, leaverserver, lock, resetnick, setnick, unlock ", inline=False)
     myEmbed.add_field(name="Moderation",value=" dmuser, kick, mute, warn, unmute, ban ", inline=False)
     myEmbed.add_field(name="Moderation",value=" slap, kill, punch ", inline=False)
-    myEmbed.add_field(name="Official Server",value="Join Our Official Server for More Commands and Help \n\n [Join Now](https://discord.gg/H3688EEpWr)", inline=False)
+    myEmbed.add_field(name="**Official Server**",value="Join Our Official Server for More Commands and Help \n\n [Join Now](https://discord.gg/H3688EEpWr)", inline=False)
     myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creater}")
     await ctx.send(embed=myEmbed)
 
