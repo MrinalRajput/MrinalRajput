@@ -327,6 +327,15 @@ async def react(ctx, chat:Optional[discord.Message], emoji):
     await message.add_reaction(emoji)
 
 @bot.command()
+async def connect(ctx, channel:discord.VoiceChannel):
+    channel = ctx.author.voice.channel
+    await channel.connect()
+
+@bot.command()
+async def disconnect(ctx):
+    await ctx.voice_client.disconnect()
+
+@bot.command()
 async def solve(ctx, num1, operation, num2):
     try:
         if "." in num1:
