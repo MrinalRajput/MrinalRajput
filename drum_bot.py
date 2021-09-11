@@ -5,7 +5,7 @@ import asyncio
 import random
 from typing import Optional
 
-from discord.ext.commands import has_permissions,MissingPermissions,MissingRole,CommandNotFound
+from discord.ext.commands import has_permissions,MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError
 from discord.member import Member
 
 bot = commands.Bot(command_prefix = ">")
@@ -334,7 +334,7 @@ async def join(ctx):
             await channel.connect()
         else:
             await ctx.send(f":exclamation: {ctx.author.mention} Tornax is Already Connected to a Voice Channel")
-    except:
+    except CommandInvokeError:
         await ctx.send(f":exclamation: {ctx.author.mention} You must be in a Voice Channel to do that!")
 
 @bot.command()
@@ -344,7 +344,8 @@ async def leave(ctx):
             await ctx.voice_client.disconnect()
         else:
             await ctx.send(f":exclamation: {ctx.author.mention} Tornax is Not Connected to any Voice Channel")
-    except:
+    except CommandInvokeError:
+        print(e)
         await ctx.send(f":exclamation: {ctx.author.mention} You must be in a Voice Channel to do that!")
 
 @bot.command()
