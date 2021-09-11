@@ -16,6 +16,9 @@ TOKEN = "ODMyODk3NjAyNzY4MDc2ODE2.YHqeVg.yfzVgB8hHizDFH7hSMTORIv5weg"
 
 embedTheme = discord.Color.from_rgb(255, 255, 0)
 
+embedContent = ""
+defaultEmbed = discord.Embed(description=embedContent, color=embedTheme)
+
 @bot.event
 async def on_ready():
     status = discord.Status.online
@@ -116,14 +119,22 @@ async def ban(ctx, member:discord.Member, days: Optional[int]=None, *, reason:Op
             await ctx.send(embed=embed)
             await member.send(embed=dmuser)
             await member.ban(reason=reason)
-    except:
+    except Exception as e:
         print(e)
         await ctx.reply(f":exclamation: You don't have Permissions to do that!")
 
 @bot.command()
 @commands.has_permissions(ban_members=True)
 async def unban(ctx, id:int):
-    pass
+    global embedContent
+    try:
+        user = await bot.fetch_user(id)
+        await ctx.guild.unban(user)
+        embedContent = f"Unbanned : Successfully Unbanned {user} from {ctx.guild.name}"
+        await ctx.send(embed=defaultEmbed)
+    except MissingPermissions and Exception as e:
+        print(e)
+        await ctx.send(f":exclamation: {ctx.author.mention} You don't have Permissions to do that")
 
 @bot.command()
 @commands.has_permissions(kick_members=True)
