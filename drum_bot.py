@@ -5,7 +5,7 @@ import asyncio
 import random
 from typing import Optional
 
-from discord.ext.commands import *
+from discord.ext.commands import has_permissions,MissingPermissions,MissingRole,CommandNotFound
 from discord.member import Member
 
 bot = commands.Bot(command_prefix = ">")
