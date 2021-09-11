@@ -225,8 +225,8 @@ async def leaverserver_error(error, ctx):
 
 @bot.command()
 @commands.has_permissions(manage_messages=True)
+async def editmsg(ctx, message: discord.Message, *, chat):
 try:
-    async def editmsg(ctx, message: discord.Message, *, chat):
     await message.edit(content=chat)
 except MissingPermissions as e:
     print(e)
