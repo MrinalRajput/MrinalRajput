@@ -35,8 +35,8 @@ async def on_member_join(member):
     if member.guild.id == LegendServer:
         role1 = discord.utils.get(member.guild.roles, id=875247780535345222)
         role2 = discord.utils.get(member.guild.roles, id=875259339072491541)
-        await member.add_roles(member, role1)
-        await member.add_roles(member, role2)
+        await member.add_roles(role1)
+        await member.add_roles(role2)
 
 @bot.listen()
 async def on_message(message):
