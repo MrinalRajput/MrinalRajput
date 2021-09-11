@@ -94,7 +94,33 @@ async def status(ctx):
 
 ##############################
 #### All Servers Commands ####
-##############################
+############0##################
+
+@bot.command()
+@commands.has_permissions(mute_members=True)
+async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: Optional[str]=None, *, reason: Optional[str]=None ):
+    try:
+        mutedRole = discord.utilis.get(ctx.message.guild.roles, name="Muted")
+        if duration is not None and unit is not None:
+            if unit == "s":
+                wait = 1 * duration 
+                embed = discord.Embed(description = f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Seconds **" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Seconds \n\t With the Reason of :\t{reason}**")
+            elif unit == "m":
+                wait = 60 * duration 
+                embed = discord.Embed(description = f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Minutes **" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Minutes \n\t With the Reason of :\t{reason}**")
+            elif unit == "h":
+                wait = 60 * 60 * duration 
+                embed = discord.Embed(description = f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Minutes **" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Minutes \n\t With the Reason of :\t{reason}**")
+            await member.add_roles(mutedRole)
+            await ctx.send(embed=embed,delete_after=15)
+            asyncio.sleep(wait)
+            await member.remove_roles(mutedRole)
+        else:
+            embed = discord.Embed(description=f"** {member.mention} has been Muted Successfully by {ctx.author.mention}**" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention}\n\t With the Reason of :\t{reason}**")
+            await member.add_roles(mutedRole)
+            await ctx.send(embed=embed,delete_after=15)
+    except:
+        await ctx.reply(f":exclamation: You don't have Permissions to do that!")
 
 @bot.command()
 @commands.has_permissions(administrator=True)
