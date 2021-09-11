@@ -97,6 +97,35 @@ async def status(ctx):
 ############0##################
 
 @bot.command()
+@commands.has_permissions(ban_members=True)
+async def ban(ctx, member:discord.Member, days: Optional[int]=None, *, reason:Optional[str]=None):
+    try:
+        memberId = member.id
+        if days is not None:
+            wait = days * 86400
+            embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} for `{days}` Days **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} for `{days}` Days \n\t With the Reason of :\t{reason}**",color=embedTheme)
+            dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.server} for `{days}` Days **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.server} for `{days}` Days \n\t With the Reason of :\t{reason}**",color=embedTheme)
+            await ctx.send(embed=embed)
+            await member.send(embed=dmuser)
+            await member.ban(reason=reason)
+            await asyncio.sleep(wait)
+            await ctx.guild.unban(memberId)
+        else:
+            embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} \n\t With the Reason of :\t{reason}**",color=embedTheme)
+            dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.server} **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.server} \n\t With the Reason of :\t{reason}**",color=embedTheme)
+            await ctx.send(embed=embed)
+            await member.send(embed=dmuser)
+            await member.ban(reason=reason)
+    except:
+        print(e)
+        await ctx.reply(f":exclamation: You don't have Permissions to do that!")
+
+@bot.command()
+@commands.has_permissions(ban_members=True)
+async def unban(ctx, id:int):
+    pass
+
+@bot.command()
 @commands.has_permissions(kick_members=True)
 async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: Optional[str]=None, *, reason: Optional[str]=None ):
     try:
@@ -116,7 +145,7 @@ async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: O
             elif unit == "h":
                 wait = 60 * 60 * duration 
                 embed = discord.Embed(description = f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Hours **" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Hours \n\t With the Reason of :\t{reason}**",color=embedTheme)
-                dmAlert = f"You are Muted in the Server by an Admin for `{duration}` Hours"if reason is None else f"You are Muted in the Server by an Admin for `{duration}`` Hours\n\t With the Reason of {reason}"
+                dmAlert = f"You are Muted in the {ctx.guild.name} Server by an Admin for `{duration}` Hours"if reason is None else f"You are Muted in the {ctx.guild.server} Server by an Admin for `{duration}`` Hours\n\t With the Reason of {reason}"
             await member.add_roles(mutedRole)
             await ctx.send(embed=embed,delete_after=15)
             await member.send(dmAlert)
@@ -150,6 +179,7 @@ async def unmute(ctx, member:discord.Member, reason: Optional[str]=None):
 async def warn(ctx, member:discord.Member, *, reason=None):
     if member is not None:
         await ctx.send(f"Warned: {member.mention} has been Warned by {ctx.author.mention}" if reason is None else f"Warned: {member.mention} has been Warned by {ctx.author.mention} \n\t With the Reason of :\t{reason}")
+        await member.send(f"You are Warned by an Admin in {ctx.guild.name}"if reason is None else f"You are Warned by an Admin in {ctx.guild.name} \n\t With the Reason of :\t{reason}")
     else:
         await ctx.send(f"You must Specify the User whom you want to Warn")
 
@@ -164,6 +194,7 @@ async def kick(ctx, member:discord.Member, *, reason=None):
     if member is not None:
         await member.kick(reason=reason)
         await ctx.send(f"Kicked: {member.mention} has been Kicked from the Server by {ctx.author.mention}" if reason is None else f"Kicked: {member.mention} has been Kicked from the Server by {ctx.author.mention} \n\t With the Reason of :\t{reason}")
+        await member.send(f"You are Kicked by an Admin from {ctx.guild.name}"if reason is None else f"You are Kicked by an Admin from {ctx.guild.name} \n\t With the Reason of :\t{reason}")
     else:
         await ctx.send(f"You must Specify the User whom you want to Kick from the Server")
 
