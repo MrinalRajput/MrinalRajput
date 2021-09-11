@@ -97,7 +97,7 @@ async def status(ctx):
 ############0##################
 
 @bot.command()
-@commands.has_permissions(manage_channels=True)
+@commands.has_permissions(kick_members=True)
 async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: Optional[str]=None, *, reason: Optional[str]=None ):
     try:
         mutedRole = discord.utilis.get(ctx.message.guild.roles, name="Muted")
@@ -119,7 +119,8 @@ async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: O
             embed = discord.Embed(description=f"** {member.mention} has been Muted Successfully by {ctx.author.mention}**" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention}\n\t With the Reason of :\t{reason}**")
             await member.add_roles(mutedRole)
             await ctx.send(embed=embed,delete_after=15)
-    except:
+    except Exception as e:
+        print(e)
         await ctx.reply(f":exclamation: You don't have Permissions to do that!")
 
 @bot.command()
