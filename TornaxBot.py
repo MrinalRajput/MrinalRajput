@@ -432,6 +432,30 @@ class Giveaway():
                     await ctx.send(f"{ctx.author.mention} You have Already Participated in the Giveaway, you cannot Participate again", delete_after=15)
         else:
             await ctx.send(":exclamation: There is No Giveaway Active in this Server")
+
+    @bot.command()
+    async def gquit(ctx):
+        global StartAnnounce, MembersList, ParticipantsMsg
+        if GiveawayActive == True:
+            if ctx.channel == GiveawayChannel:
+                if ctx.author.name in Participants:
+
+                    del Participants[ctx.author.name]
+
+                    listtostr = list(Participants.keys())
+                    members = str(listtostr)
+
+                    members = members.replace("'","") 
+                    members = members.replace("[","") 
+                    members = members.replace("]","")
+                    MembersList = members
+
+                    await ctx.send(f"{ctx.author.mention} You have Successfully Quitted the Giveaway", delete_after=15)
+                    await ParticipantsMsg.edit(content=f":busts_in_silhouette: Participants - {MembersList}")
+                else:
+                    await ctx.send(f"{ctx.author.mention} You are Already not a Participant of this Giveaway", delete_after=15)
+        else:
+            await ctx.send(":exclamation: There is No Giveaway Active in this Server")
     
     @bot.command()
     @commands.has_role("Giveaway Handler")
@@ -463,6 +487,7 @@ class Giveaway():
 gstarthelp = ">gstart <channel> <prize> <endtime> <unit , for ex:- s,m,h>"
 gstophelp = ">gstop"
 gparticipatehelp = ">gparticipate"
+gquithelp = ">gquit"
 gstatushelp = ">gstatus"
 
 @bot.command()
@@ -755,7 +780,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n \n \t-> [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=0&scope=bot)")
         myEmbed.add_field(name=f"Commands — 36",value="----------------------\n",inline=False)
         myEmbed.add_field(name="Miscellaneous",value=" tell, ping, thought, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
-        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gpaticipate, info, join, leave, leaverserver, lock, resetnick, setnick, unlock ", inline=False)
+        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gpaticipate, gquit, info, join, leave, leaverserver, lock, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
         myEmbed.add_field(name="Fun",value=" slap, kill, punch \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value="----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `>`\n > Command Usage Example :   `>info`\n\n----------------------", inline=False)
@@ -783,6 +808,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "gstatus": content=gstatushelp
         elif anycommand == "gstop": content=gstophelp
         elif anycommand == "gparticipate": content=gparticipatehelp
+        elif anycommand == "gquit": content=gquithelp
         elif anycommand == "info": content=infohelp
         elif anycommand == "join": content=joinhelp
         elif anycommand == "leave": content=leavehelp
