@@ -477,23 +477,15 @@ class Giveaway():
     @bot.command()
     @commands.has_role("Giveaway Handler")
     async def gstop(ctx):
-        try:
-            global GiveawayActive, Participants, GiveawayChannel, MembersList
-            if GiveawayActive == True:
-                GiveawayActive = False
-                GiveawayChannel = None
-                Participants.clear()
-                MembersList = ""
-                await ctx.send(f"Giveaway has been Stopped by {ctx.author.mention}")
-            else:
-                await ctx.send(":exclamation: There is No Giveaway Active in this Server")
-        except Exception as e:
-            print(e)
-
-    @gstop.error
-    async def gstop_error(error, ctx):
-        if isinstance(error, MissingRole):
-            await ctx.send('You must have "Giveaway Handler" Role to do that')
+        global GiveawayActive, Participants, GiveawayChannel, MembersList
+        if GiveawayActive == True:
+            GiveawayActive = False
+            GiveawayChannel = None
+            Participants.clear()
+            MembersList = ""
+            await ctx.send(f"Giveaway has been Stopped by {ctx.author.mention}")
+        else:
+            await ctx.send(":exclamation: There is No Giveaway Active in this Server")
 
 gstarthelp = "`>gstart <channel> <prize> <endtime>`"
 gstophelp = "`>gstop`"
