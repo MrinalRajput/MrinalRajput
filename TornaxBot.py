@@ -33,37 +33,26 @@ Creater = "MrinalSparks#8633"
 
 @bot.event
 async def on_member_join(member):
-    try:
-        if member.guild.id == int(LegendServer):
-            role1 = discord.utils.get(member.guild.roles, id=875247780535345222)
-            role2 = discord.utils.get(member.guild.roles, id=875259339072491541)
-            await member.add_roles(role1)
-            await member.add_roles(role2)
-    except Exception as e:
-        print(e)
+    if member.guild.id == LegendServer:
+        role1 = discord.utils.get(member.guild.roles, id=875247780535345222)
+        role2 = discord.utils.get(member.guild.roles, id=875259339072491541)
+        await member.add_roles(role1)
+        await member.add_roles(role2)
 
 @bot.listen()
 async def on_message(message):
-    try:
-        if message.guild.name == "Legend Smp":
-            if message.author.id != 832897602768076816:
-                if ("smp" in message.content.lower() or "server" in message.content.lower()) and (" on " in message.content.lower() or "online" in message.content.lower() or "offline" in message.content.lower() or " off " in message.content.lower()):
-                    await message.channel.send(f"{message.author.mention} Please Check <#877777208108789770> for Live Updates of Smp")
-        else:
-            pass
-    except Exception as e:
-        print(e)
+    if message.guild.id == LegendServer:
+        if message.author.id != 832897602768076816:
+            if ("smp" in message.content.lower() or "server" in message.content.lower()) and (" on " in message.content.lower() or "online" in message.content.lower() or "offline" in message.content.lower() or " off " in message.content.lower()):
+                await message.channel.send(f"{message.author.mention} Please Check <#877777208108789770> for Live Updates of Smp")
         
 @bot.command()
 async def dmuser(ctx, member: discord.User, *, chat):
-    try:
-        if ctx.guild.name == "Legend Smp":
-            if ctx.author.id == 758941956600102943:
-                await member.send(chat)
-            else:
-                await ctx.send(f":exclamation: Sorry {ctx.author.mention}, You Don't have Access to use this Command")
-    except Exception as e:
-        print(e)
+    if ctx.guild.id == LegendServer:
+        if ctx.author.id == 758941956600102943:
+            await member.send(chat)
+        else:
+            await ctx.send(f":exclamation: Sorry {ctx.author.mention}, You Don't have Access to use this Command")
 
 @bot.listen()
 async def on_message(message):
@@ -78,41 +67,30 @@ async def on_message(message):
 
 @bot.listen()
 async def on_message(message):
-    try:
-        if message.guild.name == "Legend Smp":
-            if "start" in message.content.lower() and "smp" in message.content.lower():
-                await message.add_reaction("<:nahi:869447646866202624>")
-        else:
-            pass
-    except Exception as e:
-        print(e)
+    if message.guild.id == LegendServer:
+        if "start" in message.content.lower() and "smp" in message.content.lower():
+            await message.add_reaction("<:nahi:869447646866202624>")
 
 @bot.listen()
 async def on_message(message):
-    try:
-        global SmpStatus
-        Smpchannel = bot.get_channel(877777208108789770)
-        if message.channel == Smpchannel:
-            if message.author.id == 832897602768076816:
-                if "server has started" in message.content.lower():
-                    SmpStatus = True
-                    # print(f"Smp Status is {SmpStatus}")
-                elif "server has stopped" in message.content.lower():
-                    SmpStatus = False
-                    # print(f"Smp Status is {SmpStatus}")
-    except Exception as e:
-        print(e)
+    global SmpStatus
+    Smpchannel = bot.get_channel(877777208108789770)
+    if message.channel == Smpchannel:
+        if message.author.id == 832897602768076816:
+            if "server has started" in message.content.lower():
+                SmpStatus = True
+                # print(f"Smp Status is {SmpStatus}")
+            elif "server has stopped" in message.content.lower():
+                SmpStatus = False
+                # print(f"Smp Status is {SmpStatus}")
 
 @bot.command()
 async def status(ctx):
-    try:
-        if ctx.guild.id == int(LegendServer):
-            if SmpStatus == True:
-                await ctx.send(f":green_circle:  Server Is Online")
-            elif SmpStatus == False:
-                await ctx.send(f":red_circle:  Server Is Offline")
-    except Exception as e:
-        print(e)
+    if ctx.guild.id == LegendServer:
+        if SmpStatus == True:
+            await ctx.send(f":green_circle:  Server Is Online")
+        elif SmpStatus == False:
+            await ctx.send(f":red_circle:  Server Is Offline")
 
 ##############################
 #### All Servers Commands ####
@@ -122,26 +100,24 @@ async def status(ctx):
 @commands.has_permissions(ban_members=True)
 async def ban(ctx, member:discord.Member, days: Optional[int]=None, *, reason:Optional[str]=None):
     try:
-        try:
-            memberId = member.id
-            if days is not None:
-                wait = days * 86400
-                embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} for `{days}` Days **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} for `{days}` Days \n\t With the Reason of :\t{reason}**",color=embedTheme)
-                dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.name} for `{days}` Days **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.name} for `{days}` Days \n\t With the Reason of :\t{reason}**",color=embedTheme)
-                await ctx.send(embed=embed)
-                await member.send(embed=dmuser)
-                await member.ban(reason=reason)
-                await asyncio.sleep(wait)
-                await ctx.guild.unban(memberId)
-            else:
-                embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} \n\t With the Reason of :\t{reason}**",color=embedTheme)
-                dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.name} **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.name} \n\t With the Reason of :\t{reason}**",color=embedTheme)
-                await ctx.send(embed=embed)
-                await member.send(embed=dmuser)
-                await member.ban(reason=reason)
-        except Exception as e:
-            print(e)
-    except MissingPermissions:
+        memberId = member.id
+        if days is not None:
+            wait = days * 86400
+            embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} for `{days}` Days **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} for `{days}` Days \n\t With the Reason of :\t{reason}**",color=embedTheme)
+            dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.name} for `{days}` Days **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.name} for `{days}` Days \n\t With the Reason of :\t{reason}**",color=embedTheme)
+            await ctx.send(embed=embed)
+            await member.send(embed=dmuser)
+            await member.ban(reason=reason)
+            await asyncio.sleep(wait)
+            await ctx.guild.unban(memberId)
+        else:
+            embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} \n\t With the Reason of :\t{reason}**",color=embedTheme)
+            dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.name} **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.name} \n\t With the Reason of :\t{reason}**",color=embedTheme)
+            await ctx.send(embed=embed)
+            await member.send(embed=dmuser)
+            await member.ban(reason=reason)
+    except Exception as e:
+        print(e)
         await ctx.reply(f":exclamation: You don't have Permissions to do that!")
 
 banhelp = "`>ban <member> [days] [reason]`"
@@ -151,15 +127,13 @@ banhelp = "`>ban <member> [days] [reason]`"
 async def unban(ctx, id:int):
     global embedContent
     try:
-        try:
-            user = await bot.fetch_user(id)
-            await ctx.guild.unban(user)
-            embedContent = f"Unbanned : Successfully Unbanned {user} from {ctx.guild.name}"
-            embed = discord.Embed(description=embedContent, color=embedTheme)
-            await ctx.send(embed=embed)
-        except Exception as e:
-            print(e)
-    except MissingPermissions:
+        user = await bot.fetch_user(id)
+        await ctx.guild.unban(user)
+        embedContent = f"Unbanned : Successfully Unbanned {user} from {ctx.guild.name}"
+        embed = discord.Embed(description=embedContent, color=embedTheme)
+        await ctx.send(embed=embed)
+    except MissingPermissions and Exception as e:
+        print(e)
         await ctx.send(f":exclamation: {ctx.author.mention} You don't have Permissions to do that")
 
 unbanhelp = "`>unban <member id>`"
@@ -196,8 +170,8 @@ async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: O
                 await member.add_roles(mutedRole)
                 await ctx.send(embed=embed,delete_after=15)
                 await member.send(f"You are Muted in the Server by an Admin"if reason is None else f"You are Muted in the Server by an Admin\n\t With the Reason of {reason}")
-        except Exception as e:
-            print(e)
+        except Exception:
+            pass
     except MissingPermissions:
         await ctx.reply(f":exclamation: You don't have Permissions to do that!")
 
@@ -270,18 +244,14 @@ async def leaverserver_error(error, ctx):
 @commands.has_permissions(manage_nicknames=True)
 async def setnick(ctx, member: Optional[discord.Member]=None, *, newname):
     try:
-        try:
-            if member is None:
-                member = ctx.author
-            membername = member.name
-            await member.edit(nick=newname)
-            embed = discord.Embed(title=f" _Done_ : {membername}'s Nickname has Changed to {newname} Successfully! ", color=embedTheme)
-            embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-            await ctx.send(embed=embed, delete_after=15)
-        except Exception as e:
-            print(e)
-    except MissingPermissions as ms:
-        print(ms)
+        if member is None:
+            member = ctx.author
+        membername = member.name
+        await member.edit(nick=newname)
+        embed = discord.Embed(title=f" _Done_ : {membername}'s Nickname has Changed to {newname} Successfully! ", color=embedTheme)
+        embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+        await ctx.send(embed=embed, delete_after=15)
+    except MissingPermissions:
         await ctx.send(f":exclamation: You don't have Permissions to do that")
 
 setnickhelp = "`>setnick [member] <newname>`"
@@ -294,16 +264,13 @@ async def setnick_error(error, ctx):
 @bot.command()
 @commands.has_permissions(manage_nicknames=True)
 async def resetnick(ctx, member: Optional[discord.Member]=None):
-    try:
-        if member is None:
-            member = ctx.author
-        membername = member.name
-        await member.edit(nick=None)
-        embed = discord.Embed(title=f" _Done_ : {membername}'s Nickname has Removed Successfully! ", color=embedTheme)
-        embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-        await ctx.send(embed=embed, delete_after=15)
-    except Exception as e:
-        print(e)
+    if member is None:
+        member = ctx.author
+    membername = member.name
+    await member.edit(nick=None)
+    embed = discord.Embed(title=f" _Done_ : {membername}'s Nickname has Removed Successfully! ", color=embedTheme)
+    embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+    await ctx.send(embed=embed, delete_after=15)
 
 resetnickhelp = "`>resetnick [member]`"
 
@@ -331,17 +298,14 @@ cleanhelp = "`>clean <limit>`"
 @bot.command()
 @commands.has_permissions(manage_channels=True)
 async def lock(ctx, channel: Optional[discord.TextChannel]=None):
-    try:
-        if channel is None:
-            channel = ctx.channel
-        overwrite = channel.overwrites_for(ctx.guild.default_role)
-        overwrite.send_messages=False
-        await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
-        embed = discord.Embed(description=f"** Locked : {channel.mention} has been Locked by {ctx.author.mention} **", color=embedTheme)
-        embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-        await ctx.send(embed=embed)
-    except Exception as e:
-        print(e)
+    if channel is None:
+        channel = ctx.channel
+    overwrite = channel.overwrites_for(ctx.guild.default_role)
+    overwrite.send_messages=False
+    await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
+    embed = discord.Embed(description=f"** Locked : {channel.mention} has been Locked by {ctx.author.mention} **", color=embedTheme)
+    embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+    await ctx.send(embed=embed)
 
 lockhelp = "`>lock [channel]`"
 
@@ -390,49 +354,45 @@ class Giveaway():
     @commands.has_role("Giveaway Handler")
     async def gstart(ctx, Channel:discord.TextChannel, prize:str, endtime:int):
         global GiveawayActive, GiveawayChannel, StartAnnounce, MembersList
-        try:
-            if GiveawayActive == False:
-                GiveawayActive = True
-                GiveawayChannel = Channel
-                listtostr = list(Participants.keys())
-                members = str(listtostr)
+        if GiveawayActive == False:
+            GiveawayActive = True
+            GiveawayChannel = Channel
+            listtostr = list(Participants.keys())
+            members = str(listtostr)
 
-                members = members.replace("'","") 
-                members = members.replace("[","") 
-                members = members.replace("]","")
-                # await asyncio.sleep(int(endtime))
-                StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:\n :busts_in_silhouette: Participants - {MembersList}")
+            members = members.replace("'","") 
+            members = members.replace("[","") 
+            members = members.replace("]","")
+            # await asyncio.sleep(int(endtime))
+            StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:\n :busts_in_silhouette: Participants - {MembersList}")
 
-                while -1 < endtime < endtime+1:
-                    if GiveawayActive ==True:
-                        await asyncio.sleep(0.7)
-                        endtime -= 1
-                        await StartAnnounce.edit(content=f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:\n :busts_in_silhouette: Participants - {MembersList}")
+            while -1 < endtime < endtime+1:
+                if GiveawayActive ==True:
+                    await asyncio.sleep(0.7)
+                    endtime -= 1
+                    await StartAnnounce.edit(content=f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:\n :busts_in_silhouette: Participants - {MembersList}")
 
-                if GiveawayActive == True:
-                    if len(Participants) == 0:
-                        Participants["No One"] = "No one Participated"
-                    winnerCode = random.choice(list(Participants.values()))
-                    CodeOwner = [k for k, v in Participants.items() if v == winnerCode]
-                    print(CodeOwner)
-                    winnerName = str(CodeOwner[0])
-                    winner = f"{winnerName} || {winnerCode}"
+            if GiveawayActive == True:
+                if len(Participants) == 0:
+                    Participants["No One"] = "No one Participated"
+                winnerCode = random.choice(list(Participants.values()))
+                CodeOwner = [k for k, v in Participants.items() if v == winnerCode]
+                print(CodeOwner)
+                winnerName = str(CodeOwner[0])
+                winner = f"{winnerName} || {winnerCode}"
 
-                    embed = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||\n",color=embedTheme)
-                    embed.add_field(name="Winner of the Giveaway",value=f"{winner}",inline=True)
-                    embed.add_field(name="Prize",value=f"{prize}",inline=True)
-                    embed.add_field(name="Participants",value=f"{MembersList}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
+                embed = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||\n",color=embedTheme)
+                embed.add_field(name="Winner of the Giveaway",value=f"{winner}",inline=True)
+                embed.add_field(name="Prize",value=f"{prize}",inline=True)
+                embed.add_field(name="Participants",value=f"{MembersList}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
 
-                    await GiveawayChannel.send(embed=embed)
-                    Participants.clear()
-                    MembersList = ""
-                    GiveawayActive = False
-                    GiveawayChannel = None
-            else:
-                await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
-        except Exception as e:
-            print(e)
-            await ctx.send(f':exclamation: Either you must have a Role "Giveaway Handler" to do that')
+                await GiveawayChannel.send(embed=embed)
+                Participants.clear()
+                MembersList = ""
+                GiveawayActive = False
+                GiveawayChannel = None
+        else:
+            await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
     
     @gstart.error
     async def gstart_error(error, ctx):
@@ -486,6 +446,11 @@ class Giveaway():
             await ctx.send(f"Giveaway has been Stopped by {ctx.author.mention}")
         else:
             await ctx.send(":exclamation: There is No Giveaway Active in this Server")
+
+    @gstop.error
+    async def gstop_error(error, ctx):
+        if isinstance(error, MissingRole):
+            await ctx.send('You must have "Giveaway Handler" Role to do that')
 
 gstarthelp = "`>gstart <channel> <prize> <endtime>`"
 gstophelp = "`>gstop`"
