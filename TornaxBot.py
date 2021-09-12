@@ -176,7 +176,8 @@ async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: O
                 await member.add_roles(mutedRole)
                 await ctx.send(embed=embed,delete_after=15)
                 await member.send(f"You are Muted in the Server by an Admin"if reason is None else f"You are Muted in the Server by an Admin\n\t With the Reason of {reason}")
-        except Exception:
+        except Exception as e:
+            print(e)
     except MissingPermissions:
         await ctx.reply(f":exclamation: You don't have Permissions to do that!")
 
@@ -307,14 +308,17 @@ cleanhelp = "`>clean <limit>`"
 @bot.command()
 @commands.has_permissions(manage_channels=True)
 async def lock(ctx, channel: Optional[discord.TextChannel]=None):
-    if channel is None:
-        channel = ctx.channel
-    overwrite = channel.overwrites_for(ctx.guild.default_role)
-    overwrite.send_messages=False
-    await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
-    embed = discord.Embed(description=f"** Locked : {channel.mention} has been Locked by {ctx.author.mention} **", color=embedTheme)
-    embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-    await ctx.send(embed=embed)
+    try:
+        if channel is None:
+            channel = ctx.channel
+        overwrite = channel.overwrites_for(ctx.guild.default_role)
+        overwrite.send_messages=False
+        await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
+        embed = discord.Embed(description=f"** Locked : {channel.mention} has been Locked by {ctx.author.mention} **", color=embedTheme)
+        embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+        await ctx.send(embed=embed)
+    except Exception as e:
+        print(e)
 
 lockhelp = "`>lock [channel]`"
 
