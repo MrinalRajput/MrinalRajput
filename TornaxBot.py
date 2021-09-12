@@ -775,7 +775,7 @@ helphelp = ">help [anycommand]"
 @bot.command()
 async def help(ctx, anycommand: Optional[str]=None):
     print(bot.all_commands.keys())
-    totalCommands = print(len(bot.all_commands))
+    totalCommands = print(len(bot.all_commands.keys()))
     if anycommand is None:
         randomGreet = random.choice(["Hi","Hey","Hello"])
         myEmbed = discord.Embed(color = embedTheme)
