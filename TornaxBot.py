@@ -390,11 +390,6 @@ class Giveaway():
                 GiveawayChannel = None
         else:
             await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
-    
-    @gstart.error
-    async def gstart_error(error, ctx):
-        if isinstance(error, MissingRole):
-            await ctx.send('You must have "Giveaway Handler" Role to do that')
 
     @bot.command()
     async def gparticipate(ctx):
@@ -443,11 +438,6 @@ class Giveaway():
             await ctx.send(f"Giveaway has been Stopped by {ctx.author.mention}")
         else:
             await ctx.send(":exclamation: There is No Giveaway Active in this Server")
-
-    @gstop.error
-    async def gstop_error(error, ctx):
-        if isinstance(error, MissingRole):
-            await ctx.send('You must have "Giveaway Handler" Role to do that')
 
 gstarthelp = "`>gstart <channel> <prize> <endtime>`"
 gstophelp = "`>gstop`"
@@ -712,15 +702,11 @@ async def avatar(ctx, owner: Optional[discord.Member]=None):
 
 avatarhelp = "`>avatar [user]`"
 
-
-
 @bot.event
 async def on_guild_join(guild):
     for channel in guild.text_channels:
         if channel.permissions_for(guild.me).send_messages:
-            await channel.send(f'Hey there! Thanks for Adding me in {guild.name}')
-            await help()
-        break
+            await channel.send(f'Hey there! Thanks for Adding me in {guild.name}, Type `>help` to get All about me')
 
 @bot.command()
 async def info(ctx):
