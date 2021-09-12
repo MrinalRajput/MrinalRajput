@@ -45,7 +45,7 @@ async def on_member_join(member):
 @bot.listen()
 async def on_message(message):
     try:
-        if message.guild.id == int(LegendServer):
+        if message.guild.name == "Legend Smp":
             if message.author.id != 832897602768076816:
                 if ("smp" in message.content.lower() or "server" in message.content.lower()) and (" on " in message.content.lower() or "online" in message.content.lower() or "offline" in message.content.lower() or " off " in message.content.lower()):
                     await message.channel.send(f"{message.author.mention} Please Check <#877777208108789770> for Live Updates of Smp")
@@ -57,7 +57,7 @@ async def on_message(message):
 @bot.command()
 async def dmuser(ctx, member: discord.User, *, chat):
     try:
-        if ctx.guild.id == int(LegendServer):
+        if ctx.guild.name == "Legend Smp":
             if ctx.author.id == 758941956600102943:
                 await member.send(chat)
             else:
@@ -79,7 +79,7 @@ async def on_message(message):
 @bot.listen()
 async def on_message(message):
     try:
-        if message.guild.id == int(LegendServer):
+        if message.guild.name == "Legend Smp":
             if "start" in message.content.lower() and "smp" in message.content.lower():
                 await message.add_reaction("<:nahi:869447646866202624>")
         else:
