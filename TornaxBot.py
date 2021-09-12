@@ -31,58 +31,58 @@ SmpStatus = False
 LegendServer = 869439705714933780
 Creater = "MrinalSparks#8633"
 
-@bot.event
-async def on_member_join(member):
-    if member.guild.id == LegendServer:
-        role1 = discord.utils.get(member.guild.roles, id=875247780535345222)
-        role2 = discord.utils.get(member.guild.roles, id=875259339072491541)
-        await member.add_roles(role1)
-        await member.add_roles(role2)
+# @bot.event
+# async def on_member_join(member):
+#     if member.guild.id == LegendServer:
+#         role1 = discord.utils.get(member.guild.roles, id=875247780535345222)
+#         role2 = discord.utils.get(member.guild.roles, id=875259339072491541)
+#         await member.add_roles(role1)
+#         await member.add_roles(role2)
 
-@bot.listen()
-async def on_message(message):
-    if message.guild.id == LegendServer:
-        if message.author.id != 832897602768076816:
-            if ("smp" in message.content.lower() or "server" in message.content.lower()) and (" on " in message.content.lower() or "online" in message.content.lower() or "offline" in message.content.lower() or " off " in message.content.lower()):
-                await message.channel.send(f"{message.author.mention} Please Check <#877777208108789770> for Live Updates of Smp")
+# @bot.listen()
+# async def on_message(message):
+#     if message.guild.id == LegendServer:
+#         if message.author.id != 832897602768076816:
+#             if ("smp" in message.content.lower() or "server" in message.content.lower()) and (" on " in message.content.lower() or "online" in message.content.lower() or "offline" in message.content.lower() or " off " in message.content.lower()):
+#                 await message.channel.send(f"{message.author.mention} Please Check <#877777208108789770> for Live Updates of Smp")
         
-@bot.command()
-async def dmuser(ctx, member: discord.User, *, chat):
-    if ctx.guild.id == LegendServer:
-        if ctx.author.id == 758941956600102943:
-            await member.send(chat)
-        else:
-            await ctx.send(f":exclamation: Sorry {ctx.author.mention}, You Don't have Access to use this Command")
+# @bot.command()
+# async def dmuser(ctx, member: discord.User, *, chat):
+#     if ctx.guild.id == LegendServer:
+#         if ctx.author.id == 758941956600102943:
+#             await member.send(chat)
+#         else:
+#             await ctx.send(f":exclamation: Sorry {ctx.author.mention}, You Don't have Access to use this Command")
 
-@bot.listen()
-async def on_message(message):
-    if message.channel == message.author.dm_channel:
-        channelid = 874904257265008670
-        modmail = bot.get_channel(channelid)
-        embed = discord.Embed(title=f"{message.author}", color=embedTheme)
-        embed.add_field(name="Message\n",value=f"{message.content}\n\n--------------------------",inline=False)
-        embed.set_footer(icon_url=message.author.avatar_url,text=f"ID -> {message.author.id}")
-        await modmail.send(embed=embed)
-        # print(f"{message.author} -> {message.content}")
+# @bot.listen()
+# async def on_message(message):
+#     if message.channel == message.author.dm_channel:
+#         channelid = 874904257265008670
+#         modmail = bot.get_channel(channelid)
+#         embed = discord.Embed(title=f"{message.author}", color=embedTheme)
+#         embed.add_field(name="Message\n",value=f"{message.content}\n\n--------------------------",inline=False)
+#         embed.set_footer(icon_url=message.author.avatar_url,text=f"ID -> {message.author.id}")
+#         await modmail.send(embed=embed)
+#         # print(f"{message.author} -> {message.content}")
 
-@bot.listen()
-async def on_message(message):
-    if message.guild.id == LegendServer:
-        if "start" in message.content.lower() and "smp" in message.content.lower():
-            await message.add_reaction("<:nahi:869447646866202624>")
+# @bot.listen()
+# async def on_message(message):
+#     if message.guild.id == LegendServer:
+#         if "start" in message.content.lower() and "smp" in message.content.lower():
+#             await message.add_reaction("<:nahi:869447646866202624>")
 
-@bot.listen()
-async def on_message(message):
-    global SmpStatus
-    Smpchannel = bot.get_channel(877777208108789770)
-    if message.channel == Smpchannel:
-        if message.author.id == 832897602768076816:
-            if "server has started" in message.content.lower():
-                SmpStatus = True
-                # print(f"Smp Status is {SmpStatus}")
-            elif "server has stopped" in message.content.lower():
-                SmpStatus = False
-                # print(f"Smp Status is {SmpStatus}")
+# @bot.listen()
+# async def on_message(message):
+#     global SmpStatus
+#     Smpchannel = bot.get_channel(877777208108789770)
+#     if message.channel == Smpchannel:
+#         if message.author.id == 832897602768076816:
+#             if "server has started" in message.content.lower():
+#                 SmpStatus = True
+#                 # print(f"Smp Status is {SmpStatus}")
+#             elif "server has stopped" in message.content.lower():
+#                 SmpStatus = False
+#                 # print(f"Smp Status is {SmpStatus}")
 
 @bot.command()
 async def status(ctx):
