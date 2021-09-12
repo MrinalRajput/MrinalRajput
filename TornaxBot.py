@@ -102,24 +102,27 @@ async def status(ctx):
 @commands.has_permissions(ban_members=True)
 async def ban(ctx, member:discord.Member, days: Optional[int]=None, *, reason:Optional[str]=None):
     try:
-        memberId = member.id
-        if days is not None:
-            wait = days * 86400
-            embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} for `{days}` Days **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} for `{days}` Days \n\t With the Reason of :\t{reason}**",color=embedTheme)
-            dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.name} for `{days}` Days **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.name} for `{days}` Days \n\t With the Reason of :\t{reason}**",color=embedTheme)
-            await ctx.send(embed=embed)
-            await member.send(embed=dmuser)
-            await member.ban(reason=reason)
-            await asyncio.sleep(wait)
-            await ctx.guild.unban(memberId)
-        else:
-            embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} \n\t With the Reason of :\t{reason}**",color=embedTheme)
-            dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.name} **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.name} \n\t With the Reason of :\t{reason}**",color=embedTheme)
-            await ctx.send(embed=embed)
-            await member.send(embed=dmuser)
-            await member.ban(reason=reason)
-    except Exception as e:
-        print(e)
+        try:
+            memberId = member.id
+            if days is not None:
+                wait = days * 86400
+                embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} for `{days}` Days **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} for `{days}` Days \n\t With the Reason of :\t{reason}**",color=embedTheme)
+                dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.name} for `{days}` Days **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.name} for `{days}` Days \n\t With the Reason of :\t{reason}**",color=embedTheme)
+                await ctx.send(embed=embed)
+                await member.send(embed=dmuser)
+                await member.ban(reason=reason)
+                await asyncio.sleep(wait)
+                await ctx.guild.unban(memberId)
+            else:
+                embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} \n\t With the Reason of :\t{reason}**",color=embedTheme)
+                dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.name} **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.name} \n\t With the Reason of :\t{reason}**",color=embedTheme)
+                await ctx.send(embed=embed)
+                await member.send(embed=dmuser)
+                await member.ban(reason=reason)
+        except Exception as e:
+            print(e)
+            pass
+    except MissingPermissions:
         await ctx.reply(f":exclamation: You don't have Permissions to do that!")
 
 banhelp = "`>ban <member> [days] [reason]`"
@@ -129,13 +132,16 @@ banhelp = "`>ban <member> [days] [reason]`"
 async def unban(ctx, id:int):
     global embedContent
     try:
-        user = await bot.fetch_user(id)
-        await ctx.guild.unban(user)
-        embedContent = f"Unbanned : Successfully Unbanned {user} from {ctx.guild.name}"
-        embed = discord.Embed(description=embedContent, color=embedTheme)
-        await ctx.send(embed=embed)
-    except MissingPermissions and Exception as e:
-        print(e)
+        try:
+            user = await bot.fetch_user(id)
+            await ctx.guild.unban(user)
+            embedContent = f"Unbanned : Successfully Unbanned {user} from {ctx.guild.name}"
+            embed = discord.Embed(description=embedContent, color=embedTheme)
+            await ctx.send(embed=embed)
+        except Exception as e:
+            print(e)
+            pass
+    except MissingPermissions:
         await ctx.send(f":exclamation: {ctx.author.mention} You don't have Permissions to do that")
 
 unbanhelp = "`>unban <member id>`"
