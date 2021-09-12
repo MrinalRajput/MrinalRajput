@@ -780,9 +780,9 @@ async def help(ctx, anycommand: Optional[str]=None):
         randomGreet = random.choice(["Hi","Hey","Hello"])
         myEmbed = discord.Embed(color = embedTheme)
         myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n \n \t-> [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=0&scope=bot)")
-        myEmbed.add_field(name=f"Commands — 37",value="----------------------\n",inline=False)
+        myEmbed.add_field(name=f"Commands — 38",value="----------------------\n",inline=False)
         myEmbed.add_field(name="Miscellaneous",value=" tell, ping, thought, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
-        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gpaticipate, gquit, info, join, leave, leaverserver, lock, resetnick, setnick, unlock ", inline=False)
+        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gpaticipate, gquit, info, about, join, leave, leaverserver, lock, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
         myEmbed.add_field(name="Fun",value=" slap, kill, punch \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value="----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `>`\n > Command Usage Example :   `>info`\n\n----------------------", inline=False)
@@ -812,6 +812,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "gparticipate": content=gparticipatehelp
         elif anycommand == "gquit": content=gquithelp
         elif anycommand == "info": content=infohelp
+        elif anycommand == "about": content=abouthelp
         elif anycommand == "join": content=joinhelp
         elif anycommand == "leave": content=leavehelp
         elif anycommand == "leaveserver": content=leaveserverhelp
