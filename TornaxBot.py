@@ -33,26 +33,37 @@ Creater = "MrinalSparks#8633"
 
 @bot.event
 async def on_member_join(member):
-    if member.guild.id == LegendServer:
-        role1 = discord.utils.get(member.guild.roles, id=875247780535345222)
-        role2 = discord.utils.get(member.guild.roles, id=875259339072491541)
-        await member.add_roles(role1)
-        await member.add_roles(role2)
+    try:
+        if member.guild.id == int(LegendServer):
+            role1 = discord.utils.get(member.guild.roles, id=875247780535345222)
+            role2 = discord.utils.get(member.guild.roles, id=875259339072491541)
+            await member.add_roles(role1)
+            await member.add_roles(role2)
+    except Exception as e:
+        print(e)
 
 @bot.listen()
 async def on_message(message):
-    if message.guild.id == LegendServer:
-        if message.author.id != 832897602768076816:
-            if ("smp" in message.content.lower() or "server" in message.content.lower()) and (" on " in message.content.lower() or "online" in message.content.lower() or "offline" in message.content.lower() or " off " in message.content.lower()):
-                await message.channel.send(f"{message.author.mention} Please Check <#877777208108789770> for Live Updates of Smp")
+    try:
+        if message.guild.id == int(LegendServer):
+            if message.author.id != 832897602768076816:
+                if ("smp" in message.content.lower() or "server" in message.content.lower()) and (" on " in message.content.lower() or "online" in message.content.lower() or "offline" in message.content.lower() or " off " in message.content.lower()):
+                    await message.channel.send(f"{message.author.mention} Please Check <#877777208108789770> for Live Updates of Smp")
+        else:
+            pass
+    except Exception as e:
+        print(e)
         
 @bot.command()
 async def dmuser(ctx, member: discord.User, *, chat):
-    if ctx.guild.id == LegendServer:
-        if ctx.author.id == 758941956600102943:
-            await member.send(chat)
-        else:
-            await ctx.send(f":exclamation: Sorry {ctx.author.mention}, You Don't have Access to use this Command")
+    try:
+        if ctx.guild.id == int(LegendServer):
+            if ctx.author.id == 758941956600102943:
+                await member.send(chat)
+            else:
+                await ctx.send(f":exclamation: Sorry {ctx.author.mention}, You Don't have Access to use this Command")
+    except Exception as e:
+        print(e)
 
 @bot.listen()
 async def on_message(message):
@@ -67,32 +78,41 @@ async def on_message(message):
 
 @bot.listen()
 async def on_message(message):
-    if message.guild.id == LegendServer:
-        if "start" in message.content.lower() and "smp" in message.content.lower():
-            await message.add_reaction("<:nahi:869447646866202624>")
-    else:
-        pass
+    try:
+        if message.guild.id == int(LegendServer):
+            if "start" in message.content.lower() and "smp" in message.content.lower():
+                await message.add_reaction("<:nahi:869447646866202624>")
+        else:
+            pass
+    except Exception as e:
+        print(e)
 
 @bot.listen()
 async def on_message(message):
-    global SmpStatus
-    Smpchannel = bot.get_channel(877777208108789770)
-    if message.channel == Smpchannel:
-        if message.author.id == 832897602768076816:
-            if "server has started" in message.content.lower():
-                SmpStatus = True
-                # print(f"Smp Status is {SmpStatus}")
-            elif "server has stopped" in message.content.lower():
-                SmpStatus = False
-                # print(f"Smp Status is {SmpStatus}")
+    try:
+        global SmpStatus
+        Smpchannel = bot.get_channel(877777208108789770)
+        if message.channel == Smpchannel:
+            if message.author.id == 832897602768076816:
+                if "server has started" in message.content.lower():
+                    SmpStatus = True
+                    # print(f"Smp Status is {SmpStatus}")
+                elif "server has stopped" in message.content.lower():
+                    SmpStatus = False
+                    # print(f"Smp Status is {SmpStatus}")
+    except Exception as e:
+        print(e)
 
 @bot.command()
 async def status(ctx):
-    if ctx.guild.id == LegendServer:
-        if SmpStatus == True:
-            await ctx.send(f":green_circle:  Server Is Online")
-        elif SmpStatus == False:
-            await ctx.send(f":red_circle:  Server Is Offline")
+    try:
+        if ctx.guild.id == int(LegendServer):
+            if SmpStatus == True:
+                await ctx.send(f":green_circle:  Server Is Online")
+            elif SmpStatus == False:
+                await ctx.send(f":red_circle:  Server Is Offline")
+    except Exception as e:
+        print(e)
 
 ##############################
 #### All Servers Commands ####
