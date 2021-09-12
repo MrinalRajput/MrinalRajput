@@ -31,58 +31,58 @@ SmpStatus = False
 LegendServer = 869439705714933780
 Creater = "MrinalSparks#8633"
 
-# @bot.event
-# async def on_member_join(member):
-#     if member.guild.id == LegendServer:
-#         role1 = discord.utils.get(member.guild.roles, id=875247780535345222)
-#         role2 = discord.utils.get(member.guild.roles, id=875259339072491541)
-#         await member.add_roles(role1)
-#         await member.add_roles(role2)
+@bot.event
+async def on_member_join(member):
+    if member.guild.id == LegendServer:
+        role1 = discord.utils.get(member.guild.roles, id=875247780535345222)
+        role2 = discord.utils.get(member.guild.roles, id=875259339072491541)
+        await member.add_roles(role1)
+        await member.add_roles(role2)
 
-# @bot.listen()
-# async def on_message(message):
-#     if message.guild.id == LegendServer:
-#         if message.author.id != 832897602768076816:
-#             if ("smp" in message.content.lower() or "server" in message.content.lower()) and (" on " in message.content.lower() or "online" in message.content.lower() or "offline" in message.content.lower() or " off " in message.content.lower()):
-#                 await message.channel.send(f"{message.author.mention} Please Check <#877777208108789770> for Live Updates of Smp")
+@bot.listen()
+async def on_message(message):
+    if message.guild.id == LegendServer:
+        if message.author.id != 832897602768076816:
+            if ("smp" in message.content.lower() or "server" in message.content.lower()) and (" on " in message.content.lower() or "online" in message.content.lower() or "offline" in message.content.lower() or " off " in message.content.lower()):
+                await message.channel.send(f"{message.author.mention} Please Check <#877777208108789770> for Live Updates of Smp")
         
-# @bot.command()
-# async def dmuser(ctx, member: discord.User, *, chat):
-#     if ctx.guild.id == LegendServer:
-#         if ctx.author.id == 758941956600102943:
-#             await member.send(chat)
-#         else:
-#             await ctx.send(f":exclamation: Sorry {ctx.author.mention}, You Don't have Access to use this Command")
+@bot.command()
+async def dmuser(ctx, member: discord.User, *, chat):
+    if ctx.guild.id == LegendServer:
+        if ctx.author.id == 758941956600102943:
+            await member.send(chat)
+        else:
+            await ctx.send(f":exclamation: Sorry {ctx.author.mention}, You Don't have Access to use this Command")
 
-# @bot.listen()
-# async def on_message(message):
-#     if message.channel == message.author.dm_channel:
-#         channelid = 874904257265008670
-#         modmail = bot.get_channel(channelid)
-#         embed = discord.Embed(title=f"{message.author}", color=embedTheme)
-#         embed.add_field(name="Message\n",value=f"{message.content}\n\n--------------------------",inline=False)
-#         embed.set_footer(icon_url=message.author.avatar_url,text=f"ID -> {message.author.id}")
-#         await modmail.send(embed=embed)
-#         # print(f"{message.author} -> {message.content}")
+@bot.listen()
+async def on_message(message):
+    if message.channel == message.author.dm_channel:
+        channelid = 874904257265008670
+        modmail = bot.get_channel(channelid)
+        embed = discord.Embed(title=f"{message.author}", color=embedTheme)
+        embed.add_field(name="Message\n",value=f"{message.content}\n\n--------------------------",inline=False)
+        embed.set_footer(icon_url=message.author.avatar_url,text=f"ID -> {message.author.id}")
+        await modmail.send(embed=embed)
+        # print(f"{message.author} -> {message.content}")
 
-# @bot.listen()
-# async def on_message(message):
-#     if message.guild.id == LegendServer:
-#         if "start" in message.content.lower() and "smp" in message.content.lower():
-#             await message.add_reaction("<:nahi:869447646866202624>")
+@bot.listen()
+async def on_message(message):
+    if message.guild.id == LegendServer:
+        if "start" in message.content.lower() and "smp" in message.content.lower():
+            await message.add_reaction("<:nahi:869447646866202624>")
 
-# @bot.listen()
-# async def on_message(message):
-#     global SmpStatus
-#     Smpchannel = bot.get_channel(877777208108789770)
-#     if message.channel == Smpchannel:
-#         if message.author.id == 832897602768076816:
-#             if "server has started" in message.content.lower():
-#                 SmpStatus = True
-#                 # print(f"Smp Status is {SmpStatus}")
-#             elif "server has stopped" in message.content.lower():
-#                 SmpStatus = False
-#                 # print(f"Smp Status is {SmpStatus}")
+@bot.listen()
+async def on_message(message):
+    global SmpStatus
+    Smpchannel = bot.get_channel(877777208108789770)
+    if message.channel == Smpchannel:
+        if message.author.id == 832897602768076816:
+            if "server has started" in message.content.lower():
+                SmpStatus = True
+                # print(f"Smp Status is {SmpStatus}")
+            elif "server has stopped" in message.content.lower():
+                SmpStatus = False
+                # print(f"Smp Status is {SmpStatus}")
 
 @bot.command()
 async def status(ctx):
@@ -120,7 +120,7 @@ async def ban(ctx, member:discord.Member, days: Optional[int]=None, *, reason:Op
         print(e)
         await ctx.reply(f":exclamation: You don't have Permissions to do that!")
 
-banhelp = "`>ban <member> [days] [reason]`"
+banhelp = ">ban <member> [days] [reason]"
 
 @bot.command()
 @commands.has_permissions(ban_members=True)
@@ -136,7 +136,7 @@ async def unban(ctx, id:int):
         print(e)
         await ctx.send(f":exclamation: {ctx.author.mention} You don't have Permissions to do that")
 
-unbanhelp = "`>unban <member id>`"
+unbanhelp = ">unban <member id>"
 
 @bot.command()
 @commands.has_permissions(kick_members=True)
@@ -175,7 +175,7 @@ async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: O
     except MissingPermissions:
         await ctx.reply(f":exclamation: You don't have Permissions to do that!")
 
-mutehelp = "`>mute <member> [duration] [unit = s,m,h] [reason]`"
+mutehelp = ">mute <member> [duration] [unit = s,m,h] [reason]"
 
 @bot.command()
 @commands.has_permissions(kick_members=True)
@@ -189,7 +189,7 @@ async def unmute(ctx, member:discord.Member, reason: Optional[str]=None):
         embed = discord.Embed(description=f"** :exclamation: {member.mention} is Not Muted in this Server **",color=embedTheme)
         await ctx.send(embed=embed,delete_after=15)
 
-unmutehelp = "`>unmute <member> [reason]`"
+unmutehelp = ">unmute <member> [reason]"
 
 @bot.command()
 @commands.has_permissions(administrator=True)
@@ -200,7 +200,7 @@ async def warn(ctx, member:discord.Member, *, reason=None):
     else:
         await ctx.send(f"You must Specify the User whom you want to Warn")
 
-warnhelp = "`>warn <member> [reason]`"
+warnhelp = ">warn <member> [reason]"
 
 @warn.error
 async def warn_error(error, ctx):
@@ -220,7 +220,7 @@ async def kick(ctx, member:discord.Member, *, reason=None):
     else:
         await ctx.send(f"You must Specify the User whom you want to Kick from the Server")
 
-kickhelp = "`>kick <member> [reason]`"
+kickhelp = ">kick <member> [reason]"
 
 @kick.error
 async def kick_error(error, ctx):
@@ -233,7 +233,7 @@ async def leaveserver(ctx):
         await ctx.guild.leave()
         # await ctx.send(f"{ctx.author.mention} Sorry you don't have Access to use this Command")
 
-leaveserverhelp = "`>leaveserver`"
+leaveserverhelp = ">leaveserver"
 
 @leaveserver.error
 async def leaverserver_error(error, ctx):
@@ -251,7 +251,7 @@ async def setnick(ctx, member: Optional[discord.Member]=None, *, newname):
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=embed, delete_after=15)
 
-setnickhelp = "`>setnick [member] <newname>`"
+setnickhelp = ">setnick [member] <newname>"
 
 @setnick.error
 async def setnick_error(error, ctx):
@@ -269,7 +269,7 @@ async def resetnick(ctx, member: Optional[discord.Member]=None):
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=embed, delete_after=15)
 
-resetnickhelp = "`>resetnick [member]`"
+resetnickhelp = ">resetnick [member]"
 
 @resetnick.error
 async def resetnick_error(error, ctx):
@@ -290,7 +290,7 @@ async def clean(ctx, limit:int):
         embed = discord.Embed(title=f"Nothing Deleted from this Channel", color=embedTheme)
         await ctx.send(embed=embed,delete_after=8)    
 
-cleanhelp = "`>clean <limit>`"
+cleanhelp = ">clean <limit>"
 
 @bot.command()
 @commands.has_permissions(manage_channels=True)
@@ -304,7 +304,7 @@ async def lock(ctx, channel: Optional[discord.TextChannel]=None):
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=embed)
 
-lockhelp = "`>lock [channel]`"
+lockhelp = ">lock [channel]"
 
 @bot.command()
 @commands.has_permissions(manage_channels=True)
@@ -318,7 +318,7 @@ async def unlock(ctx, channel: Optional[discord.TextChannel]=None):
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=embed)
 
-unlockhelp = "`>unlock [channel]`"
+unlockhelp = ">unlock [channel]"
 
 @bot.command()
 async def thought(ctx, *, word):
@@ -329,7 +329,7 @@ async def thought(ctx, *, word):
         embed = discord.Embed(title=f"\t{word.upper()}", color=embedTheme)
         await ctx.send(embed=embed)
 
-thoughthelp = "`>thought <word>`"
+thoughthelp = ">thought <word>"
 
 class Giveaway():
     global GiveawayActive
@@ -451,17 +451,17 @@ class Giveaway():
         else:
             await ctx.send(":exclamation: There is No Giveaway Active in this Server")
 
-gstarthelp = "`>gstart <channel> <prize> <endtime> <unit , for ex:- s,m,h>`"
-gstophelp = "`>gstop`"
-gparticipatehelp = "`>gparticipate`"
-gstatushelp = "`>gstatus`"
+gstarthelp = ">gstart <channel> <prize> <endtime> <unit , for ex:- s,m,h>"
+gstophelp = ">gstop"
+gparticipatehelp = ">gparticipate"
+gstatushelp = ">gstatus"
 
 @bot.command()
 async def react(ctx, chat:Optional[discord.Message], emoji):
     message = chat
     await message.add_reaction(emoji)
 
-reacthelp = "`>react <message id> <emoji>`"
+reacthelp = ">react <message id> <emoji>"
 
 @bot.command()
 async def join(ctx):
@@ -474,7 +474,7 @@ async def join(ctx):
     except CommandInvokeError:
         await ctx.send(f":exclamation: {ctx.author.mention} You must be in a Voice Channel to do that!")
 
-joinhelp = "`>join`"
+joinhelp = ">join"
 
 @bot.command()
 async def leave(ctx):
@@ -486,7 +486,7 @@ async def leave(ctx):
     except CommandInvokeError:
         await ctx.send(f":exclamation: {ctx.author.mention} You must be in a Voice Channel to do that!")
 
-leavehelp = "`>leave`"
+leavehelp = ">leave"
 
 @bot.command()
 @commands.has_permissions(manage_roles=True)
@@ -503,7 +503,7 @@ async def addrole(ctx, member: Optional[discord.Member]=None, role: discord.Role
         embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
         await ctx.send(embed=embed, delete_after=8)
 
-addrolehelp = "`>addrole [member] <role>`"
+addrolehelp = ">addrole [member] <role>"
 
 @bot.command()
 @commands.has_permissions(manage_roles=True)
@@ -520,7 +520,7 @@ async def removerole(ctx, member: Optional[discord.Member]=None, role: discord.R
         embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
         await ctx.send(embed=embed, delete_after=8)
 
-removerolehelp = "`>removerole [member] <role>`"
+removerolehelp = ">removerole [member] <role>"
 
 @bot.command()
 async def solve(ctx, num1, operation, num2):
@@ -545,7 +545,7 @@ async def solve(ctx, num1, operation, num2):
         embed = discord.Embed(title="Command : >solve", description=f"Usage : >solve [Number1] [Operation: +,-,*,/] [Number2]",color=embedTheme)
         await ctx.send(embed=embed)
 
-solvehelp = "`>solve <number1> <operation = +,-,×,÷> <number2>`"
+solvehelp = ">solve <number1> <operation = +,-,×,÷> <number2>"
 
 timer = False
 
@@ -572,7 +572,7 @@ async def timerstart(ctx, seconds:int, *, reason: Optional[str]=None):
     else:
         await ctx.send(f":exclamation: {ctx.author.mention} A Timer is already Running in this Server")
 
-timerstarthelp = "`>timerstart <seconds> [reason]`"
+timerstarthelp = ">timerstart <seconds> [reason]"
 
 @bot.command()
 async def timerstop(ctx):
@@ -582,14 +582,14 @@ async def timerstop(ctx):
     else:
         await ctx.send(f":exclamation: {ctx.author.mention} Currently No Timer is Running in this Server")
 
-timerstophelp = "`>timerstop`"
+timerstophelp = ">timerstop"
 
 @bot.command()
 async def ping(ctx, toping:Optional[discord.Member]=None):
     await ctx.message.delete()
     await ctx.send(toping.mention if toping is not None else ctx.author.mention)
 
-pinghelp = "`>ping [whom to ping]`"
+pinghelp = ">ping [whom to ping]"
 
 @bot.command()
 @commands.bot_has_permissions(send_messages=True)
@@ -597,7 +597,7 @@ async def time(ctx):
     currenttime = datetime.now()
     await ctx.send(f"Current Time is {currenttime}")
 
-timehelp = "`>time`"
+timehelp = ">time"
 
 @bot.command()
 async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
@@ -605,7 +605,7 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
         channel = ctx.channel
     await channel.send(msg)
 
-tellhelp = "`>tell [channel] <message>`"
+tellhelp = ">tell [channel] <message>"
 
 @bot.command()
 async def slap(ctx,member: Optional[discord.Member]=None, *, reason: Optional[str]=None):
@@ -625,7 +625,7 @@ async def slap(ctx,member: Optional[discord.Member]=None, *, reason: Optional[st
         choice = discord.Embed(description=f"** Slapped: {ctx.author.mention} {randomArgu} because {reason} **", color=embedTheme)
     await ctx.send(embed=choice)
 
-slaphelp = "`>slap [member] [reason]`"
+slaphelp = ">slap [member] [reason]"
 
 @bot.command()
 async def kill(ctx,member: Optional[discord.Member]=None, *, reason: Optional[str]=None):
@@ -647,7 +647,7 @@ async def kill(ctx,member: Optional[discord.Member]=None, *, reason: Optional[st
         choice = discord.Embed(description=f"** Killed: {ctx.author.mention} {randomArgu} because {reason} **", color=embedTheme)
     await ctx.send(embed=choice)
 
-killhelp = "`>kill [member] [reason]`"
+killhelp = ">kill [member] [reason]"
 
 @bot.command()
 async def punch(ctx,member: Optional[discord.Member]=None, *, reason: Optional[str]=None):
@@ -666,7 +666,7 @@ async def punch(ctx,member: Optional[discord.Member]=None, *, reason: Optional[s
         choice = discord.Embed(description=f"** Punched: {ctx.author.mention} {randomArgu} because {reason} **", color=embedTheme)
     await ctx.send(embed=choice)  
 
-punchhelp = "`>punch [member] [reason]`"
+punchhelp = ">punch [member] [reason]"
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
@@ -688,7 +688,7 @@ async def rule(ctx, ruleno: Optional[str]=None):
         else:
             await ctx.send(f":exclamation: There is no Rule Number {ruleno},{ctx.author.mention}")
 
-rulehelp = "`>rule <rule no.>`"
+rulehelp = ">rule <rule no.>"
    
 @bot.command()
 async def rules(ctx):
@@ -700,7 +700,7 @@ async def rules(ctx):
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested by {ctx.author}")
     await ctx.send(embed=embed)
 
-ruleshelp = "`>rules`"
+ruleshelp = ">rules"
 
 @bot.command()
 async def avatar(ctx, owner: Optional[discord.Member]=None):
@@ -712,7 +712,7 @@ async def avatar(ctx, owner: Optional[discord.Member]=None):
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=embed)
 
-avatarhelp = "`>avatar [user]`"
+avatarhelp = ">avatar [user]"
 
 @bot.event
 async def on_guild_join(guild):
@@ -727,16 +727,16 @@ async def info(ctx):
     embed = discord.Embed(title="My Information",description=f"{RandomGreetings} I am Tornax a Multi-Talented Discord Bot, Designed, Created and Configured by MrinalSparks", color=embedTheme)
     await ctx.send(embed=embed)
 
-infohelp = "`>info`"
+infohelp = ">info"
 
 @bot.command()
 async def about(ctx):
     embed = discord.Embed(title="About Tornax",description="Tornax is a Multi-Talented and Friendly Bot, Use Tornax for moderation, server managements, streams and giveaways now!", color=embedTheme)
     await ctx.send(embed=embed)
 
-abouthelp = "`>about`"
+abouthelp = ">about"
 
-helphelp = "`>help [anycommand]`"
+helphelp = ">help [anycommand]"
 
 @bot.command()
 async def help(ctx, anycommand: Optional[str]=None):
@@ -754,41 +754,46 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creater}")
         await ctx.send(embed=myEmbed)
     else:
-        if anycommand == "tell": await ctx.send(tellhelp)
-        elif anycommand == "ping": await ctx.send(pinghelp)
-        elif anycommand == "thought": await ctx.send(thoughthelp)
-        elif anycommand == "avatar": await ctx.send(avatarhelp)
-        elif anycommand == "react": await ctx.send(reacthelp)
-        elif anycommand == "rule": await ctx.send(rulehelp)
-        elif anycommand == "rules": await ctx.send(ruleshelp)
-        elif anycommand == "solve": await ctx.send(solvehelp)
-        elif anycommand == "time": await ctx.send(timehelp)
-        elif anycommand == "timerstart": await ctx.send(timerstarthelp)
-        elif anycommand == "timerstop": await ctx.send(timerstophelp)
-        elif anycommand == "addrole": await ctx.send(addrolehelp)
-        elif anycommand == "removerole": await ctx.send(removerolehelp)
-        elif anycommand == "clean": await ctx.send(cleanhelp)
-        elif anycommand == "gstart": await ctx.send(gstarthelp)
-        elif anycommand == "gstatus": await ctx.send(gstatushelp)
-        elif anycommand == "gstop": await ctx.send(gstophelp)
-        elif anycommand == "gparticipate": await ctx.send(gparticipatehelp)
-        elif anycommand == "info": await ctx.send(infohelp)
-        elif anycommand == "join": await ctx.send(joinhelp)
-        elif anycommand == "leave": await ctx.send(leavehelp)
-        elif anycommand == "leaveserver": await ctx.send(leaveserverhelp)
-        elif anycommand == "lock": await ctx.send(lockhelp)
-        elif anycommand == "unlock": await ctx.send(unlockhelp)
-        elif anycommand == "setnick": await ctx.send(setnickhelp)
-        elif anycommand == "resetnick": await ctx.send(resetnickhelp)
-        elif anycommand == "kick": await ctx.send(kickhelp)
-        elif anycommand == "mute": await ctx.send(mutehelp)
-        elif anycommand == "warn": await ctx.send(warnhelp)
-        elif anycommand == "unmute": await ctx.send(unmutehelp)
-        elif anycommand == "ban": await ctx.send(banhelp)
-        elif anycommand == "unban": await ctx.send(unbanhelp)
-        elif anycommand == "slap": await ctx.send(slaphelp)
-        elif anycommand == "kill": await ctx.send(killhelp)
-        elif anycommand == "punch": await ctx.send(punchhelp)
+        content = ""
+
+        if anycommand == "tell": content=tellhelp
+        elif anycommand == "ping": content=pinghelp
+        elif anycommand == "thought": content=thoughthelp
+        elif anycommand == "avatar": content=avatarhelp
+        elif anycommand == "react": content=reacthelp
+        elif anycommand == "rule": content=rulehelp
+        elif anycommand == "rules": content=ruleshelp
+        elif anycommand == "solve": content=solvehelp
+        elif anycommand == "time": content=timehelp
+        elif anycommand == "timerstart": content=timerstarthelp
+        elif anycommand == "timerstop": content=timerstophelp
+        elif anycommand == "addrole": content=addrolehelp
+        elif anycommand == "removerole": content=removerolehelp
+        elif anycommand == "clean": content=cleanhelp
+        elif anycommand == "gstart": content=gstarthelp
+        elif anycommand == "gstatus": content=gstatushelp
+        elif anycommand == "gstop": content=gstophelp
+        elif anycommand == "gparticipate": content=gparticipatehelp
+        elif anycommand == "info": content=infohelp
+        elif anycommand == "join": content=joinhelp
+        elif anycommand == "leave": content=leavehelp
+        elif anycommand == "leaveserver": content=leaveserverhelp
+        elif anycommand == "lock": content=lockhelp
+        elif anycommand == "unlock": content=unlockhelp
+        elif anycommand == "setnick": content=setnickhelp
+        elif anycommand == "resetnick": content=resetnickhelp
+        elif anycommand == "kick": content=kickhelp
+        elif anycommand == "mute": content=mutehelp
+        elif anycommand == "warn": content=warnhelp
+        elif anycommand == "unmute": content=unmutehelp
+        elif anycommand == "ban": content=banhelp
+        elif anycommand == "unban": content=unbanhelp
+        elif anycommand == "slap": content=slaphelp
+        elif anycommand == "kill": content=killhelp
+        elif anycommand == "punch": content=punchhelp
+        elif anycommand == "help": content=helphelp
+        commandEmbed = discord.Embed(description=content,color=embedTheme)
+        await ctx.send(embed=commandEmbed)
 
 @bot.listen()
 async def on_message(message):
