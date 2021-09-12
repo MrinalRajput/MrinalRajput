@@ -335,12 +335,14 @@ class Giveaway():
     global GiveawayActive
     global GiveawayChannel
     global StartAnnounce
+    global ParticipantsMsg
     global MembersList
     global Participants
     GiveawayActive = False
     GiveawayChannel = None
 
     StartAnnounce = ""
+    ParticipantsMsg = ""
     MembersList = ""
 
     Participants = {
@@ -350,7 +352,7 @@ class Giveaway():
     @bot.command()
     @commands.has_role("Giveaway Handler")
     async def gstart(ctx, Channel:discord.TextChannel, prize:str, endtime:int, unit:str):
-        global GiveawayActive, GiveawayChannel, StartAnnounce, MembersList
+        global GiveawayActive, GiveawayChannel, StartAnnounce, MembersList, ParticipantsMsg
         if GiveawayActive == False:
             GiveawayActive = True
             GiveawayChannel = Channel
@@ -373,7 +375,8 @@ class Giveaway():
                     wait = 60 * 60 * endtime
                     unitTime = "Hours"
 
-                StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` {unitTime} :partying_face:\n :busts_in_silhouette: Participants - {MembersList}")
+                StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` {unitTime} :partying_face:")
+                ParticipantsMsg = await ctx.send(f":busts_in_silhouette: Participants - {MembersList}")
 
             if GiveawayActive == True:
                 await asyncio.sleep(wait)
@@ -402,7 +405,7 @@ class Giveaway():
 
     @bot.command()
     async def gparticipate(ctx):
-        global StartAnnounce, MembersList
+        global StartAnnounce, MembersList, ParticipantsMsg
         if GiveawayActive == True:
             if ctx.channel == GiveawayChannel:
                 if ctx.author.name not in Participants:
@@ -421,7 +424,7 @@ class Giveaway():
 
                     await ctx.author.send(f":partying_face: You have Successfully Participated in the Giveaway and Your Special Code for The Giveaway is `{code}`")
                     await ctx.send(f"{ctx.author.mention} We Accepted your Request, Please Check your Dm", delete_after=15)
-                    # await StartAnnounce.edit(content=f":busts_in_silhouette: Participants - {members}")
+                    await ParticipantsMsg.edit(content=f":busts_in_silhouette: Participants - {MembersList}")
                 else:
                     await ctx.send(f"{ctx.author.mention} You have Already Participated in the Giveaway, you cannot Participate again", delete_after=15)
         else:
@@ -448,7 +451,7 @@ class Giveaway():
         else:
             await ctx.send(":exclamation: There is No Giveaway Active in this Server")
 
-gstarthelp = "`>gstart <channel> <prize> <endtime>`"
+gstarthelp = "`>gstart <channel> <prize> <endtime> <unit , for ex:- s,m,h>`"
 gstophelp = "`>gstop`"
 gparticipatehelp = "`>gparticipate`"
 gstatushelp = "`>gstatus`"
