@@ -403,8 +403,7 @@ class Giveaway():
                     GiveawayChannel = None
             else:
                 await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
-        except Exception as e:
-            print(e)
+        except MissingRole:
             await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}')
 
     @bot.command()
@@ -442,8 +441,7 @@ class Giveaway():
                 await ctx.send(f"A Giveaway is Currently Active in this Server \n Number of Participants :- {Participants}\n Giveaway Channel :- {GiveawayChannel}")
             else:
                 await ctx.send(":exclamation: There is No Giveaway Active in this Server")
-        except Exception as e:
-            print(e)
+        except MissingRole:
             await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}')
 
     @bot.command()
@@ -459,8 +457,7 @@ class Giveaway():
                 await ctx.send(f"Giveaway has been Stopped by {ctx.author.mention}")
             else:
                 await ctx.send(":exclamation: There is No Giveaway Active in this Server")
-        except Exception as e:
-            print(e)
+        except MissingRole:
             await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}')
 
 gstarthelp = ">gstart <channel> <prize> <endtime> <unit , for ex:- s,m,h>"
