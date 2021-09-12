@@ -353,55 +353,59 @@ class Giveaway():
     @commands.has_role("Giveaway Handler")
     async def gstart(ctx, Channel:discord.TextChannel, prize:str, endtime:int, unit:str):
         global GiveawayActive, GiveawayChannel, StartAnnounce, MembersList, ParticipantsMsg
-        if GiveawayActive == False:
-            GiveawayActive = True
-            GiveawayChannel = Channel
-            listtostr = list(Participants.keys())
-            members = str(listtostr)
+        try:
+            if GiveawayActive == False:
+                GiveawayActive = True
+                GiveawayChannel = Channel
+                listtostr = list(Participants.keys())
+                members = str(listtostr)
 
-            members = members.replace("'","") 
-            members = members.replace("[","") 
-            members = members.replace("]","")
-            # await asyncio.sleep(int(endtime))
+                members = members.replace("'","") 
+                members = members.replace("[","") 
+                members = members.replace("]","")
+                # await asyncio.sleep(int(endtime))
 
-            if GiveawayActive ==True:
-                if unit == "s" or unit == "seconds":
-                    wait = 1 * endtime
-                    unitTime = "Seconds"
-                elif unit =="m" or unit == "minutes":
-                    wait = 60 * endtime
-                    unitTime = "Minutes"
-                elif unit == "h" or unit == "hours":
-                    wait = 60 * 60 * endtime
-                    unitTime = "Hours"
+                if GiveawayActive ==True:
+                    if unit == "s" or unit == "seconds":
+                        wait = 1 * endtime
+                        unitTime = "Seconds"
+                    elif unit =="m" or unit == "minutes":
+                        wait = 60 * endtime
+                        unitTime = "Minutes"
+                    elif unit == "h" or unit == "hours":
+                        wait = 60 * 60 * endtime
+                        unitTime = "Hours"
 
-                StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` {unitTime} :partying_face:")
-                ParticipantsMsg = await ctx.send(f":busts_in_silhouette: Participants - {MembersList}")
+                    StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` {unitTime} :partying_face:")
+                    ParticipantsMsg = await ctx.send(f":busts_in_silhouette: Participants - {MembersList}")
 
-            if GiveawayActive == True:
-                await asyncio.sleep(wait)
+                if GiveawayActive == True:
+                    await asyncio.sleep(wait)
 
-            if GiveawayActive == True:
-                if len(Participants) == 0:
-                    Participants["No One"] = "No one Participated"
-                winnerCode = random.choice(list(Participants.values()))
-                CodeOwner = [k for k, v in Participants.items() if v == winnerCode]
-                print(CodeOwner)
-                winnerName = str(CodeOwner[0])
-                winner = f"{winnerName} || {winnerCode}"
+                if GiveawayActive == True:
+                    if len(Participants) == 0:
+                        Participants["No One"] = "No one Participated"
+                    winnerCode = random.choice(list(Participants.values()))
+                    CodeOwner = [k for k, v in Participants.items() if v == winnerCode]
+                    print(CodeOwner)
+                    winnerName = str(CodeOwner[0])
+                    winner = f"{winnerName} || {winnerCode}"
 
-                embed = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||\n",color=embedTheme)
-                embed.add_field(name="Winner of the Giveaway",value=f"{winner}",inline=True)
-                embed.add_field(name="Prize",value=f"{prize}",inline=True)
-                embed.add_field(name="Participants",value=f"{MembersList}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
+                    embed = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||\n",color=embedTheme)
+                    embed.add_field(name="Winner of the Giveaway",value=f"{winner}",inline=True)
+                    embed.add_field(name="Prize",value=f"{prize}",inline=True)
+                    embed.add_field(name="Participants",value=f"{MembersList}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
 
-                await GiveawayChannel.send(embed=embed)
-                Participants.clear()
-                MembersList = ""
-                GiveawayActive = False
-                GiveawayChannel = None
-        else:
-            await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
+                    await GiveawayChannel.send(embed=embed)
+                    Participants.clear()
+                    MembersList = ""
+                    GiveawayActive = False
+                    GiveawayChannel = None
+            else:
+                await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
+        except Exception as e:
+            print(e)
+            await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}')
 
     @bot.command()
     async def gparticipate(ctx):
@@ -433,23 +437,31 @@ class Giveaway():
     @bot.command()
     @commands.has_role("Giveaway Handler")
     async def gstatus(ctx):
-        if GiveawayActive:
-            await ctx.send(f"A Giveaway is Currently Active in this Server \n Number of Participants :- {Participants}\n Giveaway Channel :- {GiveawayChannel}")
-        else:
-            await ctx.send(":exclamation: There is No Giveaway Active in this Server")
+        try:
+            if GiveawayActive:
+                await ctx.send(f"A Giveaway is Currently Active in this Server \n Number of Participants :- {Participants}\n Giveaway Channel :- {GiveawayChannel}")
+            else:
+                await ctx.send(":exclamation: There is No Giveaway Active in this Server")
+        except Exception as e:
+            print(e)
+            await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}')
 
     @bot.command()
     @commands.has_role("Giveaway Handler")
     async def gstop(ctx):
         global GiveawayActive, Participants, GiveawayChannel, MembersList
-        if GiveawayActive == True:
-            GiveawayActive = False
-            GiveawayChannel = None
-            Participants.clear()
-            MembersList = ""
-            await ctx.send(f"Giveaway has been Stopped by {ctx.author.mention}")
-        else:
-            await ctx.send(":exclamation: There is No Giveaway Active in this Server")
+        try:
+            if GiveawayActive == True:
+                GiveawayActive = False
+                GiveawayChannel = None
+                Participants.clear()
+                MembersList = ""
+                await ctx.send(f"Giveaway has been Stopped by {ctx.author.mention}")
+            else:
+                await ctx.send(":exclamation: There is No Giveaway Active in this Server")
+        except Exception as e:
+            print(e)
+            await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}')
 
 gstarthelp = ">gstart <channel> <prize> <endtime> <unit , for ex:- s,m,h>"
 gstophelp = ">gstop"
