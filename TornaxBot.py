@@ -792,7 +792,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "kill": content=killhelp
         elif anycommand == "punch": content=punchhelp
         elif anycommand == "help": content=helphelp
-        commandEmbed = discord.Embed(description=f"**{content}**",color=embedTheme)
+        commandEmbed = discord.Embed(description=f"{content}",color=embedTheme)
         await ctx.send(embed=commandEmbed)
 
 @bot.listen()
