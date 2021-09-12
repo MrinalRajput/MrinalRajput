@@ -70,6 +70,8 @@ async def on_message(message):
     if message.guild.id == LegendServer:
         if "start" in message.content.lower() and "smp" in message.content.lower():
             await message.add_reaction("<:nahi:869447646866202624>")
+    else:
+        pass
 
 @bot.listen()
 async def on_message(message):
