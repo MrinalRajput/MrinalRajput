@@ -349,7 +349,7 @@ class Giveaway():
 
     @bot.command()
     @commands.has_role("Giveaway Handler")
-    async def gstart(ctx, Channel:discord.TextChannel, prize:str, endtime:int):
+    async def gstart(ctx, Channel:discord.TextChannel, prize:str, endtime:int, unit:str):
         global GiveawayActive, GiveawayChannel, StartAnnounce, MembersList
         if GiveawayActive == False:
             GiveawayActive = True
@@ -361,13 +361,22 @@ class Giveaway():
             members = members.replace("[","") 
             members = members.replace("]","")
             # await asyncio.sleep(int(endtime))
-            StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:\n :busts_in_silhouette: Participants - {MembersList}")
 
-            while -1 < endtime < endtime+1:
-                if GiveawayActive ==True:
-                    await asyncio.sleep(0.7)
-                    endtime -= 1
-                    await StartAnnounce.edit(content=f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` Seconds :partying_face:\n :busts_in_silhouette: Participants - {MembersList}")
+            if GiveawayActive ==True:
+                if unit == "s" or unit == "seconds":
+                    wait = 1 * endtime
+                    unitTime = "Seconds"
+                elif unit =="m" or unit == "minutes":
+                    wait = 60 * endtime
+                    unitTime = "Minutes"
+                elif unit == "h" or unit == "hours":
+                    wait = 60 * 60 * endtime
+                    unitTime = "Hours"
+
+                StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` {unitTime} :partying_face:\n :busts_in_silhouette: Participants - {MembersList}")
+
+            if GiveawayActive == True:
+                await asyncio.sleep(wait)
 
             if GiveawayActive == True:
                 if len(Participants) == 0:
