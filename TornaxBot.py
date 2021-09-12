@@ -121,7 +121,6 @@ async def ban(ctx, member:discord.Member, days: Optional[int]=None, *, reason:Op
                 await member.ban(reason=reason)
         except Exception as e:
             print(e)
-            pass
     except MissingPermissions:
         await ctx.reply(f":exclamation: You don't have Permissions to do that!")
 
@@ -140,7 +139,6 @@ async def unban(ctx, id:int):
             await ctx.send(embed=embed)
         except Exception as e:
             print(e)
-            pass
     except MissingPermissions:
         await ctx.send(f":exclamation: {ctx.author.mention} You don't have Permissions to do that")
 
@@ -179,7 +177,6 @@ async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: O
                 await ctx.send(embed=embed,delete_after=15)
                 await member.send(f"You are Muted in the Server by an Admin"if reason is None else f"You are Muted in the Server by an Admin\n\t With the Reason of {reason}")
         except Exception:
-            pass
     except MissingPermissions:
         await ctx.reply(f":exclamation: You don't have Permissions to do that!")
 
