@@ -274,13 +274,16 @@ async def setnick_error(error, ctx):
 @bot.command()
 @commands.has_permissions(manage_nicknames=True)
 async def resetnick(ctx, member: Optional[discord.Member]=None):
-    if member is None:
-        member = ctx.author
-    membername = member.name
-    await member.edit(nick=None)
-    embed = discord.Embed(title=f" _Done_ : {membername}'s Nickname has Removed Successfully! ", color=embedTheme)
-    embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-    await ctx.send(embed=embed, delete_after=15)
+    try:
+        if member is None:
+            member = ctx.author
+        membername = member.name
+        await member.edit(nick=None)
+        embed = discord.Embed(title=f" _Done_ : {membername}'s Nickname has Removed Successfully! ", color=embedTheme)
+        embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+        await ctx.send(embed=embed, delete_after=15)
+    except Exception as e:
+        print(e)
 
 resetnickhelp = "`>resetnick [member]`"
 
