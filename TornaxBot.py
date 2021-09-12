@@ -774,13 +774,13 @@ helphelp = ">help [anycommand]"
 
 @bot.command()
 async def help(ctx, anycommand: Optional[str]=None):
-    print(bot.all_commands.keys())
+    totalCommands = print(bot.all_commands.keys())
     print(len(bot.all_commands))
     if anycommand is None:
         randomGreet = random.choice(["Hi","Hey","Hello"])
         myEmbed = discord.Embed(color = embedTheme)
         myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n \n \t-> [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=0&scope=bot)")
-        myEmbed.add_field(name=f"Commands — 38",value="----------------------\n",inline=False)
+        myEmbed.add_field(name=f"Commands — {totalCommands-2}",value="----------------------\n",inline=False)
         myEmbed.add_field(name="Miscellaneous",value=" tell, ping, thought, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gpaticipate, gquit, info, about, join, leave, leaverserver, lock, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
@@ -791,45 +791,16 @@ async def help(ctx, anycommand: Optional[str]=None):
         await ctx.send(embed=myEmbed)
     else:
         content = ""
+        allCommands = bot.all_commands
+        del allCommands["status"]
+        del allCommands["dmuser"]
+        print(allCommands)
 
-        if anycommand == "tell": content=tellhelp
-        elif anycommand == "ping": content=pinghelp
-        elif anycommand == "thought": content=thoughthelp
-        elif anycommand == "avatar": content=avatarhelp
-        elif anycommand == "react": content=reacthelp
-        elif anycommand == "rule": content=rulehelp
-        elif anycommand == "rules": content=ruleshelp
-        elif anycommand == "solve": content=solvehelp
-        elif anycommand == "time": content=timehelp
-        elif anycommand == "timerstart": content=timerstarthelp
-        elif anycommand == "timerstop": content=timerstophelp
-        elif anycommand == "addrole": content=addrolehelp
-        elif anycommand == "removerole": content=removerolehelp
-        elif anycommand == "clean": content=cleanhelp
-        elif anycommand == "gstart": content=gstarthelp
-        elif anycommand == "gstatus": content=gstatushelp
-        elif anycommand == "gstop": content=gstophelp
-        elif anycommand == "gparticipate": content=gparticipatehelp
-        elif anycommand == "gquit": content=gquithelp
-        elif anycommand == "info": content=infohelp
-        elif anycommand == "about": content=abouthelp
-        elif anycommand == "join": content=joinhelp
-        elif anycommand == "leave": content=leavehelp
-        elif anycommand == "leaveserver": content=leaveserverhelp
-        elif anycommand == "lock": content=lockhelp
-        elif anycommand == "unlock": content=unlockhelp
-        elif anycommand == "setnick": content=setnickhelp
-        elif anycommand == "resetnick": content=resetnickhelp
-        elif anycommand == "kick": content=kickhelp
-        elif anycommand == "mute": content=mutehelp
-        elif anycommand == "warn": content=warnhelp
-        elif anycommand == "unmute": content=unmutehelp
-        elif anycommand == "ban": content=banhelp
-        elif anycommand == "unban": content=unbanhelp
-        elif anycommand == "slap": content=slaphelp
-        elif anycommand == "kill": content=killhelp
-        elif anycommand == "punch": content=punchhelp
-        elif anycommand == "help": content=helphelp
+        for cmnd in allCommands:
+            if anycommand == cmnd:
+                content = f"{cmnd}help"
+            else:
+                await ctx.send(f":exclamation: {ctx.author.mention} Command Not Found")
         commandEmbed = discord.Embed(description=f"{content}",color=embedTheme)
         await ctx.send(embed=commandEmbed)
 
