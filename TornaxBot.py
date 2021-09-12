@@ -243,13 +243,20 @@ async def leaverserver_error(error, ctx):
 @bot.command()
 @commands.has_permissions(manage_nicknames=True)
 async def setnick(ctx, member: Optional[discord.Member]=None, *, newname):
-    if member is None:
-        member = ctx.author
-    membername = member.name
-    await member.edit(nick=newname)
-    embed = discord.Embed(title=f" _Done_ : {membername}'s Nickname has Changed to {newname} Successfully! ", color=embedTheme)
-    embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-    await ctx.send(embed=embed, delete_after=15)
+    try:
+        try:
+            if member is None:
+                member = ctx.author
+            membername = member.name
+            await member.edit(nick=newname)
+            embed = discord.Embed(title=f" _Done_ : {membername}'s Nickname has Changed to {newname} Successfully! ", color=embedTheme)
+            embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+            await ctx.send(embed=embed, delete_after=15)
+        except Exception as e:
+            print(e)
+    except MissingPermissions as ms:
+        print(ms)
+        await ctx.send(f":exclamation: You don't have Permissions to do that")
 
 setnickhelp = "`>setnick [member] <newname>`"
 
