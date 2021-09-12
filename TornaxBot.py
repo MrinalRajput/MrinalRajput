@@ -793,8 +793,6 @@ async def help(ctx, anycommand: Optional[str]=None):
     else:
         content = ""
         allCommands = bot.all_commands
-        del allCommands["status"]
-        del allCommands["dmuser"]
         print(allCommands)
 
         for cmnd in allCommands:
