@@ -331,7 +331,7 @@ async def thought(ctx, *, word):
 
 thoughthelp = ">thought <word>"
 
-class Giveaway():
+class Giveaway(commands.bot):
     global GiveawayActive
     global GiveawayChannel
     global StartAnnounce
@@ -349,13 +349,16 @@ class Giveaway():
 
     }
 
+    def init(self, GiveawayActive):
+        self.GiveawayActive = GiveawayActive
+
     @bot.command()
     @commands.has_role("Giveaway Handler")
-    async def gstart(ctx, Channel:discord.TextChannel, prize:str, endtime:int, unit:str):
+    async def gstart(self, ctx, Channel:discord.TextChannel, *, prize:str, endtime:int, unit:str):
         global GiveawayActive, GiveawayChannel, StartAnnounce, MembersList, ParticipantsMsg
         try:
-            if GiveawayActive == False:
-                GiveawayActive = True
+            if self.GiveawayActive == False:
+                self.GiveawayActive = True
                 GiveawayChannel = Channel
                 listtostr = list(Participants.keys())
                 members = str(listtostr)
@@ -365,7 +368,7 @@ class Giveaway():
                 members = members.replace("]","")
                 # await asyncio.sleep(int(endtime))
 
-                if GiveawayActive ==True:
+                if self.GiveawayActive ==True:
                     if unit == "s" or "sec" in unit:
                         wait = 1 * endtime
                         unitTime = "Seconds"
@@ -379,10 +382,10 @@ class Giveaway():
                     StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` {unitTime} :partying_face:")
                     ParticipantsMsg = await ctx.send(f":busts_in_silhouette: Participants - {MembersList}")
 
-                if GiveawayActive == True:
+                if self.GiveawayActive == True:
                     await asyncio.sleep(wait)
 
-                if GiveawayActive == True:
+                if self.GiveawayActive == True:
                     if len(Participants) == 0:
                         Participants["No One"] = "No one Participated"
                     winnerCode = random.choice(list(Participants.values()))
@@ -399,7 +402,7 @@ class Giveaway():
                     await GiveawayChannel.send(embed=embed)
                     Participants.clear()
                     MembersList = ""
-                    GiveawayActive = False
+                    self.GiveawayActive = False
                     GiveawayChannel = None
             else:
                 await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
@@ -407,9 +410,9 @@ class Giveaway():
             await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}')
 
     @bot.command()
-    async def gparticipate(ctx):
+    async def gparticipate(self, ctx):
         global StartAnnounce, MembersList, ParticipantsMsg
-        if GiveawayActive == True:
+        if self.GiveawayActive == True:
             if ctx.channel == GiveawayChannel:
                 if ctx.author.name not in Participants:
                     code = random.randint(000000,999999)
@@ -434,9 +437,9 @@ class Giveaway():
             await ctx.send(":exclamation: There is No Giveaway Active in this Server")
 
     @bot.command()
-    async def gquit(ctx):
+    async def gquit(self, ctx):
         global StartAnnounce, MembersList, ParticipantsMsg
-        if GiveawayActive == True:
+        if self.GiveawayActive == True:
             if ctx.channel == GiveawayChannel:
                 if ctx.author.name in Participants:
 
@@ -459,9 +462,9 @@ class Giveaway():
     
     @bot.command()
     @commands.has_role("Giveaway Handler")
-    async def gstatus(ctx):
+    async def gstatus(self, ctx):
         try:
-            if GiveawayActive:
+            if self.GiveawayActive:
                 await ctx.send(f"A Giveaway is Currently Active in this Server \n Number of Participants :- {Participants}\n Giveaway Channel :- {GiveawayChannel}")
             else:
                 await ctx.send(":exclamation: There is No Giveaway Active in this Server")
@@ -470,11 +473,11 @@ class Giveaway():
 
     @bot.command()
     @commands.has_role("Giveaway Handler")
-    async def gstop(ctx):
+    async def gstop(self, ctx):
         global GiveawayActive, Participants, GiveawayChannel, MembersList
         try:
-            if GiveawayActive == True:
-                GiveawayActive = False
+            if self.GiveawayActive == True:
+                self.GiveawayActive = False
                 GiveawayChannel = None
                 Participants.clear()
                 MembersList = ""
