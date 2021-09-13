@@ -324,8 +324,8 @@ unlockhelp = ">unlock [channel]"
 @commands.has_permissions(manage_channels=True)
 async def slowmode(ctx, seconds: int):
     await ctx.channel.edit(slowmode_delay=seconds)
-    embed = discord.Embed(description=f"{ctx.author.mention} Successfully Changed Slowmode to `{seconds}`", color=embedTheme)
-    await ctx.send(embed=embed, delete_after=8)
+    embed = discord.Embed(description=f"{ctx.author.mention} Successfully Set Slowmode to `{seconds}`", color=embedTheme)
+    await ctx.send(embed=embed, delete_after=10)
 
 slowmodehelp = ">slowmode <seconds>"
 
