@@ -278,19 +278,19 @@ async def resetnick_error(error, ctx):
 
 @bot.command()
 @commands.has_permissions(manage_messages=True)
-async def clean(ctx, limit:int):
+async def clean(ctx, limit:int, user: Optional[discord.Member]=None):
     if limit > 0:
         quantity = "Messages"
         if limit == 1:
             quantity = "Message"
-        await ctx.channel.purge(limit=limit+1)
+        await ctx.channel.purge(limit=limit+1,check = user)
         embed = discord.Embed(title=f"🗑️   Successfully Deleted {limit} {quantity} from this Channel", color=embedTheme)
         await ctx.send(embed=embed,delete_after=8)
     else:
         embed = discord.Embed(title=f"Nothing Deleted from this Channel", color=embedTheme)
         await ctx.send(embed=embed,delete_after=8)    
 
-cleanhelp = ">clean <limit>"
+cleanhelp = ">clean <limit> [user]"
 
 @bot.command()
 @commands.has_permissions(manage_channels=True)
@@ -431,8 +431,8 @@ class Giveaway():
                     listtostr = list(Participants[ctx.guild.id].keys())
                     members = str(listtostr)
 
-                    members = members.replace("'","") 
-                    members = members.replace("[","") 
+                    members = members.replace("'","")
+                    members = members.replace("[","")
                     members = members.replace("]","")
                     MembersList[ctx.guild.id] = members
 
