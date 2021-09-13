@@ -477,7 +477,7 @@ class Giveaway():
             if ctx.guild.id not in GiveawayActive:
                 GiveawayActive[ctx.guild.id] = False
             if GiveawayActive[ctx.guild.id]:
-                await ctx.send(f"A Giveaway is Currently Active in this Server \n Number of Participants :- {Participants[ctx.guild.id]}\n Giveaway Channel :- {GiveawayChannel}")
+                await ctx.send(f"A Giveaway is Currently Active in this Server \n Number of Participants :- {Participants[ctx.guild.id]}\n Giveaway Channel :- {GiveawayChannel[ctx.guild.id]}")
             else:
                 await ctx.send(":exclamation: There is No Giveaway Active in this Server")
         except MissingRole:
