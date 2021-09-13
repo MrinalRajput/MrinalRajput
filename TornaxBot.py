@@ -611,8 +611,8 @@ timerstarthelp = ">timerstart <seconds> [reason]"
 @bot.command()
 async def timerstop(ctx):
     global timer
-    if ctx.guild.id in timer:
-        del timer[ctx.guild.id]
+    if timer[ctx.guild.id] == True:
+        timer[ctx.guild.id] = False
     else:
         await ctx.send(f":exclamation: {ctx.author.mention} Currently No Timer is Running in this Server")
 
