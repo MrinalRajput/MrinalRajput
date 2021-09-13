@@ -331,7 +331,7 @@ async def thought(ctx, *, word):
 
 thoughthelp = ">thought <word>"
 
-class Giveaway(commands.bot):
+class Giveaway:
     global GiveawayActive
     global GiveawayChannel
     global StartAnnounce
