@@ -322,10 +322,19 @@ unlockhelp = ">unlock [channel]"
 
 @bot.command()
 @commands.has_permissions(manage_channels=True)
-async def slowmode(ctx, seconds: int):
-    await ctx.channel.edit(slowmode_delay=seconds)
-    embed = discord.Embed(description=f"{ctx.author.mention} Successfully Set Slowmode to `{seconds}`", color=embedTheme)
-    await ctx.send(embed=embed, delete_after=10)
+async def slowmode(ctx, seconds: Optional[str]=None):
+    try:
+        if seconds is not None:
+            if seconds.lower() == "off":
+                seconds = 0
+            await ctx.channel.edit(slowmode_delay=int(seconds))
+            embed = discord.Embed(description=f"{ctx.author.mention} Successfully Set Slowmode to `{seconds}`", color=embedTheme)
+            await ctx.send(embed=embed, delete_after=10)
+        else:
+            await ctx.send(f":exclamation: {ctx.author.mention} Please Specify the delay of the Slowmode")
+    except Exception as e:
+        print(e)
+        await ctx.send(f":exclamation: {ctx.author.mention} You don't have Permissions to do that")
 
 slowmodehelp = ">slowmode <seconds>"
 
