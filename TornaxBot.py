@@ -321,6 +321,15 @@ async def unlock(ctx, channel: Optional[discord.TextChannel]=None):
 unlockhelp = ">unlock [channel]"
 
 @bot.command()
+@commands.has_permissions(manage_channels=True)
+async def slowmode(ctx, seconds: int):
+    await ctx.channel.edit(slowmode_delay=seconds)
+    embed = discord.Embed(description=f"{ctx.author.mention} Successfully Changed Slowmode to `{seconds}`", color=embedTheme)
+    await ctx.send(embed=embed, delete_after=8)
+
+slowmodehelp = ">slowmode <seconds>"
+
+@bot.command()
 async def thought(ctx, *, word):
     if " " in word:
         word = discord.Embed(description=f"You cannot use More than one Word",color=embedTheme)
@@ -806,7 +815,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n \n \t-> [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=0&scope=bot)")
         myEmbed.add_field(name=f"Commands — {int(totalCommands)-2}",value="----------------------\n",inline=False)
         myEmbed.add_field(name="Miscellaneous",value=" tell, ping, thought, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
-        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gpaticipate, gquit, info, about, join, leave, leaverserver, lock, resetnick, setnick, unlock ", inline=False)
+        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gpaticipate, gquit, info, about, join, leave, leaverserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
         myEmbed.add_field(name="Fun",value=" slap, kill, punch \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value="----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `>`\n > Command Usage Example :   `>info`\n\n----------------------", inline=False)
@@ -842,6 +851,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "leaveserver": content=leaveserverhelp
         elif anycommand == "lock": content=lockhelp
         elif anycommand == "unlock": content=unlockhelp
+        elif anycommand == "slowmode": content=slowmodehelp
         elif anycommand == "setnick": content=setnickhelp
         elif anycommand == "resetnick": content=resetnickhelp
         elif anycommand == "kick": content=kickhelp
