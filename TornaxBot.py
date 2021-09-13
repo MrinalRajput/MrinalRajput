@@ -331,7 +331,7 @@ async def thought(ctx, *, word):
 
 thoughthelp = ">thought <word>"
 
-class Giveaway:
+class Giveaway():
     global GiveawayActive
     global GiveawayChannel
     global StartAnnounce
@@ -349,16 +349,13 @@ class Giveaway:
 
     }
 
-    def init(self, GiveawayActive):
-        self.GiveawayActive = GiveawayActive
-
-    @bot.command(pass_context=True)
+    @bot.command()
     @commands.has_role("Giveaway Handler")
-    async def gstart(self, ctx, Channel:discord.TextChannel, *, prize:str, endtime:int, unit:str):
+    async def gstart(ctx, Channel:discord.TextChannel, *, prize:str, endtime:int, unit:str):
         global GiveawayActive, GiveawayChannel, StartAnnounce, MembersList, ParticipantsMsg
         try:
-            if self.GiveawayActive == False:
-                self.GiveawayActive = True
+            if GiveawayActive == False:
+                GiveawayActive = True
                 GiveawayChannel = Channel
                 listtostr = list(Participants.keys())
                 members = str(listtostr)
@@ -368,7 +365,7 @@ class Giveaway:
                 members = members.replace("]","")
                 # await asyncio.sleep(int(endtime))
 
-                if self.GiveawayActive ==True:
+                if GiveawayActive ==True:
                     if unit == "s" or "sec" in unit:
                         wait = 1 * endtime
                         unitTime = "Seconds"
@@ -382,10 +379,10 @@ class Giveaway:
                     StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` {unitTime} :partying_face:")
                     ParticipantsMsg = await ctx.send(f":busts_in_silhouette: Participants - {MembersList}")
 
-                if self.GiveawayActive == True:
+                if GiveawayActive == True:
                     await asyncio.sleep(wait)
 
-                if self.GiveawayActive == True:
+                if GiveawayActive == True:
                     if len(Participants) == 0:
                         Participants["No One"] = "No one Participated"
                     winnerCode = random.choice(list(Participants.values()))
@@ -402,17 +399,17 @@ class Giveaway:
                     await GiveawayChannel.send(embed=embed)
                     Participants.clear()
                     MembersList = ""
-                    self.GiveawayActive = False
+                    GiveawayActive = False
                     GiveawayChannel = None
             else:
                 await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
         except MissingRole:
             await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}')
 
-    @bot.command(pass_context=True)
-    async def gparticipate(self, ctx):
+    @bot.command()
+    async def gparticipate(ctx):
         global StartAnnounce, MembersList, ParticipantsMsg
-        if self.GiveawayActive == True:
+        if GiveawayActive == True:
             if ctx.channel == GiveawayChannel:
                 if ctx.author.name not in Participants:
                     code = random.randint(000000,999999)
@@ -436,10 +433,10 @@ class Giveaway:
         else:
             await ctx.send(":exclamation: There is No Giveaway Active in this Server")
 
-    @bot.command(pass_context=True)
-    async def gquit(self, ctx):
+    @bot.command()
+    async def gquit(ctx):
         global StartAnnounce, MembersList, ParticipantsMsg
-        if self.GiveawayActive == True:
+        if GiveawayActive == True:
             if ctx.channel == GiveawayChannel:
                 if ctx.author.name in Participants:
 
@@ -460,24 +457,24 @@ class Giveaway:
         else:
             await ctx.send(":exclamation: There is No Giveaway Active in this Server")
     
-    @bot.command(pass_context=True)
+    @bot.command()
     @commands.has_role("Giveaway Handler")
-    async def gstatus(self, ctx):
+    async def gstatus(ctx):
         try:
-            if self.GiveawayActive:
+            if GiveawayActive:
                 await ctx.send(f"A Giveaway is Currently Active in this Server \n Number of Participants :- {Participants}\n Giveaway Channel :- {GiveawayChannel}")
             else:
                 await ctx.send(":exclamation: There is No Giveaway Active in this Server")
         except MissingRole:
             await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}')
 
-    @bot.command(pass_context=True)
+    @bot.command()
     @commands.has_role("Giveaway Handler")
-    async def gstop(self, ctx):
+    async def gstop(ctx):
         global GiveawayActive, Participants, GiveawayChannel, MembersList
         try:
-            if self.GiveawayActive == True:
-                self.GiveawayActive = False
+            if GiveawayActive == True:
+                GiveawayActive = False
                 GiveawayChannel = None
                 Participants.clear()
                 MembersList = ""
