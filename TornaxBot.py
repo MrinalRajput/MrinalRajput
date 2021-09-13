@@ -405,7 +405,7 @@ class Giveaway():
                     embed.add_field(name="Prize",value=f"{prize}",inline=True)
                     embed.add_field(name="Participants",value=f"{MembersList[ctx.guild.id]}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
 
-                    await [ctx.guild.id].send(embed=embed)
+                    await GiveawayChannel[ctx.guild.id].send(embed=embed)
                     Participants[ctx.guild.id].clear()
                     MembersList[ctx.guild.id] = ""
                     GiveawayActive[ctx.guild.id] = False
