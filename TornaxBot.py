@@ -278,19 +278,19 @@ async def resetnick_error(error, ctx):
 
 @bot.command()
 @commands.has_permissions(manage_messages=True)
-async def clean(ctx, limit:int, user: Optional[discord.Member]=None):
+async def clean(ctx, limit:int):
     if limit > 0:
         quantity = "Messages"
         if limit == 1:
             quantity = "Message"
-        await ctx.channel.purge(limit=limit+1,check = user)
+        await ctx.channel.purge(limit=limit+1)
         embed = discord.Embed(title=f"🗑️   Successfully Deleted {limit} {quantity} from this Channel", color=embedTheme)
         await ctx.send(embed=embed,delete_after=8)
     else:
         embed = discord.Embed(title=f"Nothing Deleted from this Channel", color=embedTheme)
         await ctx.send(embed=embed,delete_after=8)    
 
-cleanhelp = ">clean <limit> [user]"
+cleanhelp = ">clean <limit>"
 
 @bot.command()
 @commands.has_permissions(manage_channels=True)
