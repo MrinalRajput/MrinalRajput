@@ -148,15 +148,15 @@ async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: O
                 unit = None
             mutedRole = discord.utils.get(ctx.message.guild.roles, name="Muted")
             if duration is not None and unit is not None:
-                if unit == "s":
+                if unit == "s" or "sec" in unit:
                     wait = 1 * duration 
                     embed = discord.Embed(description = f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Seconds **" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Seconds \n\t With the Reason of :\t{reason}**",color=embedTheme)
                     dmAlert = f"You are Muted in the Server by an Admin for `{duration}` Seconds"if reason is None else f"You are Muted in the Server by an Admin for `{duration}`` Seconds\n\t With the Reason of {reason}"
-                elif unit == "m":
+                elif unit == "m" or "min" in unit:
                     wait = 60 * duration 
                     embed = discord.Embed(description = f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Minutes **" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Minutes \n\t With the Reason of :\t{reason}**",color=embedTheme)
                     dmAlert = f"You are Muted in the Server by an Admin for `{duration}` Minutes"if reason is None else f"You are Muted in the Server by an Admin for `{duration}`` Minutes\n\t With the Reason of {reason}"
-                elif unit == "h":
+                elif unit == "h" or unit == "hour":
                     wait = 60 * 60 * duration 
                     embed = discord.Embed(description = f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Hours **" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Hours \n\t With the Reason of :\t{reason}**",color=embedTheme)
                     dmAlert = f"You are Muted in the {ctx.guild.name} Server by an Admin for `{duration}` Hours"if reason is None else f"You are Muted in the {ctx.guild.name} Server by an Admin for `{duration}`` Hours\n\t With the Reason of {reason}"
@@ -366,10 +366,10 @@ class Giveaway():
                 # await asyncio.sleep(int(endtime))
 
                 if GiveawayActive ==True:
-                    if unit == "s" or unit == "seconds":
+                    if unit == "s" or "sec" in unit:
                         wait = 1 * endtime
                         unitTime = "Seconds"
-                    elif unit =="m" or unit == "minutes":
+                    elif unit =="m" or "min" in unit:
                         wait = 60 * endtime
                         unitTime = "Minutes"
                     elif unit == "h" or unit == "hours":
