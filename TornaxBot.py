@@ -351,7 +351,7 @@ class Giveaway():
 
     @bot.command()
     @commands.has_role("Giveaway Handler")
-    async def gstart(ctx, Channel:discord.TextChannel, *, prize:str, endtime:int, unit:str):
+    async def gstart(ctx, Channel:discord.TextChannel, prize:str, endtime:int, unit:str):
         global GiveawayActive, GiveawayChannel, StartAnnounce, MembersList, ParticipantsMsg
         try:
             if ctx.guild.id not in GiveawayActive:
