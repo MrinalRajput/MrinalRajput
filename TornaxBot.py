@@ -582,26 +582,27 @@ async def solve(ctx, num1, operation, num2):
 solvehelp = ">solve <number1> <operation = +,-,×,÷> <number2>"
 
 timer = {}
+timerMsg = {}
 
 @bot.command()
 async def timerstart(ctx, seconds:int, *, reason: Optional[str]=None):
     global timer
     if ctx.guild.id not in timer:
         timer[ctx.guild.id] = True
-        started = await ctx.send(f"Timer has Started : `{seconds}`"if reason is None else f"{reason} `{seconds}`")
+        timerMsg[ctx.guild.id] = await ctx.send(f"Timer has Started : `{seconds}`"if reason is None else f"{reason} `{seconds}`")
         while 0 < seconds < seconds+1:
             if timer[ctx.guild.id] == True:
                 await asyncio.sleep(0.7)
                 seconds-=1
-                await started.edit(content=f"Timer has Started : `{seconds}`"if reason is None else f"{reason} `{seconds}`")
+                await timerMsg[ctx.guild.id].edit(content=f"Timer has Started : `{seconds}`"if reason is None else f"{reason} `{seconds}`")
             else:
                 break
         await asyncio.sleep(1)
         if timer[ctx.guild.id] == True:
-            await started.edit(content=f"Timer has Stopped {ctx.author.mention}")
+            await timerMsg[ctx.guild.id].edit(content=f"Timer has Stopped {ctx.author.mention}")
             timer[ctx.guild.id] = False
         else:
-            await started.edit(content=f"Timer has Stopped {ctx.author.mention}")
+            await timerMsg[ctx.guild.id].edit(content=f"Timer has Stopped {ctx.author.mention}")
 
     else:
         await ctx.send(f":exclamation: {ctx.author.mention} A Timer is already Running in this Server")
@@ -613,6 +614,7 @@ async def timerstop(ctx):
     global timer
     if timer[ctx.guild.id] == True:
         timer[ctx.guild.id] = False
+        await timerMsg[ctx.guild.id].edit(content=f"Timer has Stopped by {ctx.author.mention}")
     else:
         await ctx.send(f":exclamation: {ctx.author.mention} Currently No Timer is Running in this Server")
 
