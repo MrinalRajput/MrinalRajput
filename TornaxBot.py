@@ -352,7 +352,7 @@ class Giveaway:
     def init(self, GiveawayActive):
         self.GiveawayActive = GiveawayActive
 
-    @bot.command()
+    @bot.command(pass_context=True)
     @commands.has_role("Giveaway Handler")
     async def gstart(self, ctx, Channel:discord.TextChannel, *, prize:str, endtime:int, unit:str):
         global GiveawayActive, GiveawayChannel, StartAnnounce, MembersList, ParticipantsMsg
@@ -409,7 +409,7 @@ class Giveaway:
         except MissingRole:
             await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}')
 
-    @bot.command()
+    @bot.command(pass_context=True)
     async def gparticipate(self, ctx):
         global StartAnnounce, MembersList, ParticipantsMsg
         if self.GiveawayActive == True:
@@ -436,7 +436,7 @@ class Giveaway:
         else:
             await ctx.send(":exclamation: There is No Giveaway Active in this Server")
 
-    @bot.command()
+    @bot.command(pass_context=True)
     async def gquit(self, ctx):
         global StartAnnounce, MembersList, ParticipantsMsg
         if self.GiveawayActive == True:
@@ -460,7 +460,7 @@ class Giveaway:
         else:
             await ctx.send(":exclamation: There is No Giveaway Active in this Server")
     
-    @bot.command()
+    @bot.command(pass_context=True)
     @commands.has_role("Giveaway Handler")
     async def gstatus(self, ctx):
         try:
@@ -471,7 +471,7 @@ class Giveaway:
         except MissingRole:
             await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}')
 
-    @bot.command()
+    @bot.command(pass_context=True)
     @commands.has_role("Giveaway Handler")
     async def gstop(self, ctx):
         global GiveawayActive, Participants, GiveawayChannel, MembersList
