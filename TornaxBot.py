@@ -590,6 +590,7 @@ async def timerstart(ctx, seconds:int, *, reason: Optional[str]=None):
     if ctx.guild.id not in timer:
         timer[ctx.guild.id] = False
     if timer[ctx.guild.id] == False:
+        timer[ctx.guild.id] = True
         timerMsg[ctx.guild.id] = await ctx.send(f"Timer has Started : `{seconds}`"if reason is None else f"{reason} `{seconds}`")
         while 0 < seconds < seconds+1:
             if timer[ctx.guild.id] == True:
