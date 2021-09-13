@@ -614,6 +614,8 @@ timerstarthelp = ">timerstart <seconds> [reason]"
 @bot.command()
 async def timerstop(ctx):
     global timer
+    if ctx.guild.id not in timer:
+        timer[ctx.guild.id] = False
     if timer[ctx.guild.id] == True:
         timer[ctx.guild.id] = False
         await timerMsg[ctx.guild.id].edit(content=f"Timer has Stopped by {ctx.author.mention}")
