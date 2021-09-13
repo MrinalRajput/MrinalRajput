@@ -356,6 +356,12 @@ class Giveaway():
         try:
             if ctx.guild.id not in GiveawayActive:
                 GiveawayActive[ctx.guild.id] = False
+            if ctx.guild.id not in Participants:
+                Participants[ctx.guild.id] = {}
+            if ctx.guild.id not in MembersList:
+                MembersList[ctx.guild.id] = ""
+            if ctx.guild.id not in ParticipantsMsg:
+                ParticipantsMsg[ctx.guild.id] = ""
 
             if GiveawayActive[ctx.guild.id] == False:
                 GiveawayActive[ctx.guild.id] = True
@@ -401,7 +407,7 @@ class Giveaway():
 
                     await [ctx.guild.id].send(embed=embed)
                     Participants[ctx.guild.id].clear()
-                    MembersList[ctx.guild.id] = {}
+                    MembersList[ctx.guild.id] = ""
                     GiveawayActive[ctx.guild.id] = False
                     GiveawayChannel[ctx.guild.id] = None
             else:
@@ -488,7 +494,7 @@ class Giveaway():
                 GiveawayActive[ctx.guild.id] = False
                 GiveawayChannel[ctx.guild.id] = None
                 Participants[ctx.guild.id].clear()
-                MembersList[ctx.guild.id] = {}
+                MembersList[ctx.guild.id] = ""
                 await ctx.send(f"Giveaway has been Stopped by {ctx.author.mention}")
             else:
                 await ctx.send(":exclamation: There is No Giveaway Active in this Server")
