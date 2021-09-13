@@ -338,12 +338,12 @@ class Giveaway():
     global ParticipantsMsg
     global MembersList
     global Participants
-    GiveawayActive = False
-    GiveawayChannel = None
+    GiveawayActive = {}
+    GiveawayChannel = {}
 
-    StartAnnounce = ""
-    ParticipantsMsg = ""
-    MembersList = ""
+    StartAnnounce = {}
+    ParticipantsMsg = {}
+    MembersList = {}
 
     Participants = {
 
@@ -354,10 +354,13 @@ class Giveaway():
     async def gstart(ctx, Channel:discord.TextChannel, *, prize:str, endtime:int, unit:str):
         global GiveawayActive, GiveawayChannel, StartAnnounce, MembersList, ParticipantsMsg
         try:
-            if GiveawayActive == False:
-                GiveawayActive = True
-                GiveawayChannel = Channel
-                listtostr = list(Participants.keys())
+            if ctx.guild.id not in GiveawayActive:
+                GiveawayActive[ctx.guild.id] = False
+
+            if GiveawayActive[ctx.guild.id] == False:
+                GiveawayActive[ctx.guild.id] = True
+                GiveawayChannel[ctx.guild.id] = Channel
+                listtostr = list(Participants[ctx.guild.id].keys())
                 members = str(listtostr)
 
                 members = members.replace("'","") 
@@ -365,7 +368,7 @@ class Giveaway():
                 members = members.replace("]","")
                 # await asyncio.sleep(int(endtime))
 
-                if GiveawayActive ==True:
+                if GiveawayActive[ctx.guild.id] ==True:
                     if unit == "s" or "sec" in unit:
                         wait = 1 * endtime
                         unitTime = "Seconds"
@@ -376,17 +379,17 @@ class Giveaway():
                         wait = 60 * 60 * endtime
                         unitTime = "Hours"
 
-                    StartAnnounce = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` {unitTime} :partying_face:")
-                    ParticipantsMsg = await ctx.send(f":busts_in_silhouette: Participants - {MembersList}")
+                    StartAnnounce[ctx.guild.id] = await ctx.send(f":loudspeaker:  Giveaway has been Started by {ctx.author.mention} and Will End After `{endtime}` {unitTime} :partying_face:")
+                    ParticipantsMsg[ctx.guild.id] = await ctx.send(f":busts_in_silhouette: Participants - {MembersList[ctx.guild.id]}")
 
-                if GiveawayActive == True:
+                if GiveawayActive[ctx.guild.id] == True:
                     await asyncio.sleep(wait)
 
-                if GiveawayActive == True:
-                    if len(Participants) == 0:
-                        Participants["No One"] = "No one Participated"
-                    winnerCode = random.choice(list(Participants.values()))
-                    CodeOwner = [k for k, v in Participants.items() if v == winnerCode]
+                if GiveawayActive[ctx.guild.id] == True:
+                    if len(Participants[ctx.guild.id]) == 0:
+                        Participants[ctx.guild.id]["No One"] = "No one Participated"
+                    winnerCode = random.choice(list(Participants[ctx.guild.id].values()))
+                    CodeOwner = [k for k, v in Participants[ctx.guild.id].items() if v == winnerCode]
                     print(CodeOwner)
                     winnerName = str(CodeOwner[0])
                     winner = f"{winnerName} || {winnerCode}"
@@ -394,13 +397,13 @@ class Giveaway():
                     embed = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||\n",color=embedTheme)
                     embed.add_field(name="Winner of the Giveaway",value=f"{winner}",inline=True)
                     embed.add_field(name="Prize",value=f"{prize}",inline=True)
-                    embed.add_field(name="Participants",value=f"{MembersList}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
+                    embed.add_field(name="Participants",value=f"{MembersList[ctx.guild.id]}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
 
-                    await GiveawayChannel.send(embed=embed)
-                    Participants.clear()
-                    MembersList = ""
-                    GiveawayActive = False
-                    GiveawayChannel = None
+                    await [ctx.guild.id].send(embed=embed)
+                    Participants[ctx.guild.id].clear()
+                    MembersList[ctx.guild.id] = {}
+                    GiveawayActive[ctx.guild.id] = False
+                    GiveawayChannel[ctx.guild.id] = None
             else:
                 await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
         except MissingRole:
@@ -409,25 +412,27 @@ class Giveaway():
     @bot.command()
     async def gparticipate(ctx):
         global StartAnnounce, MembersList, ParticipantsMsg
-        if GiveawayActive == True:
-            if ctx.channel == GiveawayChannel:
-                if ctx.author.name not in Participants:
+        if ctx.guild.id not in GiveawayActive:
+                GiveawayActive[ctx.guild.id] = False
+        if GiveawayActive[ctx.guild.id] == True:
+            if ctx.channel == GiveawayChannel[ctx.guild.id]:
+                if ctx.author.name not in Participants[ctx.guild.id]:
                     code = random.randint(000000,999999)
-                    if code in Participants:
+                    if code in Participants[ctx.guild.id]:
                         code = random.randint(000000,999999)
-                    Participants[ctx.author.name] = code
+                    Participants[ctx.guild.id][ctx.author.name] = code
 
-                    listtostr = list(Participants.keys())
+                    listtostr = list(Participants[ctx.guild.id].keys())
                     members = str(listtostr)
 
                     members = members.replace("'","") 
                     members = members.replace("[","") 
                     members = members.replace("]","")
-                    MembersList = members
+                    MembersList[ctx.guild.id] = members
 
                     await ctx.author.send(f":partying_face: You have Successfully Participated in the Giveaway and Your Special Code for The Giveaway is `{code}`")
                     await ctx.send(f"{ctx.author.mention} We Accepted your Request, Please Check your Dm", delete_after=15)
-                    await ParticipantsMsg.edit(content=f":busts_in_silhouette: Participants - {MembersList}")
+                    await ParticipantsMsg[ctx.guild.id].edit(content=f":busts_in_silhouette: Participants - {MembersList[ctx.guild.id]}")
                 else:
                     await ctx.send(f"{ctx.author.mention} You have Already Participated in the Giveaway, you cannot Participate again", delete_after=15)
         else:
@@ -436,22 +441,24 @@ class Giveaway():
     @bot.command()
     async def gquit(ctx):
         global StartAnnounce, MembersList, ParticipantsMsg
-        if GiveawayActive == True:
-            if ctx.channel == GiveawayChannel:
-                if ctx.author.name in Participants:
+        if ctx.guild.id not in GiveawayActive:
+                GiveawayActive[ctx.guild.id] = False
+        if GiveawayActive[ctx.guild.id] == True:
+            if ctx.channel == GiveawayChannel[ctx.guild.id]:
+                if ctx.author.name in Participants[ctx.guild.id]:
 
-                    del Participants[ctx.author.name]
+                    del Participants[ctx.guild.id][ctx.author.name]
 
-                    listtostr = list(Participants.keys())
+                    listtostr = list(Participants[ctx.guild.id].keys())
                     members = str(listtostr)
 
                     members = members.replace("'","") 
                     members = members.replace("[","") 
                     members = members.replace("]","")
-                    MembersList = members
+                    MembersList[ctx.guild.id] = members
 
                     await ctx.send(f"{ctx.author.mention} You have Successfully Quitted the Giveaway", delete_after=15)
-                    await ParticipantsMsg.edit(content=f":busts_in_silhouette: Participants - {MembersList}")
+                    await ParticipantsMsg[ctx.guild.id].edit(content=f":busts_in_silhouette: Participants - {MembersList[ctx.guild.id]}")
                 else:
                     await ctx.send(f"{ctx.author.mention} You are Already not a Participant of this Giveaway", delete_after=15)
         else:
@@ -461,8 +468,10 @@ class Giveaway():
     @commands.has_role("Giveaway Handler")
     async def gstatus(ctx):
         try:
-            if GiveawayActive:
-                await ctx.send(f"A Giveaway is Currently Active in this Server \n Number of Participants :- {Participants}\n Giveaway Channel :- {GiveawayChannel}")
+            if ctx.guild.id not in GiveawayActive:
+                GiveawayActive[ctx.guild.id] = False
+            if GiveawayActive[ctx.guild.id]:
+                await ctx.send(f"A Giveaway is Currently Active in this Server \n Number of Participants :- {Participants[ctx.guild.id]}\n Giveaway Channel :- {GiveawayChannel}")
             else:
                 await ctx.send(":exclamation: There is No Giveaway Active in this Server")
         except MissingRole:
@@ -473,11 +482,13 @@ class Giveaway():
     async def gstop(ctx):
         global GiveawayActive, Participants, GiveawayChannel, MembersList
         try:
-            if GiveawayActive == True:
-                GiveawayActive = False
-                GiveawayChannel = None
-                Participants.clear()
-                MembersList = ""
+            if ctx.guild.id not in GiveawayActive:
+                GiveawayActive[ctx.guild.id] = False
+            if GiveawayActive[ctx.guild.id] == True:
+                GiveawayActive[ctx.guild.id] = False
+                GiveawayChannel[ctx.guild.id] = None
+                Participants[ctx.guild.id].clear()
+                MembersList[ctx.guild.id] = {}
                 await ctx.send(f"Giveaway has been Stopped by {ctx.author.mention}")
             else:
                 await ctx.send(":exclamation: There is No Giveaway Active in this Server")
