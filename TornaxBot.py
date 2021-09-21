@@ -749,10 +749,11 @@ punchhelp = ">punch [member] [reason]"
 
 afkdata = {}
 username = ""
+reasontopic = ""
 
 @bot.command()
 async def afk(ctx, *, reason: Optional[str]=None):
-    global afkdata, username
+    global afkdata, username, reasontopic
 
     if ctx.guild.id not in afkdata:
         afkdata[ctx.guild.id] = {}
@@ -765,7 +766,8 @@ async def afk(ctx, *, reason: Optional[str]=None):
 
     username = ctx.author.nick
     if reason is None:
-        reason = f"{ctx.author.mention} is Afk Now"
+        reason = f"Afk"
+    reasontopic = reason
     # embed = discord.Embed(description=f"Afk Set : {reason}", color=embedTheme)
     # await ctx.send(embed=embed)
     await ctx.send(f"Afk Set : {reason}")
@@ -792,6 +794,15 @@ async def on_message(message):
                     except:
                         pass
                     afkdata[message.guild.id][message.author.id]["Afk"] = False
+
+@bot.listen()
+async def on_message(message):
+    global afkdata, reasontopic
+    users = list(afkdata[message.guild.id].keys())
+    for user in users:
+        if f"<@{user}>" in message.content:
+            await message.channel.send(f"Afk: He is Currently Afk | Reason: {reasontopic}")
+            await asyncio.sleep(3)
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
