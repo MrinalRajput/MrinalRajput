@@ -753,10 +753,15 @@ async def afk(ctx, *, reason: Optional[str]=None):
         startdata = json.load(start)
         print(startdata.keys())
 
-        if str(ctx.guild.id) not in startdata.keys():
+        server = list(startdata.keys())
+        if ctx.guild.id in server:
+            userids = list(startdata[ctx.guild.id].keys())
+        else:
             startdata[ctx.guild.id] = {}
-        if ctx.author.id not in startdata[ctx.guild.id].keys():
-            startdata[ctx.guild.id][ctx.author.id] = {"Afk":False}
+        if ctx.author.id not in userids:
+            startdata[ctx.guild.id][ctx.author.id]["Afk"] = False
+        print(server)
+        print(userids)
 
         json.dump(startdata, open("data.json", "w"), indent = 4)
 
