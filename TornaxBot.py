@@ -751,12 +751,12 @@ async def afk(ctx, reason: Optional[str]=None):
         reason = f"{ctx.author.mention} is Afk Now"
     embed = discord.Embed(description=f"Afk Set : {reason}", color=embedTheme)
     await ctx.send(embed=embed)
-    await ctx.author.nick(f"[Afk] {user}")
+    await ctx.author.nick(f"**[Afk] {user}**")
 
-    with open("data.json") as f:
+    with open("data.json", "r") as f:
         data = json.loads(f)
-        data[ctx.guild][ctx.author.id][Afk] = True
-        json.dumps(data, open("data.json", w), indent = 4)
+        data[ctx.guild.id][ctx.author.id]["Afk"] = True
+        json.dumps(data, open("data.json", "w"), indent = 4)
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
