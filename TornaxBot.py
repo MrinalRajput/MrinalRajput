@@ -754,10 +754,11 @@ async def afk(ctx, *, reason: Optional[str]=None):
         print(startdata.keys())
 
         server = list(startdata.keys())
-        if ctx.guild.id in server:
-            userids = list(startdata[ctx.guild.id].keys())
-        else:
+        if ctx.guild.id not in server:
             startdata[ctx.guild.id] = {}
+        else:
+            pass
+        userids = list(startdata[ctx.guild.id].keys())
         if ctx.author.id not in userids:
             startdata[ctx.guild.id][ctx.author.id]["Afk"] = False
         print(server)
