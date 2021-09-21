@@ -760,7 +760,7 @@ async def afk(ctx, *, reason: Optional[str]=None):
     if "Afk" not in afkdata[ctx.guild.id][ctx.author.id]:
         afkdata[ctx.guild.id][ctx.author.id]["Afk"] = False
 
-    print(afkdata, indent=4)
+    print(afkdata)
 
     user = ctx.author.nick
     if reason is None:
