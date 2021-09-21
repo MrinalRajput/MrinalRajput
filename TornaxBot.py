@@ -788,12 +788,12 @@ async def on_message(message):
         if message.author.id in afkdata[message.guild.id]:
             if "Afk" in afkdata[message.guild.id][message.author.id]:
                 if afkdata[message.guild.id][message.author.id]["Afk"] == True:
+                    afkdata[message.guild.id][message.author.id]["Afk"] = False
                     await message.channel.send(f"Afk Removed: {message.author.mention} You are no More Afk Now!")
                     try:
                         await message.author.edit(nick=username)
                     except:
                         pass
-                    afkdata[message.guild.id][message.author.id]["Afk"] = False
 
 @bot.listen()
 async def on_message(message):
