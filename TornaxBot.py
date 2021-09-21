@@ -745,18 +745,36 @@ async def punch(ctx,member: Optional[discord.Member]=None, *, reason: Optional[s
 punchhelp = ">punch [member] [reason]"
 
 @bot.command()
-async def afk(ctx, reason: Optional[str]=None):
-    user = ctx.author.nick
-    if reason is None:
-        reason = f"{ctx.author.mention} is Afk Now"
-    embed = discord.Embed(description=f"Afk Set : {reason}", color=embedTheme)
-    await ctx.send(embed=embed)
-    await ctx.author.nick(f"**[Afk] {user}**")
+async def afk(ctx, *, reason: Optional[str]=None):
+    with open("data.json", "r") as start:
+        startdata = json.load(start)
+        print(startdata)
 
-    with open("data.json", "r") as f:
-        data = json.loads(f)
-        data[ctx.guild.id][ctx.author.id]["Afk"] = True
-        json.dumps(data, open("data.json", "w"), indent = 4)
+        if ctx.guild.id not in startdata:
+            startdata[ctx.guild.id] = {}
+            if ctx.author.id not in startdata[ctx.guild.id]:
+                startdata[ctx.guild.id][ctx.author.id] = {}
+                if "Afk" not in startdata[ctx.guild.id][ctx.author.id]:
+                    startdata[ctx.guild.id][ctx.author.id]["Afk"] = False
+
+            json.dump(startdata, open("data.json", "w"), indent = 4)
+
+        user = ctx.author.nick
+        if reason is None:
+            reason = f"{ctx.author.mention} is Afk Now"
+        embed = discord.Embed(description=f"Afk Set : {reason}", color=embedTheme)
+        await ctx.send(embed=embed)
+        try:
+            await ctx.author.edit(nick=f"[Afk] {ctx.author.name}")
+        except:
+            pass
+
+        with open("data.json", "r") as f:
+            data = json.load(f)
+            data[str(ctx.guild.id)][str(ctx.author.id)]["Afk"] = True
+            json.dump(data, open("data.json", "w"), indent = 4)
+
+afkhelp = ">afk [reason]"
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
@@ -838,7 +856,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed = discord.Embed(color = embedTheme)
         myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n \n \t-> [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=0&scope=bot)")
         myEmbed.add_field(name=f"Commands — {int(totalCommands)-2}",value="----------------------\n",inline=False)
-        myEmbed.add_field(name="Miscellaneous",value=" tell, ping, thought, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
+        myEmbed.add_field(name="Miscellaneous",value=" tell, ping, afk, thought, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gpaticipate, gquit, info, about, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
         myEmbed.add_field(name="Fun",value=" slap, kill, punch \n----------------------\n", inline=False)
@@ -853,6 +871,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "ping": content=pinghelp
         elif anycommand == "thought": content=thoughthelp
         elif anycommand == "avatar": content=avatarhelp
+        elif anycommand == "afk": content=afkhelp
         elif anycommand == "react": content=reacthelp
         elif anycommand == "rule": content=rulehelp
         elif anycommand == "rules": content=ruleshelp
