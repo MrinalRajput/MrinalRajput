@@ -751,7 +751,6 @@ punchhelp = ">punch [member] [reason]"
 async def afk(ctx, *, reason: Optional[str]=None):
     with open("data.json", "r") as start:
         startdata = json.load(start)
-        print(startdata.keys())
 
         server = list(startdata.keys())
         if ctx.guild.id not in server:
@@ -760,9 +759,11 @@ async def afk(ctx, *, reason: Optional[str]=None):
             pass
         userids = list(startdata[ctx.guild.id].keys())
         if ctx.author.id not in userids:
+            startdata[ctx.guild.id][ctx.author.id] = {}
+        if "Afk" not in startdata[ctx.guild.id][ctx.author.id]:
             startdata[ctx.guild.id][ctx.author.id]["Afk"] = False
-        print(server)
-        print(userids)
+        # print(server)
+        # print(userids)
 
         json.dump(startdata, open("data.json", "w"), indent = 4)
 
