@@ -748,13 +748,12 @@ punchhelp = ">punch [member] [reason]"
 async def afk(ctx, *, reason: Optional[str]=None):
     with open("data.json", "r") as start:
         startdata = json.load(start)
-        print(startdata)
 
         if ctx.guild.id not in startdata:
             startdata[ctx.guild.id] = {}
             if ctx.author.id not in startdata[ctx.guild.id]:
                 startdata[ctx.guild.id][ctx.author.id] = {}
-                if "Afk" not in startdata[ctx.guild.id][ctx.author.id]:
+            if "Afk" not in startdata[ctx.guild.id][ctx.author.id]:
                     startdata[ctx.guild.id][ctx.author.id]["Afk"] = False
 
             json.dump(startdata, open("data.json", "w"), indent = 4)
@@ -762,8 +761,9 @@ async def afk(ctx, *, reason: Optional[str]=None):
         user = ctx.author.nick
         if reason is None:
             reason = f"{ctx.author.mention} is Afk Now"
-        embed = discord.Embed(description=f"Afk Set : {reason}", color=embedTheme)
-        await ctx.send(embed=embed)
+        # embed = discord.Embed(description=f"Afk Set : {reason}", color=embedTheme)
+        # await ctx.send(embed=embed)
+        await ctx.send(f"Afk Set : {reason}")
         try:
             await ctx.author.edit(nick=f"[Afk] {ctx.author.name}")
         except:
