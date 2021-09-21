@@ -32,6 +32,9 @@ SmpStatus = False
 LegendServer = 869439705714933780
 Creater = "MrinalSparks#8633"
 
+with open("data.json", "r") as start:
+        startdata = json.load(start)
+
 @bot.event
 async def on_member_join(member):
     if member.guild.id == LegendServer:
@@ -748,15 +751,14 @@ punchhelp = ">punch [member] [reason]"
 async def afk(ctx, *, reason: Optional[str]=None):
     with open("data.json", "r") as start:
         startdata = json.load(start)
+        print(startdata.keys())
 
-        if ctx.guild.id not in startdata:
+        if str(ctx.guild.id) not in startdata.keys():
             startdata[ctx.guild.id] = {}
-            if ctx.author.id not in startdata[ctx.guild.id]:
-                startdata[ctx.guild.id][ctx.author.id] = {}
-            if "Afk" not in startdata[ctx.guild.id][ctx.author.id]:
-                    startdata[ctx.guild.id][ctx.author.id]["Afk"] = False
+        if ctx.author.id not in startdata[ctx.guild.id].keys():
+            startdata[ctx.guild.id][ctx.author.id] = {"Afk":False}
 
-            json.dump(startdata, open("data.json", "w"), indent = 4)
+        json.dump(startdata, open("data.json", "w"), indent = 4)
 
         user = ctx.author.nick
         if reason is None:
@@ -771,10 +773,32 @@ async def afk(ctx, *, reason: Optional[str]=None):
 
         with open("data.json", "r") as f:
             data = json.load(f)
-            data[str(ctx.guild.id)][str(ctx.author.id)]["Afk"] = True
+            data[ctx.guild.id][ctx.author.id]["Afk"] = True
             json.dump(data, open("data.json", "w"), indent = 4)
 
 afkhelp = ">afk [reason]"
+
+@bot.listen()
+async def on_message(message):
+    # with open("data.json", "r") as l:
+    #     startdata = json.load(l)
+
+    #     if message.guild.id not in startdata:
+    #         startdata[message.guild.id] = {}
+    #     if message.author.id not in startdata[message.guild.id]:
+    #         startdata[message.guild.id][message.author.id] = {}
+    #     if "Afk" not in startdata[message.guild.id][message.author.id]:
+    #         startdata[message.guild.id][message.author.id]["Afk"] = False
+
+    #         json.dump(startdata, open("data.json", "w"), indent = 4)
+
+        if startdata[message.guild.id][message.author.id]["Afk"] == True:
+            # with open("data.json", "w") as k:
+            startdata[message.guild.id][message.author.id]["Afk"] = False
+                # json.dump(startdata, k, indent = 4)
+            await message.channel.send(f"{message.author.mention} You are No More Afk now!")
+        else:
+            pass
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
