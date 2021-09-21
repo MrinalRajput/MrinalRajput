@@ -798,11 +798,14 @@ async def on_message(message):
 @bot.listen()
 async def on_message(message):
     global afkdata, reasontopic
-    users = list(afkdata[message.guild.id].keys())
-    for user in users:
-        if f"<@{user}>" in message.content:
-            await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic}")
-            await asyncio.sleep(3)
+    if message.author == bot.user:
+        pass
+    else:
+        users = list(afkdata[message.guild.id].keys())
+        for user in users:
+            if f"<@{user}>" in message.content:
+                await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic}")
+                await asyncio.sleep(3)
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
