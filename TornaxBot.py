@@ -747,65 +747,37 @@ async def punch(ctx,member: Optional[discord.Member]=None, *, reason: Optional[s
 
 punchhelp = ">punch [member] [reason]"
 
+afkdata = {}
+
 @bot.command()
 async def afk(ctx, *, reason: Optional[str]=None):
-    with open("data.json", "r") as start:
-        startdata = json.load(start)
+    global afkdata
 
-        server = list(startdata.keys())
-        if ctx.guild.id not in server:
-            startdata[ctx.guild.id] = {}
-        else:
-            pass
-        userids = list(startdata[ctx.guild.id].keys())
-        if ctx.author.id not in userids:
-            startdata[ctx.guild.id][ctx.author.id] = {}
-        if "Afk" not in startdata[ctx.guild.id][ctx.author.id]:
-            startdata[ctx.guild.id][ctx.author.id]["Afk"] = False
-        # print(server)
-        # print(userids)
+    if ctx.guild.id not in afkdata:
+        afkdata[ctx.guild.id] = {}
+    if ctx.author.id not in afkdata[ctx.guild.id]:
+        afkdata[ctx.guild.id][ctx.author.id] = {}
+    if "Afk" not in afkdata[ctx.guild.id][ctx.author.id]:
+        afkdata[ctx.guild.id][ctx.author.id]["Afk"] = False
 
-        json.dump(startdata, open("data.json", "w"), indent = 4)
+    print(afkdata, indent=4)
 
-        user = ctx.author.nick
-        if reason is None:
-            reason = f"{ctx.author.mention} is Afk Now"
-        # embed = discord.Embed(description=f"Afk Set : {reason}", color=embedTheme)
-        # await ctx.send(embed=embed)
-        await ctx.send(f"Afk Set : {reason}")
-        try:
-            await ctx.author.edit(nick=f"[Afk] {ctx.author.name}")
-        except:
-            pass
-
-        with open("data.json", "r") as f:
-            data = json.load(f)
-            data[ctx.guild.id][ctx.author.id]["Afk"] = True
-            json.dump(data, open("data.json", "w"), indent = 4)
+    user = ctx.author.nick
+    if reason is None:
+        reason = f"{ctx.author.mention} is Afk Now"
+    # embed = discord.Embed(description=f"Afk Set : {reason}", color=embedTheme)
+    # await ctx.send(embed=embed)
+    await ctx.send(f"Afk Set : {reason}")
+    try:
+        await ctx.author.edit(nick=f"[Afk] {ctx.author.name}")
+    except:
+        pass
 
 afkhelp = ">afk [reason]"
 
 @bot.listen()
-async def on_message(message):
-    # with open("data.json", "r") as l:
-    #     startdata = json.load(l)
-
-    #     if message.guild.id not in startdata:
-    #         startdata[message.guild.id] = {}
-    #     if message.author.id not in startdata[message.guild.id]:
-    #         startdata[message.guild.id][message.author.id] = {}
-    #     if "Afk" not in startdata[message.guild.id][message.author.id]:
-    #         startdata[message.guild.id][message.author.id]["Afk"] = False
-
-    #         json.dump(startdata, open("data.json", "w"), indent = 4)
-
-        if startdata[message.guild.id][message.author.id]["Afk"] == True:
-            # with open("data.json", "w") as k:
-            startdata[message.guild.id][message.author.id]["Afk"] = False
-                # json.dump(startdata, k, indent = 4)
-            await message.channel.send(f"{message.author.mention} You are No More Afk now!")
-        else:
-            pass
+async def on_message(message):   
+    pass
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
