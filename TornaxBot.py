@@ -4,6 +4,7 @@ from datetime import datetime
 import asyncio
 import random
 from typing import Optional
+import json
 
 from discord.ext.commands import has_permissions,has_role,MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError
 from discord.member import Member
@@ -742,6 +743,20 @@ async def punch(ctx,member: Optional[discord.Member]=None, *, reason: Optional[s
     await ctx.send(embed=choice)  
 
 punchhelp = ">punch [member] [reason]"
+
+@bot.command()
+async def afk(ctx, reason: Optional[str]=None):
+    user = ctx.author.nick
+    if reason is None:
+        reason = f"{ctx.author.mention} is Afk Now"
+    embed = discord.Embed(description=f"Afk Set : {reason}", color=embedTheme)
+    await ctx.send(embed=embed)
+    await ctx.author.nick(f"[Afk] {user}")
+
+    with open("data.json") as f:
+        data = json.loads(f)
+        data[ctx.guild][ctx.author.id][Afk] = True
+        json.dumps(data, open("data.json", w), indent = 4)
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
