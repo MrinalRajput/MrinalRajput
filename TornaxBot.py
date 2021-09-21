@@ -748,10 +748,11 @@ async def punch(ctx,member: Optional[discord.Member]=None, *, reason: Optional[s
 punchhelp = ">punch [member] [reason]"
 
 afkdata = {}
+username = ""
 
 @bot.command()
 async def afk(ctx, *, reason: Optional[str]=None):
-    global afkdata
+    global afkdata, username
 
     if ctx.guild.id not in afkdata:
         afkdata[ctx.guild.id] = {}
@@ -760,9 +761,9 @@ async def afk(ctx, *, reason: Optional[str]=None):
     if "Afk" not in afkdata[ctx.guild.id][ctx.author.id]:
         afkdata[ctx.guild.id][ctx.author.id]["Afk"] = False
 
-    print(afkdata)
+    # print(afkdata)
 
-    user = ctx.author.nick
+    username = ctx.author.nick
     if reason is None:
         reason = f"{ctx.author.mention} is Afk Now"
     # embed = discord.Embed(description=f"Afk Set : {reason}", color=embedTheme)
@@ -773,11 +774,24 @@ async def afk(ctx, *, reason: Optional[str]=None):
     except:
         pass
 
+    afkdata[ctx.guild.id][ctx.author.id]["Afk"] = True
+    # print(afkdata)
+
 afkhelp = ">afk [reason]"
 
 @bot.listen()
 async def on_message(message):   
-    pass
+    global afkdata
+    if message.guild.id in afkdata:
+        if message.author.id in afkdata[message.guild.id]:
+            if "Afk" in afkdata[message.guild.id][message.author.id]:
+                if afkdata[message.guild.id][message.author.id]["Afk"] == True:
+                    await message.channel.send(f"Afk Removed: {message.author.mention} You are no More Afk Now!")
+                    try:
+                        await message.author.edit(nick=username)
+                    except:
+                        pass
+                    afkdata[message.guild.id][message.author.id]["Afk"] = False
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
