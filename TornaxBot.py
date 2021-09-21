@@ -801,7 +801,7 @@ async def on_message(message):
     users = list(afkdata[message.guild.id].keys())
     for user in users:
         if f"<@{user}>" in message.content:
-            await message.channel.send(f"Afk: He is Currently Afk | Reason: {reasontopic}")
+            await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic}")
             await asyncio.sleep(3)
 
 @bot.command()
