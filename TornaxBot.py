@@ -1001,22 +1001,23 @@ count = {}
 @bot.listen()
 async def on_message(message):
     global count
-    if message.guild.id not in count:
-        count[message.guild.id]  = {}
-    if message.author.id not in count[message.guild.id]:
-        count[message.guild.id][message.author.id] = {}
-    if "counting" not in count[message.guild.id][message.author.id]:
-        count[message.guild.id][message.author.id]["counting"] = 0
-    if "strikes" not in count[message.guild.id][message.author.id]:
-        count[message.guild.id][message.author.id]["strikes"] = 0
+    if not message.author.bot:
+        if message.guild.id not in count:
+            count[message.guild.id]  = {}
+        if message.author.id not in count[message.guild.id]:
+            count[message.guild.id][message.author.id] = {}
+        if "counting" not in count[message.guild.id][message.author.id]:
+            count[message.guild.id][message.author.id]["counting"] = False
+        if "strikes" not in count[message.guild.id][message.author.id]:
+            count[message.guild.id][message.author.id]["strikes"] = 0
 
-    while True:
-        if count[message.guild.id][message.author.id]["counting"] <= 0:
-            count[message.guild.id][message.author.id]["counting"] = 2
         
-        if count[message.guild.id][message.author.id]["counting"] > 0:
-            count[message.guild.id][message.author.id]["counting"] -= 1
-
+        if count[message.guild.id][message.author.id]["counting"] == False:
+            count[message.guild.id][message.author.id]["counting"] = True        
+        await asyncio.sleep(4)
+        count[message.guild.id][message.author.id]["counting"] = False
+        count[message.guild.id][message.author.id]["strikes"] = 0
+        print(count[message.guild.id][message.author.id]["counting"])
 
 @bot.listen()
 async def on_message(message):
@@ -1026,20 +1027,17 @@ async def on_message(message):
     if message.author.id not in count[message.guild.id]:
         count[message.guild.id][message.author.id] = {}
     if "counting" not in count[message.guild.id][message.author.id]:
-        count[message.guild.id][message.author.id]["counting"] = 0
+        count[message.guild.id][message.author.id]["counting"] = False
     if "strikes" not in count[message.guild.id][message.author.id]:
         count[message.guild.id][message.author.id]["strikes"] = 0
 
     if message.content is not None:
         print(f'Count:{count[message.guild.id][message.author.id]["counting"]}",f"Strikes:{count[message.guild.id][message.author.id]["strikes"]}')
         
-        if count[message.guild.id][message.author.id]["counting"] > 0:
+        if count[message.guild.id][message.author.id]["counting"] == True:
             count[message.guild.id][message.author.id]["strikes"] += 1
-        else:
-            count[message.guild.id][message.author.id]["strikes"] = 0
         if count[message.guild.id][message.author.id]["strikes"] > 3:
-            await message.channel.send(f":exclamation: {message.author.mention} You are Sending Messages So Quickly")
-            count[message.guild.id][message.author.id]["counting"] = 0
+            await message.channel.send(f":exclamation: {message.author.mention} You are Sending Message So Quickly, Slowdown you Speed")
             count[message.guild.id][message.author.id]["strikes"] = 0
     
 
