@@ -798,9 +798,7 @@ async def on_message(message):
 @bot.listen()
 async def on_message(message):
     global afkdata, reasontopic
-    if message.author == bot.user:
-        pass
-    else:
+    if message.author != bot.user:
         if message.guild.id in afkdata:
             if message.author.id in afkdata[message.guild.id]:
                 if "Afk" in afkdata[message.guild.id][message.author.id]:
