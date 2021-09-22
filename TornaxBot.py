@@ -838,14 +838,14 @@ async def on_message(message):
 @bot.listen()
 async def on_message(message):
     global afkdata, reasontopic
-    print(afkdata)
+    # print(afkdata)
     # print(reasontopic)
     if message.guild.id not in afkdata:
         afkdata[message.guild.id] = {}
     if not message.author.bot:
         users = list(afkdata[message.guild.id].keys())
         for user in users:
-            print(user)
+            # print(user)
             if f"<@{user}>" in message.content:
                 await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[user]}")
 
