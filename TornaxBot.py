@@ -860,8 +860,9 @@ avatarhelp = ">avatar [user]"
 @bot.command()
 async def vote(ctx):
     embed = discord.Embed(title="Vote For Tornax", color=embedTheme)
-    embed.set_image(url=bot.user.avatar_url)
+    embed.set_thumbnail(url=bot.user.avatar_url)
     embed.add_field(name="Click on Below Link", value="[Vote Now](https://top.gg/bot/832897602768076816/vote)")
+    embed.add_field(name="Rewards", value="Coming Soon")
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=embed)
 
