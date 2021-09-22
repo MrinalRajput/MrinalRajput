@@ -748,8 +748,8 @@ async def punch(ctx,member: Optional[discord.Member]=None, *, reason: Optional[s
 punchhelp = ">punch [member] [reason]"
 
 afkdata = {}
-username = ""
-reasontopic = ""
+username = {}
+reasontopic = {}
 
 @bot.command()
 async def afk(ctx, *, reason: Optional[str]=None):
@@ -764,10 +764,10 @@ async def afk(ctx, *, reason: Optional[str]=None):
 
     # print(afkdata)
 
-    username = ctx.author.nick
+    username[ctx.author.id] = ctx.author.nick
     if reason is None:
         reason = f"Afk"
-    reasontopic = reason
+    reasontopic[ctx.author.id] = reason
     # embed = discord.Embed(description=f"Afk Set : {reason}", color=embedTheme)
     # await ctx.send(embed=embed)
     await ctx.send(f"Afk Set : {reason}")
@@ -783,7 +783,7 @@ afkhelp = ">afk [reason]"
 
 @bot.listen()
 async def on_message(message):   
-    global afkdata
+    global afkdata, username
     if message.guild.id in afkdata:
         if message.author.id in afkdata[message.guild.id]:
             if "Afk" in afkdata[message.guild.id][message.author.id]:
@@ -791,13 +791,15 @@ async def on_message(message):
                     afkdata[message.guild.id][message.author.id]["Afk"] = False
                     await message.channel.send(f"Afk Removed: {message.author.mention} You are no More Afk Now!")
                     try:
-                        await message.author.edit(nick=username)
+                        await message.author.edit(nick=username[message.author.id])
                     except:
                         pass
 
 @bot.listen()
 async def on_message(message):
     global afkdata, reasontopic
+    print(afkdata)
+    print(reasontopic)
     if message.author != bot.user:
         if message.guild.id in afkdata:
             if message.author.id in afkdata[message.guild.id]:
@@ -806,7 +808,7 @@ async def on_message(message):
                         users = list(afkdata[message.guild.id].keys())
                         for user in users:
                             if f"<@{user}>" in message.content:
-                                await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic}")
+                                await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[message.author.id]}")
                                 await asyncio.sleep(3)
 
 @bot.command()
