@@ -730,19 +730,32 @@ killhelp = ">kill [member] [reason]"
 
 @bot.command()
 async def punch(ctx,member: Optional[discord.Member]=None, *, reason: Optional[str]=None):
-    if member is None:
-        member = bot.user
-    embed1 = discord.Embed(description=f"** Punched: {ctx.author.mention} Punched {member.mention} **", color=embedTheme)
-    embed2 = discord.Embed(description=f"** Punched: {ctx.author.mention} Punched {member.mention} because {ctx.author.name} was Crazy **", color=embedTheme)
-    embed3 = discord.Embed(description=f"** Punched: {ctx.author.mention} Punched {member.mention} on his Nose **", color=embedTheme)
-    embed4 = discord.Embed(description=f"** Punched: {ctx.author.mention} Punched {member.mention} in Voilence **", color=embedTheme)
+    # if member is None:
+    #     member = bot.user
+    if member is not None:
+        embed1 = discord.Embed(description=f"** Punched: {ctx.author.mention} Punched {member.mention} **", color=embedTheme)
+        embed2 = discord.Embed(description=f"** Punched: {ctx.author.mention} Punched {member.mention} because {ctx.author.name} was Crazy **", color=embedTheme)
+        embed3 = discord.Embed(description=f"** Punched: {ctx.author.mention} Punched {member.mention} on his Nose **", color=embedTheme)
+        embed4 = discord.Embed(description=f"** Punched: {ctx.author.mention} Punched {member.mention} in Voilence **", color=embedTheme)
+    else:
+        embed1 = discord.Embed(description=f"** Punched: {bot.user.mention} Punched {ctx.user.mention} **", color=embedTheme)
+        embed2 = discord.Embed(description=f"** Punched: {bot.user.mention} Punched {ctx.user.mention} because {ctx.author.name} was Crazy **", color=embedTheme)
+        embed3 = discord.Embed(description=f"** Punched: {bot.user.mention} Punched {ctx.user.mention} on his Nose **", color=embedTheme)
+        embed4 = discord.Embed(description=f"** Punched: {bot.user.mention} Punched {ctx.user.mention} in Voilence **", color=embedTheme)
+
     allEmbeds = [embed1,embed2,embed3,embed4]
     if reason is None:
         choice = random.choice(allEmbeds)
     else:
-        arguments = [f"Punched {member.mention}",f"Punched on {member.mention}'s Nose",f"Punched {member.mention} in Voilence"]
+        if member is not None:
+            arguments = [f"Punched {member.mention}",f"Punched on {member.mention}'s Nose",f"Punched {member.mention} in Voilence"]
+        else:
+            arguments = [f"Punched {ctx.author.mention}",f"Punched on {ctx.author.mention}'s Nose",f"Punched {ctx.author.mention} in Voilence"]
         randomArgu = random.choice(arguments)
-        choice = discord.Embed(description=f"** Punched: {ctx.author.mention} {randomArgu} because {reason} **", color=embedTheme)
+        if member is not None:
+            choice = discord.Embed(description=f"** Punched: {ctx.author.mention} {randomArgu} Reason: {reason} **", color=embedTheme)
+        else:
+            choice = discord.Embed(description=f"** Punched: {bot.user.mention} {randomArgu} Reason: {reason} **", color=embedTheme)
     await ctx.send(embed=choice)  
 
 punchhelp = ">punch [member] [reason]"
