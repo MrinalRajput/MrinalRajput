@@ -1017,7 +1017,7 @@ async def on_message(message):
         await asyncio.sleep(4)
         count[message.guild.id][message.author.id]["counting"] = False
         count[message.guild.id][message.author.id]["strikes"] = 0
-        print(count[message.guild.id][message.author.id]["counting"])
+        # print(count[message.guild.id][message.author.id]["counting"])
 
 @bot.listen()
 async def on_message(message):
@@ -1032,7 +1032,7 @@ async def on_message(message):
         count[message.guild.id][message.author.id]["strikes"] = 0
 
     if message.content is not None:
-        print(f'Count:{count[message.guild.id][message.author.id]["counting"]}",f"Strikes:{count[message.guild.id][message.author.id]["strikes"]}')
+        # print(f'Count:{count[message.guild.id][message.author.id]["counting"]}",f"Strikes:{count[message.guild.id][message.author.id]["strikes"]}')
         
         if count[message.guild.id][message.author.id]["counting"] == True:
             count[message.guild.id][message.author.id]["strikes"] += 1
