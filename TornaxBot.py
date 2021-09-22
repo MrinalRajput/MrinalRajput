@@ -1010,6 +1010,8 @@ async def on_message(message):
             count[message.guild.id][message.author.id]["counting"] = False
         if "strikes" not in count[message.guild.id][message.author.id]:
             count[message.guild.id][message.author.id]["strikes"] = 0
+        if "warnings" not in count[message.guild.id][message.author.id]:
+            count[message.guild.id][message.author.id]["warnings"] = 0
 
         
         if count[message.guild.id][message.author.id]["counting"] == False:
@@ -1030,6 +1032,8 @@ async def on_message(message):
         count[message.guild.id][message.author.id]["counting"] = False
     if "strikes" not in count[message.guild.id][message.author.id]:
         count[message.guild.id][message.author.id]["strikes"] = 0
+    if "warnings" not in count[message.guild.id][message.author.id]:
+        count[message.guild.id][message.author.id]["warnings"] = 0
 
     if message.content is not None:
         # print(f'Count:{count[message.guild.id][message.author.id]["counting"]}",f"Strikes:{count[message.guild.id][message.author.id]["strikes"]}')
@@ -1037,7 +1041,20 @@ async def on_message(message):
         if count[message.guild.id][message.author.id]["counting"] == True:
             count[message.guild.id][message.author.id]["strikes"] += 1
         if count[message.guild.id][message.author.id]["strikes"] > 3:
-            await message.channel.send(f":exclamation: {message.author.mention} You are Sending Message So Quickly, Slowdown you Speed")
+            await message.channel.send(f":exclamation: {message.author.mention} You are Sending Message So Quickly, Slowdown your Speed")
+            count[message.guild.id][message.author.id]["warnings"] += 1
+            if count[message.guild.id][message.author.id]["warnings"] >= 3:
+                try:
+                    mutedRole = discord.utils.get(message.guild.roles, name="Muted")
+                    await message.author.add_roles(mutedRole)
+                    embed = discord.Embed(description = f"** {message.author.mention} has been Muted by {bot.user.mention} for `15` Seconds \n\t With the Reason of :\t Spamming**",color=embedTheme)
+                    await message.channel.send(embed=embed)
+                    await asyncio.sleep(15)
+                    await message.author.remove_roles(mutedRole)
+                except:
+                    pass
+                count[message.guild.id][message.author.id]["warnings"] = 0
+
             count[message.guild.id][message.author.id]["strikes"] = 0
     
 
