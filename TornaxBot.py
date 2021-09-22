@@ -808,7 +808,7 @@ async def on_message(message):
     users = list(afkdata[message.guild.id].keys())
     for user in users:
         if f"<@{user}>" in message.content:
-            await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[message.author.id]}")
+            await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[user.id]}")
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
