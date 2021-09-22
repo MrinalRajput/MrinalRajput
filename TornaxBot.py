@@ -1012,7 +1012,7 @@ async def on_message(message):
     if message.content is not None:
         print(f'Count:{count[message.guild.id][message.author.id]["counting"]}",f"Strikes:{count[message.guild.id][message.author.id]["strikes"]}')
         if count[message.guild.id][message.author.id]["counting"] <= 0:
-            count[message.guild.id][message.author.id]["counting"] = 3
+            count[message.guild.id][message.author.id]["counting"] = 2
         else:
             count[message.guild.id][message.author.id]["strikes"] += 1
 
