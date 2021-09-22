@@ -847,12 +847,12 @@ async def on_message(message):
         users = list(afkdata[message.guild.id].keys())
         print(users)
         for user in users:
-            print(user)
-            if f"<@{user}>" in message.content:
-                if afkdata[message.guild.id][user]["Afk"] == True:
+            # print(user)
+            if afkdata[message.guild.id][user]["Afk"] == True:
+                if f"<@{user}>" in message.content:
                     await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[user]}")
-                else:
-                    print("He is not afk")
+            else:
+                print("He is not afk")
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
