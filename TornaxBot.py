@@ -857,6 +857,15 @@ async def avatar(ctx, owner: Optional[discord.Member]=None):
 
 avatarhelp = ">avatar [user]"
 
+@bot.command()
+async def vote(ctx):
+    embed = discord.Embed(title="Vote For Tornax", color=embedTheme)
+    embed.thumbnail(url=bot.user.avatar_url)
+    embed.add_field(name="Click on Below Link", value="[Vote Now](https://top.gg/bot/832897602768076816/vote)")
+    await ctx.send(embed=embed)
+
+votehelp = ">vote"
+
 @bot.event
 async def on_guild_join(guild):
     for channel in guild.text_channels:
@@ -891,7 +900,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed = discord.Embed(color = embedTheme)
         myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n \n \t-> [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=0&scope=bot)")
         myEmbed.add_field(name=f"Commands — {int(totalCommands)-2}",value="----------------------\n",inline=False)
-        myEmbed.add_field(name="Miscellaneous",value=" tell, ping, afk, thought, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
+        myEmbed.add_field(name="Miscellaneous",value=" tell, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gpaticipate, gquit, info, about, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
         myEmbed.add_field(name="Fun",value=" slap, kill, punch \n----------------------\n", inline=False)
@@ -924,6 +933,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "gquit": content=gquithelp
         elif anycommand == "info": content=infohelp
         elif anycommand == "about": content=abouthelp
+        elif anycommand == "vote": content=votehelp
         elif anycommand == "join": content=joinhelp
         elif anycommand == "leave": content=leavehelp
         elif anycommand == "leaveserver": content=leaveserverhelp
