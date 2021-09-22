@@ -9,7 +9,7 @@ import json
 from discord.ext.commands import has_permissions,has_role,MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError
 from discord.member import Member
 
-bot = commands.Bot(command_prefix = ">",help_command=None)
+bot = commands.Bot(command_prefix = ">",case_insensitive=True ,help_command=None)
 
 restricted_words = ["gooh","kutta","kutte","harami","skyra","wtf","frick","fuck","fuk","tatti","baap","stfu"]
 
@@ -784,6 +784,7 @@ afkhelp = ">afk [reason]"
 @bot.listen()
 async def on_message(message):   
     global afkdata, username, reasontopic
+    print(afkdata)
     if message.guild.id in afkdata:
         if message.author.id in afkdata[message.guild.id]:
             if "Afk" in afkdata[message.guild.id][message.author.id]:
@@ -802,12 +803,13 @@ async def on_message(message):
     global afkdata, reasontopic
     # print(afkdata)
     # print(reasontopic)
-    if afkdata[message.guild.id][message.author.id]["Afk"] == True:
-        users = list(afkdata[message.guild.id].keys())
-        for user in users:
-            if f"<@{user}>" in message.content:
-                await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[message.author.id]}")
-                await asyncio.sleep(3)
+    if message.guild.id in afkdata:
+        if message.author.id in afkdata[message.guild.id]:
+            if afkdata[message.guild.id][message.author.id]["Afk"] == True:
+                users = list(afkdata[message.guild.id].keys())
+                for user in users:
+                    if f"<@{user}>" in message.content:
+                        await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[message.author.id]}")
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
