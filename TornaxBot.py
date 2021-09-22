@@ -809,7 +809,7 @@ async def on_message(message):
         users = list(afkdata[message.guild.id].keys())
         for user in users:
             print(user)
-            if user.mentioned_in(message):
+            if user.mention in message.content:
                 await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[user]}")
 
 @bot.command()
