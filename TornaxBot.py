@@ -1,3 +1,4 @@
+import warnings
 import discord
 from discord.ext import commands, tasks
 from datetime import datetime
@@ -994,6 +995,33 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "help": content=helphelp
         commandEmbed = discord.Embed(description=f"{content}",color=embedTheme)
         await ctx.send(embed=commandEmbed)
+
+count = {}
+@bot.listen()
+async def on_message(message):
+    global count
+    if message.guild.id not in count:
+        count[message.guild.id]  = {}
+    if message.author.id not in count[message.guild.id]:
+        count[message.guild.id][message.author.id] = {}
+    if "counting" not in count[message.guild.id][message.author.id]:
+        count[message.guild.id][message.author.id]["counting"] = 0
+    if "strikes" not in count[message.guild.id][message.author.id]:
+        count[message.guild.id][message.author.id]["strikes"] = 0
+
+    if message.content is not None:
+        print(f'Count:{count[message.guild.id][message.author.id]["counting"]}",f"Strikes:{count[message.guild.id][message.author.id]["strikes"]}')
+        if count[message.guild.id][message.author.id]["counting"] <= 0:
+            count[message.guild.id][message.author.id]["counting"] = 3
+        else:
+            count[message.guild.id][message.author.id]["strikes"] += 1
+
+        if count[message.guild.id][message.author.id]["strikes"] > 3:
+            await message.channel.send(f":exclamation: {message.author.mention} You are Sending Messages So Quickly")
+            count[message.guild.id][message.author.id]["strikes"] = 0
+    
+        count[message.guild.id][message.author.id]["counting"] -= 1
+    
 
 @bot.listen()
 async def on_message(message):
