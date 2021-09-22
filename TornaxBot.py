@@ -844,11 +844,15 @@ async def on_message(message):
     if message.guild.id not in afkdata:
         afkdata[message.guild.id] = {}
     if not message.author.bot:
-        # users = list(afkdata[message.guild.id].keys())
-        for key in list(afkdata[message.guild.id].keys()):
-            # print(user)
-            if f"<@{key}>" in message.content:
-                await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[key]}")
+        users = list(afkdata[message.guild.id].keys())
+        print(users)
+        for user in users:
+            print(user)
+            if f"<@{user}>" in message.content:
+                if afkdata[message.guild.id][user]["Afk"] == True:
+                    await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[user]}")
+                else:
+                    print("He is not afk")
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
