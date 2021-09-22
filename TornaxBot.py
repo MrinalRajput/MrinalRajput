@@ -831,10 +831,10 @@ async def on_message(message):
                     await message.channel.send(f"Afk Removed: {message.author.mention} You are no More Afk Now!")
                     try:
                         await message.author.edit(nick=username[message.author.id])
-                        del username[message.author.id]
-                        del reasontopic[message.author.id]
                     except:
                         pass
+                    del username[message.author.id]
+                    del reasontopic[message.author.id]
 
 @bot.listen()
 async def on_message(message):
@@ -844,11 +844,11 @@ async def on_message(message):
     if message.guild.id not in afkdata:
         afkdata[message.guild.id] = {}
     if not message.author.bot:
-        users = list(afkdata[message.guild.id].keys())
-        for user in users:
+        # users = list(afkdata[message.guild.id].keys())
+        for key in list(afkdata[message.guild.id].keys()):
             # print(user)
-            if f"<@{user}>" in message.content:
-                await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[user]}")
+            if f"<@{key}>" in message.content:
+                await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[key]}")
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
