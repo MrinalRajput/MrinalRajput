@@ -1019,9 +1019,8 @@ async def on_message(message):
         if count[message.guild.id][message.author.id]["strikes"] > 3:
             await message.channel.send(f":exclamation: {message.author.mention} You are Sending Messages So Quickly")
             count[message.guild.id][message.author.id]["strikes"] = 0
-
-        while count[message.guild.id][message.author.id]["counting"] > 0:
-            count[message.guild.id][message.author.id]["counting"] -= 1
+    
+        count[message.guild.id][message.author.id]["counting"] -= 1
     
 
 @bot.listen()
