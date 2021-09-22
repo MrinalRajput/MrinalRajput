@@ -725,13 +725,18 @@ async def kill(ctx,member: Optional[discord.Member]=None, *, reason: Optional[st
         embed5 = discord.Embed(description=f"** Killed: {bot.user.mention} Shooted {ctx.author.mention} by Shotgun **", color=embedTheme)
         embed6 = discord.Embed(description=f"** Killed: {bot.user.mention} Stabbed Knife to {ctx.author.mention} **", color=embedTheme)
     allEmbeds = [embed1,embed2,embed3,embed4,embed5,embed6]
-    choice = random.choice(allEmbeds)
     if reason is None:
         choice = random.choice(allEmbeds)
     else:
-        arguments = [f"Killed {member.mention}",f"Shooted {member.mention} by Shotgun",f"Stabbed Knife to {member.mention}",f"Pushed {member.mention} from High Building"]
+        if member is not None:
+            arguments = [f"Killed {member.mention}",f"Shooted {member.mention} by Shotgun",f"Stabbed Knife to {member.mention}",f"Pushed {member.mention} from High Building"]
+        else:
+            arguments = [f"Killed {ctx.author.mention}",f"Shooted {ctx.author.mention} by Shotgun",f"Stabbed Knife to {ctx.author.mention}",f"Pushed {ctx.author.mention} from High Building"]
         randomArgu = random.choice(arguments)
-        choice = discord.Embed(description=f"** Killed: {ctx.author.mention} {randomArgu} because {reason} **", color=embedTheme)
+        if member is not None:
+            choice = discord.Embed(description=f"** Killed: {ctx.author.mention} {randomArgu} because {reason} **", color=embedTheme)
+        else:
+            choice = discord.Embed(description=f"** Killed: {bot.user.mention} {randomArgu} because {reason} **", color=embedTheme)
     await ctx.send(embed=choice)
 
 killhelp = ">kill [member] [reason]"
