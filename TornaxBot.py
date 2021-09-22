@@ -1010,12 +1010,12 @@ async def on_message(message):
     if "strikes" not in count[message.guild.id][message.author.id]:
         count[message.guild.id][message.author.id]["strikes"] = 0
 
-
-    if count[message.guild.id][message.author.id]["counting"] <= 0:
-        count[message.guild.id][message.author.id]["counting"] = 2
-    
-    while count[message.guild.id][message.author.id]["counting"] > 0:
-        count[message.guild.id][message.author.id]["counting"] -= 1
+    while True:
+        if count[message.guild.id][message.author.id]["counting"] <= 0:
+            count[message.guild.id][message.author.id]["counting"] = 2
+        
+        if count[message.guild.id][message.author.id]["counting"] > 0:
+            count[message.guild.id][message.author.id]["counting"] -= 1
 
 
 @bot.listen()
