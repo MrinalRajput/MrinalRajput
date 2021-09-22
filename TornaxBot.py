@@ -784,7 +784,7 @@ afkhelp = ">afk [reason]"
 @bot.listen()
 async def on_message(message):   
     global afkdata, username, reasontopic
-    print(afkdata)
+    # print(afkdata)
     if message.guild.id in afkdata:
         if message.author.id in afkdata[message.guild.id]:
             if "Afk" in afkdata[message.guild.id][message.author.id]:
@@ -803,13 +803,10 @@ async def on_message(message):
     global afkdata, reasontopic
     # print(afkdata)
     # print(reasontopic)
-    if message.guild.id in afkdata:
-        if message.author.id in afkdata[message.guild.id]:
-            if afkdata[message.guild.id][message.author.id]["Afk"] == True:
-                users = list(afkdata[message.guild.id].keys())
-                for user in users:
-                    if f"<@{user}>" in message.content:
-                        await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[message.author.id]}")
+    users = list(afkdata[message.guild.id].keys())
+    for user in users:
+        if f"<@{user}>" in message.content:
+            await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[message.author.id]}")
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
