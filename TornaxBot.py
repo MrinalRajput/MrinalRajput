@@ -803,6 +803,8 @@ async def on_message(message):
     global afkdata, reasontopic
     # print(afkdata)
     # print(reasontopic)
+    if message.guild.id not in afkdata:
+        afkdata[message.guild.id] = {}
     users = list(afkdata[message.guild.id].keys())
     for user in users:
         if f"<@{user}>" in message.content:
