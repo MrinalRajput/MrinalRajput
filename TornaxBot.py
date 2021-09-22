@@ -688,20 +688,31 @@ tellhelp = ">tell [channel] <message>"
 
 @bot.command()
 async def slap(ctx,member: Optional[discord.Member]=None, *, reason: Optional[str]=None):
-    if member is None:
-        member = bot.user
-    embed1 = discord.Embed(description=f"** Slapped: {ctx.author.mention} Slapped {member.mention} **", color=embedTheme)
-    embed2 = discord.Embed(description=f"** Slapped: {ctx.author.mention} Slapped {member.mention} because {ctx.author.name} was Crazy **", color=embedTheme)
-    embed3 = discord.Embed(description=f"** Slapped: {ctx.author.mention} Slapped {member.mention} because {ctx.author.name} went Angry **", color=embedTheme)
-    embed4 = discord.Embed(description=f"** Slapped: {ctx.author.mention} Jumped from High Place and Slapped {member.mention} **", color=embedTheme)
+    # if member is None:
+    #     member = bot.user
+    if member is not None:
+        embed1 = discord.Embed(description=f"** Slapped: {ctx.author.mention} Slapped {member.mention} **", color=embedTheme)
+        embed2 = discord.Embed(description=f"** Slapped: {ctx.author.mention} Slapped {member.mention} because {ctx.author.name} was Crazy **", color=embedTheme)
+        embed3 = discord.Embed(description=f"** Slapped: {ctx.author.mention} Slapped {member.mention} because {ctx.author.name} went Angry **", color=embedTheme)
+        embed4 = discord.Embed(description=f"** Slapped: {ctx.author.mention} Jumped from High Place and Slapped {member.mention} **", color=embedTheme)
+    else:
+        embed1 = discord.Embed(description=f"** Slapped: {bot.user.mention} Slapped {ctx.author.mention} **", color=embedTheme)
+        embed2 = discord.Embed(description=f"** Slapped: {bot.user.mention} Slapped {ctx.author.mention} because {bot.user.name} was Crazy **", color=embedTheme)
+        embed3 = discord.Embed(description=f"** Slapped: {bot.user.mention} Slapped {ctx.author.mention} because {bot.user.name} went Angry **", color=embedTheme)
+        embed4 = discord.Embed(description=f"** Slapped: {bot.user.mention} Jumped from High Place and Slapped {ctx.author.mention} **", color=embedTheme)
     allEmbeds = [embed1,embed2,embed3,embed4]
-    choice = random.choice(allEmbeds)
     if reason is None:
         choice = random.choice(allEmbeds)
     else:
-        arguments = [f"Slapped {member.mention}",f"Jumped from High Place and Slapped {member.mention}"]
+        if member is not None:
+            arguments = [f"Slapped {member.mention}",f"Jumped from High Place and Slapped {member.mention}"]
+        else:
+            arguments = [f"Slapped {ctx.author.mention}",f"Jumped from High Place and Slapped {ctx.author.mention}"]
         randomArgu = random.choice(arguments)
-        choice = discord.Embed(description=f"** Slapped: {ctx.author.mention} {randomArgu} because {reason} **", color=embedTheme)
+        if member is not None:
+            choice = discord.Embed(description=f"** Slapped: {ctx.author.mention} {randomArgu} Reason: {reason} **", color=embedTheme)
+        else:
+            choice = discord.Embed(description=f"** Slapped: {bot.user.mention} {randomArgu} Reason: {reason} **", color=embedTheme)
     await ctx.send(embed=choice)
 
 slaphelp = ">slap [member] [reason]"
@@ -720,7 +731,7 @@ async def kill(ctx,member: Optional[discord.Member]=None, *, reason: Optional[st
     else:
         embed1 = discord.Embed(description=f"** Killed: {bot.user.mention} Killed {ctx.author.mention} **", color=embedTheme)
         embed2 = discord.Embed(description=f"** Killed: {bot.user.mention} Killed {ctx.author.mention} for his Last Birth's Revenge **", color=embedTheme)
-        embed3 = discord.Embed(description=f"** Killed: {bot.user.mention} Killed {ctx.author.mention} because {ctx.author.name} went Mad **", color=embedTheme)
+        embed3 = discord.Embed(description=f"** Killed: {bot.user.mention} Killed {ctx.author.mention} because {bot.user.name} went Mad **", color=embedTheme)
         embed4 = discord.Embed(description=f"** Killed: {bot.user.mention} Killed {ctx.author.mention} by Knife **", color=embedTheme)
         embed5 = discord.Embed(description=f"** Killed: {bot.user.mention} Shooted {ctx.author.mention} by Shotgun **", color=embedTheme)
         embed6 = discord.Embed(description=f"** Killed: {bot.user.mention} Stabbed Knife to {ctx.author.mention} **", color=embedTheme)
@@ -734,9 +745,9 @@ async def kill(ctx,member: Optional[discord.Member]=None, *, reason: Optional[st
             arguments = [f"Killed {ctx.author.mention}",f"Shooted {ctx.author.mention} by Shotgun",f"Stabbed Knife to {ctx.author.mention}",f"Pushed {ctx.author.mention} from High Building"]
         randomArgu = random.choice(arguments)
         if member is not None:
-            choice = discord.Embed(description=f"** Killed: {ctx.author.mention} {randomArgu} because {reason} **", color=embedTheme)
+            choice = discord.Embed(description=f"** Killed: {ctx.author.mention} {randomArgu} Reason: {reason} **", color=embedTheme)
         else:
-            choice = discord.Embed(description=f"** Killed: {bot.user.mention} {randomArgu} because {reason} **", color=embedTheme)
+            choice = discord.Embed(description=f"** Killed: {bot.user.mention} {randomArgu} Reason: {reason} **", color=embedTheme)
     await ctx.send(embed=choice)
 
 killhelp = ">kill [member] [reason]"
@@ -752,7 +763,7 @@ async def punch(ctx,member: Optional[discord.Member]=None, *, reason: Optional[s
         embed4 = discord.Embed(description=f"** Punched: {ctx.author.mention} Punched {member.mention} in Voilence **", color=embedTheme)
     else:
         embed1 = discord.Embed(description=f"** Punched: {bot.user.mention} Punched {ctx.author.mention} **", color=embedTheme)
-        embed2 = discord.Embed(description=f"** Punched: {bot.user.mention} Punched {ctx.author.mention} because {ctx.author.name} was Crazy **", color=embedTheme)
+        embed2 = discord.Embed(description=f"** Punched: {bot.user.mention} Punched {ctx.author.mention} because {bot.user.name} was Crazy **", color=embedTheme)
         embed3 = discord.Embed(description=f"** Punched: {bot.user.mention} Punched {ctx.author.mention} on his Nose **", color=embedTheme)
         embed4 = discord.Embed(description=f"** Punched: {bot.user.mention} Punched {ctx.author.mention} in Voilence **", color=embedTheme)
 
