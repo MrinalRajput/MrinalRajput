@@ -805,11 +805,11 @@ async def on_message(message):
     # print(reasontopic)
     if message.guild.id not in afkdata:
         afkdata[message.guild.id] = {}
-    if message.author != bot.user:
+    if not message.author.bot:
         users = list(afkdata[message.guild.id].keys())
         for user in users:
             print(user)
-            if user.mention in message.content:
+            if f"<@{user}>" in message.content:
                 await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[user]}")
 
 @bot.command()
