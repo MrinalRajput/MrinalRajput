@@ -1049,11 +1049,12 @@ async def on_message(message):
                     await message.author.add_roles(mutedRole)
                     embed = discord.Embed(description = f"** {message.author.mention} has been Muted by {bot.user.mention} for `15` Seconds \n\t With the Reason of :\t Spamming**",color=embedTheme)
                     await message.channel.send(embed=embed)
+                    count[message.guild.id][message.author.id]["warnings"] = 0
                     await asyncio.sleep(15)
                     await message.author.remove_roles(mutedRole)
                 except:
+                    count[message.guild.id][message.author.id]["warnings"] = 0
                     pass
-                count[message.guild.id][message.author.id]["warnings"] = 0
 
             count[message.guild.id][message.author.id]["strikes"] = 0
     
