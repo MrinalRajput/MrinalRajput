@@ -688,7 +688,7 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
 tellhelp = ">tell [channel] <message>"
 
 @bot.command()
-async def poll(ctx, *, question, option1, option2, option3, option4, option5, option6, option7, option8, option9, option10):
+async def poll(ctx, *, question, option1: Optional[str]=None, option2: Optional[str]=None, option3: Optional[str]=None, option4: Optional[str]=None, option5: Optional[str]=None, option6: Optional[str]=None, option7: Optional[str]=None, option8: Optional[str]=None, option9: Optional[str]=None, option10: Optional[str]=None):
     try:
         if "?" not in question:
             question = question +"?"
