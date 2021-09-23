@@ -743,7 +743,7 @@ async def poll(ctx, question:Optional[str]=None, option1: Optional[str]=None, op
         print(e)
         await ctx.send(f":exclamation: {ctx.author.mention} You are Doing Mistake in Using the Command, Use `>help poll` to get help for this Command")
 
-pollhelp = '>poll <question between ""> [options - Minimum 2 - Maximum 10]'
+pollhelp = '>poll <question between ""> [options -> (Minimum 2 - Maximum 10) between ""]'
 
 @bot.command()
 async def slap(ctx,member: Optional[discord.Member]=None, *, reason: Optional[str]=None):
