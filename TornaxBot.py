@@ -692,50 +692,53 @@ async def poll(ctx, question:Optional[str]=None, option1: Optional[str]=None, op
     try:
         if "?" not in question:
             question = question +"?"
-        if option1 is not None and option2 is not None:
-            if option10 is not None:
-                reactions = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
-                pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n 4️⃣ {option4}\n 5️⃣ {option5}\n 6️⃣ {option6}\n 7️⃣ {option7}\n 8️⃣ {option8}\n 9️⃣ {option9}\n 🔟 {option10}\n ", color=embedTheme)
-                pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
-            elif option9 is not None:
-                reactions = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣"]
-                pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n 4️⃣ {option4}\n 5️⃣ {option5}\n 6️⃣ {option6}\n 7️⃣ {option7}\n 8️⃣ {option8}\n 9️⃣ {option9}\n ", color=embedTheme)
-                pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
-            elif option8 is not None:
-                reactions = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣"]
-                pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n 4️⃣ {option4}\n 5️⃣ {option5}\n 6️⃣ {option6}\n 7️⃣ {option7}\n 8️⃣ {option8}\n ", color=embedTheme)
-                pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
-            elif option7 is not None:
-                reactions = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣"]
-                pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n 4️⃣ {option4}\n 5️⃣ {option5}\n 6️⃣ {option6}\n 7️⃣ {option7}\n ", color=embedTheme)
-                pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
-            elif option6 is not None:
-                reactions = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣"]
-                pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n 4️⃣ {option4}\n 5️⃣ {option5}\n 6️⃣ {option6}\n ", color=embedTheme)
-                pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
-            elif option5 is not None:
-                reactions = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣"]
-                pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n 4️⃣ {option4}\n 5️⃣ {option5}\n ", color=embedTheme)
-                pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
-            elif option4 is not None:
-                reactions = ["1️⃣","2️⃣","3️⃣","4️⃣"]
-                pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n 4️⃣ {option4}\n ", color=embedTheme)
-                pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
-            elif option3 is not None:
-                reactions = ["1️⃣","2️⃣","3️⃣"]
-                pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n ", color=embedTheme)
-                pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
+        if '"' in ctx.message:
+            if option1 is not None and option2 is not None:
+                if option10 is not None:
+                    reactions = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
+                    pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n 4️⃣ {option4}\n 5️⃣ {option5}\n 6️⃣ {option6}\n 7️⃣ {option7}\n 8️⃣ {option8}\n 9️⃣ {option9}\n 🔟 {option10}\n ", color=embedTheme)
+                    pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
+                elif option9 is not None:
+                    reactions = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣"]
+                    pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n 4️⃣ {option4}\n 5️⃣ {option5}\n 6️⃣ {option6}\n 7️⃣ {option7}\n 8️⃣ {option8}\n 9️⃣ {option9}\n ", color=embedTheme)
+                    pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
+                elif option8 is not None:
+                    reactions = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣"]
+                    pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n 4️⃣ {option4}\n 5️⃣ {option5}\n 6️⃣ {option6}\n 7️⃣ {option7}\n 8️⃣ {option8}\n ", color=embedTheme)
+                    pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
+                elif option7 is not None:
+                    reactions = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣"]
+                    pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n 4️⃣ {option4}\n 5️⃣ {option5}\n 6️⃣ {option6}\n 7️⃣ {option7}\n ", color=embedTheme)
+                    pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
+                elif option6 is not None:
+                    reactions = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣"]
+                    pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n 4️⃣ {option4}\n 5️⃣ {option5}\n 6️⃣ {option6}\n ", color=embedTheme)
+                    pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
+                elif option5 is not None:
+                    reactions = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣"]
+                    pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n 4️⃣ {option4}\n 5️⃣ {option5}\n ", color=embedTheme)
+                    pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
+                elif option4 is not None:
+                    reactions = ["1️⃣","2️⃣","3️⃣","4️⃣"]
+                    pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n 4️⃣ {option4}\n ", color=embedTheme)
+                    pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
+                elif option3 is not None:
+                    reactions = ["1️⃣","2️⃣","3️⃣"]
+                    pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n ", color=embedTheme)
+                    pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
+                else:
+                    reactions = ["1️⃣","2️⃣"]
+                    pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n ", color=embedTheme)
+                    pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
+
+                pollMsg = await ctx.send(embed=pollEmbed)
+                for reaction in reactions:
+                    await pollMsg.add_reaction(reaction)
+
             else:
-                reactions = ["1️⃣","2️⃣"]
-                pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n ", color=embedTheme)
-                pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
-
-            pollMsg = await ctx.send(embed=pollEmbed)
-            for reaction in reactions:
-                await pollMsg.add_reaction(reaction)
-
+                await ctx.send(f":exclamation: {ctx.author.mention} You Must Give Minimum 2 Options!")
         else:
-            await ctx.send(f":exclamation: {ctx.author.mention} You Must Give Minimum 2 Options!")
+            await ctx.send(f":exclamation: {ctx.author.mention} You are Doing Mistake in Using the Command, Use `>help poll` to get help for this Command")
     except Exception as e:
         print(e)
         await ctx.send(f":exclamation: {ctx.author.mention} You are Doing Mistake in Using the Command, Use `>help poll` to get help for this Command")
