@@ -732,7 +732,7 @@ async def poll(ctx, question:Optional[str]=None, option1: Optional[str]=None, op
 
             pollMsg = await ctx.send(embed=pollEmbed)
             for reaction in reactions:
-                await pollEmbed.add_reaction(reaction)
+                await pollMsg.add_reaction(reaction)
 
         else:
             await ctx.send(f":exclamation: {ctx.author.mention} You Must Give Minimum 2 Options!")
