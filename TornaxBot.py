@@ -688,6 +688,57 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
 tellhelp = ">tell [channel] <message>"
 
 @bot.command()
+async def poll(ctx, *, question, option1, option2, option3, option4, option5, option6, option7, option8, option9, option10):
+    if "?" not in question:
+        question = question +"?"
+    if option1 is not None and option2 is not None:
+        if option10 is not None:
+            reactions = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
+            pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n 4️⃣ {option4}\n 5️⃣ {option5}\n 6️⃣ {option6}\n 7️⃣ {option7}\n 8️⃣ {option8}\n 9️⃣ {option9}\n 🔟 {option10}\n ", color=embedTheme)
+            pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
+        elif option9 is not None:
+            reactions = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣"]
+            pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n 4️⃣ {option4}\n 5️⃣ {option5}\n 6️⃣ {option6}\n 7️⃣ {option7}\n 8️⃣ {option8}\n 9️⃣ {option9}\n ", color=embedTheme)
+            pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
+        elif option8 is not None:
+            reactions = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣"]
+            pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n 4️⃣ {option4}\n 5️⃣ {option5}\n 6️⃣ {option6}\n 7️⃣ {option7}\n 8️⃣ {option8}\n ", color=embedTheme)
+            pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
+        elif option7 is not None:
+            reactions = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣"]
+            pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n 4️⃣ {option4}\n 5️⃣ {option5}\n 6️⃣ {option6}\n 7️⃣ {option7}\n ", color=embedTheme)
+            pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
+        elif option6 is not None:
+            reactions = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣"]
+            pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n 4️⃣ {option4}\n 5️⃣ {option5}\n 6️⃣ {option6}\n ", color=embedTheme)
+            pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
+        elif option5 is not None:
+            reactions = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣"]
+            pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n 4️⃣ {option4}\n 5️⃣ {option5}\n ", color=embedTheme)
+            pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
+        elif option4 is not None:
+            reactions = ["1️⃣","2️⃣","3️⃣","4️⃣"]
+            pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n 4️⃣ {option4}\n ", color=embedTheme)
+            pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
+        elif option3 is not None:
+            reactions = ["1️⃣","2️⃣","3️⃣"]
+            pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n 3️⃣ {option3}\n ", color=embedTheme)
+            pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
+        else:
+            reactions = ["1️⃣","2️⃣"]
+            pollEmbed = discord.Embed(title=question, description=f"1️⃣ {option1}\n 2️⃣ {option2}\n ", color=embedTheme)
+            pollEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Poll Started by {ctx.author}")
+
+        pollMsg = await ctx.send(embed=pollEmbed)
+        for reaction in reactions:
+            await pollEmbed.add_reaction(reaction)
+
+    else:
+        await ctx.send(f":exclamation: {ctx.author.mention} You Must Give Minimum 2 Options!")
+
+pollhelp = '>poll <question between ""> [options - Minimum 2 - Maximum 10]'
+
+@bot.command()
 async def slap(ctx,member: Optional[discord.Member]=None, *, reason: Optional[str]=None):
     # if member is None:
     #     member = bot.user
@@ -946,7 +997,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed = discord.Embed(color = embedTheme)
         myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n \n \t-> [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=0&scope=bot)")
         myEmbed.add_field(name=f"Commands — {int(totalCommands)-2}",value="----------------------\n",inline=False)
-        myEmbed.add_field(name="Miscellaneous",value=" tell, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
+        myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gpaticipate, gquit, info, about, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
         myEmbed.add_field(name="Fun",value=" slap, kill, punch \n----------------------\n", inline=False)
@@ -977,6 +1028,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "gstop": content=gstophelp
         elif anycommand == "gparticipate": content=gparticipatehelp
         elif anycommand == "gquit": content=gquithelp
+        elif anycommand == "poll": content=pollhelp
         elif anycommand == "info": content=infohelp
         elif anycommand == "about": content=abouthelp
         elif anycommand == "vote": content=votehelp
