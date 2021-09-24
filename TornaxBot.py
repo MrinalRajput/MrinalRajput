@@ -754,9 +754,9 @@ tictactoehelp = ">tictactoe [First Player] <Second Player>"
 async def on_message(message):
     global matches, gameBoards, chances
     try:
-        await gameBoards[message.guild.id][userTeam]["board"].edit("\n❎🔳🔳\n🔳🔳🔳\n🔳🔳🔳")
         if message.author.id in matches[message.guild.id].keys() and message.author.id in matches[message.guild.id].values():
             userTeam = teamCode[message.guild.id][message.author.id]
+        await gameBoards[message.guild.id][userTeam]["board"].edit("\n❎🔳🔳\n🔳🔳🔳\n🔳🔳🔳")
             if gameBoards[message.guild.id][userTeam]["chance"] == chances[message.guild.id][message.author.id]:
                 if chances[message.guild.id][message.author.id] == "X":
                     if "1" in message.content.lower():
