@@ -688,10 +688,6 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
 tellhelp = ">tell [channel] <message>"
 
 @bot.command()
-async def tictactoe(ctx):
-    pass
-
-@bot.command()
 async def poll(ctx, question:Optional[str]=None, option1: Optional[str]=None, option2: Optional[str]=None, option3: Optional[str]=None, option4: Optional[str]=None, option5: Optional[str]=None, option6: Optional[str]=None, option7: Optional[str]=None, option8: Optional[str]=None, option9: Optional[str]=None, option10: Optional[str]=None):
     try:
         if "?" not in question:
