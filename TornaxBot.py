@@ -756,7 +756,7 @@ async def on_message(message):
     try:
         if message.author.id in matches[message.guild.id].keys() and message.author.id in matches[message.guild.id].values():
             userTeam = teamCode[message.guild.id][message.author.id]
-        await gameBoards[message.guild.id][userTeam]["board"].edit("\n❎🔳🔳\n🔳🔳🔳\n🔳🔳🔳")
+            await gameBoards[message.guild.id][userTeam]["board"].edit("\n❎🔳🔳\n🔳🔳🔳\n🔳🔳🔳")
             if gameBoards[message.guild.id][userTeam]["chance"] == chances[message.guild.id][message.author.id]:
                 if chances[message.guild.id][message.author.id] == "X":
                     if "1" in message.content.lower():
