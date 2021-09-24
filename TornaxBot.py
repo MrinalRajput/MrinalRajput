@@ -892,7 +892,7 @@ async def on_message(message):
                             await gameBoards[message.guild.id][userTeam]["board"].edit(content=f'\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"]}')
                             gameBoards[message.guild.id][userTeam]["blocks"]["block9"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
-                            
+
             if message.author != bot.user:
                 if "1" in message.content.lower() or "2" in message.content.lower() or "3" in message.content.lower() or "4" in message.content.lower() or "5" in message.content.lower() or "6" in message.content.lower() or "7" in message.content.lower() or "8" in message.content.lower() or "9" in message.content.lower():
                     await message.delete()
@@ -1157,6 +1157,21 @@ async def on_message(message):
                     del teamCode[message.guild.id][message.author.id]
                     del gameBoards[message.guild.id][code]
                     del chances[message.guild.id]
+            elif gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"] != "🔳":
+                player2 = matches[message.guild.id][message.author.id]
+                await message.channel.send(f"{message.author.mention} {player2} The TicTacToe Match is a Tie ;-;")
+                if message.author.id in matches[message.guild.id].keys():
+                    del matches[message.guild.id][message.author.id]
+                else:
+                    ids = matches[message.guild.id].keys()
+                    for id in ids:
+                        if matches[message.guild.id][id] == message.author.id:
+                            del matches[message.guild.id][id]
+                code = teamCode[message.guild.id][message.author.id]
+                del teamCode[message.guild.id][message.author.id]
+                del gameBoards[message.guild.id][code]
+                del chances[message.guild.id]
+
             ### winner close ###
         else:
             if "1" in message.content.lower() or "2" in message.content.lower() or "3" in message.content.lower() or "4" in message.content.lower() or "5" in message.content.lower() or "6" in message.content.lower() or "7" in message.content.lower() or "8" in message.content.lower() or "9" in message.content.lower():
