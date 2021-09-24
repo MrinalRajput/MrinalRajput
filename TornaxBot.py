@@ -1157,6 +1157,7 @@ async def on_message(message):
                     del teamCode[message.guild.id][message.author.id]
                     del gameBoards[message.guild.id][code]
                     del chances[message.guild.id]
+
             elif gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"] != "🔳":
                 player2 = matches[message.guild.id][message.author.id]
                 await message.channel.send(f"{message.author.mention} {player2} The TicTacToe Match is a Tie ;-;")
@@ -1492,6 +1493,7 @@ helphelp = ">help [anycommand]"
 async def help(ctx, anycommand: Optional[str]=None):
     print(bot.all_commands.keys())
     totalCommands = len(bot.all_commands.keys())
+    print(bot.guilds, len(bot.guilds))
     print(totalCommands)
     if anycommand is None:
         randomGreet = random.choice(["Hi","Hey","Hello"])
