@@ -736,12 +736,12 @@ async def poll(ctx, question:Optional[str]=None, option1: Optional[str]=None, op
                     await pollMsg.add_reaction(reaction)            
 
             else:
-                await ctx.send(f":exclamation: {ctx.author.mention} You Must Give Minimum 2 Options!")
+                await ctx.send(f":exclamation: {ctx.author.mention} You Must Give Minimum 2 Options!",delete_after=12)
         else:
-            await ctx.send(f':exclamation: {ctx.author.mention} The Question/Statement Should be Between Double Quotes, Example - `"<question>"`')
+            await ctx.send(f':exclamation: {ctx.author.mention} The Question/Statement Should be Between Double Quotes, Example - `"<question>"`',delete_after=12)
     except Exception as e:
         print(e)
-        await ctx.send(f":exclamation: {ctx.author.mention} You are Doing Mistake in Using the Command, Use `>help poll` to get help for this Command")
+        await ctx.send(f":exclamation: {ctx.author.mention} You are Doing Mistake in Using the Command, Use `>help poll` to get help for this Command",delete_after=12)
 
 pollhelp = '>poll <question between ""> [options -> (Minimum 2 - Maximum 10) between ""]'
 
