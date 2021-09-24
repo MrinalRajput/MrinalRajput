@@ -759,7 +759,7 @@ async def tttstop(ctx):
     else:
         ids = matches[ctx.guild.id].keys()
         for id in ids:
-            if id == ctx.author.id:
+            if matches[ctx.guild.id][id] == ctx.author.id:
                 del matches[ctx.guild.id][id]
     code = teamCode[ctx.guild.id][ctx.author.id]
     del teamCode[ctx.guild.id][ctx.author.id]
