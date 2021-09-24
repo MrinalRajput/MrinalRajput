@@ -1174,8 +1174,9 @@ async def on_message(message):
 
             ### winner close ###
         else:
-            if "1" in message.content.lower() or "2" in message.content.lower() or "3" in message.content.lower() or "4" in message.content.lower() or "5" in message.content.lower() or "6" in message.content.lower() or "7" in message.content.lower() or "8" in message.content.lower() or "9" in message.content.lower():
-                await message.delete()
+            if message.author != bot.user:
+                if "1" in message.content.lower() or "2" in message.content.lower() or "3" in message.content.lower() or "4" in message.content.lower() or "5" in message.content.lower() or "6" in message.content.lower() or "7" in message.content.lower() or "8" in message.content.lower() or "9" in message.content.lower():
+                    await message.delete()
     except Exception as e:
         print(e)
         pass
