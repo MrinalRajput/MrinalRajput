@@ -426,7 +426,7 @@ class Giveaway():
                     embed = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||\n",color=embedTheme)
                     embed.add_field(name="Winner of the Giveaway",value=f"{winner}",inline=True)
                     embed.add_field(name="Prize",value=f"{prize}",inline=True)
-                    embed.add_field(name="Participants",value=f"{MembersList[ctx.guild.id]}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
+                    embed.add_field(name="Participants",value=f"{MembersList[ctx.guild.id]}\n\n Please Contact with The Giveaway Players For the Prize of this Giveaway",inline=False)
 
                     await GiveawayChannel[ctx.guild.id].send(embed=embed)
                     Participants[ctx.guild.id].clear()
@@ -687,6 +687,49 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
 
 tellhelp = ">tell [channel] <message>"
 
+blocks = {"block1" : False, "block2": False, "block3" : False, "block4": False, "block5" : False,"block6": False, "block7": False}
+Players = {}
+matches = {}
+gameBoards = {}
+
+@bot.command()
+async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Optional[discord.Member]=None):
+    global Players, matches, gameBoards
+    if ctx.guild.id not in Players:
+        Players[ctx.guild.id] = {}
+    if ctx.guild.id not in matches:
+        matches[ctx.guild.id] = {}
+    if ctx.guild.id not in gameBoards:
+        gameBoards[ctx.guild.id] = {}
+
+    if member1 is not None:
+        if member2 is None:
+            member2 = member1
+            member1 = ctx.author
+
+        print(list(matches.items()))
+        if member1.id not in matches[ctx.guild.id].keys() and member1.id not in matches[ctx.guild.id].values():
+            if member2.id not in matches[ctx.guild.id].keys() and member2.id not in matches[ctx.guild.id].values():
+                await ctx.send(f"**❎ TicTacToe Game 🅾️**")
+                gameBoards[ctx.guild.id][member1.id + member2.id] = await ctx.send("\n🔳🔳🔳\n🔳🔳🔳\n🔳🔳🔳")
+                await ctx.send(f"\n Players are {member1.mention} and {member2.mention}")
+
+                matches[ctx.guild.id][member1.id] = member2.id
+                print(list(matches.items()))
+                
+            else:
+                await ctx.send(f":exclamation: {member2.mention} is Already in a TicTacToe Match")
+        else:
+            if member1 == ctx.author:
+                await ctx.send(f":exclamation: {ctx.author.mention} You are Already in a TicTacToe Match")
+            else:
+                await ctx.send(f":exclamation: {member1.mention} is Already in a TicTacToe Match")
+    else:
+        await ctx.send(f":exclamation: {ctx.author.mention} You are Using The Command Wrong, Use `>help tictactoe` to get help related with the Command")
+
+
+tictactoehelp = ">tictactoe [First Player] [Second Player]"
+
 @bot.command()
 async def poll(ctx, question:Optional[str]=None, option1: Optional[str]=None, option2: Optional[str]=None, option3: Optional[str]=None, option4: Optional[str]=None, option5: Optional[str]=None, option6: Optional[str]=None, option7: Optional[str]=None, option8: Optional[str]=None, option9: Optional[str]=None, option10: Optional[str]=None):
     try:
@@ -733,7 +776,7 @@ async def poll(ctx, question:Optional[str]=None, option1: Optional[str]=None, op
 
                 pollMsg = await ctx.send(embed=pollEmbed)
                 for reaction in reactions:
-                    await pollMsg.add_reaction(reaction)            
+                    await pollMsg.add_reaction(reaction)      
 
             else:
                 await ctx.send(f":exclamation: {ctx.author.mention} You Must Give Minimum 2 Options!",delete_after=12)
@@ -1007,7 +1050,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gpaticipate, gquit, info, about, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
-        myEmbed.add_field(name="Fun",value=" slap, kill, punch \n----------------------\n", inline=False)
+        myEmbed.add_field(name="Fun",value=" slap, kill, punch, tictactoe \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value="----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `>`\n > Command Usage Example :   `>info`\n\n----------------------", inline=False)
         myEmbed.add_field(name="Readme", value="`>help` Shows this Message, use `>help [command]` to get more information about that Command\n\n")
         myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creater}")
@@ -1056,6 +1099,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "slap": content=slaphelp
         elif anycommand == "kill": content=killhelp
         elif anycommand == "punch": content=punchhelp
+        elif anycommand == "tictactoe": content=tictactoehelp
         elif anycommand == "help": content=helphelp
         commandEmbed = discord.Embed(description=f"{content}",color=embedTheme)
         await ctx.send(embed=commandEmbed)
