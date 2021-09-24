@@ -756,99 +756,99 @@ async def on_message(message):
     try:
         if message.author.id in matches[message.guild.id].keys() and message.author.id in matches[message.guild.id].values():
             userTeam = teamCode[message.guild.id][message.author.id]
-            await gameBoards[message.guild.id][userTeam]["board"].edit("\n❎🔳🔳\n🔳🔳🔳\n🔳🔳🔳")
+            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n❎🔳🔳\n🔳🔳🔳\n🔳🔳🔳")
             if gameBoards[message.guild.id][userTeam]["chance"] == chances[message.guild.id][message.author.id]:
                 if chances[message.guild.id][message.author.id] == "X":
                     if "1" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block1"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit("\n❎🔳🔳\n🔳🔳🔳\n🔳🔳🔳")
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n❎🔳🔳\n🔳🔳🔳\n🔳🔳🔳")
                             gameBoards[message.guild.id][userTeam]["blocks"]["block1"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "O"
                     elif "2" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block2"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit("\n🔳❎🔳\n🔳🔳🔳\n🔳🔳🔳")
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳❎🔳\n🔳🔳🔳\n🔳🔳🔳")
                             gameBoards[message.guild.id][userTeam]["blocks"]["block2"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "O"
                     elif "3" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block3"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit("\n🔳🔳❎\n🔳🔳🔳\n🔳🔳🔳")
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳❎\n🔳🔳🔳\n🔳🔳🔳")
                             gameBoards[message.guild.id][userTeam]["blocks"]["block3"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "O"
                     elif "4" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block4"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit("\n🔳🔳🔳\n❎🔳🔳\n🔳🔳🔳")
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n❎🔳🔳\n🔳🔳🔳")
                             gameBoards[message.guild.id][userTeam]["blocks"]["block4"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "O"
                     elif "5" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block5"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit("\n🔳🔳🔳\n🔳❎🔳\n🔳🔳🔳")
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🔳❎🔳\n🔳🔳🔳")
                             gameBoards[message.guild.id][userTeam]["blocks"]["block5"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "O"
                     elif "6" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block6"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit("\n🔳🔳🔳\n🔳🔳❎\n🔳🔳🔳")
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🔳🔳❎\n🔳🔳🔳")
                             gameBoards[message.guild.id][userTeam]["blocks"]["block6"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "O"
                     elif "7" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block7"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit("\n🔳🔳🔳\n🔳🔳🔳\n❎🔳🔳")
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🔳🔳🔳\n❎🔳🔳")
                             gameBoards[message.guild.id][userTeam]["blocks"]["block7"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "O"
                     elif "8" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block8"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit("\n🔳🔳🔳\n🔳🔳🔳\n🔳❎🔳")
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🔳🔳🔳\n🔳❎🔳")
                             gameBoards[message.guild.id][userTeam]["blocks"]["block8"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "O"
                     elif "9" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block9"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit("\n🔳🔳🔳\n🔳🔳🔳\n🔳🔳❎")
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🔳🔳🔳\n🔳🔳❎")
                             gameBoards[message.guild.id][userTeam]["blocks"]["block9"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "O"
 
                 elif chances[message.guild.id][message.author.id] == "O":
                     if "1" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block1"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit("\n🅾️🔳🔳\n🔳🔳🔳\n🔳🔳🔳")
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🅾️🔳🔳\n🔳🔳🔳\n🔳🔳🔳")
                             gameBoards[message.guild.id][userTeam]["blocks"]["block1"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
                     elif "2" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block2"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit("\n🔳🅾️🔳\n🔳🔳🔳\n🔳🔳🔳")
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🅾️🔳\n🔳🔳🔳\n🔳🔳🔳")
                             gameBoards[message.guild.id][userTeam]["blocks"]["block2"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
                     elif "3" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block3"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit("\n🔳🔳🅾️\n🔳🔳🔳\n🔳🔳🔳")
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🅾️\n🔳🔳🔳\n🔳🔳🔳")
                             gameBoards[message.guild.id][userTeam]["blocks"]["block3"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
                     elif "4" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block4"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit("\n🔳🔳🔳\n🅾️🔳🔳\n🔳🔳🔳")
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🅾️🔳🔳\n🔳🔳🔳")
                             gameBoards[message.guild.id][userTeam]["blocks"]["block4"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
                     elif "5" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block5"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit("\n🔳🔳🔳\n🔳🅾️🔳\n🔳🔳🔳")
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🔳🅾️🔳\n🔳🔳🔳")
                             gameBoards[message.guild.id][userTeam]["blocks"]["block5"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
                     elif "6" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block6"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit("\n🔳🔳🔳\n🔳🔳🅾️\n🔳🔳🔳")
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🔳🔳🅾️\n🔳🔳🔳")
                             gameBoards[message.guild.id][userTeam]["blocks"]["block6"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
                     elif "7" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block7"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit("\n🔳🔳🔳\n🔳🔳🔳\n🅾️🔳🔳")
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🔳🔳🔳\n🅾️🔳🔳")
                             gameBoards[message.guild.id][userTeam]["blocks"]["block7"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
                     elif "8" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block8"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit("\n🔳🔳🔳\n🔳🔳🔳\n🔳🅾️🔳")
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🔳🔳🔳\n🔳🅾️🔳")
                             gameBoards[message.guild.id][userTeam]["blocks"]["block8"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
                     elif "9" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block9"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit("\n🔳🔳🔳\n🔳🔳🔳\n🔳🔳🅾️")
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🔳🔳🔳\n🔳🔳🅾️")
                             gameBoards[message.guild.id][userTeam]["blocks"]["block9"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
         else:
