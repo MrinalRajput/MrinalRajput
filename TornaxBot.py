@@ -876,9 +876,11 @@ async def on_message(message):
                             await gameBoards[message.guild.id][userTeam]["board"].edit(content=f'\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"]}')
                             gameBoards[message.guild.id][userTeam]["blocks"]["block9"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
-            await message.delete()
+            if "1" in message.content.lower() or "2" in message.content.lower() or "3" in message.content.lower() or "4" in message.content.lower() or "5" in message.content.lower() or "6" in message.content.lower() or "7" in message.content.lower() or "8" in message.content.lower() or "9" in message.content.lower():
+                await message.delete()
         else:
-            await message.delete()
+            if "1" in message.content.lower() or "2" in message.content.lower() or "3" in message.content.lower() or "4" in message.content.lower() or "5" in message.content.lower() or "6" in message.content.lower() or "7" in message.content.lower() or "8" in message.content.lower() or "9" in message.content.lower():
+                await message.delete()
     except Exception as e:
         print(e)
         pass
