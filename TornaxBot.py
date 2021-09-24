@@ -754,18 +754,22 @@ tictactoehelp = ">tictactoe [First Player] <Second Player>"
 @bot.command()
 async def tttstop(ctx):
     global matches, gameBoards, chances, teamCode
-    if ctx.author.id in matches[ctx.guild.id].keys():
-        del matches[ctx.guild.id][ctx.author.id]
-    else:
-        ids = matches[ctx.guild.id].keys()
-        for id in ids:
-            if matches[ctx.guild.id][id] == ctx.author.id:
-                del matches[ctx.guild.id][id]
-    code = teamCode[ctx.guild.id][ctx.author.id]
-    del teamCode[ctx.guild.id][ctx.author.id]
-    del gameBoards[ctx.guild.id][code]
-    del chances[ctx.guild.id]
-    await ctx.send(f"{ctx.author.mention} Your TicTacToe Game has been Stopped")
+    try:
+        if ctx.author.id in matches[ctx.guild.id].keys():
+            del matches[ctx.guild.id][ctx.author.id]
+        else:
+            ids = matches[ctx.guild.id].keys()
+            for id in ids:
+                if matches[ctx.guild.id][id] == ctx.author.id:
+                    del matches[ctx.guild.id][id]
+        code = teamCode[ctx.guild.id][ctx.author.id]
+        del teamCode[ctx.guild.id][ctx.author.id]
+        del gameBoards[ctx.guild.id][code]
+        del chances[ctx.guild.id]
+        await ctx.send(f"{ctx.author.mention} Your TicTacToe Game has been Stopped")
+    except Exception as e:
+        print(e)
+        pass
     
 
 tttstophelp = ">tttstop"
@@ -888,8 +892,10 @@ async def on_message(message):
                             await gameBoards[message.guild.id][userTeam]["board"].edit(content=f'\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"]}')
                             gameBoards[message.guild.id][userTeam]["blocks"]["block9"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
-            if "1" in message.content.lower() or "2" in message.content.lower() or "3" in message.content.lower() or "4" in message.content.lower() or "5" in message.content.lower() or "6" in message.content.lower() or "7" in message.content.lower() or "8" in message.content.lower() or "9" in message.content.lower():
-                await message.delete()
+                            
+            if message.author != bot.user:
+                if "1" in message.content.lower() or "2" in message.content.lower() or "3" in message.content.lower() or "4" in message.content.lower() or "5" in message.content.lower() or "6" in message.content.lower() or "7" in message.content.lower() or "8" in message.content.lower() or "9" in message.content.lower():
+                    await message.delete()
             ### winner ###
             #
             #
@@ -898,7 +904,7 @@ async def on_message(message):
             if gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"] == "❎" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"] == "❎" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"] == "❎":
                 if chances[message.guild.id][message.author.id] == "X":
                     loser = matches[message.guild.id][message.author.id]
-                    await message.send(f"{message.author.mention} ❎ Won the TicTacToe Match from <@{loser}> 🅾️")
+                    await message.channel.send(f"{message.author.mention} ❎ Won the TicTacToe Match from <@{loser}> 🅾️")
                     if message.author.id in matches[message.guild.id].keys():
                         del matches[message.guild.id][message.author.id]
                     else:
@@ -914,7 +920,7 @@ async def on_message(message):
             elif gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"] == "❎" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"] == "❎" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"] == "❎":
                 if chances[message.guild.id][message.author.id] == "X":
                     loser = matches[message.guild.id][message.author.id]
-                    await message.send(f"{message.author.mention} ❎ Won the TicTacToe Match from <@{loser}> 🅾️")
+                    await message.channel.send(f"{message.author.mention} ❎ Won the TicTacToe Match from <@{loser}> 🅾️")
                     if message.author.id in matches[message.guild.id].keys():
                         del matches[message.guild.id][message.author.id]
                     else:
@@ -930,7 +936,7 @@ async def on_message(message):
             elif gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"] == "❎" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"] == "❎" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"] == "❎":
                 if chances[message.guild.id][message.author.id] == "X":
                     loser = matches[message.guild.id][message.author.id]
-                    await message.send(f"{message.author.mention} ❎ Won the TicTacToe Match from <@{loser}> 🅾️")
+                    await message.channel.send(f"{message.author.mention} ❎ Won the TicTacToe Match from <@{loser}> 🅾️")
                     if message.author.id in matches[message.guild.id].keys():
                         del matches[message.guild.id][message.author.id]
                     else:
@@ -946,7 +952,7 @@ async def on_message(message):
             elif gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"] == "❎" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"] == "❎" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"] == "❎":
                 if chances[message.guild.id][message.author.id] == "X":
                     loser = matches[message.guild.id][message.author.id]
-                    await message.send(f"{message.author.mention} ❎ Won the TicTacToe Match from <@{loser}> 🅾️")
+                    await message.channel.send(f"{message.author.mention} ❎ Won the TicTacToe Match from <@{loser}> 🅾️")
                     if message.author.id in matches[message.guild.id].keys():
                         del matches[message.guild.id][message.author.id]
                     else:
@@ -962,7 +968,7 @@ async def on_message(message):
             elif gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"] == "❎" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"] == "❎" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"] == "❎":
                 if chances[message.guild.id][message.author.id] == "X":
                     loser = matches[message.guild.id][message.author.id]
-                    await message.send(f"{message.author.mention} ❎ Won the TicTacToe Match from <@{loser}> 🅾️")
+                    await message.channel.send(f"{message.author.mention} ❎ Won the TicTacToe Match from <@{loser}> 🅾️")
                     if message.author.id in matches[message.guild.id].keys():
                         del matches[message.guild.id][message.author.id]
                     else:
@@ -978,7 +984,7 @@ async def on_message(message):
             elif gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"] == "❎" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"] == "❎" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"] == "❎":
                 if chances[message.guild.id][message.author.id] == "X":
                     loser = matches[message.guild.id][message.author.id]
-                    await message.send(f"{message.author.mention} ❎ Won the TicTacToe Match from <@{loser}> 🅾️")
+                    await message.channel.send(f"{message.author.mention} ❎ Won the TicTacToe Match from <@{loser}> 🅾️")
                     if message.author.id in matches[message.guild.id].keys():
                         del matches[message.guild.id][message.author.id]
                     else:
@@ -994,7 +1000,7 @@ async def on_message(message):
             elif gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"] == "❎" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"] == "❎" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"] == "❎":
                 if chances[message.guild.id][message.author.id] == "X":
                     loser = matches[message.guild.id][message.author.id]
-                    await message.send(f"{message.author.mention} ❎ Won the TicTacToe Match from <@{loser}> 🅾️")
+                    await message.channel.send(f"{message.author.mention} ❎ Won the TicTacToe Match from <@{loser}> 🅾️")
                     if message.author.id in matches[message.guild.id].keys():
                         del matches[message.guild.id][message.author.id]
                     else:
@@ -1010,7 +1016,7 @@ async def on_message(message):
             elif gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"] == "❎" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"] == "❎" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"] == "❎":
                 if chances[message.guild.id][message.author.id] == "X":
                     loser = matches[message.guild.id][message.author.id]
-                    await message.send(f"{message.author.mention} ❎ Won the TicTacToe Match from <@{loser}> 🅾️")
+                    await message.channel.send(f"{message.author.mention} ❎ Won the TicTacToe Match from <@{loser}> 🅾️")
                     if message.author.id in matches[message.guild.id].keys():
                         del matches[message.guild.id][message.author.id]
                     else:
@@ -1027,7 +1033,7 @@ async def on_message(message):
             elif gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"] == "🅾️" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"] == "🅾️" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"] == "🅾️":
                 if chances[message.guild.id][message.author.id] == "O":
                     loser = matches[message.guild.id][message.author.id]
-                    await message.send(f"{message.author.mention} 🅾️ Won the TicTacToe Match from <@{loser}> ❎")
+                    await message.channel.send(f"{message.author.mention} 🅾️ Won the TicTacToe Match from <@{loser}> ❎")
                     if message.author.id in matches[message.guild.id].keys():
                         del matches[message.guild.id][message.author.id]
                     else:
@@ -1043,7 +1049,7 @@ async def on_message(message):
             elif gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"] == "🅾️" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"] == "🅾️" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"] == "🅾️":
                 if chances[message.guild.id][message.author.id] == "O":
                     loser = matches[message.guild.id][message.author.id]
-                    await message.send(f"{message.author.mention} 🅾️ Won the TicTacToe Match from <@{loser}> ❎")
+                    await message.channel.send(f"{message.author.mention} 🅾️ Won the TicTacToe Match from <@{loser}> ❎")
                     if message.author.id in matches[message.guild.id].keys():
                         del matches[message.guild.id][message.author.id]
                     else:
@@ -1059,7 +1065,7 @@ async def on_message(message):
             elif gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"] == "🅾️" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"] == "🅾️" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"] == "🅾️":
                 if chances[message.guild.id][message.author.id] == "O":
                     loser = matches[message.guild.id][message.author.id]
-                    await message.send(f"{message.author.mention} 🅾️ Won the TicTacToe Match from <@{loser}> ❎")
+                    await message.channel.send(f"{message.author.mention} 🅾️ Won the TicTacToe Match from <@{loser}> ❎")
                     if message.author.id in matches[message.guild.id].keys():
                         del matches[message.guild.id][message.author.id]
                     else:
@@ -1075,7 +1081,7 @@ async def on_message(message):
             elif gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"] == "🅾️" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"] == "🅾️" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"] == "🅾️":
                 if chances[message.guild.id][message.author.id] == "O":
                     loser = matches[message.guild.id][message.author.id]
-                    await message.send(f"{message.author.mention} 🅾️ Won the TicTacToe Match from <@{loser}> ❎")
+                    await message.channel.send(f"{message.author.mention} 🅾️ Won the TicTacToe Match from <@{loser}> ❎")
                     if message.author.id in matches[message.guild.id].keys():
                         del matches[message.guild.id][message.author.id]
                     else:
@@ -1091,7 +1097,7 @@ async def on_message(message):
             elif gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"] == "🅾️" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"] == "🅾️" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"] == "🅾️":
                 if chances[message.guild.id][message.author.id] == "O":
                     loser = matches[message.guild.id][message.author.id]
-                    await message.send(f"{message.author.mention} 🅾️ Won the TicTacToe Match from <@{loser}> ❎")
+                    await message.channel.send(f"{message.author.mention} 🅾️ Won the TicTacToe Match from <@{loser}> ❎")
                     if message.author.id in matches[message.guild.id].keys():
                         del matches[message.guild.id][message.author.id]
                     else:
@@ -1107,7 +1113,7 @@ async def on_message(message):
             elif gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"] == "🅾️" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"] == "🅾️" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"] == "🅾️":
                 if chances[message.guild.id][message.author.id] == "O":
                     loser = matches[message.guild.id][message.author.id]
-                    await message.send(f"{message.author.mention} 🅾️ Won the TicTacToe Match from <@{loser}> ❎")
+                    await message.channel.send(f"{message.author.mention} 🅾️ Won the TicTacToe Match from <@{loser}> ❎")
                     if message.author.id in matches[message.guild.id].keys():
                         del matches[message.guild.id][message.author.id]
                     else:
@@ -1123,7 +1129,7 @@ async def on_message(message):
             elif gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"] == "🅾️" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"] == "🅾️" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"] == "🅾️":
                 if chances[message.guild.id][message.author.id] == "O":
                     loser = matches[message.guild.id][message.author.id]
-                    await message.send(f"{message.author.mention} 🅾️ Won the TicTacToe Match from <@{loser}> ❎")
+                    await message.channel.send(f"{message.author.mention} 🅾️ Won the TicTacToe Match from <@{loser}> ❎")
                     if message.author.id in matches[message.guild.id].keys():
                         del matches[message.guild.id][message.author.id]
                     else:
@@ -1139,7 +1145,7 @@ async def on_message(message):
             elif gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"] == "🅾️" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"] == "🅾️" and gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"] == "🅾️":
                 if chances[message.guild.id][message.author.id] == "O":
                     loser = matches[message.guild.id][message.author.id]
-                    await message.send(f"{message.author.mention} 🅾️ Won the TicTacToe Match from <@{loser}> ❎")
+                    await message.channel.send(f"{message.author.mention} 🅾️ Won the TicTacToe Match from <@{loser}> ❎")
                     if message.author.id in matches[message.guild.id].keys():
                         del matches[message.guild.id][message.author.id]
                     else:
