@@ -687,16 +687,12 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
 
 tellhelp = ">tell [channel] <message>"
 
-blocks = {"block1" : False, "block2": False, "block3" : False, "block4": False, "block5" : False,"block6": False, "block7": False}
-Players = {}
 matches = {}
 gameBoards = {}
 
 @bot.command()
 async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Optional[discord.Member]=None):
-    global Players, matches, gameBoards
-    if ctx.guild.id not in Players:
-        Players[ctx.guild.id] = {}
+    global matches, gameBoards
     if ctx.guild.id not in matches:
         matches[ctx.guild.id] = {}
     if ctx.guild.id not in gameBoards:
@@ -706,29 +702,43 @@ async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Option
         if member2 is None:
             member2 = member1
             member1 = ctx.author
+        
 
         print(list(matches.items()))
         if member1.id not in matches[ctx.guild.id].keys() and member1.id not in matches[ctx.guild.id].values():
             if member2.id not in matches[ctx.guild.id].keys() and member2.id not in matches[ctx.guild.id].values():
+                if member1.id + member2.id not in gameBoards[ctx.guild.id]:
+                    gameBoards[ctx.guild.id][member1.id + member2.id] = {}
+
                 await ctx.send(f"**❎ TicTacToe Game 🅾️**")
-                gameBoards[ctx.guild.id][member1.id + member2.id] = await ctx.send("\n🔳🔳🔳\n🔳🔳🔳\n🔳🔳🔳")
+                gameBoards[ctx.guild.id][member1.id + member2.id]["board"] = await ctx.send("\n🔳🔳🔳\n🔳🔳🔳\n🔳🔳🔳")
                 await ctx.send(f"\n Players are {member1.mention} and {member2.mention}")
 
                 matches[ctx.guild.id][member1.id] = member2.id
+                gameBoards[ctx.guild.id][member1.id + member2.id]["blocks"] = {"block1" : False, "block2": False, "block3" : False, "block4": False, "block5" : False,"block6": False, "block7": False}
+                gameBoards[ctx.guild.id][member1.id + member2.id]["chance"] = member1.id
                 print(list(matches.items()))
                 
             else:
-                await ctx.send(f":exclamation: {member2.mention} is Already in a TicTacToe Match")
+                await ctx.send(f":exclamation: {member2.mention} is Already in a TicTacToe Match in this Server")
         else:
             if member1 == ctx.author:
-                await ctx.send(f":exclamation: {ctx.author.mention} You are Already in a TicTacToe Match")
+                await ctx.send(f":exclamation: {ctx.author.mention} You are Already in a TicTacToe Match in this Server")
             else:
-                await ctx.send(f":exclamation: {member1.mention} is Already in a TicTacToe Match")
+                await ctx.send(f":exclamation: {member1.mention} is Already in a TicTacToe Match in this Server")
     else:
         await ctx.send(f":exclamation: {ctx.author.mention} You are Using The Command Wrong, Use `>help tictactoe` to get help related with the Command")
 
 
-tictactoehelp = ">tictactoe [First Player] [Second Player]"
+tictactoehelp = ">tictactoe [First Player] <Second Player>"
+
+@bot.listen()
+async def on_message(message):
+    global matches, gameBoards
+    if message.author.id not in matches[message.guild.id].keys() and message.author.id not in matches[message.guild.id].values():
+        pass
+    else:
+        pass
 
 @bot.command()
 async def poll(ctx, question:Optional[str]=None, option1: Optional[str]=None, option2: Optional[str]=None, option3: Optional[str]=None, option4: Optional[str]=None, option5: Optional[str]=None, option6: Optional[str]=None, option7: Optional[str]=None, option8: Optional[str]=None, option9: Optional[str]=None, option10: Optional[str]=None):
