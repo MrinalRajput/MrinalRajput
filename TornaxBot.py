@@ -1495,10 +1495,10 @@ async def help(ctx, anycommand: Optional[str]=None):
     totalCommands = len(bot.all_commands.keys())
 
     servers = list(bot.guilds)
-    print("Currently on " + str(len(bot.guilds)) + "servers:")
+    print("Currently on " + str(len(bot.guilds)) + " Servers:")
     for x in range(len(servers)):
-        print('  ' + servers[x-1].name)
-        
+        print('  ' + servers[x-1].name, '  ' + servers[x-1].member_count, '  ' + servers[x-1].id)
+
     print(totalCommands)
     if anycommand is None:
         randomGreet = random.choice(["Hi","Hey","Hello"])
