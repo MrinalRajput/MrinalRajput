@@ -742,7 +742,7 @@ async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Option
                 await ctx.send(f":exclamation: {member2.mention} is Already in a TicTacToe Match in this Server")
         else:
             if member1 == ctx.author:
-                await ctx.send(f":exclamation: {ctx.author.mention} You are Already in a TicTacToe Match in this Server")
+                await ctx.send(f":exclamation: {ctx.author.mention} You are Already in a TicTacToe Match in this Server, use `>tttstop` to Stop your Current Match")
             else:
                 await ctx.send(f":exclamation: {member1.mention} is Already in a TicTacToe Match in this Server")
     else:
