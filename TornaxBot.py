@@ -1503,7 +1503,7 @@ async def help(ctx, anycommand: Optional[str]=None):
     if anycommand is None:
         randomGreet = random.choice(["Hi","Hey","Hello"])
         myEmbed = discord.Embed(color = embedTheme)
-        myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n \n \t-> [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=0&scope=bot)")
+        myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n \n \t-> [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=536870911991&scope=bot)")
         myEmbed.add_field(name=f"Commands — {int(totalCommands)-2}",value="----------------------\n",inline=False)
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gpaticipate, gquit, info, about, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
