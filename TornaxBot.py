@@ -1493,7 +1493,7 @@ helphelp = ">help [anycommand]"
 async def help(ctx, anycommand: Optional[str]=None):
     print(bot.all_commands.keys())
     totalCommands = len(bot.all_commands.keys())
-    print(list(bot.guilds), len(bot.guilds))
+    print(list(bot.guilds.name), len(bot.guilds))
     print(totalCommands)
     if anycommand is None:
         randomGreet = random.choice(["Hi","Hey","Hello"])
