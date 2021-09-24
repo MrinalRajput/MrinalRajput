@@ -708,43 +708,44 @@ async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Option
         if member2 is None:
             member2 = member1
             member1 = ctx.author
-        
-
-        # print(list(matches.items()))
-        if member1.id not in matches[ctx.guild.id].keys() and member1.id not in matches[ctx.guild.id].values():
-            if member2.id not in matches[ctx.guild.id].keys() and member2.id not in matches[ctx.guild.id].values():
-                
-                codeGenerator = random.randint(000000, 999999)
-                while codeGenerator in teamCode[ctx.guild.id].values():
+        if member2 != ctx.author:
+            # print(list(matches.items()))
+            if member1.id not in matches[ctx.guild.id].keys() and member1.id not in matches[ctx.guild.id].values():
+                if member2.id not in matches[ctx.guild.id].keys() and member2.id not in matches[ctx.guild.id].values():
+                    
                     codeGenerator = random.randint(000000, 999999)
+                    while codeGenerator in teamCode[ctx.guild.id].values():
+                        codeGenerator = random.randint(000000, 999999)
 
-                teamCode[ctx.guild.id][member1.id] = codeGenerator
-                teamCode[ctx.guild.id][member2.id] = teamCode[ctx.guild.id][member1.id]
+                    teamCode[ctx.guild.id][member1.id] = codeGenerator
+                    teamCode[ctx.guild.id][member2.id] = teamCode[ctx.guild.id][member1.id]
 
-                if codeGenerator not in gameBoards[ctx.guild.id]:
-                    gameBoards[ctx.guild.id][codeGenerator] = {}              
+                    if codeGenerator not in gameBoards[ctx.guild.id]:
+                        gameBoards[ctx.guild.id][codeGenerator] = {}              
 
-                await ctx.send(f"**❎ TicTacToe Game 🅾️**")
-                gameBoards[ctx.guild.id][codeGenerator]["boardpiece"] = {"piece1" : "🔳","piece2" : "🔳","piece3" : "🔳","piece4" : "🔳","piece5" : "🔳","piece6" : "🔳","piece7" : "🔳","piece8" : "🔳","piece9" : "🔳"}
-                gameBoards[ctx.guild.id][codeGenerator]["board"] = await ctx.send(f'\n{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece1"]}{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece2"]}{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece3"]}\n{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece4"]}{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece5"]}{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece6"]}\n{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece7"]}{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece8"]}{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece9"]}')
-                chances[ctx.guild.id][member1.id] = "X"
-                chances[ctx.guild.id][member2.id] = "O"
-                await ctx.send(f"\n Players are {member1.mention} ❎ and {member2.mention} 🅾️\n Send 1 to 9 in the Chat to Use your Turn")
+                    await ctx.send(f"**❎ TicTacToe Game 🅾️**")
+                    gameBoards[ctx.guild.id][codeGenerator]["boardpiece"] = {"piece1" : "🔳","piece2" : "🔳","piece3" : "🔳","piece4" : "🔳","piece5" : "🔳","piece6" : "🔳","piece7" : "🔳","piece8" : "🔳","piece9" : "🔳"}
+                    gameBoards[ctx.guild.id][codeGenerator]["board"] = await ctx.send(f'\n{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece1"]}{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece2"]}{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece3"]}\n{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece4"]}{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece5"]}{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece6"]}\n{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece7"]}{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece8"]}{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece9"]}')
+                    chances[ctx.guild.id][member1.id] = "X"
+                    chances[ctx.guild.id][member2.id] = "O"
+                    await ctx.send(f"\n Players are {member1.mention} ❎ and {member2.mention} 🅾️\n Send 1 to 9 in the Chat to Use your Turn")
 
-                matches[ctx.guild.id][member1.id] = member2.id
-                gameBoards[ctx.guild.id][codeGenerator]["blocks"] = {"block1" : False, "block2": False, "block3" : False, "block4": False, "block5" : False,"block6": False, "block7": False, "block8": False, "block9": False}
+                    matches[ctx.guild.id][member1.id] = member2.id
+                    gameBoards[ctx.guild.id][codeGenerator]["blocks"] = {"block1" : False, "block2": False, "block3" : False, "block4": False, "block5" : False,"block6": False, "block7": False, "block8": False, "block9": False}
 
 
-                gameBoards[ctx.guild.id][codeGenerator]["chance"] = "X"
-                # print(list(matches.items()))
-                
+                    gameBoards[ctx.guild.id][codeGenerator]["chance"] = "X"
+                    # print(list(matches.items()))
+                    
+                else:
+                    await ctx.send(f":exclamation: {member2.mention} is Already in a TicTacToe Match in this Server")
             else:
-                await ctx.send(f":exclamation: {member2.mention} is Already in a TicTacToe Match in this Server")
+                if member1 == ctx.author:
+                    await ctx.send(f":exclamation: {ctx.author.mention} You are Already in a TicTacToe Match in this Server, use `>tttstop` to Stop your Current Match")
+                else:
+                    await ctx.send(f":exclamation: {member1.mention} is Already in a TicTacToe Match in this Server")
         else:
-            if member1 == ctx.author:
-                await ctx.send(f":exclamation: {ctx.author.mention} You are Already in a TicTacToe Match in this Server, use `>tttstop` to Stop your Current Match")
-            else:
-                await ctx.send(f":exclamation: {member1.mention} is Already in a TicTacToe Match in this Server")
+            await ctx.send(f":exclamation: {ctx.author.mention} You Cannot Play With Yourself, There must be Two Players")
     else:
         await ctx.send(f":exclamation: {ctx.author.mention} You are Using The Command Wrong, Use `>help tictactoe` to get help related with the Command")
 
