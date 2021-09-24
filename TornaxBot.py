@@ -1493,7 +1493,12 @@ helphelp = ">help [anycommand]"
 async def help(ctx, anycommand: Optional[str]=None):
     print(bot.all_commands.keys())
     totalCommands = len(bot.all_commands.keys())
-    print(list(bot.guilds.name), len(bot.guilds))
+
+    servers = list(bot.guilds)
+    print("Currently on " + str(len(bot.guilds)) + "servers:")
+    for x in range(len(servers)):
+        print('  ' + servers[x-1].name)
+        
     print(totalCommands)
     if anycommand is None:
         randomGreet = random.choice(["Hi","Hey","Hello"])
