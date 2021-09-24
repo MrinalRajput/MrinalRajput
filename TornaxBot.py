@@ -751,6 +751,24 @@ async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Option
 
 tictactoehelp = ">tictactoe [First Player] <Second Player>"
 
+@bot.command()
+async def tttstop(ctx):
+    global matches, gameBoards, chances, teamCode
+    if ctx.author.id in matches[ctx.guild.id].keys():
+        del matches[ctx.guild.id][ctx.author.id]
+    else:
+        ids = matches[ctx.guild.id].keys()
+        for id in ids:
+            if id == ctx.author.id:
+                del matches[ctx.guild.id][id]
+    code = teamCode[ctx.guild.id][ctx.author.id]
+    del teamCode[ctx.guild.id][ctx.author.id]
+    del gameBoards[ctx.guild.id][code]
+    del chances[ctx.guild.id]
+    
+
+tttstophelp = ">tttstop"
+
 @bot.listen()
 async def on_message(message):
     global matches, gameBoards, chances
@@ -1205,7 +1223,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gpaticipate, gquit, info, about, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
-        myEmbed.add_field(name="Fun",value=" slap, kill, punch, tictactoe \n----------------------\n", inline=False)
+        myEmbed.add_field(name="Fun",value=" slap, kill, punch, tictactoe, tttstop \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value="----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `>`\n > Command Usage Example :   `>info`\n\n----------------------", inline=False)
         myEmbed.add_field(name="Readme", value="`>help` Shows this Message, use `>help [command]` to get more information about that Command\n\n")
         myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creater}")
@@ -1255,6 +1273,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "kill": content=killhelp
         elif anycommand == "punch": content=punchhelp
         elif anycommand == "tictactoe": content=tictactoehelp
+        elif anycommand == "tttstop": content=tttstophelp
         elif anycommand == "help": content=helphelp
         commandEmbed = discord.Embed(description=f"{content}",color=embedTheme)
         await ctx.send(embed=commandEmbed)
