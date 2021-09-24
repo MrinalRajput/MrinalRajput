@@ -152,6 +152,11 @@ async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: O
                 reason = unit
                 unit = None
             mutedRole = discord.utils.get(ctx.message.guild.roles, name="Muted")
+            if not mutedRole:
+                mutedRole = await ctx.guild.create_role(name="Muted")
+
+                for channel in ctx.guild.channels:
+                    await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False)
             if duration is not None and unit is not None:
                 if unit == "s" or "sec" in unit:
                     wait = 1 * duration 
@@ -1612,6 +1617,11 @@ async def on_message(message):
             if count[message.guild.id][message.author.id]["warnings"] >= 3:
                 try:
                     mutedRole = discord.utils.get(message.guild.roles, name="Muted")
+                    if not mutedRole:
+                        mutedRole = await message.guild.create_role(name="Muted")
+
+                        for channel in message.guild.channels:
+                            await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False)
                     await message.author.add_roles(mutedRole)
                     embed = discord.Embed(description = f"** {message.author.mention} has been Muted by {bot.user.mention} for `15` Seconds \n\t With the Reason of :\t Spamming**",color=embedTheme)
                     await message.channel.send(embed=embed)
