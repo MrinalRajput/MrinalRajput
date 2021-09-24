@@ -765,6 +765,7 @@ async def tttstop(ctx):
     del teamCode[ctx.guild.id][ctx.author.id]
     del gameBoards[ctx.guild.id][code]
     del chances[ctx.guild.id]
+    await ctx.send(f"{ctx.author.mention} Your TicTacToe Game has been Stopped")
     
 
 tttstophelp = ">tttstop"
