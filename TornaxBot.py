@@ -725,13 +725,14 @@ async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Option
                     gameBoards[ctx.guild.id][codeGenerator] = {}              
 
                 await ctx.send(f"**❎ TicTacToe Game 🅾️**")
-                gameBoards[ctx.guild.id][codeGenerator]["board"] = await ctx.send("\n🔳🔳🔳\n🔳🔳🔳\n🔳🔳🔳")
+                gameBoards[ctx.guild.id][codeGenerator]["boardpiece"] = {"piece1" : "🔳","piece2" : "🔳","piece3" : "🔳","piece4" : "🔳","piece5" : "🔳","piece6" : "🔳","piece7" : "🔳","piece8" : "🔳","piece9" : "🔳"}
+                gameBoards[ctx.guild.id][codeGenerator]["board"] = await ctx.send(f'\n{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece1"]}{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece2"]}{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece3"]}\n{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece4"]}{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece5"]}{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece6"]}\n{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece7"]}{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece8"]}{gameBoards[ctx.guild.id][codeGenerator]["boardpiece"]["piece9"]}')
                 chances[ctx.guild.id][member1.id] = "X"
                 chances[ctx.guild.id][member2.id] = "O"
                 await ctx.send(f"\n Players are {member1.mention} ❎ and {member2.mention} 🅾️")
 
                 matches[ctx.guild.id][member1.id] = member2.id
-                gameBoards[ctx.guild.id][codeGenerator]["blocks"] = {"block1" : False, "block2": False, "block3" : False, "block4": False, "block5" : False,"block6": False, "block7": False}
+                gameBoards[ctx.guild.id][codeGenerator]["blocks"] = {"block1" : False, "block2": False, "block3" : False, "block4": False, "block5" : False,"block6": False, "block7": False, "block8": False, "block9": False}
 
 
                 gameBoards[ctx.guild.id][codeGenerator]["chance"] = "X"
@@ -754,105 +755,130 @@ tictactoehelp = ">tictactoe [First Player] <Second Player>"
 async def on_message(message):
     global matches, gameBoards, chances
     try:
-        if message.author.id in matches[message.guild.id].keys() and message.author.id in matches[message.guild.id].values():
+        print(chances[message.guild.id][message.author.id])
+        if message.author.id in matches[message.guild.id].keys() or message.author.id in matches[message.guild.id].values():
             userTeam = teamCode[message.guild.id][message.author.id]
-            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n❎🔳🔳\n🔳🔳🔳\n🔳🔳🔳")
+            print(gameBoards[message.guild.id][userTeam]["chance"])
+            print(0)
             if gameBoards[message.guild.id][userTeam]["chance"] == chances[message.guild.id][message.author.id]:
+                print(1)
                 if chances[message.guild.id][message.author.id] == "X":
+                    print(2)
                     if "1" in message.content.lower():
+                        print(3)
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block1"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n❎🔳🔳\n🔳🔳🔳\n🔳🔳🔳")
+                            print(4)
+                            gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"] = "❎"
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content=f'\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"]}')
                             gameBoards[message.guild.id][userTeam]["blocks"]["block1"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "O"
                     elif "2" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block2"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳❎🔳\n🔳🔳🔳\n🔳🔳🔳")
+                            gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"] = "❎"
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content=f'\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"]}')
                             gameBoards[message.guild.id][userTeam]["blocks"]["block2"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "O"
                     elif "3" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block3"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳❎\n🔳🔳🔳\n🔳🔳🔳")
+                            gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"] = "❎"
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content=f'\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"]}')
                             gameBoards[message.guild.id][userTeam]["blocks"]["block3"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "O"
                     elif "4" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block4"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n❎🔳🔳\n🔳🔳🔳")
+                            gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"] = "❎"
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content=f'\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"]}')
                             gameBoards[message.guild.id][userTeam]["blocks"]["block4"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "O"
                     elif "5" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block5"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🔳❎🔳\n🔳🔳🔳")
+                            gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"] = "❎"
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content=f'\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"]}')
                             gameBoards[message.guild.id][userTeam]["blocks"]["block5"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "O"
                     elif "6" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block6"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🔳🔳❎\n🔳🔳🔳")
+                            gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"] = "❎"
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content=f'\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"]}')
                             gameBoards[message.guild.id][userTeam]["blocks"]["block6"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "O"
                     elif "7" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block7"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🔳🔳🔳\n❎🔳🔳")
+                            gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"] = "❎"
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content=f'\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"]}')
                             gameBoards[message.guild.id][userTeam]["blocks"]["block7"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "O"
                     elif "8" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block8"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🔳🔳🔳\n🔳❎🔳")
+                            gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"] = "❎"
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content=f'\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"]}')
                             gameBoards[message.guild.id][userTeam]["blocks"]["block8"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "O"
                     elif "9" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block9"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🔳🔳🔳\n🔳🔳❎")
+                            gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"] = "❎"
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content=f'\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"]}')
                             gameBoards[message.guild.id][userTeam]["blocks"]["block9"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "O"
 
                 elif chances[message.guild.id][message.author.id] == "O":
                     if "1" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block1"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🅾️🔳🔳\n🔳🔳🔳\n🔳🔳🔳")
+                            gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"] = "🅾️"
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content=f'\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"]}')
                             gameBoards[message.guild.id][userTeam]["blocks"]["block1"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
                     elif "2" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block2"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🅾️🔳\n🔳🔳🔳\n🔳🔳🔳")
+                            gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"] = "🅾️"
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content=f'\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"]}')
                             gameBoards[message.guild.id][userTeam]["blocks"]["block2"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
                     elif "3" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block3"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🅾️\n🔳🔳🔳\n🔳🔳🔳")
+                            gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"] = "🅾️"
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content=f'\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"]}')
                             gameBoards[message.guild.id][userTeam]["blocks"]["block3"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
                     elif "4" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block4"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🅾️🔳🔳\n🔳🔳🔳")
+                            gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"] = "🅾️"
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content=f'\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"]}')
                             gameBoards[message.guild.id][userTeam]["blocks"]["block4"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
                     elif "5" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block5"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🔳🅾️🔳\n🔳🔳🔳")
+                            gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"] = "🅾️"
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content=f'\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"]}')
                             gameBoards[message.guild.id][userTeam]["blocks"]["block5"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
                     elif "6" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block6"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🔳🔳🅾️\n🔳🔳🔳")
+                            gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"] = "🅾️"
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content=f'\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"]}')
                             gameBoards[message.guild.id][userTeam]["blocks"]["block6"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
                     elif "7" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block7"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🔳🔳🔳\n🅾️🔳🔳")
+                            gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"] = "🅾️"
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content=f'\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"]}')
                             gameBoards[message.guild.id][userTeam]["blocks"]["block7"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
                     elif "8" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block8"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🔳🔳🔳\n🔳🅾️🔳")
+                            gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"] = "🅾️"
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content=f'\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"]}')
                             gameBoards[message.guild.id][userTeam]["blocks"]["block8"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
                     elif "9" in message.content.lower():
                         if gameBoards[message.guild.id][userTeam]["blocks"]["block9"] == False:
-                            await gameBoards[message.guild.id][userTeam]["board"].edit(content="\n🔳🔳🔳\n🔳🔳🔳\n🔳🔳🅾️")
+                            gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"] = "🅾️"
+                            await gameBoards[message.guild.id][userTeam]["board"].edit(content=f'\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"]}\n{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"]}{gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"]}')
                             gameBoards[message.guild.id][userTeam]["blocks"]["block9"] = True
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
+            await message.delete()
         else:
-            pass
+            await message.delete()
     except Exception as e:
         print(e)
         pass
