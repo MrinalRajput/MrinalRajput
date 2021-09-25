@@ -238,7 +238,7 @@ leaveserverhelp = ">leaveserver"
 
 @bot.listen()
 async def on_message(message):
-    global leaveRequest
+    global leaveRequest, leaveConfirmation
     if message.guild.id not in leavingRequest:
             leavingRequest[message.guild.id] = ""
 
@@ -249,6 +249,7 @@ async def on_message(message):
                 await message.guild.leave()
             elif message.content.lower() == "no":
                 await message.channel.send(f"Thank You So Much :) for Keeping me in {message.guild.name} Server")
+                leaveConfirmation = 0
                 del leavingRequest[message.guild.id]
         else:
             pass
