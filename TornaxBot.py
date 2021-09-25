@@ -1455,22 +1455,24 @@ async def afk(ctx, *, reason: Optional[str]=None):
             afkdata[ctx.guild.id][ctx.author.id] = {}
 
         # print(afkdata)
+        if ctx.author not in afkdata[ctx.guild.id]:
+            username[ctx.author.id] = ctx.author.nick
+            if reason is None:
+                reason = f"Afk"
+            reasontopic[ctx.author.id] = reason
+            # embed = discord.Embed(description=f"Afk Set : {reason}", color=embedTheme)
+            # await ctx.send(embed=embed)
+            await ctx.send(f"{ctx.author.mention} Afk Set : {reason}")
+            try:
+                await ctx.author.edit(nick=f"[AFK] {ctx.author.name}")
+            except:
+                pass
 
-        username[ctx.author.id] = ctx.author.nick
-        if reason is None:
-            reason = f"Afk"
-        reasontopic[ctx.author.id] = reason
-        # embed = discord.Embed(description=f"Afk Set : {reason}", color=embedTheme)
-        # await ctx.send(embed=embed)
-        await ctx.send(f"{ctx.author.mention} Afk Set : {reason}")
-        try:
-            await ctx.author.edit(nick=f"[AFK] {ctx.author.name}")
-        except:
-            pass
-
-        afkdata[ctx.guild.id][ctx.author.id]["Afk"] = True
-        # print(list(afkdata[ctx.guild.id].keys()))
-        # print(afkdata)
+            afkdata[ctx.guild.id][ctx.author.id]["Afk"] = True
+            # print(list(afkdata[ctx.guild.id].keys()))
+            # print(afkdata)
+        else:
+            await ctx.send(f"{ctx.author.mention} You Afk has been Removed, User `>afk` Again to Set Your Afk")
     except Exception as e:
         print(e)
         pass
