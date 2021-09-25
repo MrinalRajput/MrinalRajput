@@ -430,7 +430,7 @@ class Giveaway():
                         Participants[ctx.guild.id]["No One"] = "No one Participated"
                     winnerCode = random.choice(list(Participants[ctx.guild.id].values()))
                     CodeOwner = [k for k, v in Participants[ctx.guild.id].items() if v == winnerCode]
-                    print(CodeOwner)
+                    # print(CodeOwner)
                     winnerName = str(CodeOwner[0])
                     winner = f"{winnerName} || {winnerCode}"
 
@@ -1468,7 +1468,7 @@ async def afk(ctx, *, reason: Optional[str]=None):
         pass
 
     afkdata[ctx.guild.id][ctx.author.id]["Afk"] = True
-    print(list(afkdata[ctx.guild.id].keys()))
+    # print(list(afkdata[ctx.guild.id].keys()))
     # print(afkdata)
 
 afkhelp = ">afk [reason]"
