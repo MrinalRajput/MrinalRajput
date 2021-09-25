@@ -1490,9 +1490,9 @@ async def on_message(message):
         # print(user)
         username = await bot.fetch_user(user)
         print(username)
-        if afkdata[message.guild.id][user]["Afk"] == True:
-            if f"@{username}" in message.content.lower():
-                await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[user]}")
+        if f"@{username.name}" in message.content.lower():
+            if afkdata[message.guild.id][username.id]["Afk"] == True:
+                await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[username.id]}")
         else:
             # print("He is not afk")
             pass
