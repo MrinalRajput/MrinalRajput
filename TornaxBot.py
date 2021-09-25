@@ -1486,19 +1486,20 @@ async def on_message(message):
     if message.guild.id not in afkdata:
             afkdata[message.guild.id] = []
     users = afkdata[message.guild.id]
-    # print(users)
-    for user in users:
-        # print(user)
-        username = await bot.fetch_user(user)
-        print(username)
-        if f"<@{username.id}>" in message.content:
-            print(1)
-            if username.id in afkdata[message.guild.id]:
-                print(2)
-                await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[username.id]}")
-        else:
-            # print("He is not afk")
-            pass
+    if len(users) > 0:
+        # print(users)
+        for user in users:
+            # print(user)
+            username = await bot.fetch_user(user)
+            print(username)
+            if f"<@{username.id}>" in message.content:
+                print(1)
+                if username.id in afkdata[message.guild.id]:
+                    print(2)
+                    await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[username.id]}")
+            else:
+                # print("He is not afk")
+                pass
 
 @bot.listen()
 async def on_message(message):   
