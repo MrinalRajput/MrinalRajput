@@ -1501,7 +1501,7 @@ async def on_message(message):
     if not message.author.bot:
         Allusers = []
         for mention in list(afkdata[message.guild.id].keys()):
-            users.append(f"<@{mention}>")
+            Allusers.append(f"<@{mention}>")
         users = list(afkdata[message.guild.id].keys())
         mentioned = message.raw_mentions
         print(users)
