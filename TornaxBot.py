@@ -770,22 +770,25 @@ tictactoehelp = ">tictactoe [First Player] <Second Player>"
 async def tttstop(ctx):
     global matches, gameBoards, chances, teamCode
     try:
-        await ctx.send(f"{ctx.author.mention} Your TicTacToe Game has been Stopped")
-        
-        if ctx.author.id in matches[ctx.guild.id].keys():
-            player1 = ctx.author.id
-            player2 = matches[ctx.guild.id][player1]
-        elif ctx.author.id in matches[ctx.guild.id].values():
-            for id in matches[ctx.guild.id].values():
-                if matches[ctx.guild.id][id] == ctx.author.id:
-                    player1 = id
-                    player2 = matches[ctx.guild.id][id]
-        code = teamCode[ctx.guild.id][ctx.author.id]
-        del matches[ctx.guild.id][player1]
-        del matches[ctx.guild.id][player2]
-        del teamCode[ctx.guild.id][player1]
-        del teamCode[ctx.guild.id][player2]
-        del gameBoards[ctx.guild.id][code]
+        if ctx.author.id in matches[ctx.guild.id].keys() or ctx.author.id not in matches[ctx.guild.id].values():
+            await ctx.send(f"{ctx.author.mention} Your TicTacToe Game has been Stopped")
+            
+            if ctx.author.id in matches[ctx.guild.id].keys():
+                player1 = ctx.author.id
+                player2 = matches[ctx.guild.id][player1]
+            elif ctx.author.id in matches[ctx.guild.id].values():
+                for id in matches[ctx.guild.id].values():
+                    if matches[ctx.guild.id][id] == ctx.author.id:
+                        player1 = id
+                        player2 = matches[ctx.guild.id][id]
+            code = teamCode[ctx.guild.id][ctx.author.id]
+            del matches[ctx.guild.id][player1]
+            del matches[ctx.guild.id][player2]
+            del teamCode[ctx.guild.id][player1]
+            del teamCode[ctx.guild.id][player2]
+            del gameBoards[ctx.guild.id][code]
+        else:
+            await ctx.send(f":exclamation: {ctx.author.mention} You are Not in any TicTacToe Match in this Server")
     except Exception as e:
         print(e)
         pass
@@ -1500,7 +1503,7 @@ async def on_message(message):
         afkdata[message.guild.id] = {}
     if not message.author.bot:
         users = list(afkdata[message.guild.id].keys())
-        print(users)
+        # print(users)
         for user in users:
             # print(user)
             username = await bot.fetch_user(user)
