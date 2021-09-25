@@ -1381,6 +1381,7 @@ async def afk(ctx, *, reason: Optional[str]=None):
         pass
 
     afkdata[ctx.guild.id][ctx.author.id]["Afk"] = True
+    print(afkdata)
     # print(afkdata)
 
 afkhelp = ">afk [reason]"
