@@ -1501,19 +1501,19 @@ async def on_message(message):
     # print(reasontopic)
     if message.guild.id not in afkdata:
         afkdata[message.guild.id] = {}
-    if not message.author.bot:
-        users = list(afkdata[message.guild.id].keys())
-        # print(users)
-        for user in users:
-            # print(user)
-            username = await bot.fetch_user(user)
-            print(username)
-            if afkdata[message.guild.id][user]["Afk"] == True:
-                if username.mentioned_in(message.content):
-                    await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[user]}")
-            else:
-                # print("He is not afk")
-                pass
+    # if not message.author.bot:
+    users = list(afkdata[message.guild.id].keys())
+    # print(users)
+    for user in users:
+        # print(user)
+        username = await bot.fetch_user(user)
+        print(username)
+        if afkdata[message.guild.id][user]["Afk"] == True:
+            if username.mentioned_in(message.content):
+                await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[user]}")
+        else:
+            # print("He is not afk")
+            pass
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
