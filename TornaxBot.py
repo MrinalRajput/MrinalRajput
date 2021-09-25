@@ -1507,7 +1507,7 @@ async def on_message(message):
     # print(afkdata)
     try:
         if message.author.id in afkdata[message.guild.id]:
-            del afkdata[message.guild.id][message.author.id]
+            afkdata[message.guild.id].remove(message.author.id)
             await message.channel.send(f"Afk Removed: {message.author.mention} You are no More Afk Now!")
             try:
                 await message.author.edit(nick=username[message.author.id])
