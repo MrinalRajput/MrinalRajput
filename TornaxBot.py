@@ -1458,7 +1458,7 @@ async def on_guild_join(guild):
 async def info(ctx):
     Listedgreetings = ["Hello!","Hi!","Hey!","Heya!"]
     RandomGreetings = random.choice(Listedgreetings)
-    embed = discord.Embed(title="My Information",description=f"{RandomGreetings} I am Tornax a Multi-Talented Discord Bot, Designed, Created and Configured by MrinalSparks\n**Currently I Am In :** {len(list(bot.guilds))} Servers", color=embedTheme)
+    embed = discord.Embed(title="My Information",description=f"{RandomGreetings} I am Tornax a Multi-Talented Discord Bot, Designed, Created and Configured by MrinalSparks\n\nCurrently I Am In : {len(list(bot.guilds))} Servers", color=embedTheme)
     await ctx.send(embed=embed)
 
 infohelp = ">info"
