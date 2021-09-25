@@ -1450,9 +1450,7 @@ async def afk(ctx, *, reason: Optional[str]=None):
     global afkdata, username, reasontopic
     try:
         if ctx.guild.id not in afkdata:
-            afkdata[ctx.guild.id] = {}
-        if ctx.author.id not in afkdata[ctx.guild.id]:
-            afkdata[ctx.guild.id][ctx.author.id] = {}
+            afkdata[ctx.guild.id] = []
 
         # print(afkdata)
         if ctx.author not in afkdata[ctx.guild.id]:
@@ -1468,7 +1466,7 @@ async def afk(ctx, *, reason: Optional[str]=None):
             except:
                 pass
 
-            afkdata[ctx.guild.id][ctx.author.id]["Afk"] = True
+            afkdata[ctx.guild.id].append(ctx.author.id)
             # print(list(afkdata[ctx.guild.id].keys()))
             # print(afkdata)
         else:
@@ -1494,9 +1492,8 @@ async def on_message(message):
         if f"<@{username.id}>" in message.content:
             print(1)
             if username.id in afkdata[message.guild.id]:
-                if afkdata[message.guild.id][username.id]["Afk"] == True:
-                    print(2)
-                    await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[username.id]}")
+                print(2)
+                await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[username.id]}")
         else:
             # print("He is not afk")
             pass
@@ -1507,16 +1504,14 @@ async def on_message(message):
     # print(afkdata)
     try:
         if message.author.id in afkdata[message.guild.id]:
-            if "Afk" in afkdata[message.guild.id][message.author.id]:
-                if afkdata[message.guild.id][message.author.id]["Afk"] == True:
-                    afkdata[message.guild.id][message.author.id]["Afk"] = False
-                    await message.channel.send(f"Afk Removed: {message.author.mention} You are no More Afk Now!")
-                    try:
-                        await message.author.edit(nick=username[message.author.id])
-                    except:
-                        pass
-                    del username[message.author.id]
-                    del reasontopic[message.author.id]
+            del afkdata[message.guild.id][message.author.id]
+            await message.channel.send(f"Afk Removed: {message.author.mention} You are no More Afk Now!")
+            try:
+                await message.author.edit(nick=username[message.author.id])
+            except:
+                pass
+            del username[message.author.id]
+            del reasontopic[message.author.id]
     except Exception as e:
         print(e)
         pass
