@@ -1502,7 +1502,7 @@ async def on_message(message):
         users = list(afkdata[message.guild.id].keys())
         print(users)
         for user in users:
-            # print(user)
+            print(user)
             if afkdata[message.guild.id][user]["Afk"] == True:
                 if f"<@{user}>" in message.content:
                     await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[user]}")
