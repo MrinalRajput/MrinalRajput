@@ -1477,24 +1477,6 @@ async def afk(ctx, *, reason: Optional[str]=None):
 afkhelp = ">afk [reason]"
 
 @bot.listen()
-async def on_message(message):   
-    global afkdata, username, reasontopic
-    # print(afkdata)
-    if message.guild.id in afkdata:
-        if message.author.id in afkdata[message.guild.id]:
-            if "Afk" in afkdata[message.guild.id][message.author.id]:
-                if afkdata[message.guild.id][message.author.id]["Afk"] == True:
-                    afkdata[message.guild.id][message.author.id]["Afk"] = False
-                    await message.channel.send(f"Afk Removed: {message.author.mention} You are no More Afk Now!")
-                    try:
-                        await message.author.edit(nick=username[message.author.id])
-                    except:
-                        pass
-                    del username[message.author.id]
-                    del reasontopic[message.author.id]
-                    del afkdata[message.guild.id][message.author.id]
-
-@bot.listen()
 async def on_message(message):
     global afkdata, reasontopic
     # print(afkdata)
@@ -1514,6 +1496,25 @@ async def on_message(message):
         else:
             # print("He is not afk")
             pass
+        
+@bot.listen()
+async def on_message(message):   
+    global afkdata, username, reasontopic
+    # print(afkdata)
+    if message.guild.id in afkdata:
+        if message.author.id in afkdata[message.guild.id]:
+            if "Afk" in afkdata[message.guild.id][message.author.id]:
+                if afkdata[message.guild.id][message.author.id]["Afk"] == True:
+                    afkdata[message.guild.id][message.author.id]["Afk"] = False
+                    await message.channel.send(f"Afk Removed: {message.author.mention} You are no More Afk Now!")
+                    try:
+                        await message.author.edit(nick=username[message.author.id])
+                    except:
+                        pass
+                    del username[message.author.id]
+                    del reasontopic[message.author.id]
+                    del afkdata[message.guild.id][message.author.id]
+
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
