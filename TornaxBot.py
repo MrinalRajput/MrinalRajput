@@ -225,7 +225,7 @@ async def leaveserver(ctx):
             leavingRequest[ctx.guild.id] = ctx.author.id
         await ctx.send(f"{ctx.author.mention} Do You Really Want me to Leave {ctx.guild.name} Server \:( , Send - Yes or No")
         leaveConfirmation = 20
-        asyncio.sleep(15)
+        await asyncio.sleep(15)
         leaveConfirmation = 0
     except Exception as e:
         print(e)
