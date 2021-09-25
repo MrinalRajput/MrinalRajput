@@ -222,7 +222,8 @@ async def leaveserver(ctx):
     global leaveConfirmation, leavingRequest
     try:
         if ctx.guild.id not in leavingRequest:
-            leavingRequest[ctx.guild.id] = ctx.author.id
+            leavingRequest[ctx.guild.id] = ""
+        leavingRequest[ctx.guild.id] = ctx.author.id
         await ctx.send(f"{ctx.author.mention} Do You Really Want me to Leave {ctx.guild.name} Server \:( , Send - Yes or No")
         leaveConfirmation = 20
         await asyncio.sleep(20)
@@ -239,7 +240,7 @@ async def on_message(message):
     if message.guild.id not in leavingRequest:
             leavingRequest[message.guild.id] = ""
 
-    if leaveConfirmation == 15:
+    if leaveConfirmation == 20:
         if message.author.id == leavingRequest[message.guild.id]:
             if message.content.lower() == "yes":
                 await message.channel.send(f"{message.author.mention} Successfully Left Your Server Bye Bye! :(")
