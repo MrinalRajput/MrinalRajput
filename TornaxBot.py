@@ -1448,31 +1448,32 @@ reasontopic = {}
 @bot.command()
 async def afk(ctx, *, reason: Optional[str]=None):
     global afkdata, username, reasontopic
-
-    if ctx.guild.id not in afkdata:
-        afkdata[ctx.guild.id] = {}
-    if ctx.author.id not in afkdata[ctx.guild.id]:
-        afkdata[ctx.guild.id][ctx.author.id] = {}
-    if "Afk" not in afkdata[ctx.guild.id][ctx.author.id]:
-        afkdata[ctx.guild.id][ctx.author.id]["Afk"] = False
-
-    # print(afkdata)
-
-    username[ctx.author.id] = ctx.author.nick
-    if reason is None:
-        reason = f"Afk"
-    reasontopic[ctx.author.id] = reason
-    # embed = discord.Embed(description=f"Afk Set : {reason}", color=embedTheme)
-    # await ctx.send(embed=embed)
-    await ctx.send(f"{ctx.author.mention} Afk Set : {reason}")
     try:
-        await ctx.author.edit(nick=f"[AFK] {ctx.author.name}")
-    except:
-        pass
+        if ctx.guild.id not in afkdata:
+            afkdata[ctx.guild.id] = {}
+        if ctx.author.id not in afkdata[ctx.guild.id]:
+            afkdata[ctx.guild.id][ctx.author.id] = {}
 
-    afkdata[ctx.guild.id][ctx.author.id]["Afk"] = True
-    # print(list(afkdata[ctx.guild.id].keys()))
-    # print(afkdata)
+        # print(afkdata)
+
+        username[ctx.author.id] = ctx.author.nick
+        if reason is None:
+            reason = f"Afk"
+        reasontopic[ctx.author.id] = reason
+        # embed = discord.Embed(description=f"Afk Set : {reason}", color=embedTheme)
+        # await ctx.send(embed=embed)
+        await ctx.send(f"{ctx.author.mention} Afk Set : {reason}")
+        try:
+            await ctx.author.edit(nick=f"[AFK] {ctx.author.name}")
+        except:
+            pass
+
+        afkdata[ctx.guild.id][ctx.author.id]["Afk"] = True
+        # print(list(afkdata[ctx.guild.id].keys()))
+        # print(afkdata)
+    except Exception as e:
+        print(e)
+        pass
 
 afkhelp = ">afk [reason]"
 
@@ -1481,8 +1482,6 @@ async def on_message(message):
     global afkdata, reasontopic
     # print(afkdata)
     # print(reasontopic)
-    if message.guild.id not in afkdata:
-        afkdata[message.guild.id] = {}
     # if not message.author.bot:
     users = list(afkdata[message.guild.id].keys())
     # print(users)
@@ -1503,7 +1502,7 @@ async def on_message(message):
 async def on_message(message):   
     global afkdata, username, reasontopic
     # print(afkdata)
-    if message.guild.id in afkdata:
+    try:
         if message.author.id in afkdata[message.guild.id]:
             if "Afk" in afkdata[message.guild.id][message.author.id]:
                 if afkdata[message.guild.id][message.author.id]["Afk"] == True:
@@ -1515,8 +1514,9 @@ async def on_message(message):
                         pass
                     del username[message.author.id]
                     del reasontopic[message.author.id]
-                    del afkdata[message.guild.id][message.author.id]
-
+    except Exception as e:
+        print(e)
+        pass
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
