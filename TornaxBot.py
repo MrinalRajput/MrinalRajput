@@ -770,6 +770,8 @@ tictactoehelp = ">tictactoe [First Player] <Second Player>"
 async def tttstop(ctx):
     global matches, gameBoards, chances, teamCode
     try:
+        await ctx.send(f"{ctx.author.mention} Your TicTacToe Game has been Stopped")
+        
         if ctx.author.id in matches[ctx.guild.id].keys():
             player1 = ctx.author.id
             player2 = matches[ctx.guild.id][player1]
@@ -784,7 +786,6 @@ async def tttstop(ctx):
         del teamCode[ctx.guild.id][player1]
         del teamCode[ctx.guild.id][player2]
         del gameBoards[ctx.guild.id][code]
-        await ctx.send(f"{ctx.author.mention} Your TicTacToe Game has been Stopped")
     except Exception as e:
         print(e)
         pass
