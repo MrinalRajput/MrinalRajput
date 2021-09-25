@@ -750,7 +750,10 @@ async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Option
                 else:
                     await ctx.send(f":exclamation: {member1.mention} is Already in a TicTacToe Match in this Server")
         else:
-            await ctx.send(f":exclamation: {ctx.author.mention} You Cannot Play With Yourself, There must be Two Players")
+            if member2 == ctx.author and member1 == ctx.author:
+                await ctx.send(f":exclamation: {ctx.author.mention} You Cannot Play With Yourself, There must be Two Players")
+            else:
+                await ctx.send(f":exclamation: {ctx.author.mention} Single Player Cannot Play with Himself/Herself, There must be Two Players")
     else:
         await ctx.send(f":exclamation: {ctx.author.mention} You are Using The Command Wrong, Use `>help tictactoe` to get help related with the Command")
 
@@ -900,7 +903,7 @@ async def on_message(message):
                             gameBoards[message.guild.id][userTeam]["chance"] = "X"
 
             if message.author != bot.user:
-                if "1" in message.content.lower() or "2" in message.content.lower() or "3" in message.content.lower() or "4" in message.content.lower() or "5" in message.content.lower() or "6" in message.content.lower() or "7" in message.content.lower() or "8" in message.content.lower() or "9" in message.content.lower():
+                if "1" == message.content.lower() or "2" == message.content.lower() or "3" == message.content.lower() or "4" == message.content.lower() or "5" == message.content.lower() or "6" == message.content.lower() or "7" == message.content.lower() or "8" == message.content.lower() or "9" == message.content.lower():
                     await message.delete()
             ### winner ###
             #
