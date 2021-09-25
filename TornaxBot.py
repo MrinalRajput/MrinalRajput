@@ -227,7 +227,9 @@ async def leaveserver(ctx):
         await ctx.send(f"{ctx.author.mention} Do You Really Want me to Leave {ctx.guild.name} Server \:( , Send - Yes or No")
         leaveConfirmation = 20
         await asyncio.sleep(20)
-        leaveConfirmation = 0
+        if leaveConfirmation == 20:
+            await ctx.send(f"{ctx.author.mention} Your Replying\Answering Time Ended!")
+            leaveConfirmation = 0
     except Exception as e:
         print(e)
         await ctx.send(f"{ctx.author.mention} Sorry you don't have Access to use this Command")
@@ -246,7 +248,7 @@ async def on_message(message):
                 await message.channel.send(f"{message.author.mention} Successfully Left Your Server Bye Bye! :(")
                 await message.guild.leave()
             elif message.content.lower() == "no":
-                await message.channel.send(f"Thank You Very Much :)")
+                await message.channel.send(f"Thank You So Much :) for Keeping me in {ctx.guild.id} Server")
                 del leavingRequest[message.guild.id]
         else:
             pass
