@@ -713,7 +713,7 @@ async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Option
         if member2 is None:
             member2 = member1
             member1 = ctx.author
-        if member2 != ctx.author:
+        if member2 != member1:
             # print(list(matches.items()))
             if member1.id not in matches[ctx.guild.id].keys() and member1.id not in matches[ctx.guild.id].values():
                 if member2.id not in matches[ctx.guild.id].keys() and member2.id not in matches[ctx.guild.id].values():
@@ -1166,7 +1166,7 @@ async def on_message(message):
 
             elif gameBoards[message.guild.id][userTeam]["boardpiece"]["piece1"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece2"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece3"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece4"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece5"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece6"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece7"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece8"] != "🔳" and  gameBoards[message.guild.id][userTeam]["boardpiece"]["piece9"] != "🔳":
                 player2 = matches[message.guild.id][message.author.id]
-                await message.channel.send(f"{message.author.mention} {player2} The TicTacToe Match is a Tie ;-;")
+                await message.channel.send(f"{message.author.mention} {player2.mention} The TicTacToe Match is a Tie ;-;")
                 if message.author.id in matches[message.guild.id].keys():
                     del matches[message.guild.id][message.author.id]
                 else:
