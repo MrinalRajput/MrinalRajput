@@ -784,6 +784,7 @@ async def tttstop(ctx):
         del teamCode[ctx.guild.id][player1]
         del teamCode[ctx.guild.id][player2]
         del gameBoards[ctx.guild.id][code]
+        await ctx.send(f"{ctx.author.mention} Your TicTacToe Game has been Stopped")
     except Exception as e:
         print(e)
         pass
