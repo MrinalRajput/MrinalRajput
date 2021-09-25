@@ -1374,9 +1374,9 @@ async def afk(ctx, *, reason: Optional[str]=None):
     reasontopic[ctx.author.id] = reason
     # embed = discord.Embed(description=f"Afk Set : {reason}", color=embedTheme)
     # await ctx.send(embed=embed)
-    await ctx.send(f"Afk Set : {reason}")
+    await ctx.send(f"{ctx.author.mention} Afk Set : {reason}")
     try:
-        await ctx.author.edit(nick=f"[Afk] {ctx.author.name}")
+        await ctx.author.edit(nick=f"[AFK] {ctx.author.name}")
     except:
         pass
 
@@ -1402,6 +1402,7 @@ async def on_message(message):
                         pass
                     del username[message.author.id]
                     del reasontopic[message.author.id]
+                    del afkdata[message.guild.id][message.author.id]
 
 @bot.listen()
 async def on_message(message):
