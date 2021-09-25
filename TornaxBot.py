@@ -1503,7 +1503,7 @@ async def on_message(message):
         print(users)
         for user in users:
             # print(user)
-            await username = bot.fetch_user(user)
+            username = await bot.fetch_user(user)
             print(username)
             if afkdata[message.guild.id][user]["Afk"] == True:
                 if f"<@{user}>" in message.content:
