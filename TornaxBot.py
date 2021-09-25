@@ -213,18 +213,40 @@ async def kick_error(error, ctx):
    if isinstance(error, MissingPermissions):
        await ctx.send("You don't have permission to do that!")
 
+leaveConfirmation = 0
+leavingRequest = {}
+
 @bot.command()
 @commands.has_permissions(manage_guild=True)
 async def leaveserver(ctx):
-        await ctx.guild.leave()
-        # await ctx.send(f"{ctx.author.mention} Sorry you don't have Access to use this Command")
+    global leaveConfirmation, leavingRequest
+    try:
+        if ctx.guild.id not in leavingRequest:
+            leavingRequest[ctx.guild.id] = ctx.author.id
+        await ctx.send(f"{ctx.author.mention} Do You Really Want me to Leave {ctx.guild.name} Server \:( , Send - Yes or No")
+        leaveConfirmation = 20
+        asyncio.sleep(15)
+        leaveConfirmation = 0
+    except Exception as e:
+        print(e)
+        await ctx.send(f"{ctx.author.mention} Sorry you don't have Access to use this Command")
 
 leaveserverhelp = ">leaveserver"
 
-@leaveserver.error
-async def leaverserver_error(error, ctx):
-   if isinstance(error, MissingPermissions):
-       await ctx.send("You don't have permission to do that!")
+@bot.listen()
+async def on_message(message):
+    if message.guild.id not in leavingRequest:
+            leavingRequest[message.guild.id] = ""
+
+    if leaveConfirmation == 15:
+        if message.author.id == leavingRequest[message.guild.id]:
+            if message.content.lower() == "yes":
+                await message.send(f"{message.author.mention} Successfully Left Your Server Bye Bye! :(")
+                await message.guild.leave()
+            elif message.content.lower() == "no":
+                pass
+
+
 
 @bot.command()
 @commands.has_permissions(manage_nicknames=True)
