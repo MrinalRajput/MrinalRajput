@@ -248,7 +248,7 @@ async def on_message(message):
                 await message.channel.send(f"{message.author.mention} Successfully Left Your Server Bye Bye! :(")
                 await message.guild.leave()
             elif message.content.lower() == "no":
-                await message.channel.send(f"Thank You So Much :) for Keeping me in {ctx.guild.id} Server")
+                await message.channel.send(f"Thank You So Much :) for Keeping me in {message.guild.name} Server")
                 del leavingRequest[message.guild.id]
         else:
             pass
