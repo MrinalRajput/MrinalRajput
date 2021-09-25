@@ -228,7 +228,7 @@ async def leaveserver(ctx):
         leaveConfirmation = 20
         await asyncio.sleep(20)
         if leaveConfirmation == 20:
-            await ctx.send(f"{ctx.author.mention} Your Replying\Answering Time Ended!")
+            await ctx.send(f"{ctx.author.mention} Your Replying/Answering Time Ended!")
             leaveConfirmation = 0
     except Exception as e:
         print(e)
