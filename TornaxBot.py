@@ -1381,7 +1381,7 @@ async def afk(ctx, *, reason: Optional[str]=None):
         pass
 
     afkdata[ctx.guild.id][ctx.author.id]["Afk"] = True
-    print(afkdata)
+    print(list(afkdata[message.guild.id].keys()))
     # print(afkdata)
 
 afkhelp = ">afk [reason]"
@@ -1412,7 +1412,7 @@ async def on_message(message):
         afkdata[message.guild.id] = {}
     if not message.author.bot:
         users = list(afkdata[message.guild.id].keys())
-        # print(users)
+        print(users)
         for user in users:
             # print(user)
             if afkdata[message.guild.id][user]["Afk"] == True:
