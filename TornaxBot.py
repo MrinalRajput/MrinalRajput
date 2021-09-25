@@ -1499,16 +1499,12 @@ async def on_message(message):
     if message.guild.id not in afkdata:
         afkdata[message.guild.id] = {}
     if not message.author.bot:
-        Allusers = []
-        for mention in list(afkdata[message.guild.id].keys()):
-            Allusers.append(f"<@{mention}>")
         users = list(afkdata[message.guild.id].keys())
-        mentioned = message.raw_mentions
         print(users)
         for user in users:
-            print(user)
+            # print(user)
             if afkdata[message.guild.id][user]["Afk"] == True:
-                if mentioned in Allusers:
+                if f"<@{user}>" in message.content:
                     await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[user]}")
             else:
                 # print("He is not afk")
