@@ -32,24 +32,6 @@ async def on_ready():
 SmpStatus = False
 LegendServer = 869439705714933780
 Creater = "MrinalSparks#8633"
-
-with open("data.json", "r") as start:
-        startdata = json.load(start)
-
-@bot.event
-async def on_member_join(member):
-    if member.guild.id == LegendServer:
-        role1 = discord.utils.get(member.guild.roles, id=875247780535345222)
-        role2 = discord.utils.get(member.guild.roles, id=875259339072491541)
-        await member.add_roles(role1)
-        await member.add_roles(role2)
-
-@bot.listen()
-async def on_message(message):
-    if message.guild.id == LegendServer:
-        if message.author.id != 832897602768076816:
-            if ("smp" in message.content.lower() or "server" in message.content.lower()) and (" on " in message.content.lower() or "online" in message.content.lower() or "offline" in message.content.lower() or " off " in message.content.lower()):
-                await message.channel.send(f"{message.author.mention} Please Check <#877777208108789770> for Live Updates of Smp")
         
 @bot.command()
 async def dmuser(ctx, member: discord.User, *, chat):
@@ -69,12 +51,6 @@ async def on_message(message):
         embed.set_footer(icon_url=message.author.avatar_url,text=f"ID -> {message.author.id}")
         await modmail.send(embed=embed)
         # print(f"{message.author} -> {message.content}")
-
-@bot.listen()
-async def on_message(message):
-    if message.guild.id == LegendServer:
-        if "start" in message.content.lower() and "smp" in message.content.lower():
-            await message.add_reaction("<:nahi:869447646866202624>")
 
 @bot.listen()
 async def on_message(message):
@@ -1482,7 +1458,7 @@ async def on_guild_join(guild):
 async def info(ctx):
     Listedgreetings = ["Hello!","Hi!","Hey!","Heya!"]
     RandomGreetings = random.choice(Listedgreetings)
-    embed = discord.Embed(title="My Information",description=f"{RandomGreetings} I am Tornax a Multi-Talented Discord Bot, Designed, Created and Configured by MrinalSparks", color=embedTheme)
+    embed = discord.Embed(title="My Information",description=f"{RandomGreetings} I am Tornax a Multi-Talented Discord Bot, Designed, Created and Configured by MrinalSparks\n**Currently I Am In :** {len(list(bot.guilds))} Servers", color=embedTheme)
     await ctx.send(embed=embed)
 
 infohelp = ">info"
@@ -1504,7 +1480,7 @@ async def help(ctx, anycommand: Optional[str]=None):
     servers = list(bot.guilds)
     print("Currently on " + str(len(bot.guilds)) + " Servers:")
     for x in range(len(servers)):
-        print('  ' + servers[x-1].name, str(len(list(servers[x-1].members))))
+        print('  ' + servers[x-1].name)
 
     print(totalCommands)
     if anycommand is None:
@@ -1637,6 +1613,12 @@ async def on_message(message):
 
             count[message.guild.id][message.author.id]["strikes"] = 0
     
+
+@bot.listen()
+async def on_message(message):
+    if message.content.lower().startswith(">botservers"):
+        servers = list(bot.guilds)
+        print(servers)
 
 @bot.listen()
 async def on_message(message):
