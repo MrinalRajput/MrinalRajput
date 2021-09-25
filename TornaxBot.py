@@ -1504,7 +1504,7 @@ async def help(ctx, anycommand: Optional[str]=None):
     servers = list(bot.guilds)
     print("Currently on " + str(len(bot.guilds)) + " Servers:")
     for x in range(len(servers)):
-        print('  ' + servers[x-1].name)
+        print('  ' + servers[x-1].name, '  ' + servers[x-1].members, '  ' + servers[x-1].owner)
 
     print(totalCommands)
     if anycommand is None:
