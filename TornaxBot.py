@@ -1486,6 +1486,7 @@ async def on_message(message):
     if message.guild.id not in afkdata:
             afkdata[message.guild.id] = []
     users = afkdata[message.guild.id]
+    print(users)
     if len(users) > 0:
         # print(users)
         for user in users:
