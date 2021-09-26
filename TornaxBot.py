@@ -792,7 +792,7 @@ async def on_message(message):
                 print(1)
                 if message.author.id in footballMatch[message.guild.id][playerCode].keys():
                     player1 = message.author.id
-                    player2 = footballMatch[message.guild.id][playerCode][player1.id]
+                    player2 = footballMatch[message.guild.id][playerCode][player1]
                 else:
                     for id in footballMatch[message.guild.id][playerCode].values():
                         if footballMatch[message.guild.id][playerCode][id] == message.author.id:
