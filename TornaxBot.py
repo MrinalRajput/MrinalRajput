@@ -783,135 +783,138 @@ footballstophelp = f"{prefix}footballstop"
 @bot.listen()
 async def on_message(message):
     global footballMatch, footballCode
+    try:
+        if message.author.id in footballCode[message.guild.id].keys():
+            playerCode = footballCode[message.guild.id][message.author.id]
+        
+            if message.author.id in footballMatch[message.guild.id][playerCode].keys() and message.author.id in footballMatch[message.guild.id][playerCode].values():
+                if message.author.id in footballMatch[message.guild.id][playerCode].keys():
+                    player1 = message.author.id
+                    player2 = footballMatch[message.guild.id][playerCode][player1.id]
+                else:
+                    for id in footballMatch[message.guild.id][playerCode].values():
+                        if footballMatch[message.guild.id][playerCode][id] == message.author.id:
+                            player1 = id
+                            player2 = footballMatch[message.guild.id][playerCode][id]
 
-    if message.author.id in footballCode[message.guild.id].keys():
-        playerCode = footballCode[message.guild.id][message.author.id]
-    
-        if message.author.id in footballMatch[message.guild.id][playerCode].keys() and message.author.id in footballMatch[message.guild.id][playerCode].values():
-            if message.author.id in footballMatch[message.guild.id][playerCode].keys():
-                player1 = message.author.id
-                player2 = footballMatch[message.guild.id][playerCode][player1.id]
-            else:
-                for id in footballMatch[message.guild.id][playerCode].values():
-                    if footballMatch[message.guild.id][playerCode][id] == message.author.id:
-                        player1 = id
-                        player2 = footballMatch[message.guild.id][playerCode][id]
+                if footballMatch[message.guild.id][playerCode]["type"][message.author.id] == "goalkeeper":
+                    if "1" in message.content.lower():
+                        footballMatch[message.guild.id][playerCode]["goalie"] = "🧍⬛⬛"
+                    elif "2" in message.content.lower():
+                        footballMatch[message.guild.id][playerCode]["goalie"] = "⬛🧍⬛"
+                    elif "3" in message.content.lower():
+                        footballMatch[message.guild.id][playerCode]["goalie"] = "⬛⬛🧍"
+                    footballMatch[message.guild.id][playerCode]["match"].edit(content=f"\n🥅🥅🥅\n{footballMatch[message.guild.id][playerCode]['goalie']}\n{footballMatch[message.guild.id][playerCode]['ball']}\n")
 
-            if footballMatch[message.guild.id][playerCode]["type"][message.author.id] == "goalkeeper":
-                if message.content == "1":
-                    footballMatch[message.guild.id][playerCode]["goalie"] = "🧍⬛⬛"
-                elif message.content == "2":
-                    footballMatch[message.guild.id][playerCode]["goalie"] = "⬛🧍⬛"
-                elif message.content == "3":
-                    footballMatch[message.guild.id][playerCode]["goalie"] = "⬛⬛🧍"
-                footballMatch[message.guild.id][playerCode]["match"].edit(content=f"\n🥅🥅🥅\n{footballMatch[message.guild.id][playerCode]['goalie']}\n{footballMatch[message.guild.id][playerCode]['ball']}\n")
-
-            elif footballMatch[message.guild.id][playerCode]["type"][message.author.id] == "attacker":
-                if footballMatch[message.guild.id][playerCode]["Try"] > 0:
-                    if message.content == "1":
-                        if footballMatch[message.guild.id][playerCode]["goalie"] != "🧍⬛⬛":
-                            if footballMatch[message.guild.id][playerCode]["goalie"] == "⬛🧍⬛":
-                                footballMatch[message.guild.id][playerCode]["goalie"] = "⚽🧍⬛"
-                            elif footballMatch[message.guild.id][playerCode]["goalie"] == "⬛⬛🧍":
-                                footballMatch[message.guild.id][playerCode]["goalie"] = "⚽⬛🧍"
-                            footballMatch[message.guild.id][playerCode]["ball"] = "⬛⬛⬛"
-                            footballMatch[message.guild.id][playerCode]["match"].edit(content=f"\n🥅🥅🥅\n{footballMatch[message.guild.id][playerCode]['goalie']}\n{footballMatch[message.guild.id][playerCode]['ball']}\n")
-                            await message.channel.send(f"<@{player1}>⚽ Won the FootBall Match from <@{player2}>🧍")
-                            del footballMatch[message.guild.id][playerCode]
-                            del footballCode[message.guild.id][player1]
-                            del footballCode[message.guild.id][player2]
-                        else:
-                            if footballMatch[message.guild.id][playerCode]["Try"] == 3:
-                                await message.channel.send(f"GoalKeeper <@{player2}> Stopped Football Kicked by <@{player1}>⚽, Now you have 2 Chances Left")
-                                footballMatch[message.guild.id][playerCode]["Try"] -= 1
-                                footballMatch[message.guild.id][playerCode]["goalie"] = "⬛🧍⬛"
-                                footballMatch[message.guild.id][playerCode]["ball"] = "⬛⚽⬛"
+                elif footballMatch[message.guild.id][playerCode]["type"][message.author.id] == "attacker":
+                    if footballMatch[message.guild.id][playerCode]["Try"] > 0:
+                        if "1" in message.content.lower():
+                            if footballMatch[message.guild.id][playerCode]["goalie"] != "🧍⬛⬛":
+                                if footballMatch[message.guild.id][playerCode]["goalie"] == "⬛🧍⬛":
+                                    footballMatch[message.guild.id][playerCode]["goalie"] = "⚽🧍⬛"
+                                elif footballMatch[message.guild.id][playerCode]["goalie"] == "⬛⬛🧍":
+                                    footballMatch[message.guild.id][playerCode]["goalie"] = "⚽⬛🧍"
+                                footballMatch[message.guild.id][playerCode]["ball"] = "⬛⬛⬛"
                                 footballMatch[message.guild.id][playerCode]["match"].edit(content=f"\n🥅🥅🥅\n{footballMatch[message.guild.id][playerCode]['goalie']}\n{footballMatch[message.guild.id][playerCode]['ball']}\n")
-                                
-                            elif footballMatch[message.guild.id][playerCode]["Try"] == 2:
-                                await message.channel.send(f"GoalKeeper <@{player2}> Stopped Football Kicked by <@{player1}>⚽, Now you have 1 Chances Left")
-                                footballMatch[message.guild.id][playerCode]["Try"] -= 1
-                                footballMatch[message.guild.id][playerCode]["goalie"] = "⬛🧍⬛"
-                                footballMatch[message.guild.id][playerCode]["ball"] = "⬛⚽⬛"
-                                footballMatch[message.guild.id][playerCode]["match"].edit(content=f"\n🥅🥅🥅\n{footballMatch[message.guild.id][playerCode]['goalie']}\n{footballMatch[message.guild.id][playerCode]['ball']}\n")
-
-                            elif footballMatch[message.guild.id][playerCode]["Try"] == 1:
-                                footballMatch[message.guild.id][playerCode]["Try"] -= 1
-
-                                await message.channel.send(f"<@{player2}>🧍 Won the FootBall Match from <@{player1}>⚽")
+                                await message.channel.send(f"<@{player1}>⚽ Won the FootBall Match from <@{player2}>🧍")
                                 del footballMatch[message.guild.id][playerCode]
                                 del footballCode[message.guild.id][player1]
                                 del footballCode[message.guild.id][player2]
+                            else:
+                                if footballMatch[message.guild.id][playerCode]["Try"] == 3:
+                                    await message.channel.send(f"GoalKeeper <@{player2}> Stopped Football Kicked by <@{player1}>⚽, Now you have 2 Chances Left")
+                                    footballMatch[message.guild.id][playerCode]["Try"] -= 1
+                                    footballMatch[message.guild.id][playerCode]["goalie"] = "⬛🧍⬛"
+                                    footballMatch[message.guild.id][playerCode]["ball"] = "⬛⚽⬛"
+                                    footballMatch[message.guild.id][playerCode]["match"].edit(content=f"\n🥅🥅🥅\n{footballMatch[message.guild.id][playerCode]['goalie']}\n{footballMatch[message.guild.id][playerCode]['ball']}\n")
+                                    
+                                elif footballMatch[message.guild.id][playerCode]["Try"] == 2:
+                                    await message.channel.send(f"GoalKeeper <@{player2}> Stopped Football Kicked by <@{player1}>⚽, Now you have 1 Chances Left")
+                                    footballMatch[message.guild.id][playerCode]["Try"] -= 1
+                                    footballMatch[message.guild.id][playerCode]["goalie"] = "⬛🧍⬛"
+                                    footballMatch[message.guild.id][playerCode]["ball"] = "⬛⚽⬛"
+                                    footballMatch[message.guild.id][playerCode]["match"].edit(content=f"\n🥅🥅🥅\n{footballMatch[message.guild.id][playerCode]['goalie']}\n{footballMatch[message.guild.id][playerCode]['ball']}\n")
 
-                    if message.content == "2":
-                        if footballMatch[message.guild.id][playerCode]["goalie"] != "⬛🧍⬛":
-                            if footballMatch[message.guild.id][playerCode]["goalie"] == "🧍⬛⬛":
-                                footballMatch[message.guild.id][playerCode]["goalie"] = "🧍⚽⬛"
-                            elif footballMatch[message.guild.id][playerCode]["goalie"] == "⬛⬛🧍":
-                                footballMatch[message.guild.id][playerCode]["goalie"] = "⬛⚽🧍"
-                            footballMatch[message.guild.id][playerCode]["ball"] = "⬛⬛⬛"
-                            footballMatch[message.guild.id][playerCode]["match"].edit(content=f"\n🥅🥅🥅\n{footballMatch[message.guild.id][playerCode]['goalie']}\n{footballMatch[message.guild.id][playerCode]['ball']}\n")
-                            await message.channel.send(f"<@{player1}>⚽ Won the FootBall Match from <@{player2}>🧍")
-                            del footballMatch[message.guild.id][playerCode]
-                            del footballCode[message.guild.id][player1]
-                            del footballCode[message.guild.id][player2]
-                        else:
-                            if footballMatch[message.guild.id][playerCode]["Try"] == 3:
-                                await message.channel.send(f"GoalKeeper <@{player2}> Stopped Football Kicked by <@{player1}>⚽, Now you have 2 Chances Left")
-                                footballMatch[message.guild.id][playerCode]["Try"] -= 1
-                                footballMatch[message.guild.id][playerCode]["goalie"] = "⬛🧍⬛"
-                                footballMatch[message.guild.id][playerCode]["ball"] = "⬛⚽⬛"
+                                elif footballMatch[message.guild.id][playerCode]["Try"] == 1:
+                                    footballMatch[message.guild.id][playerCode]["Try"] -= 1
+
+                                    await message.channel.send(f"<@{player2}>🧍 Won the FootBall Match from <@{player1}>⚽")
+                                    del footballMatch[message.guild.id][playerCode]
+                                    del footballCode[message.guild.id][player1]
+                                    del footballCode[message.guild.id][player2]
+
+                        if "2" in message.content.lower():
+                            if footballMatch[message.guild.id][playerCode]["goalie"] != "⬛🧍⬛":
+                                if footballMatch[message.guild.id][playerCode]["goalie"] == "🧍⬛⬛":
+                                    footballMatch[message.guild.id][playerCode]["goalie"] = "🧍⚽⬛"
+                                elif footballMatch[message.guild.id][playerCode]["goalie"] == "⬛⬛🧍":
+                                    footballMatch[message.guild.id][playerCode]["goalie"] = "⬛⚽🧍"
+                                footballMatch[message.guild.id][playerCode]["ball"] = "⬛⬛⬛"
                                 footballMatch[message.guild.id][playerCode]["match"].edit(content=f"\n🥅🥅🥅\n{footballMatch[message.guild.id][playerCode]['goalie']}\n{footballMatch[message.guild.id][playerCode]['ball']}\n")
-
-                            elif footballMatch[message.guild.id][playerCode]["Try"] == 2:
-                                await message.channel.send(f"GoalKeeper <@{player2}> Stopped Football Kicked by <@{player1}>⚽, Now you have 1 Chances Left")
-                                footballMatch[message.guild.id][playerCode]["Try"] -= 1
-                                footballMatch[message.guild.id][playerCode]["goalie"] = "⬛🧍⬛"
-                                footballMatch[message.guild.id][playerCode]["ball"] = "⬛⚽⬛"
-                                footballMatch[message.guild.id][playerCode]["match"].edit(content=f"\n🥅🥅🥅\n{footballMatch[message.guild.id][playerCode]['goalie']}\n{footballMatch[message.guild.id][playerCode]['ball']}\n")
-
-                            elif footballMatch[message.guild.id][playerCode]["Try"] == 1:
-                                footballMatch[message.guild.id][playerCode]["Try"] -= 1
-
-                                await message.channel.send(f"<@{player2}>🧍 Won the FootBall Match from <@{player1}>⚽")
+                                await message.channel.send(f"<@{player1}>⚽ Won the FootBall Match from <@{player2}>🧍")
                                 del footballMatch[message.guild.id][playerCode]
                                 del footballCode[message.guild.id][player1]
                                 del footballCode[message.guild.id][player2]
+                            else:
+                                if footballMatch[message.guild.id][playerCode]["Try"] == 3:
+                                    await message.channel.send(f"GoalKeeper <@{player2}> Stopped Football Kicked by <@{player1}>⚽, Now you have 2 Chances Left")
+                                    footballMatch[message.guild.id][playerCode]["Try"] -= 1
+                                    footballMatch[message.guild.id][playerCode]["goalie"] = "⬛🧍⬛"
+                                    footballMatch[message.guild.id][playerCode]["ball"] = "⬛⚽⬛"
+                                    footballMatch[message.guild.id][playerCode]["match"].edit(content=f"\n🥅🥅🥅\n{footballMatch[message.guild.id][playerCode]['goalie']}\n{footballMatch[message.guild.id][playerCode]['ball']}\n")
 
-                    if message.content == "3":
-                        if footballMatch[message.guild.id][playerCode]["goalie"] != "⬛⬛🧍":
-                            if footballMatch[message.guild.id][playerCode]["goalie"] == "⬛🧍⬛":
-                                footballMatch[message.guild.id][playerCode]["goalie"] = "⬛🧍⚽"
-                            elif footballMatch[message.guild.id][playerCode]["goalie"] == "🧍⬛⬛":
-                                footballMatch[message.guild.id][playerCode]["goalie"] = "🧍⬛⚽"
-                            footballMatch[message.guild.id][playerCode]["ball"] = "⬛⬛⬛"
-                            footballMatch[message.guild.id][playerCode]["match"].edit(content=f"\n🥅🥅🥅\n{footballMatch[message.guild.id][playerCode]['goalie']}\n{footballMatch[message.guild.id][playerCode]['ball']}\n")
-                            await message.channel.send(f"<@{player1}>⚽ Won the FootBall Match from <@{player2}>🧍")
-                            del footballMatch[message.guild.id][playerCode]
-                            del footballCode[message.guild.id][player1]
-                            del footballCode[message.guild.id][player2]
-                        else:
-                            if footballMatch[message.guild.id][playerCode]["Try"] == 3:
-                                await message.channel.send(f"GoalKeeper <@{player2}> Stopped Football Kicked by <@{player1}>⚽, Now you have 2 Chances Left")
-                                footballMatch[message.guild.id][playerCode]["Try"] -= 1
-                                footballMatch[message.guild.id][playerCode]["goalie"] = "⬛🧍⬛"
-                                footballMatch[message.guild.id][playerCode]["ball"] = "⬛⚽⬛"
+                                elif footballMatch[message.guild.id][playerCode]["Try"] == 2:
+                                    await message.channel.send(f"GoalKeeper <@{player2}> Stopped Football Kicked by <@{player1}>⚽, Now you have 1 Chances Left")
+                                    footballMatch[message.guild.id][playerCode]["Try"] -= 1
+                                    footballMatch[message.guild.id][playerCode]["goalie"] = "⬛🧍⬛"
+                                    footballMatch[message.guild.id][playerCode]["ball"] = "⬛⚽⬛"
+                                    footballMatch[message.guild.id][playerCode]["match"].edit(content=f"\n🥅🥅🥅\n{footballMatch[message.guild.id][playerCode]['goalie']}\n{footballMatch[message.guild.id][playerCode]['ball']}\n")
+
+                                elif footballMatch[message.guild.id][playerCode]["Try"] == 1:
+                                    footballMatch[message.guild.id][playerCode]["Try"] -= 1
+
+                                    await message.channel.send(f"<@{player2}>🧍 Won the FootBall Match from <@{player1}>⚽")
+                                    del footballMatch[message.guild.id][playerCode]
+                                    del footballCode[message.guild.id][player1]
+                                    del footballCode[message.guild.id][player2]
+
+                        if "3" in message.content.lower():
+                            if footballMatch[message.guild.id][playerCode]["goalie"] != "⬛⬛🧍":
+                                if footballMatch[message.guild.id][playerCode]["goalie"] == "⬛🧍⬛":
+                                    footballMatch[message.guild.id][playerCode]["goalie"] = "⬛🧍⚽"
+                                elif footballMatch[message.guild.id][playerCode]["goalie"] == "🧍⬛⬛":
+                                    footballMatch[message.guild.id][playerCode]["goalie"] = "🧍⬛⚽"
+                                footballMatch[message.guild.id][playerCode]["ball"] = "⬛⬛⬛"
                                 footballMatch[message.guild.id][playerCode]["match"].edit(content=f"\n🥅🥅🥅\n{footballMatch[message.guild.id][playerCode]['goalie']}\n{footballMatch[message.guild.id][playerCode]['ball']}\n")
-                                
-                            elif footballMatch[message.guild.id][playerCode]["Try"] == 2:
-                                await message.channel.send(f"GoalKeeper <@{player2}> Stopped Football Kicked by <@{player1}>⚽, Now you have 1 Chances Left")
-                                footballMatch[message.guild.id][playerCode]["Try"] -= 1
-                                footballMatch[message.guild.id][playerCode]["goalie"] = "⬛🧍⬛"
-                                footballMatch[message.guild.id][playerCode]["ball"] = "⬛⚽⬛"
-                                footballMatch[message.guild.id][playerCode]["match"].edit(content=f"\n🥅🥅🥅\n{footballMatch[message.guild.id][playerCode]['goalie']}\n{footballMatch[message.guild.id][playerCode]['ball']}\n")
-
-                            elif footballMatch[message.guild.id][playerCode]["Try"] == 1:
-                                footballMatch[message.guild.id][playerCode]["Try"] -= 1
-
-                                await message.channel.send(f"<@{player2}>🧍 Won the FootBall Match from <@{player1}>⚽")
+                                await message.channel.send(f"<@{player1}>⚽ Won the FootBall Match from <@{player2}>🧍")
                                 del footballMatch[message.guild.id][playerCode]
                                 del footballCode[message.guild.id][player1]
                                 del footballCode[message.guild.id][player2]
+                            else:
+                                if footballMatch[message.guild.id][playerCode]["Try"] == 3:
+                                    await message.channel.send(f"GoalKeeper <@{player2}> Stopped Football Kicked by <@{player1}>⚽, Now you have 2 Chances Left")
+                                    footballMatch[message.guild.id][playerCode]["Try"] -= 1
+                                    footballMatch[message.guild.id][playerCode]["goalie"] = "⬛🧍⬛"
+                                    footballMatch[message.guild.id][playerCode]["ball"] = "⬛⚽⬛"
+                                    footballMatch[message.guild.id][playerCode]["match"].edit(content=f"\n🥅🥅🥅\n{footballMatch[message.guild.id][playerCode]['goalie']}\n{footballMatch[message.guild.id][playerCode]['ball']}\n")
+                                    
+                                elif footballMatch[message.guild.id][playerCode]["Try"] == 2:
+                                    await message.channel.send(f"GoalKeeper <@{player2}> Stopped Football Kicked by <@{player1}>⚽, Now you have 1 Chances Left")
+                                    footballMatch[message.guild.id][playerCode]["Try"] -= 1
+                                    footballMatch[message.guild.id][playerCode]["goalie"] = "⬛🧍⬛"
+                                    footballMatch[message.guild.id][playerCode]["ball"] = "⬛⚽⬛"
+                                    footballMatch[message.guild.id][playerCode]["match"].edit(content=f"\n🥅🥅🥅\n{footballMatch[message.guild.id][playerCode]['goalie']}\n{footballMatch[message.guild.id][playerCode]['ball']}\n")
+
+                                elif footballMatch[message.guild.id][playerCode]["Try"] == 1:
+                                    footballMatch[message.guild.id][playerCode]["Try"] -= 1
+
+                                    await message.channel.send(f"<@{player2}>🧍 Won the FootBall Match from <@{player1}>⚽")
+                                    del footballMatch[message.guild.id][playerCode]
+                                    del footballCode[message.guild.id][player1]
+                                    del footballCode[message.guild.id][player2]
+    except Exception as e:
+        print(e)
+        pass
 
 matches = {}
 gameBoards = {}
