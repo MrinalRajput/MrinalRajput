@@ -1525,8 +1525,7 @@ async def on_message(message):
 @bot.command()
 async def support(ctx):
     try:
-        embed = discord.Embed(title="Support", description="To get Support, Join our Official Server Where you are Free to Report Bugs, Get Help, Give Suggestions, Ask Problems and Doubts, tell about Crashes and Many More involving Fun With Our Team \:)\n[Get Support Now](https://discord.gg/H3688EEpWr)", color=embedTheme)
-        embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+        embed = discord.Embed(title="Support", description="To get Support, Join our Official Server Where you are Free to Report Bugs, Get Help, Give Suggestions, Ask Problems and Doubts, tell about Crashes and Many More involving Fun With Our Team \:)\n\n[Get Support Now](https://discord.gg/H3688EEpWr)", color=embedTheme)
         await ctx.send(embed=embed)
     except Exception as e:
         print(e)
