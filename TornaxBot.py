@@ -763,7 +763,7 @@ async def footballstop(ctx):
     global footballMatch, footballCode
     if ctx.author.id in footballCode[ctx.guild.id].keys():
         playerCode = footballCode[ctx.guild.id][ctx.author.id]
-        if ctx.author.id in footballMatch[ctx.guild.id][playerCode].keys() and ctx.author.id in footballMatch[ctx.guild.id][playerCode].values():
+        if ctx.author.id in footballMatch[ctx.guild.id][playerCode].keys() or ctx.author.id in footballMatch[ctx.guild.id][playerCode].values():
             if ctx.author.id in footballMatch[ctx.guild.id][playerCode].keys():
                 player1 = ctx.author.id
                 player2 = footballMatch[ctx.guild.id][playerCode][player1.id]
@@ -785,9 +785,11 @@ async def on_message(message):
     global footballMatch, footballCode
     try:
         if message.author.id in footballCode[message.guild.id].keys():
+            print(0)
             playerCode = footballCode[message.guild.id][message.author.id]
         
-            if message.author.id in footballMatch[message.guild.id][playerCode].keys() and message.author.id in footballMatch[message.guild.id][playerCode].values():
+            if message.author.id in footballMatch[message.guild.id][playerCode].keys() or message.author.id in footballMatch[message.guild.id][playerCode].values():
+                print(1)
                 if message.author.id in footballMatch[message.guild.id][playerCode].keys():
                     player1 = message.author.id
                     player2 = footballMatch[message.guild.id][playerCode][player1.id]
@@ -796,9 +798,11 @@ async def on_message(message):
                         if footballMatch[message.guild.id][playerCode][id] == message.author.id:
                             player1 = id
                             player2 = footballMatch[message.guild.id][playerCode][id]
-
+                print(2)
                 if footballMatch[message.guild.id][playerCode]["type"][message.author.id] == "goalkeeper":
+                    print(3)
                     if "1" in message.content.lower():
+                        print(4)
                         footballMatch[message.guild.id][playerCode]["goalie"] = "🧍⬛⬛"
                     elif "2" in message.content.lower():
                         footballMatch[message.guild.id][playerCode]["goalie"] = "⬛🧍⬛"
