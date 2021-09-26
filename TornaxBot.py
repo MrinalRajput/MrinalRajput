@@ -810,7 +810,7 @@ async def on_message(message):
                         footballMatch[message.guild.id][playerCode]["goalie"] = "⬛⬛🧍"
                     footballMatch[message.guild.id][playerCode]["match"].edit(content=f"\n🥅🥅🥅\n{footballMatch[message.guild.id][playerCode]['goalie']}\n{footballMatch[message.guild.id][playerCode]['ball']}\n")
 
-                elif footballMatch[message.guild.id][playerCode]["type"][message.author.id] == "attacker":
+                if footballMatch[message.guild.id][playerCode]["type"][message.author.id] == "attacker":
                     if footballMatch[message.guild.id][playerCode]["Try"] > 0:
                         if "1" in message.content.lower():
                             if footballMatch[message.guild.id][playerCode]["goalie"] != "🧍⬛⬛":
