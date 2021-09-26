@@ -721,10 +721,11 @@ async def guess(ctx):
             secretNumber = random.randint(0,100)    
             gamechannel[ctx.guild.id]["secretNumber"] = secretNumber
             countdown = 10
-            start = await ctx.send(f"Guess the Number between 1 to 100 Under `{countdown}` Seconds")
+            start = await ctx.send(f"Guess the Number between 1 to 100 Under `{str(countdown)}` Seconds")
             while countdown > 0:
+                await asyncio.sleep(0.7)
                 countdown -=1
-                await start.edit(content=f"Guess the Number between 1 to 100 Under `{countdown}` Seconds")
+                await start.edit(content=f"Guess the Number between 1 to 100 Under `{str(countdown)}` Seconds")
             active[ctx.guild.id] = False
 
 @bot.listen()
