@@ -701,44 +701,59 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
 tellhelp = f"{prefix}tell [channel] <message>"
 
 lb = {}
-gamechannel = ""
+gamechannel = {}
 active = {}
 
 @bot.command()
 async def guess(ctx):
-    global lb, gameChannel
+    global lb, gamechannel
     if ctx.guild.id not in lb:
         lb[ctx.guild.id] = {}
     if ctx.guild.id not in active:
         active[ctx.guild.id] = False
-        gameChannel = ctx.channel
+    if ctx.guild.id not in gamechannel:
+        gamechannel[ctx.guild.id] = {}
+        gamechannel[ctx.guild.id]["channel"] = ctx.channel
+        gamechannel[ctx.guild.id]["AllGuesses"] = {}
 
         if active[ctx.guild.id] == False:
+            active[ctx.guild.id] = True
             secretNumber = random.randint(0,100)    
-            await ctx.send(f"Guess the Number between 1 to 100")
+            gamechannel[ctx.guild.id]["secretNumber"] = secretNumber
+            countdown = 10
+            start = await ctx.send(f"Guess the Number between 1 to 100 Under `{countdown}` Seconds")
+            while countdown > 0:
+                countdown -=1
+                await start.edit(content=f"Guess the Number between 1 to 100 Under `{countdown}` Seconds")
+            active[ctx.guild.id] = False
 
-            msg = bot.wait_for("message", timeout=10)
+@bot.listen()
+async def on_message(message):
+    global gamechannel, lb, active
+    if message.guild.id not in active:
+        active[message.guild.id] = False
+
+    if active[message.guild.id] == True:
+        if message.channel == gamechannel[message.guild.id]["channel"]:
             try:
-                guessings = int(msg.content)
-                lb[ctx.guild.id][msg.author.id] = {"guess" : guessings, "points" : 0}
-                lb[ctx.guild.id][msg.author.id]["points"] = guessings
-                allGuesses = []
-                allGuesses.append(lb[ctx.guild.id][msg.author.id]["points"])
-                for Guesses in allGuesses:
-                    if Guesses < secretNumber:
-                        while allGuesses.append(lb[ctx.guild.id][msg.author.id]["points"]) != secretNumber:
-                            lb[ctx.guild.id][msg.author.id]["points"] += 1
-                    elif Guesses > secretNumber:
-                        while allGuesses.append(lb[ctx.guild.id][msg.author.id]["points"]) != secretNumber:
-                            lb[ctx.guild.id][msg.author.id]["points"] -= 1
-                    print(lb[ctx.guild.id][msg.author.id]["points"])
-                    print(allGuesses)
-                
+                guessings = int(message.content.lower())
+                lb[message.guild.id][message.author.id] = {"guess":guessings, "points":0}
+                gamechannel[message.guild.id]["AllGuesses"][message.author.id] = guessings
+                AllGuesses = gamechannel[message.guild.id]["AllGuesses"]
+                for Guesses in AllGuesses:
+                    if Guesses < gamechannel[message.guild.id]["secretNumber"]:
+                        while Guesses != gamechannel[message.guild.id]["secretNumber"]:
+                            Guesses+=1
+                            lb[message.guild.id][message.author.id]["points"]+=1
+                    if Guesses < gamechannel[message.guild.id]["secretNumber"]:
+                        while Guesses != gamechannel[message.guild.id]["secretNumber"]:
+                            Guesses+=1
+                            lb[message.guild.id][message.author.id]["points"]+=1
+                    print(lb[message.guild.id][message.author.id])
             except Exception as e:
                 print(e)
                 pass
         
-
 matches = {}
 gameBoards = {}
 chances = {}
