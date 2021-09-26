@@ -10,6 +10,8 @@ import json
 from discord.ext.commands import has_permissions,has_role,MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError
 from discord.member import Member
 
+prefix = ">"
+
 bot = commands.Bot(command_prefix = f"{prefix}",case_insensitive=True ,help_command=None)
 
 restricted_words = ["gooh","kutta","kutte","harami","skyra","wtf","frick","fuck","fuk","tatti","baap","stfu"]
@@ -24,8 +26,6 @@ async def on_ready():
     activity = discord.Activity(type=discord.ActivityType.watching, name="Server Members | >help for commands")
     await bot.change_presence(status=status, activity=activity)
     print("I m Ready!")
-
-prefix = ">"
 
 ###############
 #### Only For My Smp Server
