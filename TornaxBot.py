@@ -727,11 +727,12 @@ async def guess(ctx):
                 for Guesses in allGuesses:
                     if Guesses < secretNumber:
                         while allGuesses.append(lb[ctx.guild.id][msg.author.id]["points"]) != secretNumber:
-                            allGuesses.append(lb[ctx.guild.id][msg.author.id]["points"]) += 1
+                            lb[ctx.guild.id][msg.author.id]["points"] += 1
                     elif Guesses > secretNumber:
                         while allGuesses.append(lb[ctx.guild.id][msg.author.id]["points"]) != secretNumber:
-                            allGuesses.append(lb[ctx.guild.id][msg.author.id]["points"]) -= 1
-                    print(allGuesses.append(lb[ctx.guild.id][msg.author.id]["points"]))
+                            lb[ctx.guild.id][msg.author.id]["points"] -= 1
+                    print(lb[ctx.guild.id][msg.author.id]["points"])
+                    print(allGuesses)
                 
             except Exception as e:
                 print(e)
