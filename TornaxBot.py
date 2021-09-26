@@ -716,12 +716,13 @@ async def football(ctx, player1: Optional[discord.Member]=None, player2: Optiona
             player2 = player1
             player1 = ctx.author
         if player2 != player1:
-            if player1.id not in footballMatch[ctx.guild.id].keys() and player1.id not in footballMatch[ctx.guild.id].values():
-                if player2.id not in footballMatch[ctx.guild.id].keys() and player2.id not in footballMatch[ctx.guild.id].values():
+            codeGenerator = random.randint(000000, 999999)
+            while codeGenerator in footballCode[ctx.guild.id].values():
+                codeGenerator = random.randint(000000, 999999)
 
-                    codeGenerator = random.randint(000000, 999999)
-                    while codeGenerator in footballCode[ctx.guild.id].values():
-                        codeGenerator = random.randint(000000, 999999)
+            if player1.id not in footballMatch[ctx.guild.id][codeGenerator].keys() and player1.id not in footballMatch[ctx.guild.id][codeGenerator].values():
+                if player2.id not in footballMatch[ctx.guild.id][codeGenerator].keys() and player2.id not in footballMatch[ctx.guild.id][codeGenerator].values():
+
 
                     footballCode[ctx.guild.id][player1.id] = codeGenerator
                     footballCode[ctx.guild.id][player2.id] = footballCode[ctx.guild.id][player1.id]
@@ -759,8 +760,8 @@ footballhelp = f"{prefix}football [First Player] <Second Player>"
 @bot.command()
 async def footballstop(ctx):
     global footballMatch, footballCode
-    if ctx.author.id in footballMatch[ctx.guild.id].keys() and ctx.author.id in footballMatch[ctx.guild.id].values():
-        playerCode = footballCode[ctx.guild.id][ctx.author.id]
+    playerCode = footballCode[ctx.guild.id][ctx.author.id]
+    if ctx.author.id in footballMatch[ctx.guild.id][playerCode].keys() and ctx.author.id in footballMatch[ctx.guild.id][playerCode].values():
         if ctx.author.id in footballMatch[ctx.guild.id][playerCode].keys():
             player1 = ctx.author.id
             player2 = footballMatch[ctx.guild.id][playerCode][player1.id]
@@ -780,8 +781,10 @@ footballstophelp = f"{prefix}footballstop"
 @bot.listen()
 async def on_message(message):
     global footballMatch, footballCode
-    if message.author.id in footballMatch[message.guild.id].keys() and message.author.id in footballMatch[message.guild.id].values():
-        playerCode = footballCode[message.guild.id][message.author.id]
+    
+    playerCode = footballCode[message.guild.id][message.author.id]
+    
+    if message.author.id in footballMatch[message.guild.id][playerCode].keys() and message.author.id in footballMatch[message.guild.id][playerCode].values():
         if message.author.id in footballMatch[message.guild.id][playerCode].keys():
             player1 = message.author.id
             player2 = footballMatch[message.guild.id][playerCode][player1.id]
