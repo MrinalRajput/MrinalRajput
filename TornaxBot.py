@@ -1819,10 +1819,6 @@ async def on_guild_join(guild):
         if channel.permissions_for(guild.me).send_messages:
             if "chat" in channel.name or "general" in channel.name:
                 await channel.send(f'Hey there! Thanks for Adding me in {guild.name}, Type `>help` to get All about me')
-                try:
-                    await guild.invoke(bot.get_command('help'), query='hi')
-                except:
-                    pass
 
 @bot.command()
 async def info(ctx):
