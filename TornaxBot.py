@@ -720,15 +720,14 @@ async def football(ctx, player1: Optional[discord.Member]=None, player2: Optiona
             while codeGenerator in footballCode[ctx.guild.id].values():
                 codeGenerator = random.randint(000000, 999999)
 
+            if codeGenerator not in footballMatch[ctx.guild.id]:
+                footballMatch[ctx.guild.id][codeGenerator] = {}
+
             if player1.id not in footballMatch[ctx.guild.id][codeGenerator].keys() and player1.id not in footballMatch[ctx.guild.id][codeGenerator].values():
                 if player2.id not in footballMatch[ctx.guild.id][codeGenerator].keys() and player2.id not in footballMatch[ctx.guild.id][codeGenerator].values():
 
-
                     footballCode[ctx.guild.id][player1.id] = codeGenerator
-                    footballCode[ctx.guild.id][player2.id] = footballCode[ctx.guild.id][player1.id]
-
-                    if codeGenerator not in footballMatch[ctx.guild.id]:
-                        footballMatch[ctx.guild.id][codeGenerator] = {}
+                    footballCode[ctx.guild.id][player2.id] = footballCode[ctx.guild.id][player1.id]                    
 
                     footballMatch[ctx.guild.id][codeGenerator][player1.id] = player2.id
                     footballMatch[ctx.guild.id][codeGenerator]["Try"] = 3
@@ -760,21 +759,22 @@ footballhelp = f"{prefix}football [First Player] <Second Player>"
 @bot.command()
 async def footballstop(ctx):
     global footballMatch, footballCode
-    playerCode = footballCode[ctx.guild.id][ctx.author.id]
-    if ctx.author.id in footballMatch[ctx.guild.id][playerCode].keys() and ctx.author.id in footballMatch[ctx.guild.id][playerCode].values():
-        if ctx.author.id in footballMatch[ctx.guild.id][playerCode].keys():
-            player1 = ctx.author.id
-            player2 = footballMatch[ctx.guild.id][playerCode][player1.id]
-        else:
-            for id in footballMatch[ctx.guild.id][playerCode].values():
-                if footballMatch[ctx.guild.id][playerCode][id] == ctx.author.id:
-                    player1 = id
-                    player2 = footballMatch[ctx.guild.id][playerCode][id]
+    if ctx.author.id in footballCode[ctx.guild.id]:
+        playerCode = footballCode[ctx.guild.id][ctx.author.id]
+        if ctx.author.id in footballMatch[ctx.guild.id][playerCode].keys() and ctx.author.id in footballMatch[ctx.guild.id][playerCode].values():
+            if ctx.author.id in footballMatch[ctx.guild.id][playerCode].keys():
+                player1 = ctx.author.id
+                player2 = footballMatch[ctx.guild.id][playerCode][player1.id]
+            else:
+                for id in footballMatch[ctx.guild.id][playerCode].values():
+                    if footballMatch[ctx.guild.id][playerCode][id] == ctx.author.id:
+                        player1 = id
+                        player2 = footballMatch[ctx.guild.id][playerCode][id]
 
-        await ctx.send(f"{ctx.author.mention} Your FootBall Match has been Stopped")
-        del footballMatch[ctx.guild.id][playerCode]
-        del footballCode[ctx.guild.id][player1.id]
-        del footballCode[ctx.guild.id][player2]
+            await ctx.send(f"{ctx.author.mention} Your FootBall Match has been Stopped")
+            del footballMatch[ctx.guild.id][playerCode]
+            del footballCode[ctx.guild.id][player1.id]
+            del footballCode[ctx.guild.id][player2]
 
 footballstophelp = f"{prefix}footballstop"
 
