@@ -820,6 +820,7 @@ async def on_message(message):
                                     footballMatch[message.guild.id][playerCode]["goalie"] = "⚽⬛🧍"
                                 footballMatch[message.guild.id][playerCode]["ball"] = "⬛⬛⬛"
                                 footballMatch[message.guild.id][playerCode]["match"].edit(content=f"\n🥅🥅🥅\n{footballMatch[message.guild.id][playerCode]['goalie']}\n{footballMatch[message.guild.id][playerCode]['ball']}\n")
+                                await asyncio.sleep(2)
                                 await message.channel.send(f"<@{player1}>⚽ Won the FootBall Match from <@{player2}>🧍")
                                 del footballMatch[message.guild.id][playerCode]
                                 del footballCode[message.guild.id][player1]
@@ -855,6 +856,7 @@ async def on_message(message):
                                     footballMatch[message.guild.id][playerCode]["goalie"] = "⬛⚽🧍"
                                 footballMatch[message.guild.id][playerCode]["ball"] = "⬛⬛⬛"
                                 footballMatch[message.guild.id][playerCode]["match"].edit(content=f"\n🥅🥅🥅\n{footballMatch[message.guild.id][playerCode]['goalie']}\n{footballMatch[message.guild.id][playerCode]['ball']}\n")
+                                await asyncio.sleep(2)
                                 await message.channel.send(f"<@{player1}>⚽ Won the FootBall Match from <@{player2}>🧍")
                                 del footballMatch[message.guild.id][playerCode]
                                 del footballCode[message.guild.id][player1]
@@ -890,6 +892,7 @@ async def on_message(message):
                                     footballMatch[message.guild.id][playerCode]["goalie"] = "🧍⬛⚽"
                                 footballMatch[message.guild.id][playerCode]["ball"] = "⬛⬛⬛"
                                 footballMatch[message.guild.id][playerCode]["match"].edit(content=f"\n🥅🥅🥅\n{footballMatch[message.guild.id][playerCode]['goalie']}\n{footballMatch[message.guild.id][playerCode]['ball']}\n")
+                                await asyncio.sleep(2)
                                 await message.channel.send(f"<@{player1}>⚽ Won the FootBall Match from <@{player2}>🧍")
                                 del footballMatch[message.guild.id][playerCode]
                                 del footballCode[message.guild.id][player1]
