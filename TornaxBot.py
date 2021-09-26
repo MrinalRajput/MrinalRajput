@@ -700,6 +700,44 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
 
 tellhelp = f"{prefix}tell [channel] <message>"
 
+lb = {}
+gamechannel = ""
+active = {}
+
+@bot.command()
+async def guess(ctx):
+    global lb, gameChannel
+    if ctx.guild.id not in lb:
+        lb[ctx.guild.id] = {}
+    if ctx.guild.id not in active:
+        active[ctx.guild.id] = False
+        gameChannel = ctx.channel
+
+        if active[ctx.guild.id] == False:
+            secretNumber = random.randint(0,100)    
+            await ctx.send(f"Guess the Number between 1 to 100")
+
+            msg = bot.wait_for("message", timeout=10)
+            try:
+                guessings = int(msg.content)
+                lb[ctx.guild.id][msg.author.id] = {"guess" : guessings, "points" : 0}
+                lb[ctx.guild.id][msg.author.id]["points"] = guessings
+                allGuesses = []
+                allGuesses.append(lb[ctx.guild.id][msg.author.id]["points"])
+                for Guesses in allGuesses:
+                    if Guesses < secretNumber:
+                        while allGuesses.append(lb[ctx.guild.id][msg.author.id]["points"]) != secretNumber:
+                            allGuesses.append(lb[ctx.guild.id][msg.author.id]["points"]) += 1
+                    elif Guesses > secretNumber:
+                        while allGuesses.append(lb[ctx.guild.id][msg.author.id]["points"]) != secretNumber:
+                            allGuesses.append(lb[ctx.guild.id][msg.author.id]["points"]) -= 1
+                    print(allGuesses.append(lb[ctx.guild.id][msg.author.id]["points"]))
+                
+            except Exception as e:
+                print(e)
+                pass
+        
+
 matches = {}
 gameBoards = {}
 chances = {}
