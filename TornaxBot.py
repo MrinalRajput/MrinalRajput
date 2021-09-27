@@ -742,7 +742,7 @@ async def on_message(message):
             if message.channel == gamingChannel[message.guild.id]["channel"]:
                 try:
                     secretNumber = random.randint(gamingChannel[message.guild.id]["anyoneRange"],gamingChannel[message.guild.id]["customRange"])
-                    guesses = int(message.content)
+                    guesses = message.content
                     if guesses > secretNumber:
                         await message.reply(f"Try a Smaller Number")
                         await gamingChannel[message.guild.id]["start"].edit(content=f"Guess the Number between {gamingChannel[message.guild.id]['anyoneRange']} to {gamingChannel[message.guild.id]['customRange']} Under `{str(gamingChannel[message.guild.id]['countdown'])}` Seconds")
