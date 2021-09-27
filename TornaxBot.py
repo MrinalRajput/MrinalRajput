@@ -725,6 +725,8 @@ async def guess(ctx):
         while gamingChannel[ctx.guild.id]["countdown"] > 0:
             await asyncio.sleep(0.7)
             gamingChannel[ctx.guild.id]["countdown"] -=1
+            await gamingChannel[ctx.guild.id]["start"].edit(content=f"Guess the Number between {gamingChannel[ctx.guild.id]['anyoneRange']} to {gamingChannel[ctx.guild.id]['customRange']} Under `{str(gamingChannel[ctx.guild.id]['countdown'])}` Seconds")
+
         
         active[ctx.guild.id] = False
     else:
@@ -749,10 +751,8 @@ async def on_message(message):
                     if guesses > secretNumber:
                         print(3)
                         await message.reply(f"Try a Smaller Number")
-                        await gamingChannel[message.guild.id]["start"].edit(content=f"Guess the Number between {gamingChannel[message.guild.id]['anyoneRange']} to {gamingChannel[message.guild.id]['customRange']} Under `{str(gamingChannel[message.guild.id]['countdown'])}` Seconds")
                     elif guesses < secretNumber:
                         await message.reply("Try a Bigger Number")
-                        await gamingChannel[message.guild.id]["start"].edit(content=f"Guess the Number between {gamingChannel[message.guild.id]['anyoneRange']} to {gamingChannel[message.guild.id]['customRange']} Under `{str(gamingChannel[message.guild.id]['countdown'])}` Seconds")
                     elif guesses == secretNumber:
                         await message.reply(f"{message.author.mention} You Guesses Correct the Secret Number was `{secretNumber}`")
                         await gamingChannel[message.guild.id]["hidden"].edit(content=f"➡️ `{secretNumber}` ⬅️")
