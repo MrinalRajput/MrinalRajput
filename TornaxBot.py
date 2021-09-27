@@ -723,12 +723,12 @@ async def guess(ctx):
         gamingChannel[ctx.guild.id]["guessed"] = False
 
         await ctx.send(f"🔢 Guess The Number Game #️⃣")
-        gamingChannel[ctx.guild.id]["start"] = await ctx.send(f"I Challenge You to Guess the Number between {gamingChannel[ctx.guild.id]['anyoneRange']} to {gamingChannel[ctx.guild.id]['customRange']} Under `{str(gamingChannel[ctx.guild.id]['countdown'])}` Seconds")
+        gamingChannel[ctx.guild.id]["start"] = await ctx.send(f"I Challenge You to Guess the Number between {gamingChannel[ctx.guild.id]['anyoneRange']} to {gamingChannel[ctx.guild.id]['customRange']} in `{str(gamingChannel[ctx.guild.id]['countdown'])}` Seconds")
         gamingChannel[ctx.guild.id]["hidden"] = await ctx.send(f"➡️ ⬛ ⬅️")
         while gamingChannel[ctx.guild.id]["countdown"] > 0:
             await asyncio.sleep(0.7)
             gamingChannel[ctx.guild.id]["countdown"] -=1
-            await gamingChannel[ctx.guild.id]["start"].edit(content=f"I Challenge You to Guess the Number between {gamingChannel[ctx.guild.id]['anyoneRange']} to {gamingChannel[ctx.guild.id]['customRange']} Under `{str(gamingChannel[ctx.guild.id]['countdown'])}` Seconds")
+            await gamingChannel[ctx.guild.id]["start"].edit(content=f"I Challenge You to Guess the Number between {gamingChannel[ctx.guild.id]['anyoneRange']} to {gamingChannel[ctx.guild.id]['customRange']} in `{str(gamingChannel[ctx.guild.id]['countdown'])}` Seconds")
 
         await gamingChannel[ctx.guild.id]["hidden"].edit(content=f"➡️ `{gamingChannel[ctx.guild.id]['secretNumber']}` ⬅️")    
         if gamingChannel[ctx.guild.id]["guessed"] == False:
