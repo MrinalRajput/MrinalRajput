@@ -700,60 +700,41 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
 
 tellhelp = f"{prefix}tell [channel] <message>"
 
-lb = {}
-gamechannel = {}
 active = {}
 
 @bot.command()
 async def guess(ctx):
-    global lb, gamechannel
-    if ctx.guild.id not in lb:
-        lb[ctx.guild.id] = {}
+    global active
     if ctx.guild.id not in active:
         active[ctx.guild.id] = False
-    if ctx.guild.id not in gamechannel:
-        gamechannel[ctx.guild.id] = {}
-        gamechannel[ctx.guild.id]["channel"] = ctx.channel
-        gamechannel[ctx.guild.id]["AllGuesses"] = {}
 
         if active[ctx.guild.id] == False:
             active[ctx.guild.id] = True
-            secretNumber = random.randint(0,100)    
-            gamechannel[ctx.guild.id]["secretNumber"] = secretNumber
+            randomRange = [0,10,20,30,40,50,60,70,80,90]
+            anyoneRange = random.choice(randomRange)
+            customRange = anyoneRange + 10
+            secretNumber = random.randint(anyoneRange,customRange)
             countdown = 10
-            start = await ctx.send(f"Guess the Number between 1 to 100 Under `{str(countdown)}` Seconds")
+            start = await ctx.send(f"Guess the Number between {anyoneRange} to {customRange} Under `{str(countdown)}` Seconds")
+            hidden = await ctx.send(f"➡️ ⬛ ⬅️")
             while countdown > 0:
-                await asyncio.sleep(0.7)
-                countdown -=1
-                await start.edit(content=f"Guess the Number between 1 to 100 Under `{str(countdown)}` Seconds")
+                msg = await bot.wait_for('message')
+                guesses = int(msg.content)
+                if guesses > secretNumber:
+                    await ctx.reply(f"Try a Smaller Number")
+                    countdown -=1
+                    await start.edit(content=f"Guess the Number between 1 to 100 Under `{str(countdown)}` Seconds")
+                elif guesses < secretNumber:
+                    await ctx.reply("Try a Bigger Number")
+                    countdown -=1
+                    await start.edit(content=f"Guess the Number between 1 to 100 Under `{str(countdown)}` Seconds")
+                elif guesses == secretNumber:
+                    await ctx.reply(f"{ctx.author.mention} You Guesses Correct the Secret Number was `{secretNumber}`")
+                    await hidden.edit(content=f"➡️ `{secretNumber}` ⬅️")
+                    countdown = 0
             active[ctx.guild.id] = False
 
-@bot.listen()
-async def on_message(message):
-    global gamechannel, lb, active
-    if message.guild.id not in active:
-        active[message.guild.id] = False
-
-    if active[message.guild.id] == True:
-        if message.channel == gamechannel[message.guild.id]["channel"]:
-            try:
-                guessings = int(message.content.lower())
-                lb[message.guild.id][message.author.id] = {"guess":guessings, "points":0}
-                gamechannel[message.guild.id]["AllGuesses"][message.author.id] = guessings
-                AllGuesses = gamechannel[message.guild.id]["AllGuesses"]
-                for Guesses in AllGuesses:
-                    if Guesses < gamechannel[message.guild.id]["secretNumber"]:
-                        while Guesses != gamechannel[message.guild.id]["secretNumber"]:
-                            Guesses+=1
-                            lb[message.guild.id][message.author.id]["points"]+=1
-                    if Guesses < gamechannel[message.guild.id]["secretNumber"]:
-                        while Guesses != gamechannel[message.guild.id]["secretNumber"]:
-                            Guesses+=1
-                            lb[message.guild.id][message.author.id]["points"]+=1
-                    print(lb[message.guild.id][message.author.id])
-            except Exception as e:
-                print(e)
-                pass
+guesshelp = f"{prefix}guess"
         
 matches = {}
 gameBoards = {}
@@ -1689,7 +1670,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gparticipate, gquit, info, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
-        myEmbed.add_field(name="Fun",value=" slap, kill, punch, tictactoe, tttstop \n----------------------\n", inline=False)
+        myEmbed.add_field(name="Fun",value=" slap, kill, punch, tictactoe, tttstop, guess \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{prefix}`\n > Command Usage Example :   `{prefix}info`\n\n----------------------", inline=False)
         myEmbed.add_field(name="Readme", value=f"`{prefix}help` Shows this Message, use `{prefix}help [command]` to get more information about that Command\n\n")
         myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creater}")
@@ -1741,6 +1722,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "punch": content=punchhelp
         elif anycommand == "tictactoe": content=tictactoehelp
         elif anycommand == "tttstop": content=tttstophelp
+        elif anycommand == "guess": content=guesshelp
         elif anycommand == "help": content=helphelp
         commandEmbed = discord.Embed(description=f"{content}",color=embedTheme)
         await ctx.send(embed=commandEmbed)
