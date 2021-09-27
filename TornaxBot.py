@@ -739,24 +739,24 @@ async def on_message(message):
         active[message.guild.id] = False
     try:
         if message.author != bot.user:
+            print(0)
             if active[message.guild.id] == True:
+                print(1)
                 if message.channel == gamingChannel[message.guild.id]["channel"]:
-                    try:
-                        secretNumber = random.randint(gamingChannel[message.guild.id]["anyoneRange"],gamingChannel[message.guild.id]["customRange"])
-                        guesses = int(message.content)
-                        if guesses > secretNumber:
-                            await message.reply(f"Try a Smaller Number")
-                            await gamingChannel[message.guild.id]["start"].edit(content=f"Guess the Number between {gamingChannel[message.guild.id]['anyoneRange']} to {gamingChannel[message.guild.id]['customRange']} Under `{str(gamingChannel[message.guild.id]['countdown'])}` Seconds")
-                        elif guesses < secretNumber:
-                            await message.reply("Try a Bigger Number")
-                            await gamingChannel[message.guild.id]["start"].edit(content=f"Guess the Number between {gamingChannel[message.guild.id]['anyoneRange']} to {gamingChannel[message.guild.id]['customRange']} Under `{str(gamingChannel[message.guild.id]['countdown'])}` Seconds")
-                        elif guesses == secretNumber:
-                            await message.reply(f"{message.author.mention} You Guesses Correct the Secret Number was `{secretNumber}`")
-                            await gamingChannel[message.guild.id]["hidden"].edit(content=f"➡️ `{secretNumber}` ⬅️")
-                            gamingChannel[message.guild.id]["countdown"]
-                    except Exception as e:
-                        print(e)
-                        pass
+                    print(2)
+                    secretNumber = random.randint(gamingChannel[message.guild.id]["anyoneRange"],gamingChannel[message.guild.id]["customRange"])
+                    guesses = int(message.content)
+                    if guesses > secretNumber:
+                        print(3)
+                        await message.reply(f"Try a Smaller Number")
+                        await gamingChannel[message.guild.id]["start"].edit(content=f"Guess the Number between {gamingChannel[message.guild.id]['anyoneRange']} to {gamingChannel[message.guild.id]['customRange']} Under `{str(gamingChannel[message.guild.id]['countdown'])}` Seconds")
+                    elif guesses < secretNumber:
+                        await message.reply("Try a Bigger Number")
+                        await gamingChannel[message.guild.id]["start"].edit(content=f"Guess the Number between {gamingChannel[message.guild.id]['anyoneRange']} to {gamingChannel[message.guild.id]['customRange']} Under `{str(gamingChannel[message.guild.id]['countdown'])}` Seconds")
+                    elif guesses == secretNumber:
+                        await message.reply(f"{message.author.mention} You Guesses Correct the Secret Number was `{secretNumber}`")
+                        await gamingChannel[message.guild.id]["hidden"].edit(content=f"➡️ `{secretNumber}` ⬅️")
+                        gamingChannel[message.guild.id]["countdown"]
     except Exception as e:
         print(e)
         pass
