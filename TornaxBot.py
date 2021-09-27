@@ -723,11 +723,11 @@ async def guess(ctx):
                 if guesses > secretNumber:
                     await ctx.reply(f"Try a Smaller Number")
                     countdown -=1
-                    await start.edit(content=f"Guess the Number between 1 to 100 Under `{str(countdown)}` Seconds")
+                    await start.edit(content=f"Guess the Number between {anyoneRange} to {customRange} Under `{str(countdown)}` Seconds")
                 elif guesses < secretNumber:
                     await ctx.reply("Try a Bigger Number")
                     countdown -=1
-                    await start.edit(content=f"Guess the Number between 1 to 100 Under `{str(countdown)}` Seconds")
+                    await start.edit(content=f"Guess the Number between {anyoneRange} to {customRange} Under `{str(countdown)}` Seconds")
                 elif guesses == secretNumber:
                     await ctx.reply(f"{ctx.author.mention} You Guesses Correct the Secret Number was `{secretNumber}`")
                     await hidden.edit(content=f"➡️ `{secretNumber}` ⬅️")
