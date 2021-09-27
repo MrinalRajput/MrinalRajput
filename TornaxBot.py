@@ -752,7 +752,7 @@ async def on_message(message):
                         await message.reply("Try a Bigger Number")
                     elif guesses == gamingChannel[message.guild.id]['secretNumber']:
                         await message.reply(f"{message.author.mention} You Guessed Correct the Secret Number was `{gamingChannel[message.guild.id]['secretNumber']}`")
-                        gamingChannel[message.guild.id]["countdown"] = 0
+                        gamingChannel[message.guild.id]["countdown"] = 1
     except Exception as e:
         print(e)
         pass
