@@ -727,7 +727,7 @@ async def guess(ctx):
             gamingChannel[ctx.guild.id]["countdown"] -=1
             await gamingChannel[ctx.guild.id]["start"].edit(content=f"Guess the Number between {gamingChannel[ctx.guild.id]['anyoneRange']} to {gamingChannel[ctx.guild.id]['customRange']} Under `{str(gamingChannel[ctx.guild.id]['countdown'])}` Seconds")
 
-        
+        await gamingChannel[message.guild.id]["hidden"].edit(content=f"➡️ `{secretNumber}` ⬅️")    
         active[ctx.guild.id] = False
     else:
         await ctx.reply(f"A Guess The Number Game is Already Active in this Server")
@@ -751,7 +751,6 @@ async def on_message(message):
                         await message.reply("Try a Bigger Number")
                     elif guesses == secretNumber:
                         await message.reply(f"{message.author.mention} You Guesses Correct the Secret Number was `{secretNumber}`")
-                        await gamingChannel[message.guild.id]["hidden"].edit(content=f"➡️ `{secretNumber}` ⬅️")
                         gamingChannel[message.guild.id]["countdown"]
     except Exception as e:
         print(e)
