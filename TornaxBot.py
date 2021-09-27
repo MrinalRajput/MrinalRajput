@@ -14,7 +14,7 @@ prefix = ">"
 
 bot = commands.Bot(command_prefix = f"{prefix}",case_insensitive=True ,help_command=None)
 
-restricted_words = ["gooh","kutta","kutte","harami","skyra","wtf","frick","fuck","fuk","tatti","baap","stfu"]
+restricted_words = ["gooh","kutta","kutte","harami","skyra","wtf","fuck","fuk","tatti","baap","stfu"]
 
 TOKEN = "ODMyODk3NjAyNzY4MDc2ODE2.YHqeVg.yfzVgB8hHizDFH7hSMTORIv5weg"
 
@@ -701,41 +701,58 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
 tellhelp = f"{prefix}tell [channel] <message>"
 
 active = {}
+gamingChannel = {}
 
 @bot.command()
 async def guess(ctx):
     global active
     if ctx.guild.id not in active:
         active[ctx.guild.id] = False
+    if ctx.guild.id not in gamingChannel:
+        gamingChannel[ctx.guild.id] = {}
 
-        if active[ctx.guild.id] == False:
-            active[ctx.guild.id] = True
-            randomRange = [0,10,20,30,40,50,60,70,80,90]
-            anyoneRange = random.choice(randomRange)
-            customRange = anyoneRange + 10
-            secretNumber = random.randint(anyoneRange,customRange)
-            countdown = 10
-            start = await ctx.send(f"Guess the Number between {anyoneRange} to {customRange} Under `{str(countdown)}` Seconds")
-            hidden = await ctx.send(f"➡️ ⬛ ⬅️")
-            while countdown > 0:
-                msg = await bot.wait_for('message')
-                guesses = int(msg.content)
-                if guesses > secretNumber:
-                    await ctx.reply(f"Try a Smaller Number")
-                    countdown -=1
-                    await start.edit(content=f"Guess the Number between {anyoneRange} to {customRange} Under `{str(countdown)}` Seconds")
-                elif guesses < secretNumber:
-                    await ctx.reply("Try a Bigger Number")
-                    countdown -=1
-                    await start.edit(content=f"Guess the Number between {anyoneRange} to {customRange} Under `{str(countdown)}` Seconds")
-                elif guesses == secretNumber:
-                    await ctx.reply(f"{ctx.author.mention} You Guesses Correct the Secret Number was `{secretNumber}`")
-                    await hidden.edit(content=f"➡️ `{secretNumber}` ⬅️")
-                    countdown = 0
-            active[ctx.guild.id] = False
+    if active[ctx.guild.id] == False:
+        active[ctx.guild.id] = True
+        gamingChannel[ctx.guild.id]["channel"] = ctx.channel
+        randomRange = [0,10,20,30,40,50,60,70,80,90]
+        gamingChannel[ctx.guild.id]["anyoneRange"] = random.choice(randomRange)
+        gamingChannel[ctx.guild.id]["customRange"] = gamingChannel[ctx.guild.id]["anyoneRange"] + 10
+        gamingChannel[ctx.guild.id]["countdown"] = 10
+
+        await ctx.send(f"🔢 Guess The Number Game #️⃣")
+        gamingChannel[ctx.guild.id]["start"] = await ctx.send(f"Guess the Number between {gamingChannel[ctx.guild.id]['anyoneRange']} to {gamingChannel[ctx.guild.id]['customRange']} Under `{str(gamingChannel[ctx.guild.id]['countdown'])}` Seconds")
+        gamingChannel[ctx.guild.id]["hidden"] = await ctx.send(f"➡️ ⬛ ⬅️")
+        while gamingChannel[ctx.guild.id]["countdown"] > 0:
+            await asyncio.sleep(0.7)
+            gamingChannel[ctx.guild.id]["countdown"] -=1
+        
+        active[ctx.guild.id] = False
 
 guesshelp = f"{prefix}guess"
-        
+
+@bot.listen()
+async def on_message(message):
+    global active, gamingChannel
+    if message.guild.id not in active:
+        active[message.guild.id] = False
+
+    if active[message.guild.id] == False:
+        if message.channel == gamingChannel[message.guild.id]["channel"]:
+            secretNumber = random.randint(gamingChannel[message.guild.id]["anyoneRange"],gamingChannel[message.guild.id]["customRange"])
+            guesses = int(message.content)
+            if guesses > secretNumber:
+                await message.reply(f"Try a Smaller Number")
+                await gamingChannel[message.guild.id]["start"].edit(content=f"Guess the Number between {gamingChannel[message.guild.id]['anyoneRange']} to {gamingChannel[message.guild.id]['customRange']} Under `{str(gamingChannel[message.guild.id]['countdown'])}` Seconds")
+            elif guesses < secretNumber:
+                await message.reply("Try a Bigger Number")
+                await gamingChannel[message.guild.id]["start"].edit(content=f"Guess the Number between {gamingChannel[message.guild.id]['anyoneRange']} to {gamingChannel[message.guild.id]['customRange']} Under `{str(gamingChannel[message.guild.id]['countdown'])}` Seconds")
+            elif guesses == secretNumber:
+                await message.reply(f"{message.author.mention} You Guesses Correct the Secret Number was `{secretNumber}`")
+                await gamingChannel[message.guild.id]["hidden"].edit(content=f"➡️ `{secretNumber}` ⬅️")
+                gamingChannel[message.guild.id]["countdown"]
+            else:
+                await message.reply(f"A Guess The Number Game is Already Active in this Server")
+
 matches = {}
 gameBoards = {}
 chances = {}
