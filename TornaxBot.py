@@ -717,7 +717,7 @@ async def guess(ctx):
         randomRange = [0,10,20,30,40,50,60,70,80,90]
         gamingChannel[ctx.guild.id]["anyoneRange"] = random.choice(randomRange)
         gamingChannel[ctx.guild.id]["customRange"] = gamingChannel[ctx.guild.id]["anyoneRange"] + 10
-        gamingChannel[ctx.guild.id]["countdown"] = 10
+        gamingChannel[ctx.guild.id]["countdown"] = 30
 
         await ctx.send(f"🔢 Guess The Number Game #️⃣")
         gamingChannel[ctx.guild.id]["start"] = await ctx.send(f"Guess the Number between {gamingChannel[ctx.guild.id]['anyoneRange']} to {gamingChannel[ctx.guild.id]['customRange']} Under `{str(gamingChannel[ctx.guild.id]['countdown'])}` Seconds")
@@ -741,15 +741,11 @@ async def on_message(message):
         active[message.guild.id] = False
     try:
         if message.author != bot.user:
-            print(0)
             if active[message.guild.id] == True:
-                print(1)
                 if message.channel == gamingChannel[message.guild.id]["channel"]:
-                    print(2)
                     secretNumber = random.randint(gamingChannel[message.guild.id]["anyoneRange"],gamingChannel[message.guild.id]["customRange"])
                     guesses = int(message.content)
                     if guesses > secretNumber:
-                        print(3)
                         await message.reply(f"Try a Smaller Number")
                     elif guesses < secretNumber:
                         await message.reply("Try a Bigger Number")
