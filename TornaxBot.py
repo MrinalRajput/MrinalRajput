@@ -728,7 +728,7 @@ async def guess(ctx):
         while gamingChannel[ctx.guild.id]["countdown"] > 0:
             await asyncio.sleep(0.7)
             gamingChannel[ctx.guild.id]["countdown"] -=1
-            await gamingChannel[ctx.guild.id]["start"].edit(content=f"Guess the Number between {gamingChannel[ctx.guild.id]['anyoneRange']} to {gamingChannel[ctx.guild.id]['customRange']} Under `{str(gamingChannel[ctx.guild.id]['countdown'])}` Seconds")
+            await gamingChannel[ctx.guild.id]["start"].edit(content=f"I Challenge You to Guess the Number between {gamingChannel[ctx.guild.id]['anyoneRange']} to {gamingChannel[ctx.guild.id]['customRange']} Under `{str(gamingChannel[ctx.guild.id]['countdown'])}` Seconds")
 
         await gamingChannel[ctx.guild.id]["hidden"].edit(content=f"➡️ `{gamingChannel[ctx.guild.id]['secretNumber']}` ⬅️")    
         if gamingChannel[ctx.guild.id]["guessed"] == False:
@@ -754,7 +754,7 @@ async def on_message(message):
                     elif guesses < gamingChannel[message.guild.id]['secretNumber']:
                         await message.reply("Try a Bigger Number")
                     elif guesses == gamingChannel[message.guild.id]['secretNumber']:
-                        await message.reply(f"{message.author.mention} You Guessed Correct the Secret Number was `{gamingChannel[message.guild.id]['secretNumber']}`")
+                        await message.reply(f"{message.author.mention} You Guessed Correct and Won the Challenge, the Secret Number was `{gamingChannel[message.guild.id]['secretNumber']}`")
                         gamingChannel[message.guild.id]["guessed"] = True
                         gamingChannel[message.guild.id]["countdown"] = 1
     except Exception as e:
