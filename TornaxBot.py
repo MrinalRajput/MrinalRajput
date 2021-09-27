@@ -717,6 +717,8 @@ async def guess(ctx):
         randomRange = [0,10,20,30,40,50,60,70,80,90]
         gamingChannel[ctx.guild.id]["anyoneRange"] = random.choice(randomRange)
         gamingChannel[ctx.guild.id]["customRange"] = gamingChannel[ctx.guild.id]["anyoneRange"] + 10
+        gamingChannel[ctx.guild.id]['secretNumber'] = random.randint(gamingChannel[ctx.guild.id]["anyoneRange"],gamingChannel[ctx.guild.id]["customRange"])
+        print(gamingChannel[ctx.guild.id]['secretNumber'])
         gamingChannel[ctx.guild.id]["countdown"] = 30
 
         await ctx.send(f"🔢 Guess The Number Game #️⃣")
@@ -743,15 +745,14 @@ async def on_message(message):
         if message.author != bot.user:
             if active[message.guild.id] == True:
                 if message.channel == gamingChannel[message.guild.id]["channel"]:
-                    gamingChannel[message.guild.id]['secretNumber'] = random.randint(gamingChannel[message.guild.id]["anyoneRange"],gamingChannel[message.guild.id]["customRange"])
                     guesses = int(message.content)
                     if guesses > gamingChannel[message.guild.id]['secretNumber']:
                         await message.reply(f"Try a Smaller Number")
                     elif guesses < gamingChannel[message.guild.id]['secretNumber']:
                         await message.reply("Try a Bigger Number")
                     elif guesses == gamingChannel[message.guild.id]['secretNumber']:
-                        await message.reply(f"{message.author.mention} You Guesses Correct the Secret Number was `{gamingChannel[message.guild.id]['secretNumber']}`")
-                        gamingChannel[message.guild.id]["countdown"]
+                        await message.reply(f"{message.author.mention} You Guessed Correct the Secret Number was `{gamingChannel[message.guild.id]['secretNumber']}`")
+                        gamingChannel[message.guild.id]["countdown"] = 0
     except Exception as e:
         print(e)
         pass
