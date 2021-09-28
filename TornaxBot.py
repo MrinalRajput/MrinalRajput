@@ -1644,10 +1644,7 @@ avatarhelp = f"{prefix}avatar [user]"
 async def vote(ctx):
     embed = discord.Embed(title="Vote For Tornax\t\t", color=embedTheme)
     embed.set_thumbnail(url=bot.user.avatar_url)
-    embed.add_field(name="Top.gg", value="[Vote Now](https://top.gg/bot/832897602768076816/vote)", inline=True)
-    embed.add_field(name="Discord Bot List", value="[Vote Now](https://discordbotlist.com/bots/tornax/upvote)\n", inline=True)
-    embed.add_field(name="Discords.com", value="[Vote Now](https://discords.com/bots/bot/832897602768076816/vote)", inline=True)
-    embed.add_field(name="Discord Boats", value="[Vote Now](https://discord.boats/bot/832897602768076816/vote)", inline=True)
+    embed.add_field(name="Click on Below Links", value="[Top.gg](https://top.gg/bot/832897602768076816/vote) ❂ [Discord Bot List](https://discordbotlist.com/bots/tornax/upvote)\n[Discords.com](https://discords.com/bots/bot/832897602768076816/vote) ❂ [Discord Boats](https://discord.boats/bot/832897602768076816/vote)", inline=False)
     embed.add_field(name="Rewards", value="Coming Soon", inline=False)
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=embed)
