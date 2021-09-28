@@ -582,9 +582,10 @@ async def play(ctx, url: Optional[str]=None):
         await ctx.reply(f"You Must be in a Voice Channel to do that")
     else:
         if url is not None:
-            if not is_connected:
+            if ctx.voice_client is None:
                 await ctx.author.voice.channel.connect()
-            ctx.voice_client.stop()
+            if ctx.voice_client.is_playing():
+                ctx.voice_client.stop()
             FFMPEG_OPTIONS = {
             'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
             'options': '-vn'}
