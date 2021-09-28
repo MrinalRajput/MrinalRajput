@@ -7,6 +7,9 @@ import random
 from typing import Optional
 import json
 import youtube_dl
+from discord.utils import get
+from discord import FFmpegPCMAudio
+from youtube_dl import YoutubeDL
 
 from discord.ext.commands import has_permissions,has_role,MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError
 from discord.member import Member
@@ -586,9 +589,14 @@ async def play(ctx, url: Optional[str]=None):
                 await ctx.author.voice.channel.connect()
             if ctx.voice_client.is_playing():
                 ctx.voice_client.stop()
-            voice = ctx.author.voice.channel
-            player = await voice.create_ytdl_player(url)
-            ctx.voice_client.play(url)
+            YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
+            FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+            voice = get(bot.voice_clients, guild=ctx.guild)
+            with YoutubeDL(ydl_opts) as ydl:
+                info = ydl.extract_info(video_link, download=False)
+            URL = info['formats'][0]['url']
+            voice.play(FFmpegPCMAudio(URL, **FFMPEG_OPTIONS))
+            voice.is_playing()
         else:
             await ctx.reply(f"You must Specify the Song which You want to Play")
 
