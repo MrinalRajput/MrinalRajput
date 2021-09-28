@@ -586,7 +586,7 @@ async def play(ctx, url: Optional[str]=None):
                 await ctx.author.voice.channel.connect()
             if ctx.voice_client.is_playing():
                 ctx.voice_client.stop()
-            voice = bot.voice_client_in(ctx.guild)
+            voice = ctx.author.voice.channel
             player = await voice.create_ytdl_player(url)
             ctx.voice_client.play(player)
         else:
