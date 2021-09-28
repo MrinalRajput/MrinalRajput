@@ -590,12 +590,21 @@ async def play(ctx, url: Optional[str]=None):
             'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
             'options': '-vn'}
 
-            YDL_OPTIONS = {'format': 'bestaudio'}
+            YDL_OPTIONS = {  'format': 'bestaudio/best',
+                'restrictfilenames': True,
+                'noplaylist': True,
+                'nocheckcertificate': True,
+                'ignoreerrors': False,
+                'logtostderr': False,
+                'quiet': True,
+                'no_warnings': True,
+                'default_search': 'auto',
+                'source_address': '0.0.0.0'}
 
             with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
                 info = ydl.extract_info(url, download=False)
                 url2 = info['formats'][0]['url']
-                source = await discord.FFmpegOpusAudio.from_probe(url2,
+                source = await discord.FFmpegOpusAudio(executable="ffmpeg.exe").from_probe(url2,
                 **FFMPEG_OPTIONS)
             ctx.voice_client.play(source)
         else:
