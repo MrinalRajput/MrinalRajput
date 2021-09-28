@@ -604,7 +604,8 @@ async def play(ctx, url: Optional[str]=None):
             with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
                 info = ydl.extract_info(url, download=False)
                 url2 = info['formats'][0]['url']
-                source = await discord.FFmpegPCMAudio(executable="env/Lib/ffmpeg.exe",source=url2)
+                source = await discord.FFmpegOpusAudio(executable="ffmpeg.exe",source=url2).from_probe(url2,
+                **FFMPEG_OPTIONS)
             ctx.voice_client.play(source)
         else:
             await ctx.reply(f"You must Specify the Song which You want to Play")
