@@ -588,7 +588,7 @@ async def play(ctx, url: Optional[str]=None):
                 ctx.voice_client.stop()
             voice = ctx.author.voice.channel
             player = await voice.create_ytdl_player(url)
-            ctx.voice_client.play(player)
+            ctx.voice_client.play(url)
         else:
             await ctx.reply(f"You must Specify the Song which You want to Play")
 
