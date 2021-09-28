@@ -839,7 +839,7 @@ tictactoehelp = f"{prefix}tictactoe [First Player] <Second Player>"
 async def tttstop(ctx):
     global matches, gameBoards, chances, teamCode
     try:
-        if ctx.author.id in matches[ctx.guild.id].keys() or ctx.author.id not in matches[ctx.guild.id].values():
+        if ctx.author.id in matches[ctx.guild.id].keys() or ctx.author.id in matches[ctx.guild.id].values():
             await ctx.send(f"{ctx.author.mention} Your TicTacToe Game has been Stopped")
             
             if ctx.author.id in matches[ctx.guild.id].keys():
