@@ -598,7 +598,7 @@ async def play(ctx, url: Optional[str]=None):
             voice.play(FFmpegPCMAudio(URL, **FFMPEG_OPTIONS))
             voice.is_playing()
         else:
-            await ctx.reply(f"You must Specify the Song which You want to Play")
+            await ctx.reply(f"You must Specify the Song which You want to Play!")
 
 playhelp = f"{prefix}play <url>"
 
