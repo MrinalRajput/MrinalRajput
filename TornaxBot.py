@@ -696,7 +696,13 @@ timehelp = f"{prefix}time"
 async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
     if channel is None:
         channel = ctx.channel
-    await channel.send(msg)
+    if '@everyone' in msg or '@here' in msg:
+        if ctx.author.guild_permissions.mention_everyone:
+            await channel.send(msg)
+        else:
+            await ctx.reply(f"Only Admins Can Use `@everyone` or `@here` in this Command")
+    else:
+        await channel.send(msg)
 
 tellhelp = f"{prefix}tell [channel] <message>"
 
