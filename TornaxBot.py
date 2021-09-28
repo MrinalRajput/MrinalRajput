@@ -586,27 +586,8 @@ async def play(ctx, url: Optional[str]=None):
                 await ctx.author.voice.channel.connect()
             if ctx.voice_client.is_playing():
                 ctx.voice_client.stop()
-            FFMPEG_OPTIONS = {
-            'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
-            'options': '-vn'}
-
-            YDL_OPTIONS = {  'format': 'bestaudio/best',
-                'restrictfilenames': True,
-                'noplaylist': True,
-                'nocheckcertificate': True,
-                'ignoreerrors': False,
-                'logtostderr': False,
-                'quiet': True,
-                'no_warnings': True,
-                'default_search': 'auto',
-                'source_address': '0.0.0.0'}
-
-            with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
-                info = ydl.extract_info(url, download=False)
-                url2 = info['formats'][0]['url']
-                source = await discord.FFmpegOpusAudio(executable="ffmpeg.exe",source=url2).from_probe(url2,
-                **FFMPEG_OPTIONS)
-            ctx.voice_client.play(source)
+            player = await voice.create_ytdl_player(url, after=toggle_next)
+            ctx.voice_client.play(player)
         else:
             await ctx.reply(f"You must Specify the Song which You want to Play")
 
