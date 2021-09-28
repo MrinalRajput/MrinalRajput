@@ -6,7 +6,7 @@ import asyncio
 import random
 from typing import Optional
 import json
-import youtube_dl
+import youtube_dl, ffmpeg
 
 from discord.ext.commands import has_permissions,has_role,MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError
 from discord.member import Member
