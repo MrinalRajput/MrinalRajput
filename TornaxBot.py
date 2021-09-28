@@ -1776,6 +1776,8 @@ async def on_message(message):
         count[message.guild.id][message.author.id]["counting"] = False
         count[message.guild.id][message.author.id]["strikes"] = 0
         # print(count[message.guild.id][message.author.id]["counting"])
+        await asyncio.sleep(2600)
+        count[message.guild.id][message.author.id]["warnings"] = 0
 
 @bot.listen()
 async def on_message(message):
@@ -1796,7 +1798,7 @@ async def on_message(message):
         
         if count[message.guild.id][message.author.id]["counting"] == True:
             count[message.guild.id][message.author.id]["strikes"] += 1
-        if count[message.guild.id][message.author.id]["strikes"] > 4:
+        if count[message.guild.id][message.author.id]["strikes"] > 3:
             await message.channel.send(f":exclamation: {message.author.mention} You are Sending Message So Quickly, Slowdown your Speed")
             count[message.guild.id][message.author.id]["warnings"] += 1
             if count[message.guild.id][message.author.id]["warnings"] >= 3:
