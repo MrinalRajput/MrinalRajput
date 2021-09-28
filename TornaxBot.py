@@ -586,7 +586,8 @@ async def play(ctx, url: Optional[str]=None):
                 await ctx.author.voice.channel.connect()
             if ctx.voice_client.is_playing():
                 ctx.voice_client.stop()
-            player = await voice.create_ytdl_player(url, after=toggle_next)
+            voice = bot.voice_client_in(ctx.guild)
+            player = await voice.create_ytdl_player(url)
             ctx.voice_client.play(player)
         else:
             await ctx.reply(f"You must Specify the Song which You want to Play")
