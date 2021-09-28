@@ -1796,7 +1796,7 @@ async def on_message(message):
         
         if count[message.guild.id][message.author.id]["counting"] == True:
             count[message.guild.id][message.author.id]["strikes"] += 1
-        if count[message.guild.id][message.author.id]["strikes"] > 3:
+        if count[message.guild.id][message.author.id]["strikes"] > 4:
             await message.channel.send(f":exclamation: {message.author.mention} You are Sending Message So Quickly, Slowdown your Speed")
             count[message.guild.id][message.author.id]["warnings"] += 1
             if count[message.guild.id][message.author.id]["warnings"] >= 3:
