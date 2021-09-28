@@ -6,6 +6,7 @@ import asyncio
 import random
 from typing import Optional
 import json
+import youtube_dl
 
 from discord.ext.commands import has_permissions,has_role,MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError
 from discord.member import Member
@@ -574,6 +575,52 @@ async def leave(ctx):
         await ctx.send(f":exclamation: {ctx.author.mention} You must be in a Voice Channel to do that!")
 
 leavehelp = f"{prefix}leave"
+
+@bot.command()
+async def play(ctx, url: Optional[str]=None):
+    if ctx.author.voice.channel is None:
+        await ctx.reply(f"You Must be in a Voice Channel to do that")
+    else:
+        if url is not None:
+            if bot.voice_client is None:
+                await ctx.author.voice.channel.connect()
+            ctx.voice_client.stop()
+            FFMPEG_OPTIONS = {
+            'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
+            'options': '-vn'}
+
+            YDL_OPTIONS = {'format': 'bestaudio'}
+
+            with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
+                info = ydl.extract_info(url, download=False)
+                url2 = info['formats'][0]['url']
+                source = await discord.FFmpegOpusAudio.from_probe(url2,
+                **FFMPEG_OPTIONS)
+            ctx.voice_client.play(source)
+        else:
+            await ctx.reply(f"You must Specify the Song which You want to Play")
+
+playhelp = f"{prefix}play <url>"
+
+@bot.command()
+async def pause(ctx):
+    if ctx.author.voice.channel is None:
+        await ctx.reply(f"You must be in a Voice Channel to do that")
+    else:
+        ctx.voice_client.pause()
+        await ctx.reply(f"Paused The Song ▶️")
+        
+pausehelp = f"{prefix}pause"
+
+@bot.command()
+async def resume(ctx):
+    if ctx.author.voice.channel is None:
+        await ctx.reply(f"You must be in a Voice Channel to do that")
+    else:
+        ctx.voice_client.resume()
+        await ctx.reply(f"Resumed The Song ⏸️")
+
+resumehelp = f"{prefix}resume"
 
 @bot.command()
 @commands.has_permissions(manage_roles=True)
@@ -1693,7 +1740,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n \n \t-> [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=536870911991&scope=bot)")
         myEmbed.add_field(name=f"Commands — {int(totalCommands)-2}",value="----------------------\n",inline=False)
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
-        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gparticipate, gquit, info, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
+        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gparticipate, gquit, info, about, support, join, leave, play, pause, resume leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
         myEmbed.add_field(name="Fun",value=" slap, kill, punch, tictactoe, tttstop, guess \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{prefix}`\n > Command Usage Example :   `{prefix}info`\n\n----------------------", inline=False)
@@ -1730,6 +1777,9 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "support": content=supporthelp
         elif anycommand == "join": content=joinhelp
         elif anycommand == "leave": content=leavehelp
+        elif anycommand == "play": content=playhelp
+        elif anycommand == "pause": content=pausehelp
+        elif anycommand == "resume": content=resumehelp
         elif anycommand == "leaveserver": content=leaveserverhelp
         elif anycommand == "lock": content=lockhelp
         elif anycommand == "unlock": content=unlockhelp
