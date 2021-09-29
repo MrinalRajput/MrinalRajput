@@ -687,7 +687,8 @@ pinghelp = f"{prefix}ping"
 
 @bot.command()
 async def invite(ctx):
-    await ctx.send(f"Hey! Invite Tornax Now to Your Server For Server Management, Moderation, Auto Moderation and Fun\n[Invite Now](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=536870911991&scope=bot)")
+    inviteEmbed = discord.Embed(title="Invite Tornax", description="Hey! Invite Tornax Now to Your Server For Server Management, Moderation, Auto Moderation and Fun\n[Invite Now](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=536870911991&scope=bot)", color=embedTheme)
+    await ctx.send(embed=inviteEmbed)
 
 invitehelp = f"{prefix}invite"
 
