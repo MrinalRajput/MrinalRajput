@@ -851,6 +851,8 @@ async def racestop(ctx):
         print(e)
         pass
 
+racestophelp = f"{prefix}racestop"
+
 @bot.listen()
 async def on_message(message):
     global racers, raceCode, raceTrack
@@ -1921,7 +1923,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gparticipate, gquit, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
-        myEmbed.add_field(name="Fun",value=" slap, kill, punch, tictactoe, tttstop, guess, mcserver \n----------------------\n", inline=False)
+        myEmbed.add_field(name="Fun",value=" slap, kill, punch, tictactoe, tttstop, guess, mcserver, race, racestop \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{prefix}`\n > Command Usage Example :   `{prefix}info`\n\n----------------------", inline=False)
         myEmbed.add_field(name="Readme", value=f"`{prefix}help` Shows this Message, use `{prefix}help [command]` to get more information about that Command\n\n")
         myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creater}")
@@ -1976,6 +1978,8 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "tttstop": content=tttstophelp
         elif anycommand == "guess": content=guesshelp
         elif anycommand == "mcserver": content=mcserverhelp
+        elif anycommand == "race": content=racehelp
+        elif anycommand == "racestop": content=racestophelp
         elif anycommand == "help": content=helphelp
         commandEmbed = discord.Embed(description=f"{content}",color=embedTheme)
         await ctx.send(embed=commandEmbed)
