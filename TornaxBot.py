@@ -6,6 +6,7 @@ import asyncio
 import random
 from typing import Optional
 import json
+import time
 
 from discord.ext.commands import has_permissions,has_role,MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError
 from discord.member import Member
@@ -680,8 +681,8 @@ timerstophelp = f"{prefix}timerstop"
 @bot.command()
 async def ping(ctx):
     msg = await ctx.send(f"Pong!")
-    await asyncio.sleep(0.8)
-    await msg.edit(content = f"Pong! Latency is `{round(bot.latency * 100)}`")
+    latency = (msg.timestamp - ctx.message.timestamp).total_seconds() * 1000
+    await msg.edit(content = f"Pong! Latency is `{int(round(latency))}ms`")
 
 pinghelp = f"{prefix}ping"
 
