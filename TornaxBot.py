@@ -691,7 +691,7 @@ async def time(ctx):
 
 timehelp = f"{prefix}time"
 
-@bot.command(aliases="announce")
+@bot.command()
 async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
     if channel is None:
         channel = ctx.channel
