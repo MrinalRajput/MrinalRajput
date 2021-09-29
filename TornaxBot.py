@@ -679,7 +679,9 @@ timerstophelp = f"{prefix}timerstop"
 
 @bot.command()
 async def ping(ctx):
-    await ctx.send(f"Pong! Latency is `{round(bot.latency)}`")
+    msg = await ctx.send(f"Pong!")
+    await asyncio.sleep(0.8)
+    await msg.edit(content = f"Pong! Latency is `{round(bot.latency * 100)}`")
 
 pinghelp = f"{prefix}ping"
 
