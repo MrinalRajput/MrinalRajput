@@ -815,12 +815,12 @@ async def race(ctx, member1: Optional[discord.Member]=None, member2: Optional[di
                     await ctx.send(f":exclamation: {member2.mention} is Already in a Vehicle Race in this Server")
             else:
                 if member1 == ctx.author:
-                    await ctx.send(f":exclamation: {ctx.author.mention} You are Already in a Vehicle Race in this Server, use `>racestop` to Stop your Current Match")
+                    await ctx.send(f":exclamation: {ctx.author.mention} You are Already in a Vehicle Race in this Server, use `>racestop` to Stop your Current Race")
                 else:
                     await ctx.send(f":exclamation: {member1.mention} is Already in a Vehicle Race in this Server")
         else:
             if member2 == ctx.author and member1 == ctx.author:
-                await ctx.send(f":exclamation: {ctx.author.mention} You Cannot Play With Yourself, There must be Two Players to Play TicTacToe")
+                await ctx.send(f":exclamation: {ctx.author.mention} You Cannot Play With Yourself, There must be Two Players to do Vehicle Race")
             else:
                 await ctx.send(f":exclamation: {ctx.author.mention} Single Player Cannot Play with Himself/Herself, There must be Two Players")
     else:
