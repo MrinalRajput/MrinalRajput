@@ -686,6 +686,12 @@ async def ping(ctx):
 pinghelp = f"{prefix}ping"
 
 @bot.command()
+async def invite(ctx):
+    await ctx.send(f"Hey! Invite Tornax Now to Your Server For Server Management, Moderation, Auto Moderation and Fun\n[Invite Now](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=536870911991&scope=bot)")
+
+invitehelp = f"{prefix}invite"
+
+@bot.command()
 @commands.bot_has_permissions(send_messages=True)
 async def time(ctx):
     currenttime = datetime.now()
@@ -1698,7 +1704,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n \n \t-> [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=536870911991&scope=bot)")
         myEmbed.add_field(name=f"Commands — {int(totalCommands)-2}",value="----------------------\n",inline=False)
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
-        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gparticipate, gquit, info, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
+        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gparticipate, gquit, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
         myEmbed.add_field(name="Fun",value=" slap, kill, punch, tictactoe, tttstop, guess \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{prefix}`\n > Command Usage Example :   `{prefix}info`\n\n----------------------", inline=False)
@@ -1710,6 +1716,7 @@ async def help(ctx, anycommand: Optional[str]=None):
 
         if anycommand == "tell": content=tellhelp
         elif anycommand == "ping": content=pinghelp
+        elif anycommand == "invite": content=invitehelp
         elif anycommand == "thought": content=thoughthelp
         elif anycommand == "avatar": content=avatarhelp
         elif anycommand == "afk": content=afkhelp
