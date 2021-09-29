@@ -698,7 +698,7 @@ async def mcserver(ctx, server: Optional[str]=None):
         mcServer = MinecraftServer.lookup(server)
         status = mcServer.status()
         latency = mcServer.ping()
-        mcEmbed = discord.Embed(title=f"Looking For {mcServer}", color=embedTheme)
+        mcEmbed = discord.Embed(title=f"Looking For {server}", color=embedTheme)
         mcEmbed.add_field(name="Players Online", value=f"{status.players.online}", inline = False)
         mcEmbed.add_field(name="Server Pings", value=f"`{latency}ms`", inline = False)
         await ctx.send(embed=mcEmbed)
