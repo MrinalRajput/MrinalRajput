@@ -733,6 +733,198 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
 
 tellhelp = f"{prefix}tell [channel] <message>"
 
+racers = {}
+raceCode = {}
+raceTrack = {}
+
+@bot.command()
+async def race(ctx, member1: Optional[discord.Member]=None, member2: Optional[discord.Member]=None):
+    global racers, raceCode, raceTrack
+    if ctx.guild.id not in racers:
+        racers[ctx.guild.id] = {}
+    if ctx.guild.id not in raceCode:
+        raceCode[ctx.guild.id] = {}
+    if ctx.guild.id not in raceTrack:
+        raceTrack[ctx.guild.id] = {}
+
+    if member1 is not None:
+        if member2 is None:
+            member2 = member1
+            member1 = ctx.author
+        if member2 != member1:
+            # print(list(matches.items()))
+            if member1.id not in racers[ctx.guild.id].keys() and member1.id not in racers[ctx.guild.id].values():
+                if member2.id not in racers[ctx.guild.id].keys() and member2.id not in racers[ctx.guild.id].values():
+                    
+                    codeGenerator = random.randint(000000, 999999)
+                    while codeGenerator in raceCode[ctx.guild.id].values():
+                        codeGenerator = random.randint(000000, 999999)
+
+                    raceCode[ctx.guild.id][member1.id] = codeGenerator
+                    raceCode[ctx.guild.id][member2.id] = raceCode[ctx.guild.id][member1.id]
+
+                    if codeGenerator not in raceTrack[ctx.guild.id]:
+                        raceTrack[ctx.guild.id][codeGenerator] = {}
+
+                    carList1 = ["🏍️","🚗","🚓","🚌","🚑","🚚"]
+                    carList2 = ["🛵","🚙","🏎️","🚎","🚒","🚛"]
+                    choosed = random.choice(carList1)
+                    for cars in carList1:
+                        if cars == choosed:
+                            carLength = len(cars)
+
+                    raceTrack[ctx.guild.id][codeGenerator][member1.id] = {}
+                    raceTrack[ctx.guild.id][codeGenerator][member2.id] = {}
+
+                    raceTrack[ctx.guild.id][codeGenerator][member1.id]["vehicle"] = carList1[carLength]
+                    raceTrack[ctx.guild.id][codeGenerator][member2.id]["vehicle"] = carList2[carLength]
+
+                    raceTrack[ctx.guild.id][codeGenerator][member1.id]["position"] = 1
+                    raceTrack[ctx.guild.id][codeGenerator][member2.id]["position"] = 1
+
+                    await ctx.send(f"🏍️ Vehicle Racing 🏁")
+                    await ctx.send(f"🟦⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜")
+                    raceTrack[ctx.guild.id][codeGenerator][member1.id]["RaceTrack"] = await ctx.send(f"🏁⬛⬛⬛⬛⬛⬛⬛⬛⬛{raceTrack[ctx.guild.id][codeGenerator][member1.id]['vehicle']}")
+                    raceTrack[ctx.guild.id][codeGenerator][member2.id]["RaceTrack"] = await ctx.send(f"🏁⬛⬛⬛⬛⬛⬛⬛⬛⬛{raceTrack[ctx.guild.id][codeGenerator][member2.id]['vehicle']}")
+                    await ctx.send(f"🟦⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜")
+                    await ctx.send(f"{member1.mention} is {raceTrack[ctx.guild.id][codeGenerator][member1.id]['vehicle']} and {member2.mention} is {raceTrack[ctx.guild.id][codeGenerator][member2.id]['vehicle']}")
+                    await ctx.send(f"UpperOne Counting is For {member1.mention} and LowerOne Counting is For {member2.mention}, Send the Numbers in This Channel to Move Forward before they Change")                    
+                    raceTrack[ctx.guild.id][codeGenerator][member1.id]["board"] = await ctx.send(f"{member1.mention} - ``")
+                    raceTrack[ctx.guild.id][codeGenerator][member2.id]["board"] = await ctx.send(f"{member2.mention} - ``")
+                    raceTrack[ctx.guild.id][codeGenerator][member1.id]["letters"] = ""
+                    raceTrack[ctx.guild.id][codeGenerator][member2.id]["letters"] = ""
+
+                    racers[ctx.guild.id][member1.id] = member2.id
+
+                    alphabets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+                    while member1.id in racers[ctx.guild.id].keys() and member2.id in racers[ctx.guild.id].values():
+                        await asyncio.sleep(0.7)
+                        race1letter = random.choice(alphabets)
+                        race2letter = random.choice(alphabets)
+                        raceTrack[ctx.guild.id][codeGenerator][member1.id]["letters"] = race1letter
+                        raceTrack[ctx.guild.id][codeGenerator][member2.id]["letters"] = race1letter
+                        await raceTrack[ctx.guild.id][codeGenerator][member1.id]["board"].edit(content=f"{member1.mention} - `{race1letter}`")
+                        await raceTrack[ctx.guild.id][codeGenerator][member2.id]["board"].edit(content=f"{member1.mention} - `{race2letter}`")
+
+                else:
+                    await ctx.send(f":exclamation: {member2.mention} is Already in a Vehicle Race in this Server")
+            else:
+                if member1 == ctx.author:
+                    await ctx.send(f":exclamation: {ctx.author.mention} You are Already in a Vehicle Race in this Server, use `>racestop` to Stop your Current Match")
+                else:
+                    await ctx.send(f":exclamation: {member1.mention} is Already in a Vehicle Race in this Server")
+        else:
+            if member2 == ctx.author and member1 == ctx.author:
+                await ctx.send(f":exclamation: {ctx.author.mention} You Cannot Play With Yourself, There must be Two Players to Play TicTacToe")
+            else:
+                await ctx.send(f":exclamation: {ctx.author.mention} Single Player Cannot Play with Himself/Herself, There must be Two Players")
+    else:
+        await ctx.send(f":exclamation: {ctx.author.mention} You are Using The Command Wrong, Use `>help race` to get help related with the Command")
+
+racehelp = f"{prefix}race [First Player] <Second Player>"
+
+@bot.command()
+async def racestop(ctx):
+    global racers, raceCode, raceTrack
+    try:
+        if ctx.author.id in racers[ctx.guild.id].keys() or ctx.author.id in racers[ctx.guild.id].values():
+            await ctx.send(f"{ctx.author.mention} Your Vehicle Race has been Stopped")
+            
+            if ctx.author.id in racers[ctx.guild.id].keys():
+                player1 = ctx.author.id
+                player2 = racers[ctx.guild.id][player1]
+            elif ctx.author.id in racers[ctx.guild.id].values():
+                for id in racers[ctx.guild.id].values():
+                    if racers[ctx.guild.id][id] == ctx.author.id:
+                        player1 = id
+                        player2 = racers[ctx.guild.id][id]
+            code = raceCode[ctx.guild.id][ctx.author.id]
+            del racers[ctx.guild.id][player1]
+            del racers[ctx.guild.id][player2]
+            del raceCode[ctx.guild.id][player1]
+            del raceCode[ctx.guild.id][player2]
+            del raceTrack[ctx.guild.id][code]
+        else:
+            await ctx.send(f":exclamation: {ctx.author.mention} You are Not in any Vehicle Race in this Server")
+    except Exception as e:
+        print(e)
+        pass
+
+@bot.listen()
+async def on_message(message):
+    global racers, raceCode, raceTrack
+    try:
+        if message.author.id in racers[message.guild.id].keys() or message.author.id in racers[message.guild.id].values():            
+            if message.author.id in racers[message.guild.id].keys():
+                player1 = message.author.id
+                player2 = racers[message.guild.id][player1]
+            elif message.author.id in racers[message.guild.id].values():
+                for id in racers[message.guild.id].values():
+                    if racers[message.guild.id][id] == message.author.id:
+                        player1 = id
+                        player2 = racers[message.guild.id][id]
+            CODE = raceCode[message.guild.id][message.author.id]
+            if message.author.id == player1:
+                if message.content.lower() == raceTrack[message.guild.id][CODE][player1]["letters"]:
+                    raceTrack[message.guild.id][CODE][player1]["position"] += 1
+                    if raceTrack[message.guild.id][CODE][player1]["position"] == 2:
+                        await raceTrack[message.guild.id][CODE][player1]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player1]['vehicle']}⬛")
+                    if raceTrack[message.guild.id][CODE][player1]["position"] == 3:
+                        await raceTrack[message.guild.id][CODE][player1]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player1]['vehicle']}⬛⬛")
+                    if raceTrack[message.guild.id][CODE][player1]["position"] == 4:
+                        await raceTrack[message.guild.id][CODE][player1]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player1]['vehicle']}⬛⬛⬛")
+                    if raceTrack[message.guild.id][CODE][player1]["position"] == 5:
+                        await raceTrack[message.guild.id][CODE][player1]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player1]['vehicle']}⬛⬛⬛⬛")
+                    if raceTrack[message.guild.id][CODE][player1]["position"] == 6:
+                        await raceTrack[message.guild.id][CODE][player1]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player1]['vehicle']}⬛⬛⬛⬛⬛")
+                    if raceTrack[message.guild.id][CODE][player1]["position"] == 7:
+                        await raceTrack[message.guild.id][CODE][player1]["RaceTrack"].edit(content=f"🏁⬛⬛⬛{raceTrack[message.guild.id][CODE][player1]['vehicle']}⬛⬛⬛⬛⬛⬛")
+                    if raceTrack[message.guild.id][CODE][player1]["position"] == 8:
+                        await raceTrack[message.guild.id][CODE][player1]["RaceTrack"].edit(content=f"🏁⬛⬛{raceTrack[message.guild.id][CODE][player1]['vehicle']}⬛⬛⬛⬛⬛⬛⬛")
+                    if raceTrack[message.guild.id][CODE][player1]["position"] == 9:
+                        await raceTrack[message.guild.id][CODE][player1]["RaceTrack"].edit(content=f"🏁⬛{raceTrack[message.guild.id][CODE][player1]['vehicle']}⬛⬛⬛⬛⬛⬛⬛⬛")
+                    if raceTrack[message.guild.id][CODE][player1]["position"] == 10:
+                        await raceTrack[message.guild.id][CODE][player1]["RaceTrack"].edit(content=f"🏁{raceTrack[message.guild.id][CODE][player1]['vehicle']}⬛⬛⬛⬛⬛⬛⬛⬛⬛")
+                        asyncio.sleep(2)
+                        await message.channel.send(f"<@{player1}> Won the Vehicle Race From <@{player2}>")
+                        del racers[message.guild.id][player1]
+                        del racers[message.guild.id][player2]
+                        del raceCode[message.guild.id][player1]
+                        del raceCode[message.guild.id][player2]
+                        del raceTrack[message.guild.id][CODE]
+            if message.author.id == player2:
+                if message.content.lower() == raceTrack[message.guild.id][CODE][player2]["letters"]:
+                    raceTrack[message.guild.id][CODE][player2]["position"] += 1
+                    if raceTrack[message.guild.id][CODE][player2]["position"] == 2:
+                        await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛")
+                    if raceTrack[message.guild.id][CODE][player2]["position"] == 3:
+                        await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛⬛")
+                    if raceTrack[message.guild.id][CODE][player2]["position"] == 4:
+                        await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛⬛⬛")
+                    if raceTrack[message.guild.id][CODE][player2]["position"] == 5:
+                        await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛⬛⬛⬛")
+                    if raceTrack[message.guild.id][CODE][player2]["position"] == 6:
+                        await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛⬛⬛⬛⬛")
+                    if raceTrack[message.guild.id][CODE][player2]["position"] == 7:
+                        await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁⬛⬛⬛{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛⬛⬛⬛⬛⬛")
+                    if raceTrack[message.guild.id][CODE][player2]["position"] == 8:
+                        await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁⬛⬛{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛⬛⬛⬛⬛⬛⬛")
+                    if raceTrack[message.guild.id][CODE][player2]["position"] == 9:
+                        await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁⬛{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛⬛⬛⬛⬛⬛⬛⬛")
+                    if raceTrack[message.guild.id][CODE][player2]["position"] == 10:
+                        await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛⬛⬛⬛⬛⬛⬛⬛⬛")
+                        asyncio.sleep(2)
+                        await message.channel.send(f"<@{player2}> Won the Vehicle Race From <@{player1}>")
+                        del racers[message.guild.id][player1]
+                        del racers[message.guild.id][player2]
+                        del raceCode[message.guild.id][player1]
+                        del raceCode[message.guild.id][player2]
+                        del raceTrack[message.guild.id][CODE]
+    except Exception as e:
+        print(e)
+        pass
+
 active = {}
 gamingChannel = {}
 
