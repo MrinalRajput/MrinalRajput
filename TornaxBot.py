@@ -680,9 +680,8 @@ timerstophelp = f"{prefix}timerstop"
 
 @bot.command()
 async def ping(ctx):
-    t = await ctx.send(f"Pong!")
-    latency = (t.timestamp - ctx.message.timestamp).total_seconds() * 1000
-    await t.edit(content = f"Pong! Latency is `{int(round(latency))}ms`")
+    msg = await ctx.send(f"Pong!")
+    await msg.edit(content = f"Pong! Latency is `{int(round(bot.latency * 1000))}ms`")
 
 pinghelp = f"{prefix}ping"
 
