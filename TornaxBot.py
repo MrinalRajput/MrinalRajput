@@ -892,7 +892,7 @@ async def on_message(message):
                         await raceTrack[message.guild.id][CODE][player1]["RaceTrack"].edit(content=f"🏁⬛{raceTrack[message.guild.id][CODE][player1]['vehicle']}⬛⬛⬛⬛⬛⬛⬛⬛")
                     if raceTrack[message.guild.id][CODE][player1]["position"] == 10:
                         await raceTrack[message.guild.id][CODE][player1]["RaceTrack"].edit(content=f"🏁{raceTrack[message.guild.id][CODE][player1]['vehicle']}⬛⬛⬛⬛⬛⬛⬛⬛⬛")
-                        asyncio.sleep(2)
+                        await asyncio.sleep(2)
                         await message.channel.send(f"<@{player1}> Won the Vehicle Race From <@{player2}>")
                         del racers[message.guild.id][player1]
                         del racers[message.guild.id][player2]
@@ -920,7 +920,7 @@ async def on_message(message):
                         await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁⬛{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛⬛⬛⬛⬛⬛⬛⬛")
                     if raceTrack[message.guild.id][CODE][player2]["position"] == 10:
                         await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛⬛⬛⬛⬛⬛⬛⬛⬛")
-                        asyncio.sleep(2)
+                        await asyncio.sleep(2)
                         await message.channel.send(f"<@{player2}> Won the Vehicle Race From <@{player1}>")
                         del racers[message.guild.id][player1]
                         del racers[message.guild.id][player2]
