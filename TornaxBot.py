@@ -686,7 +686,7 @@ pinghelp = f"{prefix}ping"
 @bot.command()
 async def invite(ctx):
     inviteEmbed = discord.Embed(title="Invite Tornax", description="Hey! Invite Tornax Now to Your Server For Server Management, Moderation, Auto Moderation and Fun\n[Invite Now](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=536870911991&scope=bot)", color=embedTheme)
-    inviteEmbed.set_thumbnail(bot.user.avatar_url)
+    inviteEmbed.set_thumbnail(url=bot.user.avatar_url)
     await ctx.send(embed=inviteEmbed)
 
 invitehelp = f"{prefix}invite"
@@ -1841,7 +1841,7 @@ async def on_message(message):
         servers = list(bot.guilds)
         print(servers)
 
-restricted_words = ["gooh","kutta","kutte","harami","skyra","wtf","fuck","fuk","tatti","baap","stfu"]
+restricted_words = ["harami","wtf","fuck","fuk","baap ","stfu"]
 
 @bot.listen()
 async def on_message(message):
