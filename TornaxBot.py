@@ -7,6 +7,7 @@ import random
 from typing import Optional
 import json
 import time
+from mcstatus import MinecraftServer
 
 from discord.ext.commands import has_permissions,has_role,MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError
 from discord.member import Member
@@ -690,6 +691,21 @@ async def invite(ctx):
     await ctx.send(embed=inviteEmbed)
 
 invitehelp = f"{prefix}invite"
+
+@bot.command()
+async def mcserver(ctx, server: Optional[str]=None):
+    if server is not None:
+        mcServer = MinecraftServer.lookup(server)
+        status = mcServer.status()
+        latency = mcServer.ping()
+        mcEmbed = discord.Embed(title=f"Looking For {mcServer}", color=embedTheme)
+        mcEmbed.add_field(name="Players Online", value=f"{status.players.online}", inline = False)
+        mcEmbed.add_field(name="Server Pings", value=f"`{latency}ms`", inline = False)
+        await ctx.send(embed=mcEmbed)
+    else:
+        await ctx.reply("You Must Specify the Server Whose Detail You want to See")
+
+mcserverhelp = f"{prefix}mcserver <Server>"
 
 @bot.command()
 @commands.bot_has_permissions(send_messages=True)
@@ -1706,7 +1722,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gparticipate, gquit, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
-        myEmbed.add_field(name="Fun",value=" slap, kill, punch, tictactoe, tttstop, guess \n----------------------\n", inline=False)
+        myEmbed.add_field(name="Fun",value=" slap, kill, punch, tictactoe, tttstop, guess, mcserver \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{prefix}`\n > Command Usage Example :   `{prefix}info`\n\n----------------------", inline=False)
         myEmbed.add_field(name="Readme", value=f"`{prefix}help` Shows this Message, use `{prefix}help [command]` to get more information about that Command\n\n")
         myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creater}")
@@ -1760,6 +1776,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "tictactoe": content=tictactoehelp
         elif anycommand == "tttstop": content=tttstophelp
         elif anycommand == "guess": content=guesshelp
+        elif anycommand == "mcserver": content=mcserverhelp
         elif anycommand == "help": content=helphelp
         commandEmbed = discord.Embed(description=f"{content}",color=embedTheme)
         await ctx.send(embed=commandEmbed)
