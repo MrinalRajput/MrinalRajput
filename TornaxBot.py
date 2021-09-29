@@ -1848,6 +1848,7 @@ async def on_message(message):
     if not message.author.bot:
         for word in restricted_words:
             if word in message.content.lower():
+                message.delete()
                 await message.channel.send(f":exclamation: The Word you are Using is Not Allowed in this Server {message.author.mention}",delete_after=8)
 
 bot.run(TOKEN)
