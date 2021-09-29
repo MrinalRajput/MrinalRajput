@@ -801,9 +801,13 @@ async def race(ctx, member1: Optional[discord.Member]=None, member2: Optional[di
                     while member1.id in racers[ctx.guild.id].keys() and member2.id in racers[ctx.guild.id].values():
                         await asyncio.sleep(1)
                         race1letter = random.choice(alphabets)
+                        while race1letter == raceTrack[ctx.guild.id][codeGenerator][member1.id]["letters"]:
+                            race1letter = random.choice(alphabets)
                         race2letter = random.choice(alphabets)
+                        while race2letter == raceTrack[ctx.guild.id][codeGenerator][member2.id]["letters"]:
+                            race2letter = random.choice(alphabets)
                         raceTrack[ctx.guild.id][codeGenerator][member1.id]["letters"] = race1letter
-                        raceTrack[ctx.guild.id][codeGenerator][member2.id]["letters"] = race1letter
+                        raceTrack[ctx.guild.id][codeGenerator][member2.id]["letters"] = race2letter
                         await raceTrack[ctx.guild.id][codeGenerator][member1.id]["board"].edit(content=f"{member1.mention} - `{race1letter}`")
                         await raceTrack[ctx.guild.id][codeGenerator][member2.id]["board"].edit(content=f"{member2.mention} - `{race2letter}`")
 
