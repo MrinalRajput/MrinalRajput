@@ -15,8 +15,6 @@ prefix = ">"
 
 bot = commands.Bot(command_prefix = f"{prefix}",case_insensitive=True ,help_command=None)
 
-restricted_words = ["gooh","kutta","kutte","harami","skyra","wtf","fuck","fuk","tatti","baap","stfu"]
-
 TOKEN = "ODMyODk3NjAyNzY4MDc2ODE2.YHqeVg.yfzVgB8hHizDFH7hSMTORIv5weg"
 
 embedTheme = discord.Color.from_rgb(255, 255, 0)
@@ -688,6 +686,7 @@ pinghelp = f"{prefix}ping"
 @bot.command()
 async def invite(ctx):
     inviteEmbed = discord.Embed(title="Invite Tornax", description="Hey! Invite Tornax Now to Your Server For Server Management, Moderation, Auto Moderation and Fun\n[Invite Now](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=536870911991&scope=bot)", color=embedTheme)
+    inviteEmbed.set_thumbnail(bot.user.avatar_url)
     await ctx.send(embed=inviteEmbed)
 
 invitehelp = f"{prefix}invite"
@@ -1842,13 +1841,13 @@ async def on_message(message):
         servers = list(bot.guilds)
         print(servers)
 
+restricted_words = ["gooh","kutta","kutte","harami","skyra","wtf","fuck","fuk","tatti","baap","stfu"]
+
 @bot.listen()
 async def on_message(message):
-    message.content = message.content.lower()
     if not message.author.bot:
         for word in restricted_words:
-            if message.content.count(word)>0:
-                await message.channel.purge(limit = 1)
+            if word in message.content.lower():
                 await message.channel.send(f":exclamation: The Word you are Using is Not Allowed in this Server {message.author.mention}",delete_after=8)
 
 bot.run(TOKEN)
