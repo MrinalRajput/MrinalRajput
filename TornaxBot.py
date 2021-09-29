@@ -2031,32 +2031,33 @@ async def on_message(message):
 
     if message.content is not None:
         if not message.author.bot:
-            # print(f'Count:{count[message.guild.id][message.author.id]["counting"]}",f"Strikes:{count[message.guild.id][message.author.id]["strikes"]}')
-            
-            if count[message.guild.id][message.author.id]["counting"] == True:
-                count[message.guild.id][message.author.id]["strikes"] += 1
-            if count[message.guild.id][message.author.id]["strikes"] > 3:
-                await message.channel.send(f":exclamation: {message.author.mention} You are Sending Message So Quickly, Slowdown your Speed")
-                count[message.guild.id][message.author.id]["warnings"] += 1
-                if count[message.guild.id][message.author.id]["warnings"] >= 3:
-                    try:
-                        mutedRole = discord.utils.get(message.guild.roles, name="Muted")
-                        if not mutedRole:
-                            mutedRole = await message.guild.create_role(name="Muted")
+            if message.author.id not in racers[message.guild.id].keys() and message.author.id not in racers[message.guild.id].values():
+                # print(f'Count:{count[message.guild.id][message.author.id]["counting"]}",f"Strikes:{count[message.guild.id][message.author.id]["strikes"]}')
+                
+                if count[message.guild.id][message.author.id]["counting"] == True:
+                    count[message.guild.id][message.author.id]["strikes"] += 1
+                if count[message.guild.id][message.author.id]["strikes"] > 3:
+                    await message.channel.send(f":exclamation: {message.author.mention} You are Sending Message So Quickly, Slowdown your Speed")
+                    count[message.guild.id][message.author.id]["warnings"] += 1
+                    if count[message.guild.id][message.author.id]["warnings"] >= 3:
+                        try:
+                            mutedRole = discord.utils.get(message.guild.roles, name="Muted")
+                            if not mutedRole:
+                                mutedRole = await message.guild.create_role(name="Muted")
 
-                            for channel in message.guild.channels:
-                                await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False)
-                        await message.author.add_roles(mutedRole)
-                        embed = discord.Embed(description = f"** {message.author.mention} has been Muted by {bot.user.mention} for `15` Seconds \n\t With the Reason of :\t Spamming**",color=embedTheme)
-                        await message.channel.send(embed=embed)
-                        count[message.guild.id][message.author.id]["warnings"] = 0
-                        await asyncio.sleep(15)
-                        await message.author.remove_roles(mutedRole)
-                    except:
-                        count[message.guild.id][message.author.id]["warnings"] = 0
-                        pass
+                                for channel in message.guild.channels:
+                                    await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False)
+                            await message.author.add_roles(mutedRole)
+                            embed = discord.Embed(description = f"** {message.author.mention} has been Muted by {bot.user.mention} for `15` Seconds \n\t With the Reason of :\t Spamming**",color=embedTheme)
+                            await message.channel.send(embed=embed)
+                            count[message.guild.id][message.author.id]["warnings"] = 0
+                            await asyncio.sleep(15)
+                            await message.author.remove_roles(mutedRole)
+                        except:
+                            count[message.guild.id][message.author.id]["warnings"] = 0
+                            pass
 
-                count[message.guild.id][message.author.id]["strikes"] = 0
+                    count[message.guild.id][message.author.id]["strikes"] = 0
     
 
 @bot.listen()
