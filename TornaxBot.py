@@ -699,8 +699,6 @@ async def mcjava(ctx, server: Optional[str]=None):
             if "." in server:
                 mcServer = MinecraftServer.lookup(server)
                 status = mcServer.status()
-                query = mcServer.query()
-                print(query)
                 mcEmbed = discord.Embed(title=f"Looking For {server}", color=embedTheme)
                 mcEmbed.add_field(name="Players Online", value=f"{status.players.online}", inline = False)
                 mcEmbed.add_field(name="Server Pings", value=f"`{round(status.latency)}ms`", inline = False)
@@ -723,8 +721,6 @@ async def mcbedrock(ctx, server: Optional[str]=None):
             if "." in server:
                 mcServer = MinecraftBedrockServer.lookup(server)
                 status = mcServer.status()
-                query = mcServer.query()
-                print(query)
                 mcEmbed = discord.Embed(title=f"Looking For {server}", color=embedTheme)
                 mcEmbed.add_field(name="Players Online", value=f"{status.players.online}", inline = False)
                 mcEmbed.add_field(name="Server Pings", value=f"`{round(status.latency)}ms`", inline = False)
