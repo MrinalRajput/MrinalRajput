@@ -678,11 +678,10 @@ async def timerstop(ctx):
 timerstophelp = f"{prefix}timerstop"
 
 @bot.command()
-async def ping(ctx, toping:Optional[discord.Member]=None):
-    await ctx.message.delete()
-    await ctx.send(toping.mention if toping is not None else ctx.author.mention)
+async def ping(ctx):
+    await ctx.send(f"Pong! Latency is `{bot.latency}`")
 
-pinghelp = f"{prefix}ping [whom to ping]"
+pinghelp = f"{prefix}ping"
 
 @bot.command()
 @commands.bot_has_permissions(send_messages=True)
@@ -692,17 +691,14 @@ async def time(ctx):
 
 timehelp = f"{prefix}time"
 
-@bot.command()
+@bot.command(aliases="announce")
 async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
     if channel is None:
         channel = ctx.channel
-    if '@everyone' in msg or '@here' in msg:
-        if ctx.author.guild_permissions.mention_everyone:
-            await channel.send(msg)
-        else:
-            await ctx.reply(f"Only Admins Can Use `@everyone` or `@here` in this Command")
-    else:
+    if ctx.author.guild_permissions.administrator:
         await channel.send(msg)
+    else:
+        await ctx.reply(f"You don't have Permissions to do that, Only Admins Can Use the Command")
 
 tellhelp = f"{prefix}tell [channel] <message>"
 
