@@ -695,17 +695,20 @@ invitehelp = f"{prefix}invite"
 @bot.command()
 async def mcserver(ctx, server: Optional[str]=None):
     if server is not None:
-        mcServer = MinecraftServer.lookup(server)
-        status = mcServer.status()
-        mcEmbed = discord.Embed(title=f"Looking For {server}", color=embedTheme)
-        mcEmbed.add_field(name="Players Online", value=f"{status.players.online}", inline = False)
-        mcEmbed.add_field(name="Server Pings", value=f"`{status.latency}ms`", inline = False)
-        mcEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author}")
-        await ctx.send(embed=mcEmbed)
+        if "." in server:
+            mcServer = MinecraftServer.lookup(server)
+            status = mcServer.status()
+            mcEmbed = discord.Embed(title=f"Looking For {server}", color=embedTheme)
+            mcEmbed.add_field(name="Players Online", value=f"{status.players.online}", inline = False)
+            mcEmbed.add_field(name="Server Pings", value=f"`{round(status.latency)}ms`", inline = False)
+            mcEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author}")
+            await ctx.send(embed=mcEmbed)
+        else:
+            await ctx.reply("You can Search a Server by its Ip not by Name")
     else:
         await ctx.reply("You Must Specify the Server Whose Detail You want to See")
 
-mcserverhelp = f"{prefix}mcserver <Server>"
+mcserverhelp = f"{prefix}mcserver <Server Ip>"
 
 @bot.command()
 @commands.bot_has_permissions(send_messages=True)
