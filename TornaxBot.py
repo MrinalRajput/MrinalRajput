@@ -716,23 +716,23 @@ mcjavahelp = f"{prefix}mcjava <Minecaft Java Server Ip>"
 
 @bot.command()
 async def mcbedrock(ctx, server: Optional[str]=None):
-    try:
-        if server is not None:
-            if "." in server:
-                mcServer = MinecraftBedrockServer.lookup(server)
-                status = mcServer.status()
-                mcEmbed = discord.Embed(title=f"Looking For {server}", color=embedTheme)
-                mcEmbed.add_field(name="Players Online", value=f"{status.players.online}", inline = False)
-                mcEmbed.add_field(name="Server Pings", value=f"`{round(status.latency)}ms`", inline = False)
-                mcEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author}")
-                await ctx.send(embed=mcEmbed)
-            else:
-                await ctx.reply("You can Search a Server by its Ip not by Name")
+    # try:
+    if server is not None:
+        if "." in server:
+            mcServer = MinecraftBedrockServer.lookup(server)
+            status = mcServer.status()
+            mcEmbed = discord.Embed(title=f"Looking For {server}", color=embedTheme)
+            mcEmbed.add_field(name="Players Online", value=f"{status.players.online}", inline = False)
+            mcEmbed.add_field(name="Server Pings", value=f"`{round(status.latency)}ms`", inline = False)
+            mcEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author}")
+            await ctx.send(embed=mcEmbed)
         else:
-            await ctx.reply("You Must Specify the Server Whose Detail You want to See")
-    except Exception as e:
-        print(e)
-        await ctx.reply(f"The Server You are Looking For Does Not Exist, Recheck The Server IP")
+            await ctx.reply("You can Search a Server by its Ip not by Name")
+    else:
+        await ctx.reply("You Must Specify the Server Whose Detail You want to See")
+    # except Exception as e:
+    #     print(e)
+    #     await ctx.reply(f"The Server You are Looking For Does Not Exist, Recheck The Server IP")
 
 mcbedrockhelp = f"{prefix}mcbedrock <Minecaft Bedrock Server Ip>"
 
