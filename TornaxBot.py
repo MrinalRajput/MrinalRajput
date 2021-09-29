@@ -799,13 +799,13 @@ async def race(ctx, member1: Optional[discord.Member]=None, member2: Optional[di
                     alphabets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
                     while member1.id in racers[ctx.guild.id].keys() and member2.id in racers[ctx.guild.id].values():
-                        await asyncio.sleep(0.7)
+                        await asyncio.sleep(1)
                         race1letter = random.choice(alphabets)
                         race2letter = random.choice(alphabets)
                         raceTrack[ctx.guild.id][codeGenerator][member1.id]["letters"] = race1letter
                         raceTrack[ctx.guild.id][codeGenerator][member2.id]["letters"] = race1letter
                         await raceTrack[ctx.guild.id][codeGenerator][member1.id]["board"].edit(content=f"{member1.mention} - `{race1letter}`")
-                        await raceTrack[ctx.guild.id][codeGenerator][member2.id]["board"].edit(content=f"{member1.mention} - `{race2letter}`")
+                        await raceTrack[ctx.guild.id][codeGenerator][member2.id]["board"].edit(content=f"{member2.mention} - `{race2letter}`")
 
                 else:
                     await ctx.send(f":exclamation: {member2.mention} is Already in a Vehicle Race in this Server")
