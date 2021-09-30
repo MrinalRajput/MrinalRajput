@@ -2028,7 +2028,7 @@ async def on_message(message):
     if message.content is not None:
         if not message.author.bot:
             if message.guild.id not in racers:
-                racers[message.guild.if] = {}
+                racers[message.guild.id] = {}
             if message.author.id not in racers[message.guild.id].keys() and message.author.id not in racers[message.guild.id].values():
                 # print(f'Count:{count[message.guild.id][message.author.id]["counting"]}",f"Strikes:{count[message.guild.id][message.author.id]["strikes"]}')
                 
