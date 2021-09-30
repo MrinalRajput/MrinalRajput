@@ -766,18 +766,14 @@ async def race(ctx, member1: Optional[discord.Member]=None, member2: Optional[di
                     if codeGenerator not in raceTrack[ctx.guild.id]:
                         raceTrack[ctx.guild.id][codeGenerator] = {}
 
-                    carList1 = ["🏍️","🚗","🚓","🚌","🚑","🚚"]
-                    carList2 = ["🛵","🚙","🏎️","🚎","🚒","🚛"]
-                    choosed = random.choice(carList1)
-                    for cars in carList1:
-                        if cars == choosed:
-                            carLength = len(cars)
+                    carList = {"🏍️":"🛵","🚗":"🚙","🚓":"🏎️","🚌":"🚎","🚑":"🚒","🚚":"🚛"}
+                    choosed = random.choice(list(carList.keys()))
 
                     raceTrack[ctx.guild.id][codeGenerator][member1.id] = {}
                     raceTrack[ctx.guild.id][codeGenerator][member2.id] = {}
 
-                    raceTrack[ctx.guild.id][codeGenerator][member1.id]["vehicle"] = carList1[carLength]
-                    raceTrack[ctx.guild.id][codeGenerator][member2.id]["vehicle"] = carList2[carLength]
+                    raceTrack[ctx.guild.id][codeGenerator][member1.id]["vehicle"] = choosed
+                    raceTrack[ctx.guild.id][codeGenerator][member2.id]["vehicle"] = carList[choosed]
 
                     raceTrack[ctx.guild.id][codeGenerator][member1.id]["position"] = 1
                     raceTrack[ctx.guild.id][codeGenerator][member2.id]["position"] = 1
@@ -899,7 +895,7 @@ async def on_message(message):
                         del raceCode[message.guild.id][player1]
                         del raceCode[message.guild.id][player2]
                         del raceTrack[message.guild.id][CODE]
-            if message.author.id == player2:
+            elif message.author.id == player2:
                 if message.content.lower() == raceTrack[message.guild.id][CODE][player2]["letters"]:
                     raceTrack[message.guild.id][CODE][player2]["position"] += 1
                     if raceTrack[message.guild.id][CODE][player2]["position"] == 2:
@@ -2017,7 +2013,7 @@ async def on_message(message):
 
 @bot.listen()
 async def on_message(message):
-    global count
+    global count, racers
     if message.guild.id not in count:
         count[message.guild.id]  = {}
     if message.author.id not in count[message.guild.id]:
@@ -2031,6 +2027,8 @@ async def on_message(message):
 
     if message.content is not None:
         if not message.author.bot:
+            if message.guild.id not in racers:
+                racers[message.guild.if] = {}
             if message.author.id not in racers[message.guild.id].keys() and message.author.id not in racers[message.guild.id].values():
                 # print(f'Count:{count[message.guild.id][message.author.id]["counting"]}",f"Strikes:{count[message.guild.id][message.author.id]["strikes"]}')
                 
