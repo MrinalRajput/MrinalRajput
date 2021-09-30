@@ -837,7 +837,7 @@ async def racestop(ctx):
             elif ctx.author.id in racers[ctx.guild.id].values():
                 print(2)
                 for id in racers[ctx.guild.id].values():
-                    print(3)
+                    print(3, racers[ctx.guild.id])
                     if racers[ctx.guild.id][id] == ctx.author.id:
                         print(4)
                         player1 = id
