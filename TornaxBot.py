@@ -829,11 +829,12 @@ async def racestop(ctx):
     global racers, raceCode, raceTrack
     try:
         if ctx.author.id in racers[ctx.guild.id].keys() or ctx.author.id in racers[ctx.guild.id].values():
+            await ctx.send(f"{ctx.author.mention} Your Vehicle Race has been Stopped")
             if ctx.author.id in racers[ctx.guild.id].keys():
                 player1 = ctx.author.id
                 player2 = racers[ctx.guild.id][player1]
             elif ctx.author.id in racers[ctx.guild.id].values():
-                for id in racers[ctx.guild.id].keys():
+                for id in list(racers[ctx.guild.id].keys()):
                     if racers[ctx.guild.id][id] == ctx.author.id:
                         player1 = id
                         player2 = racers[ctx.guild.id][id]
@@ -841,10 +842,9 @@ async def racestop(ctx):
             del racers[ctx.guild.id][player1]
             del racers[ctx.guild.id][player2]
             del raceCode[ctx.guild.id][player1]
-            del raceCode[ctx.guild.id][player2]
+            del raceCode[ctx.guild.id][player2]     
             del raceTrack[ctx.guild.id][code]
 
-            await ctx.send(f"{ctx.author.mention} Your Vehicle Race has been Stopped")
         else:
             await ctx.send(f":exclamation: {ctx.author.mention} You are Not in any Vehicle Race in this Server")
     except Exception as e:
@@ -862,7 +862,7 @@ async def on_message(message):
                 player1 = message.author.id
                 player2 = racers[message.guild.id][player1]
             elif message.author.id in racers[message.guild.id].values():
-                for id in racers[message.guild.id].keys():
+                for id in list(racers[message.guild.id].keys()):
                     if racers[message.guild.id][id] == message.author.id:
                         player1 = id
                         player2 = racers[message.guild.id][id]
