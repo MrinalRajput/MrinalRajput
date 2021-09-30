@@ -866,6 +866,7 @@ async def on_message(message):
                     if racers[message.guild.id][id] == message.author.id:
                         player1 = id
                         player2 = racers[message.guild.id][id]
+            print(0)
             CODE = raceCode[message.guild.id][message.author.id]
             if message.author.id == player1:
                 if message.content.lower() == raceTrack[message.guild.id][CODE][player1]["letters"]:
@@ -896,9 +897,12 @@ async def on_message(message):
                         del raceCode[message.guild.id][player2]
                         del raceTrack[message.guild.id][CODE]
             elif message.author.id == player2:
+                print(1)
                 if message.content.lower() == raceTrack[message.guild.id][CODE][player2]["letters"]:
+                    print(2)
                     raceTrack[message.guild.id][CODE][player2]["position"] += 1
                     if raceTrack[message.guild.id][CODE][player2]["position"] == 2:
+                        print(3)
                         await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛")
                     if raceTrack[message.guild.id][CODE][player2]["position"] == 3:
                         await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛⬛")
