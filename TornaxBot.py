@@ -829,8 +829,6 @@ async def racestop(ctx):
     global racers, raceCode, raceTrack
     try:
         if ctx.author.id in racers[ctx.guild.id].keys() or ctx.author.id in racers[ctx.guild.id].values():
-            await ctx.send(f"{ctx.author.mention} Your Vehicle Race has been Stopped")
-            
             if ctx.author.id in racers[ctx.guild.id].keys():
                 player1 = ctx.author.id
                 player2 = racers[ctx.guild.id][player1]
@@ -845,6 +843,8 @@ async def racestop(ctx):
             del raceCode[ctx.guild.id][player1]
             del raceCode[ctx.guild.id][player2]
             del raceTrack[ctx.guild.id][code]
+
+            await ctx.send(f"{ctx.author.mention} Your Vehicle Race has been Stopped")
         else:
             await ctx.send(f":exclamation: {ctx.author.mention} You are Not in any Vehicle Race in this Server")
     except Exception as e:
