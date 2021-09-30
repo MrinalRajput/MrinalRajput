@@ -829,18 +829,12 @@ async def racestop(ctx):
     global racers, raceCode, raceTrack
     try:
         if ctx.author.id in racers[ctx.guild.id].keys() or ctx.author.id in racers[ctx.guild.id].values():
-            print(0)
             if ctx.author.id in racers[ctx.guild.id].keys():
-                print(1)
                 player1 = ctx.author.id
                 player2 = racers[ctx.guild.id][player1]
             elif ctx.author.id in racers[ctx.guild.id].values():
-                print(2)
-                for id in racers[ctx.guild.id].values():
-                    print(3, racers[ctx.guild.id])
-                    print(id)
+                for id in racers[ctx.guild.id].keys():
                     if racers[ctx.guild.id][id] == ctx.author.id:
-                        print(4)
                         player1 = id
                         player2 = racers[ctx.guild.id][id]
             code = raceCode[ctx.guild.id][ctx.author.id]
@@ -868,7 +862,7 @@ async def on_message(message):
                 player1 = message.author.id
                 player2 = racers[message.guild.id][player1]
             elif message.author.id in racers[message.guild.id].values():
-                for id in racers[message.guild.id].values():
+                for id in racers[message.guild.id].keys():
                     if racers[message.guild.id][id] == message.author.id:
                         player1 = id
                         player2 = racers[message.guild.id][id]
