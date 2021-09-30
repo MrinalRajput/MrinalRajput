@@ -8,17 +8,35 @@ from typing import Optional
 import json
 import time
 from mcstatus import MinecraftServer
+import asyncpg
 
 from discord.ext.commands import has_permissions,has_role,MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError
 from discord.member import Member
 
-prefix = ">"
 
-bot = commands.Bot(command_prefix = f"{prefix}",case_insensitive=True ,help_command=None)
+DEFAULT_PREFIX = ">"
+
+async def load_prefix(bot, message):
+    global DEFAULT_PREFIX
+    if not message.guild:
+        current_prefix = DEFAULT_PREFIX
+    else:        
+        current_prefix = await bot.pg_con.fetchrow("SELECT prefix FROM prefixes WHERE guild_id  = $1", message.guild.id)
+        if not current_prefix:
+            current_prefix = await bot.pg_con.execute("INSERT INTO prefixes(guild_id, prefix) VALUES($1,$2)", message.guild.id, DEFAULT_PREFIX)
+
+    return current_prefix
+
+bot = commands.Bot(command_prefix = load_prefix,case_insensitive=True ,help_command=None)
 
 TOKEN = "ODMyODk3NjAyNzY4MDc2ODE2.YHqeVg.yfzVgB8hHizDFH7hSMTORIv5weg"
 
 embedTheme = discord.Color.from_rgb(255, 255, 0)
+
+async def create_db_pool():
+    bot.pg_con = await asyncpg.create_pool(database="TornaxDB", user="postgres",password="Sparks11m")
+    print("Connected Successfully To DataBase")
+
 
 @bot.event
 async def on_ready():
@@ -26,6 +44,18 @@ async def on_ready():
     activity = discord.Activity(type=discord.ActivityType.watching, name="Server Members | >help for commands")
     await bot.change_presence(status=status, activity=activity)
     print("I m Ready!")
+
+@bot.command()
+async def setprefix(ctx, *, newPrefix:Optional[str]=None):
+    if newPrefix is not None:
+        custom_prefix = await bot.pg_con.fetch("SELECT prefix FROM prefixes WHERE guild_id = $1", ctx.guild.id)
+        if not custom_prefix:
+            await bot.pg_con.execute("INSERT INTO prefixes(guild_id,prefix) VALUES($1,$2)", ctx.guild.id, DEFAULT_PREFIX)
+        await bot.pg_con.execute("UPDATE prefixes SET prefix=$1 WHERE guild_id=$2",newPrefix,ctx.guild.id)
+        await ctx.send(f"The Prefix for this Server is Successfully Changed to {newPrefix}")
+    else:
+        await ctx.send(f"You Must Specify the New Prefix")
+
 
 ###############
 #### Only For My Smp Server
@@ -103,7 +133,7 @@ async def ban(ctx, member:discord.Member, days: Optional[int]=None, *, reason:Op
         print(e)
         await ctx.reply(f":exclamation: You don't have Permissions to do that!")
 
-banhelp = f"{prefix}ban <member> [days] [reason]"
+banhelp = f"ban <member> [days] [reason]"
 
 @bot.command()
 @commands.has_permissions(ban_members=True)
@@ -119,7 +149,7 @@ async def unban(ctx, id:int):
         print(e)
         await ctx.send(f":exclamation: {ctx.author.mention} You don't have Permissions to do that")
 
-unbanhelp = f"{prefix}unban <member id>"
+unbanhelp = f"unban <member id>"
 
 @bot.command()
 @commands.has_permissions(kick_members=True)
@@ -163,7 +193,7 @@ async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: O
     except MissingPermissions:
         await ctx.reply(f":exclamation: You don't have Permissions to do that!")
 
-mutehelp = f"{prefix}mute <member> [duration] [unit = s,m,h] [reason]"
+mutehelp = f"mute <member> [duration] [unit = s,m,h] [reason]"
 
 @bot.command()
 @commands.has_permissions(kick_members=True)
@@ -177,7 +207,7 @@ async def unmute(ctx, member:discord.Member, reason: Optional[str]=None):
         embed = discord.Embed(description=f"** :exclamation: {member.mention} is Not Muted in this Server **",color=embedTheme)
         await ctx.send(embed=embed,delete_after=15)
 
-unmutehelp = f"{prefix}unmute <member> [reason]"
+unmutehelp = f"unmute <member> [reason]"
 
 @bot.command()
 @commands.has_permissions(administrator=True)
@@ -188,7 +218,7 @@ async def warn(ctx, member:discord.Member, *, reason=None):
     else:
         await ctx.send(f"You must Specify the User whom you want to Warn")
 
-warnhelp = f"{prefix}warn <member> [reason]"
+warnhelp = f"warn <member> [reason]"
 
 @warn.error
 async def warn_error(error, ctx):
@@ -208,7 +238,7 @@ async def kick(ctx, member:discord.Member, *, reason=None):
     else:
         await ctx.send(f"You must Specify the User whom you want to Kick from the Server")
 
-kickhelp = f"{prefix}kick <member> [reason]"
+kickhelp = f"kick <member> [reason]"
 
 @kick.error
 async def kick_error(error, ctx):
@@ -236,7 +266,7 @@ async def leaveserver(ctx):
         print(e)
         await ctx.send(f"{ctx.author.mention} Sorry you don't have Access to use this Command")
 
-leaveserverhelp = f"{prefix}leaveserver"
+leaveserverhelp = f"leaveserver"
 
 @bot.listen()
 async def on_message(message):
@@ -269,7 +299,7 @@ async def setnick(ctx, member: Optional[discord.Member]=None, *, newname):
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=embed, delete_after=15)
 
-setnickhelp = f"{prefix}setnick [member] <newname>"
+setnickhelp = f"setnick [member] <newname>"
 
 @setnick.error
 async def setnick_error(error, ctx):
@@ -287,7 +317,7 @@ async def resetnick(ctx, member: Optional[discord.Member]=None):
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=embed, delete_after=15)
 
-resetnickhelp = f"{prefix}resetnick [member]"
+resetnickhelp = f"resetnick [member]"
 
 @resetnick.error
 async def resetnick_error(error, ctx):
@@ -308,7 +338,7 @@ async def clean(ctx, limit:int):
         embed = discord.Embed(title=f"Nothing Deleted from this Channel", color=embedTheme)
         await ctx.send(embed=embed,delete_after=8)    
 
-cleanhelp = f"{prefix}clean <limit>"
+cleanhelp = f"clean <limit>"
 
 @bot.command()
 @commands.has_permissions(manage_channels=True)
@@ -322,7 +352,7 @@ async def lock(ctx, channel: Optional[discord.TextChannel]=None):
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=embed)
 
-lockhelp = f"{prefix}lock [channel]"
+lockhelp = f"lock [channel]"
 
 @bot.command()
 @commands.has_permissions(manage_channels=True)
@@ -336,7 +366,7 @@ async def unlock(ctx, channel: Optional[discord.TextChannel]=None):
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=embed)
 
-unlockhelp = f"{prefix}unlock [channel]"
+unlockhelp = f"unlock [channel]"
 
 @bot.command()
 @commands.has_permissions(manage_channels=True)
@@ -354,7 +384,7 @@ async def slowmode(ctx, seconds: Optional[str]=None):
         print(e)
         await ctx.send(f":exclamation: {ctx.author.mention} You don't have Permissions to do that")
 
-slowmodehelp = f"{prefix}slowmode <seconds>"
+slowmodehelp = f"slowmode <seconds>"
 
 @bot.command()
 async def thought(ctx, *, word):
@@ -365,7 +395,7 @@ async def thought(ctx, *, word):
         embed = discord.Embed(title=f"\t{word.upper()}", color=embedTheme)
         await ctx.send(embed=embed)
 
-thoughthelp = f"{prefix}thought <word>"
+thoughthelp = f"thought <word>"
 
 class Giveaway():
     global GiveawayActive
@@ -537,18 +567,18 @@ class Giveaway():
         except :
             await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}, use `>help gstop` for more help')
 
-gstarthelp = f"{prefix}gstart <channel> <prize> <endtime> <unit , for ex:- s,m,h>"
-gstophelp = f"{prefix}gstop"
-gparticipatehelp = f"{prefix}gparticipate"
-gquithelp = f"{prefix}gquit"
-gstatushelp = f"{prefix}gstatus"
+gstarthelp = f"gstart <channel> <prize> <endtime> <unit , for ex:- s,m,h>"
+gstophelp = f"gstop"
+gparticipatehelp = f"gparticipate"
+gquithelp = f"gquit"
+gstatushelp = f"gstatus"
 
 @bot.command()
 async def react(ctx, chat:Optional[discord.Message], emoji):
     message = chat
     await message.add_reaction(emoji)
 
-reacthelp = f"{prefix}react <message id> <emoji>"
+reacthelp = f"react <message id> <emoji>"
 
 @bot.command()
 async def join(ctx):
@@ -561,7 +591,7 @@ async def join(ctx):
     except CommandInvokeError:
         await ctx.send(f":exclamation: {ctx.author.mention} You must be in a Voice Channel to do that!")
 
-joinhelp = f"{prefix}join"
+joinhelp = f"join"
 
 @bot.command()
 async def leave(ctx):
@@ -573,7 +603,7 @@ async def leave(ctx):
     except CommandInvokeError:
         await ctx.send(f":exclamation: {ctx.author.mention} You must be in a Voice Channel to do that!")
 
-leavehelp = f"{prefix}leave"
+leavehelp = f"leave"
 
 @bot.command()
 @commands.has_permissions(manage_roles=True)
@@ -590,7 +620,7 @@ async def addrole(ctx, member: Optional[discord.Member]=None, role: discord.Role
         embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
         await ctx.send(embed=embed, delete_after=8)
 
-addrolehelp = f"{prefix}addrole [member] <role>"
+addrolehelp = f"addrole [member] <role>"
 
 @bot.command()
 @commands.has_permissions(manage_roles=True)
@@ -607,7 +637,7 @@ async def removerole(ctx, member: Optional[discord.Member]=None, role: discord.R
         embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
         await ctx.send(embed=embed, delete_after=8)
 
-removerolehelp = f"{prefix}removerole [member] <role>"
+removerolehelp = f"removerole [member] <role>"
 
 @bot.command()
 async def solve(ctx, num1, operation, num2):
@@ -629,10 +659,11 @@ async def solve(ctx, num1, operation, num2):
         elif operation == "/" or operation == "÷":
             await ctx.send(f"{ctx.author.mention}  {num1} ÷ {num2} = {num1 / num2}")
     except:
-        embed = discord.Embed(title="Command : >solve", description=f"Usage : >solve [Number1] [Operation: +,-,*,/] [Number2]",color=embedTheme)
+        server_prefix = await bot.pg_con.fetchrow("SELECT prefix FROM prefixes WHERE guild_id  = $1", ctx.guild.id)
+        embed = discord.Embed(title=f"Command : {ctx.prefix}solve", description=f"Usage : {ctx.prefix}solve [Number1] [Operation: +,-,*,/] [Number2]",color=embedTheme)
         await ctx.send(embed=embed)
 
-solvehelp = f"{prefix}solve <number1> <operation = +,-,×,÷> <number2>"
+solvehelp = f"solve <number1> <operation = +,-,×,÷> <number2>"
 
 timer = {}
 timerMsg = {}
@@ -662,7 +693,7 @@ async def timerstart(ctx, seconds:int, *, reason: Optional[str]=None):
     else:
         await ctx.send(f":exclamation: {ctx.author.mention} A Timer is already Running in this Server")
 
-timerstarthelp = f"{prefix}timerstart <seconds> [reason]"
+timerstarthelp = f"timerstart <seconds> [reason]"
 
 @bot.command()
 async def timerstop(ctx):
@@ -675,14 +706,14 @@ async def timerstop(ctx):
     else:
         await ctx.send(f":exclamation: {ctx.author.mention} Currently No Timer is Running in this Server")
 
-timerstophelp = f"{prefix}timerstop"
+timerstophelp = f"timerstop"
 
 @bot.command()
 async def ping(ctx):
     msg = await ctx.send(f"Pong!")
     await msg.edit(content = f"Pong! Latency is `{round(bot.latency * 1000 + 100)}ms`")
 
-pinghelp = f"{prefix}ping"
+pinghelp = f"ping"
 
 @bot.command()
 async def invite(ctx):
@@ -690,7 +721,7 @@ async def invite(ctx):
     inviteEmbed.set_thumbnail(url=bot.user.avatar_url)
     await ctx.send(embed=inviteEmbed)
 
-invitehelp = f"{prefix}invite"
+invitehelp = f"invite"
 
 @bot.command()
 async def mcserver(ctx, server: Optional[str]=None):
@@ -712,7 +743,7 @@ async def mcserver(ctx, server: Optional[str]=None):
         print(e)
         await ctx.reply(f"The Server You are Looking For Does Not Exist, Recheck The Server IP")
 
-mcserverhelp = f"{prefix}mcserver <Minecaft Java Server Ip>"
+mcserverhelp = f"mcserver <Minecaft Java Server Ip>"
 
 @bot.command()
 @commands.bot_has_permissions(send_messages=True)
@@ -720,7 +751,7 @@ async def time(ctx):
     currenttime = datetime.now()
     await ctx.send(f"Current Time is {currenttime}")
 
-timehelp = f"{prefix}time"
+timehelp = f"time"
 
 @bot.command()
 async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
@@ -731,7 +762,7 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
     else:
         await ctx.reply(f"You don't have Permissions to do that, Only Admins Can Use the Command")
 
-tellhelp = f"{prefix}tell [channel] <message>"
+tellhelp = f"tell [channel] <message>"
 
 active = {}
 gamingChannel = {}
@@ -770,7 +801,7 @@ async def guess(ctx):
     else:
         await ctx.reply(f"A Guess The Number Game is Already Active in this Server")
 
-guesshelp = f"{prefix}guess"
+guesshelp = f"guess"
 
 @bot.listen()
 async def on_message(message):
@@ -864,7 +895,7 @@ async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Option
         await ctx.send(f":exclamation: {ctx.author.mention} You are Using The Command Wrong, Use `>help tictactoe` to get help related with the Command")
 
 
-tictactoehelp = f"{prefix}tictactoe [First Player] <Second Player>"
+tictactoehelp = f"tictactoe [First Player] <Second Player>"
 
 @bot.command()
 async def tttstop(ctx):
@@ -894,7 +925,7 @@ async def tttstop(ctx):
         pass
     
 
-tttstophelp = f"{prefix}tttstop"
+tttstophelp = f"tttstop"
 
 @bot.listen()
 async def on_message(message):
@@ -1441,7 +1472,7 @@ async def poll(ctx, question:Optional[str]=None, option1: Optional[str]=None, op
         print(e)
         await ctx.send(f":exclamation: {ctx.author.mention} You are Doing Mistake in Using the Command, Use `>help poll` to get help for this Command",delete_after=12)
 
-pollhelp = '>poll <question between "f"{prefix} [options -> (Minimum 2 - Maximum 10) between ""]'
+pollhelp = '>poll <question between "f" [options -> (Minimum 2 - Maximum 10) between ""]'
 
 @bot.command()
 async def slap(ctx,member: Optional[discord.Member]=None, *, reason: Optional[str]=None):
@@ -1472,7 +1503,7 @@ async def slap(ctx,member: Optional[discord.Member]=None, *, reason: Optional[st
             choice = discord.Embed(description=f"** Slapped: {bot.user.mention} {randomArgu} Reason: {reason} **", color=embedTheme)
     await ctx.send(embed=choice)
 
-slaphelp = f"{prefix}slap [member] [reason]"
+slaphelp = f"slap [member] [reason]"
 
 @bot.command()
 async def kill(ctx,member: Optional[discord.Member]=None, *, reason: Optional[str]=None):
@@ -1507,7 +1538,7 @@ async def kill(ctx,member: Optional[discord.Member]=None, *, reason: Optional[st
             choice = discord.Embed(description=f"** Killed: {bot.user.mention} {randomArgu} Reason: {reason} **", color=embedTheme)
     await ctx.send(embed=choice)
 
-killhelp = f"{prefix}kill [member] [reason]"
+killhelp = f"kill [member] [reason]"
 
 @bot.command()
 async def punch(ctx,member: Optional[discord.Member]=None, *, reason: Optional[str]=None):
@@ -1539,7 +1570,7 @@ async def punch(ctx,member: Optional[discord.Member]=None, *, reason: Optional[s
             choice = discord.Embed(description=f"** Punched: {bot.user.mention} {randomArgu} Reason: {reason} **", color=embedTheme)
     await ctx.send(embed=choice)  
 
-punchhelp = f"{prefix}punch [member] [reason]"
+punchhelp = f"punch [member] [reason]"
 
 afkdata = {}
 username = {}
@@ -1575,7 +1606,7 @@ async def afk(ctx, *, reason: Optional[str]=None):
         print(e)
         pass
 
-afkhelp = f"{prefix}afk [reason]"
+afkhelp = f"afk [reason]"
 
 @bot.listen()
 async def on_message(message):
@@ -1629,7 +1660,7 @@ async def support(ctx):
         print(e)
         pass
 
-supporthelp = f"{prefix}support"
+supporthelp = f"support"
 
 @bot.command()
 async def rule(ctx, ruleno: Optional[str]=None):
@@ -1651,19 +1682,20 @@ async def rule(ctx, ruleno: Optional[str]=None):
         else:
             await ctx.send(f":exclamation: There is no Rule Number {ruleno},{ctx.author.mention}")
 
-rulehelp = f"{prefix}rule <rule no.>"
+rulehelp = f"rule <rule no.>"
    
 @bot.command()
 async def rules(ctx):
+    server_prefix = await bot.pg_con.fetchrow("SELECT prefix FROM prefixes WHERE guild_id  = $1", ctx.guild.id)
     embed = discord.Embed(title="Server Rules", description="These are some Rules of this Server", color= embedTheme)
-    embed.add_field(name="1. No Promotion",value="  type >rule 1 for more info",inline= False)
-    embed.add_field(name="2. No Abuses",value="  type >rule 2 for more info",inline= False)
-    embed.add_field(name="3. No Spamming",value="  type >rule 3 for more info",inline= False)
-    embed.add_field(name="4. No Toxicity",value="  type >rule 4 for more info\n\n",inline= False)
+    embed.add_field(name="1. No Promotion",value=f"  type {ctx.prefix}rule 1 for more info",inline= False)
+    embed.add_field(name="2. No Abuses",value=f"  type {ctx.prefix}rule 2 for more info",inline= False)
+    embed.add_field(name="3. No Spamming",value=f"  type {ctx.prefix}rule 3 for more info",inline= False)
+    embed.add_field(name="4. No Toxicity",value=f"  type {ctx.prefix}rule 4 for more info\n\n",inline= False)
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested by {ctx.author}")
     await ctx.send(embed=embed)
 
-ruleshelp = f"{prefix}rules"
+ruleshelp = f"rules"
 
 @bot.command()
 async def avatar(ctx, owner: Optional[discord.Member]=None):
@@ -1675,7 +1707,7 @@ async def avatar(ctx, owner: Optional[discord.Member]=None):
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=embed)
 
-avatarhelp = f"{prefix}avatar [user]"
+avatarhelp = f"avatar [user]"
 
 @bot.command()
 async def vote(ctx):
@@ -1687,7 +1719,7 @@ async def vote(ctx):
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=embed)
 
-votehelp = f"{prefix}vote"
+votehelp = f"vote"
 
 @bot.event
 async def on_guild_join(guild):
@@ -1703,19 +1735,21 @@ async def info(ctx):
     embed = discord.Embed(title="My Information",description=f"{RandomGreetings} I am Tornax a Multi-Talented Discord Bot, Designed, Created and Configured by MrinalSparks\n\nCurrently I Am In : {len(list(bot.guilds))} Servers", color=embedTheme)
     await ctx.send(embed=embed)
 
-infohelp = f"{prefix}info"
+infohelp = f"info"
 
 @bot.command()
 async def about(ctx):
     embed = discord.Embed(title="About Tornax",description="Tornax is a Multi-Talented and Friendly Bot, Use Tornax for moderation, server managements, streams and giveaways now!", color=embedTheme)
     await ctx.send(embed=embed)
 
-abouthelp = f"{prefix}about"
+abouthelp = f"about"
 
-helphelp = f"{prefix}help [anycommand]"
+helphelp = f"help [anycommand]"
 
 @bot.command()
 async def help(ctx, anycommand: Optional[str]=None):
+    server_prefix = await bot.pg_con.fetchrow("SELECT prefix FROM prefixes WHERE guild_id  = $1", ctx.guild.id)
+
     print(bot.all_commands.keys())
     totalCommands = len(bot.all_commands.keys())
 
@@ -1734,8 +1768,8 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gparticipate, gquit, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
         myEmbed.add_field(name="Fun",value=" slap, kill, punch, tictactoe, tttstop, guess, mcserver \n----------------------\n", inline=False)
-        myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{prefix}`\n > Command Usage Example :   `{prefix}info`\n\n----------------------", inline=False)
-        myEmbed.add_field(name="Readme", value=f"`{prefix}help` Shows this Message, use `{prefix}help [command]` to get more information about that Command\n\n")
+        myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{ctx.prefix}`\n > Command Usage Example :   `{ctx.prefix}info`\n\n----------------------", inline=False)
+        myEmbed.add_field(name="Readme", value=f"`{ctx.prefix}help` Shows this Message, use `{ctx.prefix}help [command]` to get more information about that Command\n\n")
         myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creater}")
         await ctx.send(embed=myEmbed)
     else:
@@ -1789,7 +1823,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "guess": content=guesshelp
         elif anycommand == "mcserver": content=mcserverhelp
         elif anycommand == "help": content=helphelp
-        commandEmbed = discord.Embed(description=f"{content}",color=embedTheme)
+        commandEmbed = discord.Embed(description=f"{ctx.prefix}{content}",color=embedTheme)
         await ctx.send(embed=commandEmbed)
 
 count = {}
@@ -1864,7 +1898,7 @@ async def on_message(message):
 
 @bot.listen()
 async def on_message(message):
-    if message.content.lower().startswith(f"{prefix}botservers"):
+    if message.content.lower().startswith(f"botservers"):
         servers = list(bot.guilds)
         print(servers)
 
@@ -1877,5 +1911,6 @@ async def on_message(message):
             if word in message.content.lower():
                 await message.delete()
                 await message.channel.send(f":exclamation: The Word you are Using is Not Allowed in this Server {message.author.mention}",delete_after=8)
-
+                
+bot.loop.run_until_complete(create_db_pool())
 bot.run(TOKEN)
