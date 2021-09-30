@@ -733,204 +733,6 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
 
 tellhelp = f"{prefix}tell [channel] <message>"
 
-racers = {}
-raceCode = {}
-raceTrack = {}
-
-@bot.command()
-async def race(ctx, member1: Optional[discord.Member]=None, member2: Optional[discord.Member]=None):
-    global racers, raceCode, raceTrack
-    if ctx.guild.id not in racers:
-        racers[ctx.guild.id] = {}
-    if ctx.guild.id not in raceCode:
-        raceCode[ctx.guild.id] = {}
-    if ctx.guild.id not in raceTrack:
-        raceTrack[ctx.guild.id] = {}
-
-    if member1 is not None:
-        if member2 is None:
-            member2 = member1
-            member1 = ctx.author
-        if member2 != member1:
-            # print(list(matches.items()))
-            if member1.id not in racers[ctx.guild.id].keys() and member1.id not in racers[ctx.guild.id].values():
-                if member2.id not in racers[ctx.guild.id].keys() and member2.id not in racers[ctx.guild.id].values():
-                    
-                    codeGenerator = random.randint(000000, 999999)
-                    while codeGenerator in raceCode[ctx.guild.id].values():
-                        codeGenerator = random.randint(000000, 999999)
-
-                    raceCode[ctx.guild.id][member1.id] = codeGenerator
-                    raceCode[ctx.guild.id][member2.id] = raceCode[ctx.guild.id][member1.id]
-
-                    if codeGenerator not in raceTrack[ctx.guild.id]:
-                        raceTrack[ctx.guild.id][codeGenerator] = {}
-
-                    carList = {"🏍️":"🛵","🚗":"🚙","🚓":"🏎️","🚌":"🚎","🚑":"🚒","🚚":"🚛"}
-                    choosed = random.choice(list(carList.keys()))
-
-                    raceTrack[ctx.guild.id][codeGenerator][member1.id] = {}
-                    raceTrack[ctx.guild.id][codeGenerator][member2.id] = {}
-
-                    raceTrack[ctx.guild.id][codeGenerator][member1.id]["vehicle"] = choosed
-                    raceTrack[ctx.guild.id][codeGenerator][member2.id]["vehicle"] = carList[choosed]
-
-                    raceTrack[ctx.guild.id][codeGenerator][member1.id]["position"] = 1
-                    raceTrack[ctx.guild.id][codeGenerator][member2.id]["position"] = 1
-
-                    await ctx.send(f"🏍️ Vehicle Racing 🏁")
-                    await ctx.send(f"🟦⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜")
-                    raceTrack[ctx.guild.id][codeGenerator][member1.id]["RaceTrack"] = await ctx.send(f"🏁⬛⬛⬛⬛⬛⬛⬛⬛⬛{raceTrack[ctx.guild.id][codeGenerator][member1.id]['vehicle']}")
-                    raceTrack[ctx.guild.id][codeGenerator][member2.id]["RaceTrack"] = await ctx.send(f"🏁⬛⬛⬛⬛⬛⬛⬛⬛⬛{raceTrack[ctx.guild.id][codeGenerator][member2.id]['vehicle']}")
-                    await ctx.send(f"🟦⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜")
-                    await ctx.send(f"{member1.mention} is {raceTrack[ctx.guild.id][codeGenerator][member1.id]['vehicle']} and {member2.mention} is {raceTrack[ctx.guild.id][codeGenerator][member2.id]['vehicle']}")
-                    await ctx.send(f"UpperOne Counting is For {member1.mention} and LowerOne Counting is For {member2.mention}, Send the Numbers in This Channel to Move Forward before they Change")                    
-                    raceTrack[ctx.guild.id][codeGenerator][member1.id]["board"] = await ctx.send(f"{member1.mention} - ``")
-                    raceTrack[ctx.guild.id][codeGenerator][member2.id]["board"] = await ctx.send(f"{member2.mention} - ``")
-                    raceTrack[ctx.guild.id][codeGenerator][member1.id]["letters"] = ""
-                    raceTrack[ctx.guild.id][codeGenerator][member2.id]["letters"] = ""
-
-                    racers[ctx.guild.id][member1.id] = member2.id
-
-                    alphabets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-
-                    while member1.id in racers[ctx.guild.id].keys() and member2.id in racers[ctx.guild.id].values():
-                        await asyncio.sleep(1)
-                        race1letter = random.choice(alphabets)
-                        while race1letter == raceTrack[ctx.guild.id][codeGenerator][member1.id]["letters"]:
-                            race1letter = random.choice(alphabets)
-                        race2letter = random.choice(alphabets)
-                        while race2letter == raceTrack[ctx.guild.id][codeGenerator][member2.id]["letters"]:
-                            race2letter = random.choice(alphabets)
-                        raceTrack[ctx.guild.id][codeGenerator][member1.id]["letters"] = race1letter
-                        raceTrack[ctx.guild.id][codeGenerator][member2.id]["letters"] = race2letter
-                        await raceTrack[ctx.guild.id][codeGenerator][member1.id]["board"].edit(content=f"{member1.mention} - `{race1letter}`")
-                        await raceTrack[ctx.guild.id][codeGenerator][member2.id]["board"].edit(content=f"{member2.mention} - `{race2letter}`")
-
-                else:
-                    await ctx.send(f":exclamation: {member2.mention} is Already in a Vehicle Race in this Server")
-            else:
-                if member1 == ctx.author:
-                    await ctx.send(f":exclamation: {ctx.author.mention} You are Already in a Vehicle Race in this Server, use `>racestop` to Stop your Current Race")
-                else:
-                    await ctx.send(f":exclamation: {member1.mention} is Already in a Vehicle Race in this Server")
-        else:
-            if member2 == ctx.author and member1 == ctx.author:
-                await ctx.send(f":exclamation: {ctx.author.mention} You Cannot Play With Yourself, There must be Two Players to do Vehicle Race")
-            else:
-                await ctx.send(f":exclamation: {ctx.author.mention} Single Player Cannot Play with Himself/Herself, There must be Two Players")
-    else:
-        await ctx.send(f":exclamation: {ctx.author.mention} You are Using The Command Wrong, Use `>help race` to get help related with the Command")
-
-racehelp = f"{prefix}race [First Player] <Second Player>"
-
-@bot.command()
-async def racestop(ctx):
-    global racers, raceCode, raceTrack
-    try:
-        if ctx.author.id in racers[ctx.guild.id].keys() or ctx.author.id in racers[ctx.guild.id].values():
-            await ctx.send(f"{ctx.author.mention} Your Vehicle Race has been Stopped")
-            if ctx.author.id in racers[ctx.guild.id].keys():
-                player1 = ctx.author.id
-                player2 = racers[ctx.guild.id][player1]
-            elif ctx.author.id in racers[ctx.guild.id].values():
-                for id in list(racers[ctx.guild.id].keys()):
-                    if racers[ctx.guild.id][id] == ctx.author.id:
-                        player1 = id
-                        player2 = racers[ctx.guild.id][id]
-            code = raceCode[ctx.guild.id][ctx.author.id]
-            del racers[ctx.guild.id][player1]
-            del racers[ctx.guild.id][player2]
-            del raceCode[ctx.guild.id][player1]
-            del raceCode[ctx.guild.id][player2]     
-            del raceTrack[ctx.guild.id][code]
-
-        else:
-            await ctx.send(f":exclamation: {ctx.author.mention} You are Not in any Vehicle Race in this Server")
-    except Exception as e:
-        print(e)
-        pass
-
-racestophelp = f"{prefix}racestop"
-
-@bot.listen()
-async def on_message(message):
-    global racers, raceCode, raceTrack
-    try:
-        if message.author.id in racers[message.guild.id].keys() or message.author.id in racers[message.guild.id].values():            
-            if message.author.id in racers[message.guild.id].keys():
-                player1 = message.author.id
-                player2 = racers[message.guild.id][player1]
-            elif message.author.id in racers[message.guild.id].values():
-                for id in list(racers[message.guild.id].keys()):
-                    if racers[message.guild.id][id] == message.author.id:
-                        player1 = id
-                        player2 = racers[message.guild.id][id]
-            print(0)
-            CODE = raceCode[message.guild.id][message.author.id]
-            if message.author.id == player1:
-                if message.content.lower() == raceTrack[message.guild.id][CODE][player1]["letters"]:
-                    raceTrack[message.guild.id][CODE][player1]["position"] += 1
-                    if raceTrack[message.guild.id][CODE][player1]["position"] == 2:
-                        await raceTrack[message.guild.id][CODE][player1]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player1]['vehicle']}⬛")
-                    if raceTrack[message.guild.id][CODE][player1]["position"] == 3:
-                        await raceTrack[message.guild.id][CODE][player1]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player1]['vehicle']}⬛⬛")
-                    if raceTrack[message.guild.id][CODE][player1]["position"] == 4:
-                        await raceTrack[message.guild.id][CODE][player1]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player1]['vehicle']}⬛⬛⬛")
-                    if raceTrack[message.guild.id][CODE][player1]["position"] == 5:
-                        await raceTrack[message.guild.id][CODE][player1]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player1]['vehicle']}⬛⬛⬛⬛")
-                    if raceTrack[message.guild.id][CODE][player1]["position"] == 6:
-                        await raceTrack[message.guild.id][CODE][player1]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player1]['vehicle']}⬛⬛⬛⬛⬛")
-                    if raceTrack[message.guild.id][CODE][player1]["position"] == 7:
-                        await raceTrack[message.guild.id][CODE][player1]["RaceTrack"].edit(content=f"🏁⬛⬛⬛{raceTrack[message.guild.id][CODE][player1]['vehicle']}⬛⬛⬛⬛⬛⬛")
-                    if raceTrack[message.guild.id][CODE][player1]["position"] == 8:
-                        await raceTrack[message.guild.id][CODE][player1]["RaceTrack"].edit(content=f"🏁⬛⬛{raceTrack[message.guild.id][CODE][player1]['vehicle']}⬛⬛⬛⬛⬛⬛⬛")
-                    if raceTrack[message.guild.id][CODE][player1]["position"] == 9:
-                        await raceTrack[message.guild.id][CODE][player1]["RaceTrack"].edit(content=f"🏁⬛{raceTrack[message.guild.id][CODE][player1]['vehicle']}⬛⬛⬛⬛⬛⬛⬛⬛")
-                    if raceTrack[message.guild.id][CODE][player1]["position"] == 10:
-                        await raceTrack[message.guild.id][CODE][player1]["RaceTrack"].edit(content=f"🏁{raceTrack[message.guild.id][CODE][player1]['vehicle']}⬛⬛⬛⬛⬛⬛⬛⬛⬛")
-                        await asyncio.sleep(2)
-                        await message.channel.send(f"<@{player1}> Won the Vehicle Race From <@{player2}>")
-                        del racers[message.guild.id][player1]
-                        del racers[message.guild.id][player2]
-                        del raceCode[message.guild.id][player1]
-                        del raceCode[message.guild.id][player2]
-                        del raceTrack[message.guild.id][CODE]
-            elif message.author.id == player2:
-                print(1)
-                if message.content.lower() == raceTrack[message.guild.id][CODE][player2]["letters"]:
-                    print(2)
-                    raceTrack[message.guild.id][CODE][player2]["position"] += 1
-                    if raceTrack[message.guild.id][CODE][player2]["position"] == 2:
-                        print(3)
-                        await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛")
-                    if raceTrack[message.guild.id][CODE][player2]["position"] == 3:
-                        await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛⬛")
-                    if raceTrack[message.guild.id][CODE][player2]["position"] == 4:
-                        await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛⬛⬛")
-                    if raceTrack[message.guild.id][CODE][player2]["position"] == 5:
-                        await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛⬛⬛⬛")
-                    if raceTrack[message.guild.id][CODE][player2]["position"] == 6:
-                        await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁⬛⬛⬛⬛{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛⬛⬛⬛⬛")
-                    if raceTrack[message.guild.id][CODE][player2]["position"] == 7:
-                        await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁⬛⬛⬛{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛⬛⬛⬛⬛⬛")
-                    if raceTrack[message.guild.id][CODE][player2]["position"] == 8:
-                        await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁⬛⬛{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛⬛⬛⬛⬛⬛⬛")
-                    if raceTrack[message.guild.id][CODE][player2]["position"] == 9:
-                        await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁⬛{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛⬛⬛⬛⬛⬛⬛⬛")
-                    if raceTrack[message.guild.id][CODE][player2]["position"] == 10:
-                        await raceTrack[message.guild.id][CODE][player2]["RaceTrack"].edit(content=f"🏁{raceTrack[message.guild.id][CODE][player2]['vehicle']}⬛⬛⬛⬛⬛⬛⬛⬛⬛")
-                        await asyncio.sleep(2)
-                        await message.channel.send(f"<@{player2}> Won the Vehicle Race From <@{player1}>")
-                        del racers[message.guild.id][player1]
-                        del racers[message.guild.id][player2]
-                        del raceCode[message.guild.id][player1]
-                        del raceCode[message.guild.id][player2]
-                        del raceTrack[message.guild.id][CODE]
-    except Exception as e:
-        print(e)
-        pass
-
 active = {}
 gamingChannel = {}
 
@@ -976,16 +778,20 @@ async def on_message(message):
     if message.guild.id not in active:
         active[message.guild.id] = False
     try:
+        gamingChannel[message.author.id]["attempts"] = 0
         if message.author != bot.user:
             if active[message.guild.id] == True:
                 if message.channel == gamingChannel[message.guild.id]["channel"]:
                     guesses = int(message.content)
                     if guesses > gamingChannel[message.guild.id]['secretNumber']:
                         await message.reply(f"Try a Smaller Number")
+                        gamingChannel[message.author.id]["attempts"] += 1
                     elif guesses < gamingChannel[message.guild.id]['secretNumber']:
                         await message.reply("Try a Bigger Number")
+                        gamingChannel[message.author.id]["attempts"] += 1
                     elif guesses == gamingChannel[message.guild.id]['secretNumber']:
-                        await message.reply(f"{message.author.mention} You Guessed Correct and Won the Challenge, the Secret Number was `{gamingChannel[message.guild.id]['secretNumber']}`")
+                        gamingChannel[message.author.id]["attempts"] += 1
+                        await message.reply(f"{message.author.mention} You Guessed Correct in {gamingChannel[message.author.id]['attempts']} Attempts and Won the Challenge, the Secret Number was `{gamingChannel[message.guild.id]['secretNumber']}`")
                         gamingChannel[message.guild.id]["guessed"] = True
                         gamingChannel[message.guild.id]["countdown"] = 1
     except Exception as e:
@@ -1927,7 +1733,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gparticipate, gquit, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
-        myEmbed.add_field(name="Fun",value=" slap, kill, punch, tictactoe, tttstop, guess, mcserver, race, racestop \n----------------------\n", inline=False)
+        myEmbed.add_field(name="Fun",value=" slap, kill, punch, tictactoe, tttstop, guess, mcserver \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{prefix}`\n > Command Usage Example :   `{prefix}info`\n\n----------------------", inline=False)
         myEmbed.add_field(name="Readme", value=f"`{prefix}help` Shows this Message, use `{prefix}help [command]` to get more information about that Command\n\n")
         myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creater}")
@@ -1982,8 +1788,6 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "tttstop": content=tttstophelp
         elif anycommand == "guess": content=guesshelp
         elif anycommand == "mcserver": content=mcserverhelp
-        elif anycommand == "race": content=racehelp
-        elif anycommand == "racestop": content=racestophelp
         elif anycommand == "help": content=helphelp
         commandEmbed = discord.Embed(description=f"{content}",color=embedTheme)
         await ctx.send(embed=commandEmbed)
@@ -2017,7 +1821,7 @@ async def on_message(message):
 
 @bot.listen()
 async def on_message(message):
-    global count, racers
+    global count
     if message.guild.id not in count:
         count[message.guild.id]  = {}
     if message.author.id not in count[message.guild.id]:
@@ -2031,36 +1835,32 @@ async def on_message(message):
 
     if message.content is not None:
         if not message.author.bot:
-            if message.guild.id not in racers:
-                racers[message.guild.id] = {}
-            if message.author.id not in racers[message.guild.id].keys() and message.author.id not in racers[message.guild.id].values():
-                # print(f'Count:{count[message.guild.id][message.author.id]["counting"]}",f"Strikes:{count[message.guild.id][message.author.id]["strikes"]}')
-                
-                if count[message.guild.id][message.author.id]["counting"] == True:
-                    count[message.guild.id][message.author.id]["strikes"] += 1
-                if count[message.guild.id][message.author.id]["strikes"] > 3:
-                    await message.channel.send(f":exclamation: {message.author.mention} You are Sending Message So Quickly, Slowdown your Speed")
-                    count[message.guild.id][message.author.id]["warnings"] += 1
-                    if count[message.guild.id][message.author.id]["warnings"] >= 3:
-                        try:
-                            mutedRole = discord.utils.get(message.guild.roles, name="Muted")
-                            if not mutedRole:
-                                mutedRole = await message.guild.create_role(name="Muted")
+            # print(f'Count:{count[message.guild.id][message.author.id]["counting"]}",f"Strikes:{count[message.guild.id][message.author.id]["strikes"]}')
+            
+            if count[message.guild.id][message.author.id]["counting"] == True:
+                count[message.guild.id][message.author.id]["strikes"] += 1
+            if count[message.guild.id][message.author.id]["strikes"] > 3:
+                await message.channel.send(f":exclamation: {message.author.mention} You are Sending Message So Quickly, Slowdown your Speed")
+                count[message.guild.id][message.author.id]["warnings"] += 1
+                if count[message.guild.id][message.author.id]["warnings"] >= 3:
+                    try:
+                        mutedRole = discord.utils.get(message.guild.roles, name="Muted")
+                        if not mutedRole:
+                            mutedRole = await message.guild.create_role(name="Muted")
 
-                                for channel in message.guild.channels:
-                                    await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False)
-                            await message.author.add_roles(mutedRole)
-                            embed = discord.Embed(description = f"** {message.author.mention} has been Muted by {bot.user.mention} for `15` Seconds \n\t With the Reason of :\t Spamming**",color=embedTheme)
-                            await message.channel.send(embed=embed)
-                            count[message.guild.id][message.author.id]["warnings"] = 0
-                            await asyncio.sleep(15)
-                            await message.author.remove_roles(mutedRole)
-                        except:
-                            count[message.guild.id][message.author.id]["warnings"] = 0
-                            pass
+                            for channel in message.guild.channels:
+                                await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False)
+                        await message.author.add_roles(mutedRole)
+                        embed = discord.Embed(description = f"** {message.author.mention} has been Muted by {bot.user.mention} for `15` Seconds \n\t With the Reason of :\t Spamming**",color=embedTheme)
+                        await message.channel.send(embed=embed)
+                        count[message.guild.id][message.author.id]["warnings"] = 0
+                        await asyncio.sleep(15)
+                        await message.author.remove_roles(mutedRole)
+                    except:
+                        count[message.guild.id][message.author.id]["warnings"] = 0
+                        pass
 
-                    count[message.guild.id][message.author.id]["strikes"] = 0
-    
+                count[message.guild.id][message.author.id]["strikes"] = 0    
 
 @bot.listen()
 async def on_message(message):
