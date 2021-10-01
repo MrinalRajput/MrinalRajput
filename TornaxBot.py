@@ -9,6 +9,8 @@ import json
 import time
 from mcstatus import MinecraftServer
 import asyncpg
+from PIL import Image, ImageDraw
+from io import BytesIO
 
 from discord.ext.commands import has_permissions,has_role,MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError
 from discord.member import Member
@@ -48,15 +50,18 @@ async def on_ready():
 
 @bot.command()
 async def setprefix(ctx, *, newPrefix:Optional[str]=None):
-    if newPrefix is not None:
-        custom_prefix = await bot.pg_con.fetch("SELECT prefix FROM prefixes WHERE guild_id = $1", ctx.guild.id)
-        if not custom_prefix:
-            await bot.pg_con.execute("INSERT INTO prefixes(guild_id,prefix) VALUES($1,$2)", ctx.guild.id, DEFAULT_PREFIX)
-        await bot.pg_con.execute("UPDATE prefixes SET prefix=$1 WHERE guild_id=$2",newPrefix,ctx.guild.id)
-        await bot.user.edit(nick=f"[{newPrefix}] Tornax")
-        await ctx.send(f"The Prefix for this Server is Successfully Changed to {newPrefix}")
+    if ctx.author.guild_permissions.administrator:
+        if newPrefix is not None:
+            custom_prefix = await bot.pg_con.fetch("SELECT prefix FROM prefixes WHERE guild_id = $1", ctx.guild.id)
+            if not custom_prefix:
+                await bot.pg_con.execute("INSERT INTO prefixes(guild_id,prefix) VALUES($1,$2)", ctx.guild.id, DEFAULT_PREFIX)
+            await bot.pg_con.execute("UPDATE prefixes SET prefix=$1 WHERE guild_id=$2",newPrefix,ctx.guild.id)
+            await bot.user.edit(nick=f"[{newPrefix}] Tornax")
+            await ctx.send(f"The Prefix for this Server is Successfully Changed to {newPrefix}")
+        else:
+            await ctx.send(f"You Must Specify the New Prefix")
     else:
-        await ctx.send(f"You Must Specify the New Prefix")
+        await ctx.send(f"You don't have Permissions to do that")
 
 setprefixhelp = "setprefix <New Bot Prefix>"
 
@@ -1575,6 +1580,25 @@ async def punch(ctx,member: Optional[discord.Member]=None, *, reason: Optional[s
 
 punchhelp = f"punch [member] [reason]"
 
+@bot.command()
+async def wanted(ctx, member: Optional[discord.Member]=None):
+    if member is None:
+        member = ctx.author
+    wantedimg = Image.open("wanted.jpg")
+    pfp = member.avatar_url_as(size = 128)
+    data = BytesIO(await pfp.read())
+    loadPfp = Image.open(data)
+
+    loadPfp = loadPfp.resize((177,177))
+
+    wantedimg.paste(loadPfp, (120,212))
+    wantedimg.save("profile.jpg")
+
+    await ctx.send(file = discord.File("profile.jpg"))
+
+
+wantedhelp = f"wanted [member]"
+
 afkdata = {}
 username = {}
 reasontopic = {}
@@ -1770,7 +1794,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gparticipate, gquit, setprefix, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
-        myEmbed.add_field(name="Fun",value=" slap, kill, punch, tictactoe, tttstop, guess, mcserver \n----------------------\n", inline=False)
+        myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, mcserver \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{ctx.prefix}`\n > Command Usage Example :   `{ctx.prefix}info`\n\n----------------------", inline=False)
         myEmbed.add_field(name="Readme", value=f"`{ctx.prefix}help` Shows this Message, use `{ctx.prefix}help [command]` to get more information about that Command\n\n")
         myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creater}")
@@ -1822,6 +1846,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "slap": content=slaphelp
         elif anycommand == "kill": content=killhelp
         elif anycommand == "punch": content=punchhelp
+        elif anycommand == "wanted": content=wantedhelp
         elif anycommand == "tictactoe": content=tictactoehelp
         elif anycommand == "tttstop": content=tttstophelp
         elif anycommand == "guess": content=guesshelp
