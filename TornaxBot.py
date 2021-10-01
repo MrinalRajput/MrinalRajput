@@ -53,10 +53,12 @@ async def setprefix(ctx, *, newPrefix:Optional[str]=None):
         if not custom_prefix:
             await bot.pg_con.execute("INSERT INTO prefixes(guild_id,prefix) VALUES($1,$2)", ctx.guild.id, DEFAULT_PREFIX)
         await bot.pg_con.execute("UPDATE prefixes SET prefix=$1 WHERE guild_id=$2",newPrefix,ctx.guild.id)
+        await bot.user.edit(nick=f"[{newPrefix}] Tornax")
         await ctx.send(f"The Prefix for this Server is Successfully Changed to {newPrefix}")
     else:
         await ctx.send(f"You Must Specify the New Prefix")
 
+setprefixhelp = "setprefix <New Bot Prefix>"
 
 ###############
 #### Only For My Smp Server
@@ -1766,7 +1768,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n \n \t-> [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=536870911991&scope=bot)")
         myEmbed.add_field(name=f"Commands — {int(totalCommands)-2}",value="----------------------\n",inline=False)
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
-        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gparticipate, gquit, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
+        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gparticipate, gquit, setprefix, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
         myEmbed.add_field(name="Fun",value=" slap, kill, punch, tictactoe, tttstop, guess, mcserver \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{ctx.prefix}`\n > Command Usage Example :   `{ctx.prefix}info`\n\n----------------------", inline=False)
@@ -1799,6 +1801,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "gquit": content=gquithelp
         elif anycommand == "poll": content=pollhelp
         elif anycommand == "info": content=infohelp
+        elif anycommand == "setprefix": content=setprefixhelp
         elif anycommand == "about": content=abouthelp
         elif anycommand == "vote": content=votehelp
         elif anycommand == "support": content=supporthelp
