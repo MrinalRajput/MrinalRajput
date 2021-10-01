@@ -53,7 +53,7 @@ async def setprefix(ctx, *, newPrefix:Optional[str]=None):
         if not custom_prefix:
             await bot.pg_con.execute("INSERT INTO prefixes(guild_id,prefix) VALUES($1,$2)", ctx.guild.id, DEFAULT_PREFIX)
         await bot.pg_con.execute("UPDATE prefixes SET prefix=$1 WHERE guild_id=$2",newPrefix,ctx.guild.id)
-        await bot.user.edit(nick=f"[{newPrefix}] Tornax")
+        await ctx.guild.get_member(bot.user).edit(nick=f"[{newPrefix}] Tornax")
         await ctx.send(f"The Prefix for this Server is Successfully Changed to {newPrefix}")
     else:
         await ctx.send(f"You Must Specify the New Prefix")
