@@ -79,7 +79,7 @@ async def on_guild_join(guild):
 async def on_member_join(member):
     for channel in member.guild.channels:
         if "welcome" in channel.name:
-            welcomeEmbed = discord.Embed(title="Welcome!", description=f"{member.mention} Just Joined {member.guild.name} Server",color=embedTheme)
+            welcomeEmbed = discord.Embed(title=f"{member} Just Joined {member.guild.name}",color=embedTheme)
             await channel.send(embed=welcomeEmbed)
             await member.send(f"We Are So Excited to have you on {member.guild.name}")
 
@@ -87,7 +87,7 @@ async def on_member_join(member):
 async def on_member_remove(member):
     for channel in member.guild.channels:
         if "bye" in channel.name:
-            byeEmbed = discord.Embed(description=f"**{member}** Just Left {member.guild.name}!",color=embedTheme)
+            byeEmbed = discord.Embed(title=f"**{member}** Just Left {member.guild.name}!",color=embedTheme)
             await channel.send(embed=byeEmbed)
 
 ###############
