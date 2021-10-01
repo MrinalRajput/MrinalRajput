@@ -65,6 +65,28 @@ async def setprefix(ctx, *, newPrefix:Optional[str]=None):
 
 setprefixhelp = "setprefix <New Bot Prefix>"
 
+@bot.event
+async def on_guild_join(guild):
+    for channel in guild.text_channels:
+        if channel.permissions_for(guild.me).send_messages:
+            if "chat" in channel.name or "general" in channel.name:
+                await channel.send(f'Hey there! Thanks for Adding me in {guild.name}, Type `>help` to get All about me')
+
+@bot.event
+async def on_member_join(member):
+    for channel in member.guild.channels:
+        if "welcome" in channel.name:
+            welcomeEmbed = discord.Embed(title="Welcome!", description=f"{member.mention} Just Joined {member.guild.name} Server",color=embedTheme)
+            await channel.send(embed=welcomeEmbed)
+            await member.send(f"We Are So Excited to have you on {member.guild.name}")
+
+@bot.event
+async def on_member_remove(member):
+    for channel in member.guild.channels:
+        if "bye" in channel.name:
+            byeEmbed = discord.Embed(title="Good Bye!", description=f"{member.mention} Just Left {member.guild.name} Server",color=embedTheme)
+            await channel.send(embed=byeEmbed)
+
 ###############
 #### Only For My Smp Server
 ###############
@@ -1747,13 +1769,6 @@ async def vote(ctx):
     await ctx.send(embed=embed)
 
 votehelp = f"vote"
-
-@bot.event
-async def on_guild_join(guild):
-    for channel in guild.text_channels:
-        if channel.permissions_for(guild.me).send_messages:
-            if "chat" in channel.name or "general" in channel.name:
-                await channel.send(f'Hey there! Thanks for Adding me in {guild.name}, Type `>help` to get All about me')
 
 @bot.command()
 async def info(ctx):
