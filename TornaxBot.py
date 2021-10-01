@@ -34,7 +34,7 @@ TOKEN = "ODMyODk3NjAyNzY4MDc2ODE2.YHqeVg.yfzVgB8hHizDFH7hSMTORIv5weg"
 embedTheme = discord.Color.from_rgb(255, 255, 0)
 
 async def create_db_pool():
-    bot.pg_con = await asyncpg.create_pool(database="ddt3h5kmtjdr1h",username="lhdqtzqtddynlu",password="2790afc4d8f12e15c72d767b4e5c9c9c2d52279b971b54d487bda9ad720bf159")
+    bot.pg_con = await asyncpg.create_pool(database="ddt3h5kmtjdr1h",user="lhdqtzqtddynlu",password="2790afc4d8f12e15c72d767b4e5c9c9c2d52279b971b54d487bda9ad720bf159")
     await bot.pg_con.execute("CREATE TABLE IF NOT EXIST prefixes(guild_id bigint, prefix text)") 
     print("Connected Successfully To DataBase")
 
