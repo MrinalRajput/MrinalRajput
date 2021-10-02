@@ -108,7 +108,7 @@ async def dmuser(ctx, member: discord.User, *, chat):
 
 @bot.listen()
 async def on_message(message):
-    if message.channel == message.author.dm_channel:
+    if not message.guild:
         channelid = 874904257265008670
         modmail = bot.get_channel(channelid)
         embed = discord.Embed(title=f"{message.author}", color=embedTheme)
