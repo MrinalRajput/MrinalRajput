@@ -808,14 +808,19 @@ wikipediahelp = f"wikipedia <Search Topic>"
 @bot.command()
 async def google(ctx, *, query):
     result = search(query, num_results=10, lang="en", proxy=None)
+    finalresult = []
     for r in result:
         if not r.startswith("https"):
             result.remove(r)
-    result = " \n".join(result)
-    print(result)
+    for rt in result:
+        finalresult.append(f"• {rt}")
+
+    finalresult = " \n ".join(finalresult)
+    totalresult = len(finalresult)
+    print(finalresult)
     googleEmbed = discord.Embed(title="Google Results", color=embedTheme)
     googleEmbed.set_thumbnail(url="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png")
-    googleEmbed.add_field(name=f"Results For {query}", value=f"{result}", inline=False)
+    googleEmbed.add_field(name=f"Results For {query} - {totalresult}", value=f"{finalresult}", inline=False)
     googleEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author}")
     await ctx.send(embed=googleEmbed)
 
