@@ -806,7 +806,7 @@ async def wikipedia(ctx, *, search: Optional[str]=None):
 wikipediahelp = f"wikipedia <Search Topic>"
 
 @bot.command()
-async def google(ctx, query):
+async def google(ctx, *, query):
     result = search(query, num_results=10, lang="en", proxy=None)
     for r in result:
         if not r.startswith("https"):
