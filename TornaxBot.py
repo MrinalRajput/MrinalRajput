@@ -12,7 +12,6 @@ import asyncpg
 from PIL import Image, ImageDraw
 from io import BytesIO
 import wikipedia
-import googletrans
 
 from discord.ext.commands import has_permissions,has_role,MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError, MissingAnyRole
 from discord.member import Member
@@ -804,20 +803,7 @@ async def google(ctx, *, search: Optional[str]=None):
         await ctx.reply(f"Something Went Wrong! We Didn't Found a Result for {search}")
 
 googlehelp = f"google <Search Topic>"
-
-@bot.command()
-async def translate(ctx, language_to, *query):
-    language_to = language_to.lower()
-    if language_to not in googletrans.LANGUAGES and language_to not in googletrans.LANGCODES:
-        await ctx.reply("The Language in which You want to Translate is Invaild")
-
-    gottext = " ".join(query)
-    translator = googletrans.Translator()
-    translated = translator.translate(gottext, dest=language_to).gottext
-    await ctx.send(translated)
-
-translatehelp = f"translate <Language> <Sentence>"
-
+    
 @bot.command()
 async def time(ctx):
     currenttime = datetime.now()
@@ -1851,7 +1837,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gparticipate, gquit, setprefix, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
-        myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, mcserver, google, translate \n----------------------\n", inline=False)
+        myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, mcserver, google \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{ctx.prefix}`\n > Command Usage Example :   `{ctx.prefix}info`\n\n----------------------", inline=False)
         myEmbed.add_field(name="Readme", value=f"`{ctx.prefix}help` Shows this Message, use `{ctx.prefix}help [command]` to get more information about that Command\n\n")
         myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creater}")
@@ -1887,7 +1873,6 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "vote": content=votehelp
         elif anycommand == "support": content=supporthelp
         elif anycommand == "google": content=googlehelp
-        elif anycommand == "translate": content=translatehelp
         elif anycommand == "join": content=joinhelp
         elif anycommand == "leave": content=leavehelp
         elif anycommand == "leaveserver": content=leaveserverhelp
