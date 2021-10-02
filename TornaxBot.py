@@ -460,7 +460,8 @@ class Giveaway():
     @commands.has_role("Giveaway Handler")
     async def gstart(ctx, Channel:discord.TextChannel, prize:str, endtime:int, unit:str):
         global GiveawayActive, GiveawayChannel, StartAnnounce, MembersList, ParticipantsMsg
-        try:
+        GiveawayRole = discord.utils.find(ctx.guild.roles, name="Giveaway Handler")
+        if ctx.author.has_role(GiveawayRole):
             if ctx.guild.id not in GiveawayActive:
                 GiveawayActive[ctx.guild.id] = False
             if ctx.guild.id not in Participants:
@@ -519,7 +520,7 @@ class Giveaway():
                     GiveawayChannel[ctx.guild.id] = None
             else:
                 await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
-        except MissingRole:
+        else:
             await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}, use `>help gstart` for more help')
 
     @bot.command()
