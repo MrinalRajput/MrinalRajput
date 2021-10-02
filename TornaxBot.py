@@ -79,7 +79,15 @@ async def on_guild_join(guild):
 async def on_member_join(member):
     for channel in member.guild.channels:
         if "welcome" in channel.name:
-            welcomeEmbed = discord.Embed(title=f"{member} Just Joined {member.guild.name}",color=embedTheme)
+            created_at = member.created_at.strftime("%a, %d %b %Y %I:%M %p")
+            joined_at = member.joined_at.strftime("%a, %d %b %Y %I:%M %p")
+            welcomeEmbed = discord.Embed(title="Welcome!", description=f"A Member Just Joined **{member.guild.name}**",color=embedTheme)
+            welcomeEmbed.set_thumbnail(url=member.avatar_url)
+            welcomeEmbed.add_field(name="Member Joined", value=f"{member.mention}",inline=True)
+            welcomeEmbed.add_field(name="Member Id", value=f"{member.id}", inline=True)
+            welcomeEmbed.add_field(name="Joined Discord", value=f"{created_at}", inline=True)
+            welcomeEmbed.add_field(name=f"Joined {member.guild.name}", value=f"{joined_at}", inline=True)
+            welcomeEmbed.add_field(name=f"Member Number", value=f"#{member.guild.member_count}", inline=True)
             await channel.send(embed=welcomeEmbed)
             await member.send(f"We Are So Excited to have you on {member.guild.name}")
 
