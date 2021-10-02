@@ -12,7 +12,7 @@ import asyncpg
 from PIL import Image, ImageDraw
 from io import BytesIO
 
-from discord.ext.commands import has_permissions,has_role,MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError
+from discord.ext.commands import has_permissions,has_role,MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError, MissingAnyRole
 from discord.member import Member
 
 
@@ -512,7 +512,7 @@ class Giveaway():
             else:
                 await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
         except:
-            await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}, use `>help gstop` for more help')
+            await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}, use `>help gstart` for more help')
 
     @bot.command()
     async def gparticipate(ctx):
@@ -580,7 +580,7 @@ class Giveaway():
             else:
                 await ctx.send(":exclamation: There is No Giveaway Active in this Server")
         except:
-            await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}, use `>help gstop` for more help')
+            await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}, use `>help gstatus` for more help')
 
     @bot.command()
     @commands.has_role("Giveaway Handler")
