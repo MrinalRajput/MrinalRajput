@@ -11,6 +11,7 @@ from mcstatus import MinecraftServer
 import asyncpg
 from PIL import Image, ImageDraw
 from io import BytesIO
+import wikipedia
 
 from discord.ext.commands import has_permissions,has_role,MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError, MissingAnyRole
 from discord.member import Member
@@ -787,7 +788,14 @@ async def mcserver(ctx, server: Optional[str]=None):
 mcserverhelp = f"mcserver <Minecaft Java Server Ip>"
 
 @bot.command()
-@commands.bot_has_permissions(send_messages=True)
+async def google(ctx, search: Optional[str]=None):
+    if search is not None:
+        query = wikipedia.summary(search, sentences=2)
+        result = discord.Embed(title="Wikipedia", color=embedTheme)
+        result.add_field(name=f"Search Results for {search}", value=f"search")
+    else:
+        await ctx.reply(f"You Must Specify What you want to Search!")
+@bot.command()
 async def time(ctx):
     currenttime = datetime.now()
     await ctx.send(f"Current Time is {currenttime}")
@@ -1855,6 +1863,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "about": content=abouthelp
         elif anycommand == "vote": content=votehelp
         elif anycommand == "support": content=supporthelp
+        elif anycommand == "google": content=googlehelp
         elif anycommand == "join": content=joinhelp
         elif anycommand == "leave": content=leavehelp
         elif anycommand == "leaveserver": content=leaveserverhelp
