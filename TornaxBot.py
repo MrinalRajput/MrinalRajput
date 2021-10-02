@@ -86,7 +86,7 @@ async def on_member_join(member):
             welcomeEmbed.set_thumbnail(url=member.avatar_url)
             welcomeEmbed.add_field(name="Member Joined", value=f"{member.mention}",inline=True)
             welcomeEmbed.add_field(name="Member Id", value=f"{member.id}", inline=True)
-            welcomeEmbed.add_field(name="Joined Discord", value=f"{created_at}", inline=True)
+            welcomeEmbed.add_field(name="Joined Discord", value=f"{created_at}", inline=False)
             welcomeEmbed.add_field(name=f"Joined {member.guild.name}", value=f"{joined_at}", inline=True)
             welcomeEmbed.add_field(name=f"Member Number", value=f"#{member.guild.member_count}", inline=True)
             await channel.send(embed=welcomeEmbed)
@@ -789,15 +789,21 @@ mcserverhelp = f"mcserver <Minecaft Java Server Ip>"
 
 @bot.command()
 async def google(ctx, *, search: Optional[str]=None):
-    if search is not None:
-        query = wikipedia.summary(search, sentences=2)
-        result = discord.Embed(title="Wikipedia", color=embedTheme)
-        result.add_field(name=f"Search Results for {search}", value=f"{query}")
-        result.set_thumbnail(url="https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/220px-Wikipedia-logo-v2.svg.png")
-        result.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author}")
-        await ctx.send(embed=result)
-    else:
-        await ctx.reply(f"You Must Specify What you want to Search!")
+    try:
+        if search is not None:
+            query = wikipedia.summary(search, sentences=2)
+            result = discord.Embed(title="Wikipedia", color=embedTheme)
+            result.add_field(name=f"Search Results for {search}", value=f"{query}")
+            result.set_thumbnail(url="https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/220px-Wikipedia-logo-v2.svg.png")
+            result.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author}")
+            await ctx.send(embed=result)
+        else:
+            await ctx.reply(f"You Must Specify What you want to Search!")
+    except:
+        await ctx.reply(f"Something Went Wrong! We Didn't Found a Result for {search}")
+
+googlehelp = f"google <Search Topic>"
+    
 @bot.command()
 async def time(ctx):
     currenttime = datetime.now()
@@ -1831,7 +1837,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gparticipate, gquit, setprefix, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
-        myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, mcserver \n----------------------\n", inline=False)
+        myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, mcserver, google \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{ctx.prefix}`\n > Command Usage Example :   `{ctx.prefix}info`\n\n----------------------", inline=False)
         myEmbed.add_field(name="Readme", value=f"`{ctx.prefix}help` Shows this Message, use `{ctx.prefix}help [command]` to get more information about that Command\n\n")
         myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creater}")
