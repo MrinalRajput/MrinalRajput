@@ -815,8 +815,8 @@ async def google(ctx, *, query):
     for rt in result:
         finalresult.append(f"• {rt}")
 
-    finalresult = " \n ".join(finalresult)
     totalresult = len(finalresult)
+    finalresult = " \n ".join(finalresult)
     print(finalresult)
     googleEmbed = discord.Embed(title="Google Results", color=embedTheme)
     googleEmbed.set_thumbnail(url="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png")
