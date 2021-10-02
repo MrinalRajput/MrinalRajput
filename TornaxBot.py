@@ -807,7 +807,7 @@ wikipediahelp = f"wikipedia <Search Topic>"
 
 @bot.command()
 async def google(ctx, query):
-    result = search(query, num_results=10, lang="en", proxy=None)
+    result = search(query, num_results=5, lang="en", proxy=None)
     result = " \n".join(result)
     print(result)
     googleEmbed = discord.Embed(title="Google Results", color=embedTheme)
