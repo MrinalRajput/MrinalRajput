@@ -806,15 +806,15 @@ async def google(ctx, *, search: Optional[str]=None):
 googlehelp = f"google <Search Topic>"
 
 @bot.command()
-async def translate(ctx, language, *, text):
-    language = language.lower()
-    if language not in googletrans.LANGUAGES and language not in googletrans.LANGCODES:
+async def translate(ctx, language_to, *query):
+    language_to = language_to.lower()
+    if language_to not in googletrans.LANGUAGES and language_to not in googletrans.LANGCODES:
         await ctx.reply("The Language in which You want to Translate is Invaild")
-    else:
-        text = " ".join(text)
-        translator = googletrans.Translator()
-        translated = translator.translate(text, dest=language).text
-        await ctx.send(translated)
+
+    gottext = " ".join(query)
+    translator = googletrans.Translator()
+    translated = translator.translate(gottext, dest=language_to).gottext
+    await ctx.send(translated)
 
 translatehelp = f"translate <Language> <Sentence>"
 
