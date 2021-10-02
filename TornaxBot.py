@@ -793,6 +793,8 @@ async def google(ctx, search: Optional[str]=None):
         query = wikipedia.summary(search, sentences=2)
         result = discord.Embed(title="Wikipedia", color=embedTheme)
         result.add_field(name=f"Search Results for {search}", value=f"search")
+        result.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author}")
+        await ctx.send(embed=result)
     else:
         await ctx.reply(f"You Must Specify What you want to Search!")
 @bot.command()
