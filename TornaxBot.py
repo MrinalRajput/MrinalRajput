@@ -811,6 +811,7 @@ async def translate(ctx, language, *, text):
     if language not in googletrans.LANGUAGES and language not in googletrans.LANGCODES:
         await ctx.reply("The Language in which You want to Translate is Invaild")
     else:
+        text = " ".join(text)
         translator = googletrans.Translator()
         translated = translator.translate(text, dest=language).text
         await ctx.send(translated)
