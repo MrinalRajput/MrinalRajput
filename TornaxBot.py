@@ -808,7 +808,7 @@ googlehelp = f"google <Search Topic>"
 @bot.command()
 async def translate(ctx, language, *, text):
     language = language.lower()
-    if language not in googletrans.LANGUAGES or language not in googletrans.LANGCODES:
+    if language not in googletrans.LANGUAGES and language not in googletrans.LANGCODES:
         await ctx.reply("The Language in which You want to Translate is Invaild")
     else:
         translator = googletrans.Translator()
