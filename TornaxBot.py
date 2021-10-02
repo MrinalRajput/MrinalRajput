@@ -788,7 +788,7 @@ async def mcserver(ctx, server: Optional[str]=None):
 mcserverhelp = f"mcserver <Minecaft Java Server Ip>"
 
 @bot.command()
-async def google(ctx, *, search: Optional[str]=None):
+async def wikipedia(ctx, *, search: Optional[str]=None):
     try:
         if search is not None:
             query = wikipedia.summary(search, sentences=2)
@@ -802,7 +802,7 @@ async def google(ctx, *, search: Optional[str]=None):
     except:
         await ctx.reply(f"Something Went Wrong! We Didn't Found a Result for {search}")
 
-googlehelp = f"google <Search Topic>"
+wikipediahelp = f"wikipedia <Search Topic>"
     
 @bot.command()
 async def time(ctx):
@@ -1837,7 +1837,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gparticipate, gquit, setprefix, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
-        myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, mcserver, google \n----------------------\n", inline=False)
+        myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, mcserver, wikipedia \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{ctx.prefix}`\n > Command Usage Example :   `{ctx.prefix}info`\n\n----------------------", inline=False)
         myEmbed.add_field(name="Readme", value=f"`{ctx.prefix}help` Shows this Message, use `{ctx.prefix}help [command]` to get more information about that Command\n\n")
         myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creater}")
@@ -1872,7 +1872,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "about": content=abouthelp
         elif anycommand == "vote": content=votehelp
         elif anycommand == "support": content=supporthelp
-        elif anycommand == "google": content=googlehelp
+        elif anycommand == "wikipedia": content=wikipediahelp
         elif anycommand == "join": content=joinhelp
         elif anycommand == "leave": content=leavehelp
         elif anycommand == "leaveserver": content=leaveserverhelp
