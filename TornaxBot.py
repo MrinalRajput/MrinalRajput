@@ -460,7 +460,7 @@ class Giveaway():
     async def gstart(ctx, Channel:discord.TextChannel, prize:str, endtime:int, unit:str):
         global GiveawayActive, GiveawayChannel, StartAnnounce, MembersList, ParticipantsMsg
         GiveawayRole = discord.utils.get(ctx.guild.roles, name="Giveaway Handler")
-        if GiveawayRole or ctx.author.has_role(GiveawayRole):
+        if ctx.author.has_role(GiveawayRole):
             if ctx.guild.id not in GiveawayActive:
                 GiveawayActive[ctx.guild.id] = False
             if ctx.guild.id not in Participants:
@@ -580,21 +580,23 @@ class Giveaway():
     @bot.command()
     @commands.has_role("Giveaway Handler")
     async def gstatus(ctx):
-        try:
+        GiveawayRole = discord.utils.get(ctx.guild.roles, name="Giveaway Handler")
+        if ctx.author.has_role(GiveawayRole):
             if ctx.guild.id not in GiveawayActive:
                 GiveawayActive[ctx.guild.id] = False
             if GiveawayActive[ctx.guild.id]:
                 await ctx.send(f"A Giveaway is Currently Active in this Server \n Number of Participants :- {Participants[ctx.guild.id]}\n Giveaway Channel :- {GiveawayChannel[ctx.guild.id]}")
             else:
                 await ctx.send(":exclamation: There is No Giveaway Active in this Server")
-        except MissingRole:
+        else:
             await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}, use `>help gstatus` for more help')
 
     @bot.command()
     @commands.has_role("Giveaway Handler")
     async def gstop(ctx):
         global GiveawayActive, Participants, GiveawayChannel, MembersList
-        try:
+        GiveawayRole = discord.utils.get(ctx.guild.roles, name="Giveaway Handler")
+        if ctx.author.has_role(GiveawayRole):
             if ctx.guild.id not in GiveawayActive:
                 GiveawayActive[ctx.guild.id] = False
             if GiveawayActive[ctx.guild.id] == True:
@@ -605,7 +607,7 @@ class Giveaway():
                 await ctx.send(f"Giveaway has been Stopped by {ctx.author.mention}")
             else:
                 await ctx.send(":exclamation: There is No Giveaway Active in this Server")
-        except MissingRole:
+        else:
             await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}, use `>help gstop` for more help')
 
 gstarthelp = f"gstart <channel> <prize> <endtime> <unit , for ex:- s,m,h>"
