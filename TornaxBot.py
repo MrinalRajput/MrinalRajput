@@ -14,6 +14,7 @@ from PIL import Image, ImageDraw
 from io import BytesIO
 import wikipedia
 from googlesearch import search
+import dbl
 
 from discord.ext.commands import has_permissions,has_role,MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError, MissingAnyRole
 from discord.member import Member
