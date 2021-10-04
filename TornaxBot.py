@@ -346,8 +346,6 @@ async def on_message(message):
         else:
             pass
 
-
-
 @bot.command()
 @commands.has_permissions(manage_nicknames=True)
 async def setnick(ctx, member: Optional[discord.Member]=None, *, newname):
@@ -906,20 +904,22 @@ async def on_message(message):
     if message.guild.id not in active:
         active[message.guild.id] = False
     try:
-        gamingChannel[message.author.id]["attempts"] = 0
+        if message.author.id not in gamingChannel[message.guild.id]:
+            gamingChannel[message.guild.id][message.author.id] = {}
+        gamingChannel[message.guild.id][message.author.id]["attempts"] = 0
         if message.author != bot.user:
             if active[message.guild.id] == True:
                 if message.channel == gamingChannel[message.guild.id]["channel"]:
                     guesses = int(message.content)
                     if guesses > gamingChannel[message.guild.id]['secretNumber']:
                         await message.reply(f"Try a Smaller Number")
-                        gamingChannel[message.author.id]["attempts"] += 1
+                        gamingChannel[message.guild.id][message.author.id]["attempts"] += 1
                     elif guesses < gamingChannel[message.guild.id]['secretNumber']:
                         await message.reply("Try a Bigger Number")
-                        gamingChannel[message.author.id]["attempts"] += 1
+                        gamingChannel[message.guild.id][message.author.id]["attempts"] += 1
                     elif guesses == gamingChannel[message.guild.id]['secretNumber']:
-                        gamingChannel[message.author.id]["attempts"] += 1
-                        await message.reply(f"{message.author.mention} You Guessed Correct in {gamingChannel[message.author.id]['attempts']} Attempts and Won the Challenge, the Secret Number was `{gamingChannel[message.guild.id]['secretNumber']}`")
+                        gamingChannel[message.guild.id][message.author.id]["attempts"] += 1
+                        await message.reply(f"{message.author.mention} You Guessed Correct in {gamingChannel[message.guild.id][message.author.id]['attempts']} Attempts and Won the Challenge, the Secret Number was `{gamingChannel[message.guild.id]['secretNumber']}`")
                         gamingChannel[message.guild.id]["guessed"] = True
                         gamingChannel[message.guild.id]["countdown"] = 1
     except Exception as e:
