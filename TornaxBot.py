@@ -313,7 +313,9 @@ async def leaveserver(ctx):
         ask = await ctx.send(f"{ctx.author.mention} Do You Really Want me to Leave {ctx.guild.name} Server \:( ")
         await ask.add_reaction("✅")
         await ask.add_reaction("❎")
-        reaction, user = bot.wait_for("reaction_add", timeout=100)
+        def check(reaction, user):
+            return reaction.message.id == ask.id and user == ctx.author
+        reaction, user = bot.wait_for("reaction_add",timeout=100,check=check)
         if reaction.emoji == "✅":
             await ctx.send(f"{ctx.author.mention} Successfully Left {ctx.guild} Server Bye Bye! :(")
             await ctx.guild.leave()
