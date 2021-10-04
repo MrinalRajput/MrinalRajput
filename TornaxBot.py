@@ -78,6 +78,12 @@ async def on_guild_join(guild):
         if channel.permissions_for(guild.me).send_messages:
             if "chat" in channel.name or "general" in channel.name:
                 await channel.send(f'Hey there! Thanks for Adding me in {guild.name}, Type `>help` to get All about me')
+    inviteChannel = bot.get_channel(890819215588741191)
+    inviteEmbed = discord.Embed(title = "Joined!", description=f"{bot.user.mention} Just Joined {guild.name}", color=embedTheme)
+    inviteEmbed.set_thumbnail(url=guild.icon_url)
+    inviteEmbed.add_field(name="Guild Owner", value=f"<@{guild.owner_id}>",inline=False)
+    inviteEmbed.add_field(name="Guild ID", value=guild.id,inline=False)
+    await inviteChannel.send(embed=inviteEmbed)
 
 @bot.event
 async def on_member_join(member):
