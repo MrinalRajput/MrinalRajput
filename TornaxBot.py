@@ -1,3 +1,4 @@
+from os import name
 import warnings
 import discord
 from discord.ext import commands, tasks
@@ -99,6 +100,15 @@ async def on_member_remove(member):
         if "bye" in channel.name:
             byeEmbed = discord.Embed(title=f"**{member}** Just Left {member.guild.name}!",color=embedTheme)
             await channel.send(embed=byeEmbed)
+
+@bot.event
+async def on_dbl_vote(data):
+    user = data["user"]
+    voteEmbed = discord.Embed(title="Voted!", description=f"{user} Just Voted for {bot.user.mention}",color=embedTheme)
+    voteEmbed.add_field(name=f"Voter ID", value=f"{user.id}", inline=False)
+    voteAnnounce = bot.get_channel(892260693846401054)
+    await user.send(f"Thanks For Voting {bot.user.mention} !! You Can get Rewards in Our Official Server - [Join](https://discord.gg/H3688EEpWr) ")
+    await voteAnnounce.send(embed=voteEmbed)
 
 ###############
 #### Only For My Smp Server
@@ -1814,7 +1824,7 @@ async def vote(ctx):
     embed = discord.Embed(title="Vote For Tornax\t\t", color=embedTheme)
     embed.set_thumbnail(url=bot.user.avatar_url)
     embed.add_field(name="Click on Below Links", value=f"{symbol}[Top.gg](https://top.gg/bot/832897602768076816/vote)\n{symbol}[Discord Bot List](https://discordbotlist.com/bots/tornax/upvote)\n", inline=False)
-    embed.add_field(name="Rewards", value="Coming Soon", inline=False)
+    embed.add_field(name="Rewards", value="Join Our Official Server Now For Op Rewards Daily !!", inline=False)
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=embed)
 
