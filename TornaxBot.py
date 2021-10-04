@@ -14,7 +14,7 @@ from PIL import Image, ImageDraw
 from io import BytesIO
 import wikipedia
 from googlesearch import search
-import dbl
+import topgg
 
 from discord.ext.commands import has_permissions,has_role,MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError, MissingAnyRole
 from discord.member import Member
@@ -111,11 +111,10 @@ async def on_member_remove(member):
 @bot.event
 async def on_dbl_vote(data):
     print(data)
-    user = data["user"]
-    voteEmbed = discord.Embed(title="Voted!", description=f"{user} Just Voted for {bot.user.mention}",color=embedTheme)
-    voteEmbed.add_field(name=f"Voter ID", value=f"{user.id}", inline=False)
+    voteEmbed = discord.Embed(title="Voted!", description=f"{data}",color=embedTheme)
+    # voteEmbed.add_field(name=f"Voter ID", value=f"{user.id}", inline=False)
     voteAnnounce = bot.get_channel(892260693846401054)
-    await user.send(f"Thanks For Voting {bot.user.mention} !! You Can get Rewards in Our Official Server - [Join](https://discord.gg/H3688EEpWr) ")
+    # await user.send(f"Thanks For Voting {bot.user.mention} !! You Can get Rewards in Our Official Server - [Join](https://discord.gg/H3688EEpWr) ")
     await voteAnnounce.send(embed=voteEmbed)
 
 ###############
