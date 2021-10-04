@@ -104,6 +104,7 @@ async def on_member_remove(member):
 
 @bot.event
 async def on_dbl_vote(data):
+    print(data)
     user = data["user"]
     voteEmbed = discord.Embed(title="Voted!", description=f"{user} Just Voted for {bot.user.mention}",color=embedTheme)
     voteEmbed.add_field(name=f"Voter ID", value=f"{user.id}", inline=False)
