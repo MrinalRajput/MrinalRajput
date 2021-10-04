@@ -305,27 +305,48 @@ async def kick_error(error, ctx):
    if isinstance(error, MissingPermissions):
        await ctx.send("You don't have permission to do that!")
 
+leaveConfirmation = 0
+leavingRequest = {}
+
 @bot.command()
 @commands.has_permissions(manage_guild=True)
 async def leaveserver(ctx):
     global leaveConfirmation, leavingRequest
     try:
-        ask = await ctx.send(f"{ctx.author.mention} Do You Really Want me to Leave {ctx.guild.name} Server \:( ")
-        await ask.add_reaction("✅")
-        await ask.add_reaction("❎")
-        def check(reaction, user):
-            return reaction.message.id == ask.id and user == ctx.author
-        reaction = await bot.wait_for("reaction_add",timeout=100,check=check)
-        if reaction.emoji == "✅":
-            await ctx.send(f"{ctx.author.mention} Successfully Left {ctx.guild} Server Bye Bye! :(")
-            await ctx.guild.leave()
-        elif reaction.emoji == "❎":
-            await ctx.send(f"Thank You So Much for Keeping me in {ctx.guild} Server \:)")
+        if ctx.guild.id not in leavingRequest:
+            leavingRequest[ctx.guild.id] = ""
+        leavingRequest[ctx.guild.id] = ctx.author.id
+        await ctx.send(f"{ctx.author.mention} Do You Really Want me to Leave {ctx.guild.name} Server \:( , Send - Yes or No")
+        leaveConfirmation = 20
+        await asyncio.sleep(20)
+        if leaveConfirmation == 20:
+            await ctx.send(f"{ctx.author.mention} Your Replying/Answering Time Ended!")
+            leaveConfirmation = 0
     except Exception as e:
         print(e)
         await ctx.send(f"{ctx.author.mention} Sorry you don't have Access to use this Command")
 
 leaveserverhelp = f"leaveserver"
+
+@bot.listen()
+async def on_message(message):
+    global leaveRequest, leaveConfirmation
+    if message.guild.id not in leavingRequest:
+            leavingRequest[message.guild.id] = ""
+
+    if leaveConfirmation == 20:
+        if message.author.id == leavingRequest[message.guild.id]:
+            if message.content.lower() == "yes":
+                await message.channel.send(f"{message.author.mention} Successfully Left Your Server Bye Bye! :(")
+                await message.guild.leave()
+            elif message.content.lower() == "no":
+                await message.channel.send(f"Thank You So Much :) for Keeping me in {message.guild.name} Server")
+                leaveConfirmation = 0
+                del leavingRequest[message.guild.id]
+        else:
+            pass
+
+
 
 @bot.command()
 @commands.has_permissions(manage_nicknames=True)
