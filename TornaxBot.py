@@ -2072,6 +2072,7 @@ async def on_reaction_add(reaction, user):
                             await messge.remove_reaction("🔢", user)
                             asking = await reaction.message.channel.send(f"In Which Page You Want to Jump?")
                             replymsg = await bot.wait_for(event="message",timeout=60)
+                            print(replymsg)
                             if 0 < int(replymsg.content) < 9:
                                 await asking.delete()
                                 await replymsg.delete()
