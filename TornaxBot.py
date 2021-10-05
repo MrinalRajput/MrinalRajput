@@ -188,11 +188,11 @@ async def ban(ctx, member:discord.Member, days: Optional[int]=None, *, reason:Op
                 await ctx.reply(f":exclamation: You Cannot Ban an Admin")
         else:
             if not member.guild_permissions.administrator:
-            embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} \n\t With the Reason of :\t{reason}**",color=embedTheme)
-            dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.name} **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.name} \n\t With the Reason of :\t{reason}**",color=embedTheme)
-            await ctx.send(embed=embed)
-            await member.send(embed=dmuser)
-            await member.ban(reason=reason)
+                embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} \n\t With the Reason of :\t{reason}**",color=embedTheme)
+                dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.name} **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.name} \n\t With the Reason of :\t{reason}**",color=embedTheme)
+                await ctx.send(embed=embed)
+                await member.send(embed=dmuser)
+                await member.ban(reason=reason)
             else:
                 await ctx.reply(f":exclamation: You Cannot Ban an Admin")
     except Exception as e:
