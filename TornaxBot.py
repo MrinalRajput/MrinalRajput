@@ -2050,9 +2050,10 @@ async def allcommands(ctx):
     activecmd[ctx.guild.id][genCode]["Embeds"] = [toolsEmbed,managementEmbed,giveawayEmbed,moderationEmbed,funEmbed,minigamesEmbed,infoEmbed,generalEmbed]
 
     await asyncio.sleep(300)
-    await activecmd[ctx.guild.id][genCode]["message"].clear_reactions()
-    del activecmd[ctx.guild.id][genCode]
-    del cmdcode[ctx.guild.id][ctx.author.id]
+    if ctx.author.id in cmdcode[ctx.guild.id]:
+        await activecmd[ctx.guild.id][genCode]["message"].clear_reactions()
+        del activecmd[ctx.guild.id][genCode]
+        del cmdcode[ctx.guild.id][ctx.author.id]
 
 @bot.listen()
 async def on_reaction_add(reaction, user):
@@ -2121,6 +2122,8 @@ async def on_reaction_add(reaction, user):
                         await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][6])
                     elif activecmd[reaction.message.guild.id][code]["page"] == 8:
                         await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][7])
+        else:
+            await reaction.remove(user)
     except Exception as e:
         print(e)
         pass
