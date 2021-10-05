@@ -213,7 +213,7 @@ unbanhelp = f"unban <member id>"
 
 @bot.command()
 @commands.has_permissions(kick_members=True)
-async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: Optional[str]=None, *, reason: Optional[str]=None ):
+async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: Optional[str]=None, *reason: Optional[str]=None ):
     try:
         try:
             if duration is None and unit is not None:
@@ -257,7 +257,7 @@ mutehelp = f"mute <member> [duration] [unit = s,m,h] [reason]"
 
 @bot.command()
 @commands.has_permissions(kick_members=True)
-async def unmute(ctx, member:discord.Member, reason: Optional[str]=None):
+async def unmute(ctx, member:discord.Member, *reason: Optional[str]=None):
     mutedRole = discord.utils.get(ctx.message.guild.roles, name="Muted")
     if mutedRole in member.roles:
         embed = discord.Embed(description=f"** {member.mention} has been Unmuted Successfully by {ctx.author.mention}**" if reason is None else f"** {member.mention} has been Unmuted Successfully by {ctx.author.mention}\n\t With the Reason of :\t{reason}**",color=embedTheme)
@@ -2060,8 +2060,8 @@ async def allcommands(ctx):
 async def on_reaction_add(reaction, user):
     global cmdcode, activecmd
     try:
-        if reaction.author.id in cmdcode[reaction.guild.id]:
-            code = cmdcode[reaction.guild.id][reaction.author.id]
+        if reaction.user.id in cmdcode[reaction.guild.id]:
+            code = cmdcode[reaction.guild.id][reaction.user.id]
             messge = activecmd[reaction.guild.id][code]["message"]
             if reaction.message.id == messge.id:
                 if reaction.emoji == "🔢":
@@ -2096,7 +2096,7 @@ async def on_reaction_add(reaction, user):
                     for r in activecmd[reaction.guild.id][code]["message"].reactions:
                         activecmd[reaction.guild.id][code]["message"].clear_reaction(r)
                     del activecmd[reaction.guild.id][code]
-                    del cmdcode[reaction.guild.id][reaction.author.id]
+                    del cmdcode[reaction.guild.id][reaction.user.id]
     except Exception as e:
         print(e)
         pass
