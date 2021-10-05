@@ -1871,6 +1871,8 @@ abouthelp = f"about"
 
 helphelp = f"help [anycommand]"
 
+allcommands = f"allcommands"
+
 @bot.command()
 async def help(ctx, anycommand: Optional[str]=None):
     server_prefix = await bot.pg_con.fetchrow("SELECT prefix FROM prefixes WHERE guild_id  = $1", ctx.guild.id)
@@ -1890,7 +1892,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n \n \t-> [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=536870911991&scope=bot)")
         myEmbed.add_field(name=f"Commands — {int(totalCommands)-2}",value="----------------------\n",inline=False)
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
-        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, gstatus, gstop, gparticipate, gquit, setprefix, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
+        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, allcommands, gstatus, gstop, gparticipate, gquit, setprefix, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
         myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, mcserver, wikipedia, google \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{ctx.prefix}`\n > Command Usage Example :   `{ctx.prefix}info`\n\n----------------------", inline=False)
@@ -1951,6 +1953,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "tttstop": content=tttstophelp
         elif anycommand == "guess": content=guesshelp
         elif anycommand == "mcserver": content=mcserverhelp
+        elif anycommand == "allcommands": content=allcommandshelp
         elif anycommand == "help": content=helphelp
         commandEmbed = discord.Embed(description=f"{ctx.prefix}{content}",color=embedTheme)
         await ctx.send(embed=commandEmbed)
@@ -1968,8 +1971,7 @@ async def allcommands(ctx):
 
     if ctx.author.id in cmdcode[ctx.guild.id]:
         code = cmdcode[ctx.guild.id][ctx.author.id]
-        for r in activecmd[ctx.guild.id][code]["message"].reactions:
-            activecmd[ctx.guild.id][code]["message"].clear_reaction(r)
+        await activecmd[ctx.guild.id][code]["message"].clear_reactions()
 
     genCode = random.randint(000000, 999999)
     while genCode in activecmd[ctx.guild.id].keys():
@@ -1986,56 +1988,56 @@ async def allcommands(ctx):
         toolscmd.append(f"• {cmd} {sign}  {toolsList[cmd]}.")
     toolscmd = " \n ".join(toolscmd)
 
-    toolsEmbed = discord.Embed(title="Tools Commands", description=f"{toolscmd} \n\n {activecmd[ctx.guild.id][genCode]['page']}/8", color=embedTheme)
+    toolsEmbed = discord.Embed(title="Tools Commands", description=f"{toolscmd} \n\n 1/8", color=embedTheme)
 
     managementList = {f"{ctx.prefix}addrole":"Give/Add Any Role to Anyone",f"{ctx.prefix}removerole":"Take/Remove Any Role From Anyone",f"{ctx.prefix}clean":"Clean/Delete So Many Messages Quickly by Just Specifing the Quanitity",f"{ctx.prefix}setprefix":"Change Prefix of Tornax According to your Choice",f"{ctx.prefix}join":"Let Tornax Join a Voice Channel With You",f"{ctx.prefix}leave":"Let Tornax Leave a Voice Channel",f"{ctx.prefix}leaveserver":"Tell Tornax to Leave Your Server \:(",f"{ctx.prefix}lock":"Lock any Channel of Your Server to Disallow Members to Send Messages in it",f"{ctx.prefix}unlock":"Unlock a Locked Channel of Your Server",f"{ctx.prefix}slowmode":"Set Slowmode for a Channel of Your Server",f"{ctx.prefix}setnick":"Set or Change Nick of YourSelf or any Member",f"{ctx.prefix}resetnick":"Reset/Remove Your or SomeBodies Nick"}
     managementcmd = []
     for cmd in list(managementList.keys()):
         managementcmd.append(f"• {cmd} {sign}  {managementList[cmd]}.")
     managementcmd = " \n ".join(managementcmd)
-    managementEmbed = discord.Embed(title="Management Commands", description=f"{managementcmd} \n\n {activecmd[ctx.guild.id][genCode]['page']}/8", color=embedTheme)
+    managementEmbed = discord.Embed(title="Management Commands", description=f"{managementcmd} \n\n 2/8", color=embedTheme)
     
     giveawayList = {f"{ctx.prefix}gstart":"Start and Host a New Giveaway",f"{ctx.prefix}gparticipate":"Participate in Currently Active Giveaway",f"{ctx.prefix}gquit":"Quit the Giveaway of a Server in Between",f"{ctx.prefix}gstatus":"Get the Active Giveaway Status of Your Server",f"{ctx.prefix}gstop":"Stop a Giveaway in Between"}
     giveawaycmd = []
     for cmd in list(giveawayList.keys()):
         giveawaycmd.append(f"• {cmd} {sign}  {giveawayList[cmd]}.")
     giveawaycmd = " \n ".join(giveawaycmd)
-    giveawayEmbed = discord.Embed(title="Giveaways Commands", description=f"{giveawaycmd} \n\n {activecmd[ctx.guild.id][genCode]['page']}/8", color=embedTheme)
+    giveawayEmbed = discord.Embed(title="Giveaways Commands", description=f"{giveawaycmd} \n\n 3/8", color=embedTheme)
 
     moderationList = {f"{ctx.prefix}kick":"Kick Anyone From Your Server",f"{ctx.prefix}mute":"Mute a Member of Your Server",f"{ctx.prefix}unmute":"Unmute a Muted Member in Your Server",f"{ctx.prefix}warn":"Warn a Member of Your Server With/Without a Reason",f"{ctx.prefix}ban":"Ban a Member from your Server Permanently or Temporary",f"{ctx.prefix}unban":"Unban a Banned Member in Your Server"}
     moderationcmd = []
     for cmd in list(moderationList.keys()):
         moderationcmd.append(f"• {cmd} {sign}  {moderationList[cmd]}.")
     moderationcmd = " \n ".join(moderationcmd)
-    moderationEmbed = discord.Embed(title="Moderation Commands", description=f"{moderationcmd} \n\n {activecmd[ctx.guild.id][genCode]['page']}/8", color=embedTheme)
+    moderationEmbed = discord.Embed(title="Moderation Commands", description=f"{moderationcmd} \n\n 4/8", color=embedTheme)
 
     funList = {f"{ctx.prefix}slap":"Slap Somebody with a Highlighted Text",f"{ctx.prefix}kill":"Kill Somebody with a Highlighted Text",f"{ctx.prefix}punch":"Punch Somebody with a Highlighted Text",f"{ctx.prefix}wanted":"Make Somebody a Wanted Person with Cash Prize"}
     funcmd = []
     for cmd in list(funList.keys()):
         funcmd.append(f"• {cmd} {sign}  {funList[cmd]}.")
     funcmd = " \n ".join(funcmd)
-    funEmbed = discord.Embed(title="Fun Commands", description=f"{funcmd} \n\n {activecmd[ctx.guild.id][genCode]['page']}/8", color=embedTheme)
+    funEmbed = discord.Embed(title="Fun Commands", description=f"{funcmd} \n\n 5/8", color=embedTheme)
 
     minigamesList = {f"{ctx.prefix}tictactoe":"Challenge Your Friends for a Tictactoe Match",f"{ctx.prefix}tttstop":"Stop a Tictactoe Game in Between",f"{ctx.prefix}guess":"Start a Guess the Number Challenge with Your Server Members"}
     minigamescmd = []
     for cmd in list(minigamesList.keys()):
         minigamescmd.append(f"• {cmd} {sign}  {minigamesList[cmd]}.")
     minigamescmd = " \n ".join(minigamescmd)
-    minigamesEmbed = discord.Embed(title="Mini-Games Commands", description=f"{minigamescmd} \n\n {activecmd[ctx.guild.id][genCode]['page']}/8", color=embedTheme)
+    minigamesEmbed = discord.Embed(title="Mini-Games Commands", description=f"{minigamescmd} \n\n 6/8", color=embedTheme)
 
     infoList = {f"{ctx.prefix}rule":"Get a Rule of a Server in Detail",f"{ctx.prefix}rules":"Get all Rules of a Server in a Listed and Proper Manner",f"{ctx.prefix}mcserver":"Get Status and Details of a Minecraft Java Server",f"{ctx.prefix}wikipedia":"Get a Biography or Informations in Details of a Particular Topic with Wikipedia",f"{ctx.prefix}google":"Get all Links Related With your Topic Quickly and in a Listed Manner"}
     infocmd = []
     for cmd in list(infoList.keys()):
         infocmd.append(f"• {cmd} {sign}  {infoList[cmd]}.")
     infocmd = " \n ".join(infocmd)
-    infoEmbed = discord.Embed(title="Information Commands", description=f"{infocmd} \n\n {activecmd[ctx.guild.id][genCode]['page']}/8", color=embedTheme)
+    infoEmbed = discord.Embed(title="Information Commands", description=f"{infocmd} \n\n 7/8", color=embedTheme)
 
     generalList = {f"{ctx.prefix}info":"Get Information of Tornax in a brief way",f"{ctx.prefix}support":"Get Advantages, Details and Link of Our Official Server",f"{ctx.prefix}vote":"Get Tornax Voting Link with Rewards Information",f"{ctx.prefix}time":"Get the Current Time of Tornax",f"{ctx.prefix}invite":"Get a Link to Invite Tornax",f"{ctx.prefix}about":"Get Details and Information about Tornax with its Specialities"}
     generalcmd = []
     for cmd in list(generalList.keys()):
         generalcmd.append(f"• {cmd} {sign}  {generalList[cmd]}.")
     generalcmd = " \n ".join(generalcmd)
-    generalEmbed = discord.Embed(title="General Commands", description=f"{generalcmd} \n\n {activecmd[ctx.guild.id][genCode]['page']}/8", color=embedTheme)
+    generalEmbed = discord.Embed(title="General Commands", description=f"{generalcmd} \n\n 8/8", color=embedTheme)
 
     print(len(toolsList.keys()) + len(managementList.keys()) + len(giveawayList.keys()) + len(moderationList.keys()) + len(funList.keys()) + len(minigamesList.keys()) + len(infoList.keys()) + len(generalList.keys()))
 
@@ -2043,77 +2045,79 @@ async def allcommands(ctx):
     controlbuttons = ["🔢","⏮️","◀️","▶️","⏭️","⏹️"]
     for btns in controlbuttons:
         await activecmd[ctx.guild.id][genCode]["message"].add_reaction(btns)
+    
+    activecmd[ctx.guild.id][genCode]["Embeds"] = [toolsEmbed,managementEmbed,giveawayEmbed,moderationEmbed,funEmbed,minigamesEmbed,infoEmbed,generalEmbed]
 
-    activecmd[ctx.guild.id][genCode]["count"] = 400
-
-    activecmd[ctx.guild.id][genCode]["oldpage"] = 0
-
-    while ctx.author.id in cmdcode[ctx.guild.id]:
-        activecmd[ctx.guild.id][genCode]["count"] -= 1
-        if activecmd[ctx.guild.id][genCode]["oldpage"] != activecmd[ctx.guild.id][genCode]["page"]:
-            if activecmd[ctx.guild.id][genCode]["page"] == 1:
-                await activecmd[ctx.guild.id][genCode]["message"].edit(embed=toolsEmbed)
-            elif activecmd[ctx.guild.id][genCode]["page"] == 2:
-                await activecmd[ctx.guild.id][genCode]["message"].edit(embed=managementEmbed)
-            elif activecmd[ctx.guild.id][genCode]["page"] == 3:
-                await activecmd[ctx.guild.id][genCode]["message"].edit(embed=giveawayEmbed)
-            elif activecmd[ctx.guild.id][genCode]["page"] == 4:
-                await activecmd[ctx.guild.id][genCode]["message"].edit(embed=moderationEmbed)
-            elif activecmd[ctx.guild.id][genCode]["page"] == 5:
-                await activecmd[ctx.guild.id][genCode]["message"].edit(embed=funEmbed)
-            elif activecmd[ctx.guild.id][genCode]["page"] == 6:
-                await activecmd[ctx.guild.id][genCode]["message"].edit(embed=minigamesEmbed)
-            elif activecmd[ctx.guild.id][genCode]["page"] == 7:
-                await activecmd[ctx.guild.id][genCode]["message"].edit(embed=infoEmbed)
-            elif activecmd[ctx.guild.id][genCode]["page"] == 8:
-                await activecmd[ctx.guild.id][genCode]["message"].edit(embed=generalEmbed)
-
-        if activecmd[ctx.guild.id][genCode]["count"] < 1:
-            activecmd[ctx.guild.id][genCode]["message"].clear_reaction()
-            del activecmd[ctx.guild.id][genCode]
-            del cmdcode[ctx.guild.id][ctx.author.id]
+    await asyncio.sleep(300)
+    await activecmd[ctx.guild.id][genCode]["message"].clear_reactions()
+    del activecmd[ctx.guild.id][genCode]
+    del cmdcode[ctx.guild.id][ctx.author.id]
 
 @bot.listen()
-async def on_raw_reaction_add(payload):
+async def on_reaction_add(reaction, user):
     global cmdcode, activecmd
     try:
-        if payload.user.id in cmdcode[payload.guild.id]:
-            code = cmdcode[payload.guild.id][payload.user.id]
-            messge = activecmd[payload.guild.id][code]["message"]
-            if payload.user_id == messge.id:
-                if payload.emoji == "🔢":
-                    await payload.message.channel.send(f"In Which Page You Want to Jump")
-                    replymsg = await bot.wait_for(event="message",timeout=60)
-                    if 0 < replymsg < 9:
-                        activecmd[payload.guild.id][code]["oldpage"] = activecmd[payload.guild.id][code]["page"]
-                        activecmd[payload.guild.id][code]["page"] = replymsg
-                    else:
-                        await replymsg.reply(f":exclamation: That Page doesn't Exist")
-                elif payload.emoji == "⏮️":
-                    activecmd[payload.guild.id][code]["oldpage"] = activecmd[payload.guild.id][code]["page"]
-                    activecmd[payload.guild.id][code]["page"] = 1
+        if user.id in cmdcode[reaction.message.guild.id]:
+            print(1)
+            if user.id in cmdcode[reaction.message.guild.id]:
+                code = cmdcode[reaction.message.guild.id][user.id]
+                print(activecmd[reaction.message.guild.id][code]["page"])
+                messge = activecmd[reaction.message.guild.id][code]["message"]
+                if reaction.message.id == messge.id:
+                    print(2)
+                    if reaction.emoji == "🔢":
+                        await messge.remove_reaction("🔢", user)
+                        await reaction.message.channel.send(f"In Which Page You Want to Jump")
+                        replymsg = await bot.wait_for(event="message",timeout=60)
+                        if 0 < replymsg < 9:
+                            activecmd[reaction.message.guild.id][code]["oldpage"] = activecmd[reaction.message.guild.id][code]["page"]
+                            activecmd[reaction.message.guild.id][code]["page"] = replymsg
+                        else:
+                            await replymsg.reply(f":exclamation: That Page doesn't Exist")
 
-                elif payload.emoji == "◀️":
-                    activecmd[payload.guild.id][code]["oldpage"] = activecmd[payload.guild.id][code]["page"]
-                    activecmd[payload.guild.id][code]["page"] -= 1
-                    if activecmd[payload.guild.id][code]["page"] < 1:
-                        activecmd[payload.guild.id][code]["page"] = 8
+                    elif reaction.emoji == "⏮️":
+                        await messge.remove_reaction("⏮️", user)
+                        activecmd[reaction.message.guild.id][code]["page"] = 1
 
-                elif payload.emoji == "▶️":
-                    activecmd[payload.guild.id][code]["oldpage"] = activecmd[payload.guild.id][code]["page"]
-                    activecmd[payload.guild.id][code]["page"] += 1
-                    if activecmd[payload.guild.id][code]["page"] > 8:
-                        activecmd[payload.guild.id][code]["page"] = 1
-                
-                elif payload.emoji == "⏭️":
-                    activecmd[payload.guild.id][code]["oldpage"] = activecmd[payload.guild.id][code]["page"]
-                    activecmd[payload.guild.id][code]["page"] = 8
-                
-                elif payload.emoji == "⏹️":
-                    for r in activecmd[payload.guild.id][code]["message"].reactions:
-                        activecmd[payload.guild.id][code]["message"].clear_reaction(r)
-                    del activecmd[payload.guild.id][code]
-                    del cmdcode[payload.guild.id][payload.user.id]
+                    elif reaction.emoji == "◀️":
+                        await messge.remove_reaction("◀️", user)
+                        activecmd[reaction.message.guild.id][code]["page"] -= 1
+                        if activecmd[reaction.message.guild.id][code]["page"] < 1:
+                            activecmd[reaction.message.guild.id][code]["page"] = 8
+
+                    elif reaction.emoji == "▶️":
+                        await messge.remove_reaction("▶️", user)
+                        print(3)
+                        activecmd[reaction.message.guild.id][code]["page"] += 1
+                        if activecmd[reaction.message.guild.id][code]["page"] > 8:
+                            activecmd[reaction.message.guild.id][code]["page"] = 1
+                    
+                    elif reaction.emoji == "⏭️":
+                        await messge.remove_reaction("⏭️", user)
+                        activecmd[reaction.message.guild.id][code]["page"] = 8
+                    
+                    elif reaction.emoji == "⏹️":
+                        await messge.remove_reaction("⏹️", user)
+                        await activecmd[reaction.message.guild.id][code]["message"].clear_reactions()
+                        del activecmd[reaction.message.guild.id][code]
+                        del cmdcode[reaction.message.guild.id][user.id]
+
+                    if activecmd[reaction.message.guild.id][code]["page"] == 1:
+                        await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][0])
+                    elif activecmd[reaction.message.guild.id][code]["page"] == 2:
+                        await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][1])
+                    elif activecmd[reaction.message.guild.id][code]["page"] == 3:
+                        await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][2])
+                    elif activecmd[reaction.message.guild.id][code]["page"] == 4:
+                        await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][3])
+                    elif activecmd[reaction.message.guild.id][code]["page"] == 5:
+                        await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][4])
+                    elif activecmd[reaction.message.guild.id][code]["page"] == 6:
+                        await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][5])
+                    elif activecmd[reaction.message.guild.id][code]["page"] == 7:
+                        await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][6])
+                    elif activecmd[reaction.message.guild.id][code]["page"] == 8:
+                        await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][7])
     except Exception as e:
         print(e)
         pass
