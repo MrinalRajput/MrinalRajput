@@ -2042,7 +2042,7 @@ async def allcommands(ctx):
 
     print(len(toolsList.keys()) + len(managementList.keys()) + len(giveawayList.keys()) + len(moderationList.keys()) + len(funList.keys()) + len(minigamesList.keys()) + len(infoList.keys()) + len(generalList.keys()))
 
-    await ctx.send(f"Each Page have One Category of Commands. If You are have Problem with this and want Another way to get all Commands in brief way Try - `{ctx.prefix}help`")
+    await ctx.send(f"Each Page have One Category of Commands. If You have Problem with this and want Another way to get all Commands in brief way Try - `{ctx.prefix}help`")
     activecmd[ctx.guild.id][genCode]["message"] = await ctx.send(embed=toolsEmbed)
     controlbuttons = ["🔢","⏮️","◀️","▶️","⏭️","⏹️"]
     for btns in controlbuttons:
