@@ -2074,7 +2074,6 @@ async def on_reaction_add(reaction, user):
                         if 0 < int(replymsg.content) < 9:
                             await asking.delete()
                             await replymsg.delete()
-                            activecmd[reaction.message.guild.id][code]["oldpage"] = activecmd[reaction.message.guild.id][code]["page"]
                             activecmd[reaction.message.guild.id][code]["page"] = replymsg.content
                         else:
                             await replymsg.reply(f":exclamation: That Page doesn't Exist")
