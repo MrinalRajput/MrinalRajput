@@ -1953,7 +1953,8 @@ async def allcommands(ctx):
 
     if ctx.author.id in cmdcode[ctx.guild.id]:
         code = cmdcode[ctx.guild.id][ctx.author.id]
-        activecmd[ctx.guild.id][code]["message"].clear_reaction()
+        for r in activecmd[ctx.guild.id][code]["message"].reactions:
+            activecmd[ctx.guild.id][code]["message"].clear_reaction(r)
 
     genCode = random.randint(000000, 999999)
     while genCode in activecmd[ctx.guild.id].keys():
@@ -2092,7 +2093,8 @@ async def on_reaction_add(reaction, user):
                     activecmd[reaction.guild.id][code]["page"] = 8
                 
                 elif reaction.emoji == "⏹️":
-                    activecmd[reaction.guild.id][code]["message"].clear_reaction()
+                    for r in activecmd[ctx.guild.id][code]["message"].reactions:
+                        activecmd[ctx.guild.id][code]["message"].clear_reaction(r)
                     del activecmd[reaction.guild.id][code]
                     del cmdcode[reaction.guild.id][reaction.author.id]
     except Exception as e:
