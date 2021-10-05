@@ -2074,46 +2074,46 @@ async def allcommands(ctx):
             del cmdcode[ctx.guild.id][ctx.author.id]
 
 @bot.listen()
-async def on_reaction_add(reaction, user):
+async def on_raw_reaction_add(payload):
     global cmdcode, activecmd
     try:
-        if reaction.user.id in cmdcode[reaction.guild.id]:
-            code = cmdcode[reaction.guild.id][reaction.user.id]
-            messge = activecmd[reaction.guild.id][code]["message"]
-            if reaction.message.id == messge.id:
-                if reaction.emoji == "🔢":
-                    await reaction.message.channel.send(f"In Which Page You Want to Jump")
+        if payload.user.id in cmdcode[payload.guild.id]:
+            code = cmdcode[payload.guild.id][payload.user.id]
+            messge = activecmd[payload.guild.id][code]["message"]
+            if payload.message.id == messge.id:
+                if payload.emoji == "🔢":
+                    await payload.message.channel.send(f"In Which Page You Want to Jump")
                     replymsg = await bot.wait_for(event="message",timeout=60)
                     if 0 < replymsg < 9:
-                        activecmd[reaction.guild.id][code]["oldpage"] = activecmd[reaction.guild.id][code]["page"]
-                        activecmd[reaction.guild.id][code]["page"] = replymsg
+                        activecmd[payload.guild.id][code]["oldpage"] = activecmd[payload.guild.id][code]["page"]
+                        activecmd[payload.guild.id][code]["page"] = replymsg
                     else:
                         await replymsg.reply(f":exclamation: That Page doesn't Exist")
-                elif reaction.emoji == "⏮️":
-                    activecmd[reaction.guild.id][code]["oldpage"] = activecmd[reaction.guild.id][code]["page"]
-                    activecmd[reaction.guild.id][code]["page"] = 1
+                elif payload.emoji == "⏮️":
+                    activecmd[payload.guild.id][code]["oldpage"] = activecmd[payload.guild.id][code]["page"]
+                    activecmd[payload.guild.id][code]["page"] = 1
 
-                elif reaction.emoji == "◀️":
-                    activecmd[reaction.guild.id][code]["oldpage"] = activecmd[reaction.guild.id][code]["page"]
-                    activecmd[reaction.guild.id][code]["page"] -= 1
-                    if activecmd[reaction.guild.id][code]["page"] < 1:
-                        activecmd[reaction.guild.id][code]["page"] = 8
+                elif payload.emoji == "◀️":
+                    activecmd[payload.guild.id][code]["oldpage"] = activecmd[payload.guild.id][code]["page"]
+                    activecmd[payload.guild.id][code]["page"] -= 1
+                    if activecmd[payload.guild.id][code]["page"] < 1:
+                        activecmd[payload.guild.id][code]["page"] = 8
 
-                elif reaction.emoji == "▶️":
-                    activecmd[reaction.guild.id][code]["oldpage"] = activecmd[reaction.guild.id][code]["page"]
-                    activecmd[reaction.guild.id][code]["page"] += 1
-                    if activecmd[reaction.guild.id][code]["page"] > 8:
-                        activecmd[reaction.guild.id][code]["page"] = 1
+                elif payload.emoji == "▶️":
+                    activecmd[payload.guild.id][code]["oldpage"] = activecmd[payload.guild.id][code]["page"]
+                    activecmd[payload.guild.id][code]["page"] += 1
+                    if activecmd[payload.guild.id][code]["page"] > 8:
+                        activecmd[payload.guild.id][code]["page"] = 1
                 
-                elif reaction.emoji == "⏭️":
-                    activecmd[reaction.guild.id][code]["oldpage"] = activecmd[reaction.guild.id][code]["page"]
-                    activecmd[reaction.guild.id][code]["page"] = 8
+                elif payload.emoji == "⏭️":
+                    activecmd[payload.guild.id][code]["oldpage"] = activecmd[payload.guild.id][code]["page"]
+                    activecmd[payload.guild.id][code]["page"] = 8
                 
-                elif reaction.emoji == "⏹️":
-                    for r in activecmd[reaction.guild.id][code]["message"].reactions:
-                        activecmd[reaction.guild.id][code]["message"].clear_reaction(r)
-                    del activecmd[reaction.guild.id][code]
-                    del cmdcode[reaction.guild.id][reaction.user.id]
+                elif payload.emoji == "⏹️":
+                    for r in activecmd[payload.guild.id][code]["message"].reactions:
+                        activecmd[payload.guild.id][code]["message"].clear_reaction(r)
+                    del activecmd[payload.guild.id][code]
+                    del cmdcode[payload.guild.id][payload.user.id]
     except Exception as e:
         print(e)
         pass
