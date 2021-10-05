@@ -122,9 +122,8 @@ async def on_dbl_vote(data):
 async def on_message(message):
     if not message.author.bot:
         if bot.user.mentioned_in(message):
-            channel = bot.get_channel(839445324165808169)
             prfx = await bot.pg_con.fetchrow("SELECT prefix FROM prefixes WHERE guild_id = $1", message.guild.id)
-            await channel.send(f"My Prefix in {message.guild} is - `{prfx[0]}`")
+            await message.channel.send(f"My Prefix in {message.guild} is - `{prfx[0]}`")
 
 ###############
 #### Only For My Smp Server
