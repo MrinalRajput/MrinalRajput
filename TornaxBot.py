@@ -2033,7 +2033,7 @@ async def allcommands(ctx):
     infocmd = " \n ".join(infocmd)
     infoEmbed = discord.Embed(title="Information Commands", description=f"{infocmd} \n\n 7/8", color=embedTheme)
 
-    generalList = {f"{ctx.prefix}info":"Get Information of Tornax in a brief way",f"{ctx.prefix}support":"Get Advantages, Details and Link of Our Official Server",f"{ctx.prefix}vote":"Get Tornax Voting Link with Rewards Information",f"{ctx.prefix}time":"Get the Current Time of Tornax",f"{ctx.prefix}invite":"Get a Link to Invite Tornax",f"{ctx.prefix}about":"Get Details and Information about Tornax with its Specialities"}
+    generalList = {f"{ctx.prefix}info":"Get Information of Tornax in a brief way",f"{ctx.prefix}support":"Get Advantages, Details and Link of Our Official Server",f"{ctx.prefix}vote":"Get Tornax Voting Link with Rewards Information",f"{ctx.prefix}time":"Get the Current Time of Tornax",f"{ctx.prefix}invite":"Get a Link to Invite Tornax",f"{ctx.prefix}about":"Get Details and Information about Tornax with its Specialities",f"{ctx.prefix}help":"Get all Command's Names in a Quick and Brief Manner with Other Details ",f"{ctx.prefix}allcommands":"Shows this Embed Containing all Commands with Information in Details"}
     generalcmd = []
     for cmd in list(generalList.keys()):
         generalcmd.append(f"• {cmd} {sign}  {generalList[cmd]}.")
@@ -2042,6 +2042,7 @@ async def allcommands(ctx):
 
     print(len(toolsList.keys()) + len(managementList.keys()) + len(giveawayList.keys()) + len(moderationList.keys()) + len(funList.keys()) + len(minigamesList.keys()) + len(infoList.keys()) + len(generalList.keys()))
 
+    await ctx.send(f"Each Page have One Category of Commands. If You are have Problem with this and want Another way to get all Commands in brief way Try - `{ctx.prefix}help`")
     activecmd[ctx.guild.id][genCode]["message"] = await ctx.send(embed=toolsEmbed)
     controlbuttons = ["🔢","⏮️","◀️","▶️","⏭️","⏹️"]
     for btns in controlbuttons:
