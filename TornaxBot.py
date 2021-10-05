@@ -2073,15 +2073,13 @@ async def on_reaction_add(reaction, user):
                             asking = await reaction.message.channel.send(f"In Which Page You Want to Jump?")
                             pages = ["1","2","3","4","5","6","7","8"]
                             def check(message):
-                                return message.author.id == user.id and message.channel == reaction.message.channel  and message.content == any(pages)
+                                return message.author.id == user.id and message.channel == reaction.message.channel  and message.content in pages
 
                             replymsg = await bot.wait_for(event="message",check=check,timeout=60)
-                            print(replymsg.content)
-                            print(replymsg)
                             if 0 < int(replymsg.content) < 9:
+                                activecmd[reaction.message.guild.id][code]["page"] = int(replymsg.content)
                                 await asking.delete()
                                 await replymsg.delete()
-                                activecmd[reaction.message.guild.id][code]["page"] = replymsg.content
                             else:
                                 await replymsg.reply(f":exclamation: That Page doesn't Exist")
 
