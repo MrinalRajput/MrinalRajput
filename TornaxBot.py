@@ -2068,9 +2068,11 @@ async def on_reaction_add(reaction, user):
                     print(2)
                     if reaction.emoji == "🔢":
                         await messge.remove_reaction("🔢", user)
-                        await reaction.message.channel.send(f"In Which Page You Want to Jump")
+                        asking = await reaction.message.channel.send(f"In Which Page You Want to Jump?")
                         replymsg = await bot.wait_for(event="message",timeout=60)
-                        if 0 < replymsg < 9:
+                        if 0 < int(replymsg) < 9:
+                            await asking.delete()
+                            await replymsg.delete()
                             activecmd[reaction.message.guild.id][code]["oldpage"] = activecmd[reaction.message.guild.id][code]["page"]
                             activecmd[reaction.message.guild.id][code]["page"] = replymsg
                         else:
