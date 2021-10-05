@@ -1756,7 +1756,7 @@ async def on_message(message):
     # print(reasontopic)
     # if not message.author.bot:
     if message.guild.id not in afkdata:
-            afkdata[message.guild.id] = []
+        afkdata[message.guild.id] = []
     users = afkdata[message.guild.id]
     print(users)
     if len(users) > 0:
@@ -1765,7 +1765,7 @@ async def on_message(message):
             # print(user)
             username = await bot.fetch_user(user)
             print(username)
-            if f"<@{user}>" in message.content:
+            if username.mentioned_in(message):
                 print(1)
                 if user in afkdata[message.guild.id]:
                     print(2)
