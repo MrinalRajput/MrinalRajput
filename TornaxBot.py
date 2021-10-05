@@ -2080,7 +2080,7 @@ async def on_raw_reaction_add(payload):
         if payload.user.id in cmdcode[payload.guild.id]:
             code = cmdcode[payload.guild.id][payload.user.id]
             messge = activecmd[payload.guild.id][code]["message"]
-            if payload.message.id == messge.id:
+            if payload.user_id == messge.id:
                 if payload.emoji == "🔢":
                     await payload.message.channel.send(f"In Which Page You Want to Jump")
                     replymsg = await bot.wait_for(event="message",timeout=60)
