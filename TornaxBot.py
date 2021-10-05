@@ -213,7 +213,7 @@ unbanhelp = f"unban <member id>"
 
 @bot.command()
 @commands.has_permissions(kick_members=True)
-async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: Optional[str]=None, *reason: Optional[str]=None ):
+async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: Optional[str]=None, *, reason: Optional[str]=None ):
     try:
         try:
             if duration is None and unit is not None:
@@ -257,7 +257,7 @@ mutehelp = f"mute <member> [duration] [unit = s,m,h] [reason]"
 
 @bot.command()
 @commands.has_permissions(kick_members=True)
-async def unmute(ctx, member:discord.Member, *reason: Optional[str]=None):
+async def unmute(ctx, member:discord.Member, *, reason: Optional[str]=None):
     mutedRole = discord.utils.get(ctx.message.guild.roles, name="Muted")
     if mutedRole in member.roles:
         embed = discord.Embed(description=f"** {member.mention} has been Unmuted Successfully by {ctx.author.mention}**" if reason is None else f"** {member.mention} has been Unmuted Successfully by {ctx.author.mention}\n\t With the Reason of :\t{reason}**",color=embedTheme)
