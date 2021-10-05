@@ -2027,33 +2027,33 @@ async def allcommands(ctx):
     activecmd[ctx.guild.id][genCode]["message"] = await ctx.send(embed=toolsEmbed)
     controlbuttons = ["🔢","⏮️","◀️","▶️","⏭️","⏹️"]
     for btns in controlbuttons:
-        activecmd[ctx.guild.id][genCode]["message"].add_reaction(btns)
+        await activecmd[ctx.guild.id][genCode]["message"].add_reaction(btns)
 
-    activecmd[ctx.guild.id][code]["count"] = 400
+    activecmd[ctx.guild.id][genCode]["count"] = 400
 
     while ctx.author.id in cmdcode[ctx.guild.id]:
-        activecmd[ctx.guild.id][code]["count"] -= 1
-        if activecmd[ctx.guild.id][code]["oldpage"] != activecmd[ctx.guild.id][code]["page"]:
-            if activecmd[ctx.guild.id][code]["page"] == 1:
+        activecmd[ctx.guild.id][genCode]["count"] -= 1
+        if activecmd[ctx.guild.id][genCode]["oldpage"] != activecmd[ctx.guild.id][genCode]["page"]:
+            if activecmd[ctx.guild.id][genCode]["page"] == 1:
                 await activecmd[ctx.guild.id][genCode]["message"].edit(embed=toolsEmbed)
-            elif activecmd[ctx.guild.id][code]["page"] == 2:
+            elif activecmd[ctx.guild.id][genCode]["page"] == 2:
                 await activecmd[ctx.guild.id][genCode]["message"].edit(embed=managementEmbed)
-            elif activecmd[ctx.guild.id][code]["page"] == 3:
+            elif activecmd[ctx.guild.id][genCode]["page"] == 3:
                 await activecmd[ctx.guild.id][genCode]["message"].edit(embed=giveawayEmbed)
-            elif activecmd[ctx.guild.id][code]["page"] == 4:
+            elif activecmd[ctx.guild.id][genCode]["page"] == 4:
                 await activecmd[ctx.guild.id][genCode]["message"].edit(embed=moderationEmbed)
-            elif activecmd[ctx.guild.id][code]["page"] == 5:
+            elif activecmd[ctx.guild.id][genCode]["page"] == 5:
                 await activecmd[ctx.guild.id][genCode]["message"].edit(embed=funEmbed)
-            elif activecmd[ctx.guild.id][code]["page"] == 6:
+            elif activecmd[ctx.guild.id][genCode]["page"] == 6:
                 await activecmd[ctx.guild.id][genCode]["message"].edit(embed=minigamesEmbed)
-            elif activecmd[ctx.guild.id][code]["page"] == 7:
+            elif activecmd[ctx.guild.id][genCode]["page"] == 7:
                 await activecmd[ctx.guild.id][genCode]["message"].edit(embed=infoEmbed)
-            elif activecmd[ctx.guild.id][code]["page"] == 8:
+            elif activecmd[ctx.guild.id][genCode]["page"] == 8:
                 await activecmd[ctx.guild.id][genCode]["message"].edit(embed=generalEmbed)
 
-        if activecmd[ctx.guild.id][code]["count"] < 1:
-            activecmd[ctx.guild.id][code]["message"].clear_reaction()
-            del activecmd[ctx.guild.id][code]
+        if activecmd[ctx.guild.id][genCode]["count"] < 1:
+            activecmd[ctx.guild.id][genCode]["message"].clear_reaction()
+            del activecmd[ctx.guild.id][genCode]
             del cmdcode[ctx.guild.id][ctx.author.id]
 
 @bot.listen()
@@ -2093,8 +2093,8 @@ async def on_reaction_add(reaction, user):
                     activecmd[reaction.guild.id][code]["page"] = 8
                 
                 elif reaction.emoji == "⏹️":
-                    for r in activecmd[ctx.guild.id][code]["message"].reactions:
-                        activecmd[ctx.guild.id][code]["message"].clear_reaction(r)
+                    for r in activecmd[reaction.guild.id][code]["message"].reactions:
+                        activecmd[reaction.guild.id][code]["message"].clear_reaction(r)
                     del activecmd[reaction.guild.id][code]
                     del cmdcode[reaction.guild.id][reaction.author.id]
     except Exception as e:
