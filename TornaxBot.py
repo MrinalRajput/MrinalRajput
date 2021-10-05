@@ -1728,7 +1728,7 @@ async def afk(ctx, *, reason: Optional[str]=None):
         if ctx.author not in afkdata[ctx.guild.id]:
             username[ctx.author.id] = ctx.author.nick
             if reason is None:
-                reason = f"Afk"
+                reason = f"Nothing Specified"
             reasontopic[ctx.author.id] = reason
             # embed = discord.Embed(description=f"Afk Set : {reason}", color=embedTheme)
             # await ctx.send(embed=embed)
