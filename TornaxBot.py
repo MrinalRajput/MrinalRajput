@@ -2062,13 +2062,10 @@ async def on_reaction_add(reaction, user):
     try:
         if user.id != bot.user.id:
             if user.id in cmdcode[reaction.message.guild.id]:
-                print(1)
                 if user.id in cmdcode[reaction.message.guild.id]:
                     code = cmdcode[reaction.message.guild.id][user.id]
-                    print(activecmd[reaction.message.guild.id][code]["page"])
                     messge = activecmd[reaction.message.guild.id][code]["message"]
                     if reaction.message.id == messge.id:
-                        print(2)
                         if reaction.emoji == "🔢":
                             await messge.remove_reaction("🔢", user)
                             asking = await reaction.message.channel.send(f"In Which Page You Want to Jump?")
@@ -2096,7 +2093,6 @@ async def on_reaction_add(reaction, user):
 
                         elif reaction.emoji == "▶️":
                             await messge.remove_reaction("▶️", user)
-                            print(3)
                             activecmd[reaction.message.guild.id][code]["page"] += 1
                             if activecmd[reaction.message.guild.id][code]["page"] > 8:
                                 activecmd[reaction.message.guild.id][code]["page"] = 1
