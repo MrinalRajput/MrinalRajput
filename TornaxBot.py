@@ -2059,70 +2059,71 @@ async def allcommands(ctx):
 async def on_reaction_add(reaction, user):
     global cmdcode, activecmd
     try:
-        if user.id in cmdcode[reaction.message.guild.id]:
-            print(1)
+        if user.id != bot.user.id:
             if user.id in cmdcode[reaction.message.guild.id]:
-                code = cmdcode[reaction.message.guild.id][user.id]
-                print(activecmd[reaction.message.guild.id][code]["page"])
-                messge = activecmd[reaction.message.guild.id][code]["message"]
-                if reaction.message.id == messge.id:
-                    print(2)
-                    if reaction.emoji == "🔢":
-                        await messge.remove_reaction("🔢", user)
-                        asking = await reaction.message.channel.send(f"In Which Page You Want to Jump?")
-                        replymsg = await bot.wait_for(event="message",timeout=60)
-                        if 0 < int(replymsg.content) < 9:
-                            await asking.delete()
-                            await replymsg.delete()
-                            activecmd[reaction.message.guild.id][code]["page"] = replymsg.content
-                        else:
-                            await replymsg.reply(f":exclamation: That Page doesn't Exist")
+                print(1)
+                if user.id in cmdcode[reaction.message.guild.id]:
+                    code = cmdcode[reaction.message.guild.id][user.id]
+                    print(activecmd[reaction.message.guild.id][code]["page"])
+                    messge = activecmd[reaction.message.guild.id][code]["message"]
+                    if reaction.message.id == messge.id:
+                        print(2)
+                        if reaction.emoji == "🔢":
+                            await messge.remove_reaction("🔢", user)
+                            asking = await reaction.message.channel.send(f"In Which Page You Want to Jump?")
+                            replymsg = await bot.wait_for(event="message",timeout=60)
+                            if 0 < int(replymsg.content) < 9:
+                                await asking.delete()
+                                await replymsg.delete()
+                                activecmd[reaction.message.guild.id][code]["page"] = replymsg.content
+                            else:
+                                await replymsg.reply(f":exclamation: That Page doesn't Exist")
 
-                    elif reaction.emoji == "⏮️":
-                        await messge.remove_reaction("⏮️", user)
-                        activecmd[reaction.message.guild.id][code]["page"] = 1
-
-                    elif reaction.emoji == "◀️":
-                        await messge.remove_reaction("◀️", user)
-                        activecmd[reaction.message.guild.id][code]["page"] -= 1
-                        if activecmd[reaction.message.guild.id][code]["page"] < 1:
-                            activecmd[reaction.message.guild.id][code]["page"] = 8
-
-                    elif reaction.emoji == "▶️":
-                        await messge.remove_reaction("▶️", user)
-                        print(3)
-                        activecmd[reaction.message.guild.id][code]["page"] += 1
-                        if activecmd[reaction.message.guild.id][code]["page"] > 8:
+                        elif reaction.emoji == "⏮️":
+                            await messge.remove_reaction("⏮️", user)
                             activecmd[reaction.message.guild.id][code]["page"] = 1
-                    
-                    elif reaction.emoji == "⏭️":
-                        await messge.remove_reaction("⏭️", user)
-                        activecmd[reaction.message.guild.id][code]["page"] = 8
-                    
-                    elif reaction.emoji == "⏹️":
-                        await messge.remove_reaction("⏹️", user)
-                        await activecmd[reaction.message.guild.id][code]["message"].clear_reactions()
-                        del activecmd[reaction.message.guild.id][code]
-                        del cmdcode[reaction.message.guild.id][user.id]
 
-                    if activecmd[reaction.message.guild.id][code]["page"] == 1:
-                        await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][0])
-                    elif activecmd[reaction.message.guild.id][code]["page"] == 2:
-                        await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][1])
-                    elif activecmd[reaction.message.guild.id][code]["page"] == 3:
-                        await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][2])
-                    elif activecmd[reaction.message.guild.id][code]["page"] == 4:
-                        await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][3])
-                    elif activecmd[reaction.message.guild.id][code]["page"] == 5:
-                        await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][4])
-                    elif activecmd[reaction.message.guild.id][code]["page"] == 6:
-                        await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][5])
-                    elif activecmd[reaction.message.guild.id][code]["page"] == 7:
-                        await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][6])
-                    elif activecmd[reaction.message.guild.id][code]["page"] == 8:
-                        await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][7])
-        else:
-            await reaction.remove(user)
+                        elif reaction.emoji == "◀️":
+                            await messge.remove_reaction("◀️", user)
+                            activecmd[reaction.message.guild.id][code]["page"] -= 1
+                            if activecmd[reaction.message.guild.id][code]["page"] < 1:
+                                activecmd[reaction.message.guild.id][code]["page"] = 8
+
+                        elif reaction.emoji == "▶️":
+                            await messge.remove_reaction("▶️", user)
+                            print(3)
+                            activecmd[reaction.message.guild.id][code]["page"] += 1
+                            if activecmd[reaction.message.guild.id][code]["page"] > 8:
+                                activecmd[reaction.message.guild.id][code]["page"] = 1
+                        
+                        elif reaction.emoji == "⏭️":
+                            await messge.remove_reaction("⏭️", user)
+                            activecmd[reaction.message.guild.id][code]["page"] = 8
+                        
+                        elif reaction.emoji == "⏹️":
+                            await messge.remove_reaction("⏹️", user)
+                            await activecmd[reaction.message.guild.id][code]["message"].clear_reactions()
+                            del activecmd[reaction.message.guild.id][code]
+                            del cmdcode[reaction.message.guild.id][user.id]
+
+                        if activecmd[reaction.message.guild.id][code]["page"] == 1:
+                            await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][0])
+                        elif activecmd[reaction.message.guild.id][code]["page"] == 2:
+                            await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][1])
+                        elif activecmd[reaction.message.guild.id][code]["page"] == 3:
+                            await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][2])
+                        elif activecmd[reaction.message.guild.id][code]["page"] == 4:
+                            await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][3])
+                        elif activecmd[reaction.message.guild.id][code]["page"] == 5:
+                            await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][4])
+                        elif activecmd[reaction.message.guild.id][code]["page"] == 6:
+                            await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][5])
+                        elif activecmd[reaction.message.guild.id][code]["page"] == 7:
+                            await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][6])
+                        elif activecmd[reaction.message.guild.id][code]["page"] == 8:
+                            await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][7])
+            else:
+                await reaction.remove(user)
     except Exception as e:
         print(e)
         pass
