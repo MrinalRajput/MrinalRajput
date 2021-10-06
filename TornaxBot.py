@@ -499,7 +499,7 @@ class Giveaway():
     }
 
     @bot.command()
-    async def gstart(ctx, Channel:discord.TextChannel, prize:str, endtime:int, unit:str):
+    async def gstart(ctx, Channel:discord.TextChannel, prize:str, endtime):
         global GiveawayActive, GiveawayChannel, StartAnnounce, MembersList, ParticipantsMsg
         GiveawayRole = discord.utils.get(ctx.guild.roles, name="Giveaway Handler")
         if GiveawayRole in ctx.author.roles:
@@ -522,8 +522,11 @@ class Giveaway():
                 members = members.replace("[","") 
                 members = members.replace("]","")
                 # await asyncio.sleep(int(endtime))
-
+                total = endtime
+                endtime = total[:-1]
+                unit = total[-1]
                 if GiveawayActive[ctx.guild.id] ==True:
+
                     if unit == "s" or "sec" in unit:
                         wait = 1 * endtime
                         unitTime = "Seconds"
