@@ -2131,6 +2131,10 @@ async def on_reaction_add(reaction, user):
                             await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][6])
                         elif activecmd[reaction.message.guild.id][code]["page"] == 8:
                             await activecmd[reaction.message.guild.id][code]["message"].edit(embed=activecmd[reaction.message.guild.id][code]["Embeds"][7])
+            else:
+                for thecode in activecmd[reaction.message.guild.id]:
+                    if activecmd[reaction.message.guild.id][thecode]["message"].id == reaction.message.id:
+                        await reaction.remove(user)
     except Exception as e:
         print(e)
         pass
