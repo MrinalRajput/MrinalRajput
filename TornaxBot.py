@@ -8,6 +8,7 @@ import random
 from typing import Optional
 import json
 import time
+from discord.ext.commands.errors import BadArgument
 from mcstatus import MinecraftServer
 import asyncpg
 from PIL import Image, ImageDraw
@@ -16,7 +17,7 @@ import wikipedia
 from googlesearch import search
 import topgg
 
-from discord.ext.commands import has_permissions,has_role,MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError, MissingAnyRole
+from discord.ext.commands import has_permissions,has_role, BadArgument, MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError, MissingAnyRole
 from discord.member import Member
 
 
@@ -210,18 +211,19 @@ async def ban(ctx, member:discord.Member, days: Optional[int]=None, *, reason:Op
 banhelp = f"ban <member> [days] [reason]"
 
 @bot.command()
-@commands.has_permissions(ban_members=True)
 async def unban(ctx, id:int):
     global embedContent
     try:
-        user = await bot.fetch_user(id)
-        await ctx.guild.unban(user)
-        embedContent = f"Unbanned : Successfully Unbanned {user} from {ctx.guild.name}"
-        embed = discord.Embed(description=embedContent, color=embedTheme)
-        await ctx.send(embed=embed)
-    except MissingPermissions and Exception as e:
-        print(e)
-        await ctx.send(f":exclamation: {ctx.author.mention} You don't have Permissions to do that")
+        if ctx.author.guild_permissions.ban_members:
+            user = await bot.fetch_user(id)
+            await ctx.guild.unban(user)
+            embedContent = f"Unbanned : Successfully Unbanned {user} from {ctx.guild.name}"
+            embed = discord.Embed(description=embedContent, color=embedTheme)
+            await ctx.send(embed=embed)
+        else:
+            await ctx.reply(f":exclamation: You don't have Permissions to do that!'")
+    except BadArgument:
+        await ctx.reply(f":exclamation: The Member is not in This Server Please Try Unbanning with his/her Id")
 
 unbanhelp = f"unban <member id>"
 
