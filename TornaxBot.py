@@ -121,7 +121,7 @@ async def on_dbl_vote(data):
 @bot.listen()
 async def on_message(message):
     if not message.author.bot:
-        if bot.user.mentioned_in(message):
+        if message.content.lower == "<@832897602768076816>":
             prfx = await bot.pg_con.fetchrow("SELECT prefix FROM prefixes WHERE guild_id = $1", message.guild.id)
             await message.channel.send(f"My Prefix in {message.guild} is - `{prfx[0]}`")
 
@@ -1766,9 +1766,10 @@ async def on_message(message):
             print(username)
             if username.mentioned_in(message):
                 print(1)
-                if user in afkdata[message.guild.id]:
-                    print(2)
-                    await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[user]}")
+                if not message.author.bot:
+                    if user in afkdata[message.guild.id]:
+                        print(2)
+                        await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[user]}")
             else:
                 # print("He is not afk")
                 pass
