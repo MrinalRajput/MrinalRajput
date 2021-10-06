@@ -122,7 +122,7 @@ async def on_dbl_vote(data):
 @bot.listen()
 async def on_message(message):
     if not message.author.bot:
-        if message.content == bot.user.mention:
+        if message.content == "<@!832897602768076816>":
             prfx = await bot.pg_con.fetchrow("SELECT prefix FROM prefixes WHERE guild_id = $1", message.guild.id)
             await message.channel.send(f"My Prefix in {message.guild} is - `{prfx[0]}`")
 
