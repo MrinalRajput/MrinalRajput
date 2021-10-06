@@ -83,7 +83,7 @@ async def on_guild_join(guild):
     inviteEmbed = discord.Embed(title = "Joined!", description=f"{bot.user.mention} Just Joined {guild.name}", color=embedTheme)
     inviteEmbed.set_thumbnail(url=guild.icon_url)
     inviteEmbed.add_field(name="Guild Owner", value=f"<@{guild.owner_id}>",inline=False)
-    inviteEmbed.add_field(name="Guild Members", value=f"<@{guild.member_count}>",inline=False)
+    inviteEmbed.add_field(name="Guild Members", value=f"#{guild.member_count}",inline=False)
     inviteEmbed.add_field(name="Guild ID", value=guild.id,inline=False)
     await inviteChannel.send(embed=inviteEmbed)
 
