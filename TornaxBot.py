@@ -1759,7 +1759,6 @@ async def on_message(message):
     # print(afkdata)
     # print(reasontopic)
     # if not message.author.bot:
-    print(message.content)
     if message.guild.id not in afkdata:
         afkdata[message.guild.id] = []
     users = afkdata[message.guild.id]
