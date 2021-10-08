@@ -2234,10 +2234,11 @@ restricted_words = ["harami","wtf","fuck","fuk","baap ","stfu"]
 @bot.listen()
 async def on_message(message):
     if not message.author.bot:
-        for word in restricted_words:
-            if word in message.content.lower():
-                await message.delete()
-                await message.channel.send(f":exclamation: The Word you are Using is Not Allowed in this Server {message.author.mention}",delete_after=8)
+        if not message.author.guild_permissions.administrator:
+            for word in restricted_words:
+                if word in message.content.lower():
+                    await message.delete()
+                    await message.channel.send(f":exclamation: The Word you are Using is Not Allowed in this Server {message.author.mention}",delete_after=8)
                 
 bot.loop.run_until_complete(create_db_pool())
 bot.run(TOKEN)
