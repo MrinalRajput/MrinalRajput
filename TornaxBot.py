@@ -524,6 +524,7 @@ class Giveaway():
                 # await asyncio.sleep(int(endtime))
                 total = endtime
                 endtime = total[:-1]
+                endtime = int(endtime)
                 unit = total[-1]
                 if GiveawayActive[ctx.guild.id] ==True:
 
