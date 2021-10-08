@@ -1973,8 +1973,13 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "mcserver": content=mcserverhelp
         elif anycommand == "allcommands": content=allcommandshelp
         elif anycommand == "help": content=helphelp
-        commandEmbed = discord.Embed(description=f"{ctx.prefix}{content}",color=embedTheme)
-        await ctx.send(embed=commandEmbed)
+        else:
+            content=None
+        if content is not None:
+            commandEmbed = discord.Embed(description=f"{ctx.prefix}{content}",color=embedTheme)
+            await ctx.send(embed=commandEmbed)
+        else:
+            await ctx.reply(f"No Command Named `{ctx.prefix}{anycommand}`!")
 
 activecmd = {}
 cmdcode = {}
