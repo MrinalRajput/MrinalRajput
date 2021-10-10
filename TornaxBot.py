@@ -1893,6 +1893,22 @@ async def whois(ctx, member: Optional[discord.Member]=None):
 whoishelp = f"whois [user]"
 
 @bot.command()
+async def serverinfo(ctx):
+    serverEmbed = discord.Embed(color=embedTheme)
+    serverEmbed.set_author(icon_url=ctx.guild.icon_url, name=f"{ctx.guild.name} • {ctx.guild.id}")
+    serverEmbed.set_thumbnail(url=ctx.guild.icon_url)
+    serverEmbed.add_field(name="Owner", value=ctx.guild.owner.mention, inline=True)
+    serverEmbed.add_field(name="Channel Categories", value=len(ctx.guild.categories), inline=True)
+    serverEmbed.add_field(name="Text Channels", value=len(ctx.guild.text_channels), inline=True)
+    serverEmbed.add_field(name="Voice Channels", value=len(ctx.guild.voice_channels), inline=True)
+    serverEmbed.add_field(name="Members", value=len(ctx.guild.members), inline=True)
+    serverEmbed.add_field(name="Roles", value=len(ctx.guild.roles), inline=True)
+    serverEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+    await ctx.send(embed=serverEmbed)
+
+serverinfohelp = f"serverinfo"
+
+@bot.command()
 async def vote(ctx):
     symbol = " ♦ "
     embed = discord.Embed(title="Vote For Tornax\t\t", color=embedTheme)
@@ -1943,7 +1959,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n \n \t-> [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=536870911991&scope=bot)")
         myEmbed.add_field(name=f"Commands — {int(totalCommands)-2}",value="----------------------\n",inline=False)
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
-        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, allcommands, gstatus, gstop, gparticipate, gquit, setprefix, whois, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
+        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, allcommands, gstatus, gstop, gparticipate, gquit, setprefix, whois, serverinfo, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
         myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, mcserver, wikipedia, google \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{ctx.prefix}`\n > Command Usage Example :   `{ctx.prefix}info`\n\n----------------------", inline=False)
@@ -1976,6 +1992,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "gquit": content=gquithelp
         elif anycommand == "poll": content=pollhelp
         elif anycommand == "whois": content=whoishelp
+        elif anycommand == "serverinfo": content=serverinfohelp
         elif anycommand == "info": content=infohelp
         elif anycommand == "setprefix": content=setprefixhelp
         elif anycommand == "about": content=abouthelp
@@ -2082,7 +2099,7 @@ async def allcommands(ctx):
     minigamescmd = " \n ".join(minigamescmd)
     minigamesEmbed = discord.Embed(title="Mini-Games Commands", description=f"{minigamescmd} \n\n 6/8", color=embedTheme)
 
-    infoList = {f"{ctx.prefix}rule":"Get a Rule of a Server in Detail",f"{ctx.prefix}rules":"Get all Rules of a Server in a Listed and Proper Manner",f"{ctx.prefix}mcserver":"Get Status and Details of a Minecraft Java Server",f"{ctx.prefix}wikipedia":"Get a Biography or Informations in Details of a Particular Topic with Wikipedia",f"{ctx.prefix}google":"Get all Links Related With your Topic Quickly and in a Listed Manner"}
+    infoList = {f"{ctx.prefix}rule":"Get a Rule of a Server in Detail",f"{ctx.prefix}rules":"Get all Rules of a Server in a Listed and Proper Manner",f"{ctx.prefix}serverinfo":"Get Complete Detail and Information of a Server",f"{ctx.prefix}mcserver":"Get Status and Details of a Minecraft Java Server",f"{ctx.prefix}wikipedia":"Get a Biography or Informations in Details of a Particular Topic with Wikipedia",f"{ctx.prefix}google":"Get all Links Related With your Topic Quickly and in a Listed Manner"}
     infocmd = []
     for cmd in list(infoList.keys()):
         infocmd.append(f"• {cmd} {sign}  {infoList[cmd]}.")
