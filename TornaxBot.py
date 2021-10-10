@@ -1887,6 +1887,10 @@ async def whois(ctx, member: Optional[discord.Member]=None):
     userEmbed.add_field(name=f"Key Permissions", value= perm_string,inline=False)
     if member == ctx.guild.owner:
         userEmbed.add_field(name="Acknowledgements", value="Server Owner", inline=False)
+    elif member.guild_permissions.administrator:
+        userEmbed.add_field(name="Acknowledgements", value="Server Admin", inline=False)
+    else:
+        userEmbed.add_field(name="Acknowledgements", value="Server Member", inline=False)
     userEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=userEmbed)
 
