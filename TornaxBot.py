@@ -1894,7 +1894,7 @@ whoishelp = f"whois [user]"
 
 @bot.command()
 async def serverinfo(ctx):
-    serverEmbed = discord.Embed(description=f"• Server ID - {ctx.guild.id}" ,color=embedTheme)
+    serverEmbed = discord.Embed(color=embedTheme)
     serverEmbed.set_author(icon_url=ctx.guild.icon_url, name=f"{ctx.guild.name}")
     serverEmbed.set_thumbnail(url=ctx.guild.icon_url)
     serverEmbed.add_field(name="Owner", value=ctx.guild.owner.mention, inline=True)
@@ -1903,7 +1903,7 @@ async def serverinfo(ctx):
     serverEmbed.add_field(name="Voice Channels", value=len(ctx.guild.voice_channels), inline=True)
     serverEmbed.add_field(name="Members", value=len(ctx.guild.members), inline=True)
     serverEmbed.add_field(name="Roles", value=len(ctx.guild.roles), inline=True)
-    serverEmbed.add_field(name="ID", value=ctx.guild.name, inline=True)
+    serverEmbed.add_field(name="ID", value=ctx.guild.id, inline=True)
     serverEmbed.add_field(name="Created at", value=ctx.guild.created_at.strftime("%a, %d %b %Y %I:%M %p"), inline=True)
     serverEmbed.add_field(name="Region", value=ctx.guild.region, inline=True)
     serverEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
