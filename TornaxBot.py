@@ -2,7 +2,6 @@ from os import name
 import warnings
 import discord
 from discord.ext import commands, tasks
-from discord_slash import SlashCommand, SlashContext
 from datetime import datetime
 import asyncio
 import random
@@ -39,7 +38,6 @@ intents = discord.Intents.all()
 intents.members = True
 
 bot = commands.Bot(command_prefix = load_prefix, case_insensitive=True, intents=intents,help_command=None)
-slash = SlashCommand(bot)
 
 TOKEN = "ODMyODk3NjAyNzY4MDc2ODE2.YHqeVg.yfzVgB8hHizDFH7hSMTORIv5weg"
 
@@ -1853,16 +1851,6 @@ ruleshelp = f"rules"
 
 @bot.command()
 async def avatar(ctx, owner: Optional[discord.Member]=None):
-    if owner is None:
-        owner = ctx.author
-    embed = discord.Embed(title="Avatar",color=embedTheme)
-    embed.set_author(icon_url=owner.avatar_url,name=owner)
-    embed.set_image(url=owner.avatar_url)
-    embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-    await ctx.send(embed=embed)
-
-@slash.slash(name="avatar", description="See Someone's Avatar in Large Size")
-async def avatar(ctx: SlashContext, owner):
     if owner is None:
         owner = ctx.author
     embed = discord.Embed(title="Avatar",color=embedTheme)
