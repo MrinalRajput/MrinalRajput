@@ -1859,7 +1859,7 @@ async def avatar(ctx, owner: Optional[discord.Member]=None):
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=embed)
 
-@slash.slash(name="avatar", guild_ids=[865505263363948546])
+@slash.slash(name="avatar", description="See Someone's Avatar in Large Size")
 async def avatar(ctx: SlashContext, owner):
     if owner is None:
         owner = ctx.author
