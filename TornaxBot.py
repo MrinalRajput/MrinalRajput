@@ -835,7 +835,7 @@ async def mcserver(ctx, server: Optional[str]=None):
 mcserverhelp = f"mcserver <Minecaft Java Server Ip>"
 
 @bot.command()
-async def wikipedia(ctx, *, search: Optional[str]=None):
+async def Wikipedia(ctx, *, search: Optional[str]=None):
     try:
         if search is not None:
             query = wikipedia.summary(search, sentences=2)
@@ -871,6 +871,8 @@ async def google(ctx, *, query):
     await ctx.send(embed=googleEmbed)
 
 googlehelp = f"google <Search Topic>"
+
+
 
 @bot.command()
 async def time(ctx):
