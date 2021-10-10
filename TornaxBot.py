@@ -878,42 +878,55 @@ videoCount = {}
 async def youtube(ctx, *, searching):
     if ctx.guild.id not in videoCount:
         videoCount[ctx.guild.id] = {}
+    if ctx.author.id in videoCount[ctx.guild.id]:
+        await videoCount[ctx.guild.id][ctx.author.id]["video"].clear_reactions()
+        del videoCount[ctx.guild.id][ctx.author.id]
+        
     searching = f"{searching} youtube"
+    print(searching)
     searchResult = search(searching, num_results=30, lang="en", proxy=None)
     validResults = []
     for r in searchResult:
-        if r.startswith(" https://www.youtube.com/watch?v"):
+        if r.startswith("https://www.youtube.com/watch?v"):
             validResults.append(r)
-    videoCount[ctx.guild.id][ctx.author.id] = 0
-    youtuberesult = await ctx.send(validResults[videoCount[ctx.guild.id][ctx.author.id]])
+    videoCount[ctx.guild.id][ctx.author.id]= {}
+    videoCount[ctx.guild.id][ctx.author.id]["count"] = 0
+    videoCount[ctx.guild.id][ctx.author.id]["video"] = await ctx.send(validResults[videoCount[ctx.guild.id][ctx.author.id]["count"]])
 
     controls = ["⏮️","◀️","⏹️","▶️","⏭️"]
     for c in controls:
-        await youtuberesult.add_reaction(c)
-
+        await videoCount[ctx.guild.id][ctx.author.id]["video"].add_reaction(c)
+    print(0)
     def check(reaction, user):
-        return reaction.message == youtuberesult and str(reaction.emoji) in controls and user.id == ctx.author.id
-    controlemoji = await bot.wait_for("reaction", check=check, timeout=120)
+        return reaction.message == videoCount[ctx.guild.id][ctx.author.id]["video"] and str(reaction.emoji) in controls and user.id == ctx.author.id
 
-    if controlemoji == controls[0]:
-        videoCount[ctx.guild.id][ctx.author.id] = 0
-        await youtuberesult.edit(content=validResults[videoCount[ctx.guild.id][ctx.author.id]])
-    elif controlemoji == controls[1]:
-        videoCount[ctx.guild.id][ctx.author.id] -= 1
-        if videoCount[ctx.guild.id][ctx.author.id] < 0:
-            videoCount[ctx.guild.id][ctx.author.id] = len(controlemoji)
-        await youtuberesult.edit(content=validResults[videoCount[ctx.guild.id][ctx.author.id]])
-    elif controlemoji == controls[2]:
-        await youtuberesult.clear_reactions()
-        del videoCount[ctx.guild.id][ctx.author.id]
-    elif controlemoji == controls[3]:
-        videoCount[ctx.guild.id][ctx.author.id] += 1
-        if videoCount[ctx.guild.id][ctx.author.id] > len(controlemoji):
-            videoCount[ctx.guild.id][ctx.author.id] = 0
-        await youtuberesult.edit(content=validResults[videoCount[ctx.guild.id][ctx.author.id]])
-    elif controlemoji == controls[4]:
-        videoCount[ctx.guild.id][ctx.author.id] = len(controlemoji)
-        await youtuberesult.edit(content=validResults[videoCount[ctx.guild.id][ctx.author.id]])
+    print(1)
+    while ctx.author.id in videoCount[ctx.guild.id]:
+        controlemoji, user = await bot.wait_for("reaction_add", check=check, timeout=120)
+        print(2)
+        print(controlemoji.emoji)
+
+        if controlemoji.emoji == controls[0]:
+            videoCount[ctx.guild.id][ctx.author.id]["count"] = 0
+            await videoCount[ctx.guild.id][ctx.author.id]["video"].edit(content=validResults[videoCount[ctx.guild.id][ctx.author.id]["count"]])
+        elif controlemoji.emoji == controls[1]:
+            videoCount[ctx.guild.id][ctx.author.id]["count"] -= 1
+            if videoCount[ctx.guild.id][ctx.author.id]["count"] < 0:
+                videoCount[ctx.guild.id][ctx.author.id]["count"] = len(controls)
+            await videoCount[ctx.guild.id][ctx.author.id]["video"].edit(content=validResults[videoCount[ctx.guild.id][ctx.author.id]["count"]])
+        elif controlemoji.emoji == controls[2]:
+            await videoCount[ctx.guild.id][ctx.author.id]["video"].clear_reactions()
+            del videoCount[ctx.guild.id][ctx.author.id]
+        elif controlemoji.emoji == controls[3]:
+            videoCount[ctx.guild.id][ctx.author.id]["count"] += 1
+            if videoCount[ctx.guild.id][ctx.author.id]["count"] > len(controls):
+                videoCount[ctx.guild.id][ctx.author.id]["count"] = 0
+            await videoCount[ctx.guild.id][ctx.author.id]["video"].edit(content=validResults[videoCount[ctx.guild.id][ctx.author.id]["count"]])
+        elif controlemoji.emoji == controls[4]:
+            videoCount[ctx.guild.id][ctx.author.id]["count"] = len(controls)
+            await videoCount[ctx.guild.id][ctx.author.id]["video"].edit(content=validResults[videoCount[ctx.guild.id][ctx.author.id]["count"]])
+        
+        await videoCount[ctx.guild.id][ctx.author.id]["video"].remove_reaction(controlemoji.emoji, user)
 
 youtubehelp = f"youtube <Search Topic>"
 
