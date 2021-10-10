@@ -1875,7 +1875,7 @@ avatarhelp = f"avatar [user]"
 async def whois(ctx, member: Optional[discord.Member]=None):
     if member is None:
         member = ctx.author
-    userEmbed = discord.Embed(description=member.mention)
+    userEmbed = discord.Embed(description=member.mention, color=embedTheme)
     userEmbed.set_author(icon_url=member.avatar_url, name=member)
     userEmbed.set_thumbnail(url=member.avatar_url)
     userEmbed.add_field(name=f"Joined {ctx.guild.name}", value= member.joined_at.strftime("%a, %d %b %Y %I:%M %p"),inline=True)
