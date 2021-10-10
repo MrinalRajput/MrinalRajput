@@ -80,6 +80,7 @@ async def on_guild_join(guild):
     for channel in guild.text_channels:
         if channel.permissions_for(guild.me).send_messages:
             if "chat" in channel.name or "general" in channel.name:
+                await bot.pg_con.execute("UPDATE prefixes SET prefix=$1 WHERE guild_id=$2",DEFAULT_PREFIX,guild.id)
                 custom_prefix = await bot.pg_con.fetchrow("SELECT prefix FROM prefixes WHERE guild_id = $1", guild.id)
                 await channel.send(f'Hey there! Thanks for Adding me in {guild.name}, Type `{custom_prefix[0]}help` to get All about me')
     # inviteChannel = bot.get_channel(890819215588741191)
