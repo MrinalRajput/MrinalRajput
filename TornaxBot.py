@@ -1894,8 +1894,8 @@ whoishelp = f"whois [user]"
 
 @bot.command()
 async def serverinfo(ctx):
-    serverEmbed = discord.Embed(color=embedTheme)
-    serverEmbed.set_author(icon_url=ctx.guild.icon_url, name=f"{ctx.guild.name} • {ctx.guild.id}")
+    serverEmbed = discord.Embed(description=f"• Server Id -> {ctx.guild.id}" ,color=embedTheme)
+    serverEmbed.set_author(icon_url=ctx.guild.icon_url, name=f"{ctx.guild.name}")
     serverEmbed.set_thumbnail(url=ctx.guild.icon_url)
     serverEmbed.add_field(name="Owner", value=ctx.guild.owner.mention, inline=True)
     serverEmbed.add_field(name="Channel Categories", value=len(ctx.guild.categories), inline=True)
