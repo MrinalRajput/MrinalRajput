@@ -697,6 +697,13 @@ async def leave(ctx):
 leavehelp = f"leave"
 
 @bot.command()
+async def play(ctx, *, musicpath):
+    voice_client: discord.VoiceClient = discord.utils.get(bot.voice_clients, guild=ctx.guild)
+    audio_source = discord.FFmpegPCMAudio(executable="ffmpeg.exe", source = musicpath)
+    if not voice_client.is_playing():
+        voice_client.play(audio_source, after=None)
+
+@bot.command()
 @commands.has_permissions(manage_roles=True)
 async def addrole(ctx, member: Optional[discord.Member]=None, role: discord.Role=None):
     if member is None:
