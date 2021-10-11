@@ -888,6 +888,7 @@ async def youtube(ctx, *, searching):
                 pass
                 del videoCount[ctx.guild.id][ctx.author.id]
         
+    old = searching
     searching = f"{searching} youtube"
     searchResult = search(searching, num_results=30, lang="en", proxy=None)
     validResults = []
@@ -944,7 +945,7 @@ async def youtube(ctx, *, searching):
                             pass
                         del videoCount[ctx.guild.id][ctx.author.id]
     else:
-        await ctx.reply(f'''I didn't Found Result for "{searching}" in Youtube''')
+        await ctx.reply(f'''I didn't Found Result for "{old}" in Youtube''')
 
 youtubehelp = f"youtube <Search Topic>"
 
