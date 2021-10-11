@@ -147,13 +147,14 @@ async def dmuser(ctx, member: discord.User, *, chat):
 @bot.listen()
 async def on_message(message):
     if not message.guild:
-        channelid = 874904257265008670
-        modmail = bot.get_channel(channelid)
-        embed = discord.Embed(title=f"{message.author}", color=embedTheme)
-        embed.add_field(name="Message\n",value=f"{message.content}\n\n--------------------------",inline=False)
-        embed.set_footer(icon_url=message.author.avatar_url,text=f"ID -> {message.author.id}")
-        await modmail.send(embed=embed)
-        # print(f"{message.author} -> {message.content}")
+        if message.author != bot.user:
+            channelid = 874904257265008670
+            modmail = bot.get_channel(channelid)
+            embed = discord.Embed(title=f"{message.author}", color=embedTheme)
+            embed.add_field(name="Message\n",value=f"{message.content}\n\n--------------------------",inline=False)
+            embed.set_footer(icon_url=message.author.avatar_url,text=f"ID -> {message.author.id}")
+            await modmail.send(embed=embed)
+            # print(f"{message.author} -> {message.content}")
 
 @bot.listen()
 async def on_message(message):
