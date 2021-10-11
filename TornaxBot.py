@@ -884,7 +884,6 @@ async def youtube(ctx, *, searching):
             del videoCount[ctx.guild.id][ctx.author.id]
         
     searching = f"{searching} youtube"
-    print(searching)
     searchResult = search(searching, num_results=30, lang="en", proxy=None)
     validResults = []
     for r in searchResult:
@@ -899,14 +898,11 @@ async def youtube(ctx, *, searching):
         controls = ["⏮️","◀️","⏹️","▶️","⏭️"]
         for c in controls:
             await videoCount[ctx.guild.id][ctx.author.id]["video"].add_reaction(c)
-        print(0)
         def check(reaction, user):
             return reaction.message == videoCount[ctx.guild.id][ctx.author.id]["video"] and str(reaction.emoji) in controls and user.id == ctx.author.id
 
-        print(1)
         while ctx.author.id in videoCount[ctx.guild.id]:
-            controlemoji, user = await bot.wait_for("reaction_add", check=check, timeout=120)
-            print(2)
+            controlemoji, user = await bot.wait_for("reaction_add", check=check, timeout=5)
             print(controlemoji.emoji)
 
             if controlemoji.emoji == controls[0]:
@@ -929,7 +925,9 @@ async def youtube(ctx, *, searching):
                 videoCount[ctx.guild.id][ctx.author.id]["count"] = len(controls)
                 await videoCount[ctx.guild.id][ctx.author.id]["video"].edit(content=validResults[videoCount[ctx.guild.id][ctx.author.id]["count"]])
             
-            await videoCount[ctx.guild.id][ctx.author.id]["video"].remove_reaction(controlemoji.emoji, user)
+            if ctx.author.id in videoCount[ctx.guild.id]:
+                if "video" in videoCount[ctx.guild.id][ctx.author.id]:
+                    await videoCount[ctx.guild.id][ctx.author.id]["video"].remove_reaction(controlemoji.emoji, user)
     else:
         await ctx.reply(f'''I didn't Found Result for "{searching}" in Youtube''')
 
