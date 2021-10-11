@@ -950,7 +950,7 @@ youtubehelp = f"youtube <Search Topic>"
 
 @bot.command()
 async def meaning(ctx, *, keyword: Optional[str]=None):
-    if len(keyword) < 1:
+    if " " not in keyword:
         if keyword is not None:
             dictionary  = PyDictionary()
             result = dictionary.meaning(keyword)
