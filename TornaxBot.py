@@ -954,11 +954,14 @@ async def meaning(ctx, *, keyword: Optional[str]=None):
         if keyword is not None:
             dictionary  = PyDictionary()
             result = dictionary.meaning(keyword)
-            embed = discord.Embed(title="Dictionary", color=embedTheme)
-            embed.set_thumbnail(url="http://ragmamoul.net/wp-content/uploads/2019/08/3-Paligian.jpg")
-            embed.add_field(name=f"Results for Word - {keyword}", value= '**'+ list(result.keys())[0] +'**' + '\n •' + '\n •'.join(list(result.values())[0]))
-            embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-            await ctx.send(embed=embed)
+            if result is not None:
+                embed = discord.Embed(title="Dictionary", color=embedTheme)
+                embed.set_thumbnail(url="http://ragmamoul.net/wp-content/uploads/2019/08/3-Paligian.jpg")
+                embed.add_field(name=f"[{len(list(result.values())[0])}] Results for - {keyword}", value= '**'+ list(result.keys())[0] +'**' + '\n •' + '\n •'.join(list(result.values())[0]))
+                embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+                await ctx.send(embed=embed)
+            else:
+                await ctx.reply(f"I Didn't Found Meaning of {keyword} in Dictionary")
         else:
             await ctx.reply(f"Please Specify the Word for its Meaning")
     else:
