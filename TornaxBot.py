@@ -880,8 +880,11 @@ async def youtube(ctx, *, searching):
         videoCount[ctx.guild.id] = {}
     if ctx.author.id in videoCount[ctx.guild.id]:
         if "video" in videoCount[ctx.guild.id][ctx.author.id]:
-            await videoCount[ctx.guild.id][ctx.author.id]["video"].clear_reactions()
-            del videoCount[ctx.guild.id][ctx.author.id]
+            try:
+                await videoCount[ctx.guild.id][ctx.author.id]["video"].clear_reactions()
+            except:
+                pass
+                del videoCount[ctx.guild.id][ctx.author.id]
         
     searching = f"{searching} youtube"
     searchResult = search(searching, num_results=30, lang="en", proxy=None)
@@ -932,7 +935,11 @@ async def youtube(ctx, *, searching):
             except Exception as e:
                 if ctx.author.id in videoCount[ctx.guild.id]:
                     if "video" in videoCount[ctx.guild.id][ctx.author.id]:
-                        await videoCount[ctx.guild.id][ctx.author.id]["video"].clear_reactions()
+                        try:
+                            await videoCount[ctx.guild.id][ctx.author.id]["video"].clear_reactions()
+                        except Exception as e:
+                            print(e)
+                            pass
                         del videoCount[ctx.guild.id][ctx.author.id]
     else:
         await ctx.reply(f'''I didn't Found Result for "{searching}" in Youtube''')
