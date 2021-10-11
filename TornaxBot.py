@@ -16,7 +16,7 @@ from io import BytesIO
 import wikipedia
 from googlesearch import search
 import topgg
-import PyDictionary
+from PyDictionary import PyDictionary
 
 from discord.ext.commands import has_permissions,has_role, BadArgument, MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError, MissingAnyRole
 from discord.member import Member
