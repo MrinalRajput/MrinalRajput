@@ -103,7 +103,7 @@ async def on_member_join(member):
             welcomeEmbed.add_field(name=f"Joined {member.guild.name}", value=f"{joined_at}", inline=True)
             welcomeEmbed.add_field(name=f"Member Number", value=f"#{member.guild.member_count}", inline=True)
             await channel.send(embed=welcomeEmbed)
-            await member.send(f"We Are So Excited to have you on {member.guild.name}")
+    await member.send(f"We Are So Excited to have you on {member.guild.name}")
 
 @bot.event
 async def on_member_remove(member):
