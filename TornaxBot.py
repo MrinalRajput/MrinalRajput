@@ -1025,7 +1025,7 @@ async def guess(ctx):
     if active[ctx.guild.id] == False:
         active[ctx.guild.id] = True
         gamingChannel[ctx.guild.id]["channel"] = ctx.channel
-        randomRange = [0,10,20,30,40,50,60,70,80,90]
+        randomRange = [0,10,20,30,40,50,60,70,80]
         gamingChannel[ctx.guild.id]["anyoneRange"] = random.choice(randomRange)
         gamingChannel[ctx.guild.id]["customRange"] = gamingChannel[ctx.guild.id]["anyoneRange"] + 20
         gamingChannel[ctx.guild.id]['secretNumber'] = random.randint(gamingChannel[ctx.guild.id]["anyoneRange"],gamingChannel[ctx.guild.id]["customRange"])
