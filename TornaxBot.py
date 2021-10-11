@@ -953,7 +953,8 @@ async def meaning(ctx, *, keyword: Optional[str]=None):
     if " " not in keyword:
         if keyword is not None:
             dictionary  = PyDictionary()
-            result = dictionary.meaning(keyword)
+            result = dictionary.meaning(keyword.lower())
+            print(result)
             if result is not None:
                 embed = discord.Embed(title="Dictionary", color=embedTheme)
                 embed.set_thumbnail(url="http://ragmamoul.net/wp-content/uploads/2019/08/3-Paligian.jpg")
