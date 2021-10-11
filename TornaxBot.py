@@ -960,14 +960,14 @@ async def meaning(ctx, *, keyword: Optional[str]=None):
                 embed.set_thumbnail(url="http://ragmamoul.net/wp-content/uploads/2019/08/3-Paligian.jpg")
 
                 if len(result) == 1:
-                    embed.add_field(name=f"[{len(list(result.values())[0])}] " + list(result.keys())[0], value= '•' + '\n •'.join(list(result.values())[0]), inline=False)
+                    embed.add_field(name=f"[{len(list(result.values())[0])}] " + list(result.keys())[0], value= '• ' + '\n • '.join(list(result.values())[0]), inline=False)
                 elif len(result) == 2:
-                    embed.add_field(name=f"[{len(list(result.values())[0])}] " + list(result.keys())[0], value= '•' + '\n •'.join(list(result.values())[0]), inline=False)
-                    embed.add_field(name=f"[{len(list(result.values())[1])}] " + list(result.keys())[1], value= '•' + '\n •'.join(list(result.values())[1]), inline=False)
+                    embed.add_field(name=f"[{len(list(result.values())[0])}] " + list(result.keys())[0], value= '• ' + '\n • '.join(list(result.values())[0]), inline=False)
+                    embed.add_field(name=f"[{len(list(result.values())[1])}] " + list(result.keys())[1], value= '• ' + '\n • '.join(list(result.values())[1]), inline=False)
                 elif len(result) == 3:
-                    embed.add_field(name=f"[{len(list(result.values())[0])}] " + list(result.keys())[0], value= '•' + '\n •'.join(list(result.values())[0]), inline=False)
-                    embed.add_field(name=f"[{len(list(result.values())[1])}] " + list(result.keys())[1], value= '•' + '\n •'.join(list(result.values())[1]), inline=False)
-                    embed.add_field(name=f"[{len(list(result.values())[2])}] " + list(result.keys())[2], value= '•' + '\n •'.join(list(result.values())[2]), inline=False)
+                    embed.add_field(name=f"[{len(list(result.values())[0])}] " + list(result.keys())[0], value= '• ' + '\n • '.join(list(result.values())[0]), inline=False)
+                    embed.add_field(name=f"[{len(list(result.values())[1])}] " + list(result.keys())[1], value= '• ' + '\n • '.join(list(result.values())[1]), inline=False)
+                    embed.add_field(name=f"[{len(list(result.values())[2])}] " + list(result.keys())[2], value= '• ' + '\n • '.join(list(result.values())[2]), inline=False)
                     
                 embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
                 await ctx.send(embed=embed)
