@@ -956,9 +956,19 @@ async def meaning(ctx, *, keyword: Optional[str]=None):
             result = dictionary.meaning(keyword.lower())
             print(result)
             if result is not None:
-                embed = discord.Embed(title="Dictionary", color=embedTheme)
+                embed = discord.Embed(title="Dictionary", description=f"**Results for - {keyword}**", color=embedTheme)
                 embed.set_thumbnail(url="http://ragmamoul.net/wp-content/uploads/2019/08/3-Paligian.jpg")
-                embed.add_field(name=f"[{len(list(result.values())[0])}] Results for - {keyword}", value= '**'+ list(result.keys())[0] +'**' + '\n •' + '\n •'.join(list(result.values())[0]))
+
+                if len(result) == 1:
+                    embed.add_field(name=f"[{len(list(result.values())[0])}] " + list(result.keys())[0], value= '•' + '\n •'.join(list(result.values())[0]))
+                elif len(result) == 2:
+                    embed.add_field(name=f"[{len(list(result.values())[0])}] " + list(result.keys())[0], value= '•' + '\n •'.join(list(result.values())[0]))
+                    embed.add_field(name=f"[{len(list(result.values())[1])}] " + list(result.keys())[1], value= '•' + '\n •'.join(list(result.values())[1]))
+                elif len(result) == 3:
+                    embed.add_field(name=f"[{len(list(result.values())[0])}] " + list(result.keys())[0], value= '•' + '\n •'.join(list(result.values())[0]))
+                    embed.add_field(name=f"[{len(list(result.values())[1])}] " + list(result.keys())[1], value= '•' + '\n •'.join(list(result.values())[1]))
+                    embed.add_field(name=f"[{len(list(result.values())[2])}] " + list(result.keys())[2], value= '•' + '\n •'.join(list(result.values())[2]))
+                    
                 embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
                 await ctx.send(embed=embed)
             else:
