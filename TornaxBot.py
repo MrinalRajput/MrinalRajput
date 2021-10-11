@@ -1074,6 +1074,7 @@ async def on_message(message):
                         await message.reply(f"{message.author.mention} You Guessed Correct in {gamingChannel[message.guild.id][message.author.id]['attempts']} Attempts and Won the Challenge, the Secret Number was `{gamingChannel[message.guild.id]['secretNumber']}`")
                         gamingChannel[message.guild.id]["guessed"] = True
                         gamingChannel[message.guild.id]["countdown"] = 1
+                        active[message.guild.id] = False
                         del gamingChannel[message.guild.id]
     except Exception as e:
         print(e)
