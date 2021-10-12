@@ -58,8 +58,8 @@ maintain2 = discord.Game(name="Maintenance")
 
 @bot.event
 async def on_ready():
-    status = maintain1
-    activity = maintain2
+    status = botstatus
+    activity = botactivity
     await bot.change_presence(status=status, activity=activity)
     print("I m Ready!")
 
@@ -711,7 +711,7 @@ async def play(ctx, *, songtitle):
     songtitle = songtitle + " song youtube"
     searchsong = search(songtitle, num_results=5, lang="en", proxy=None)
     print(searchsong)
-    audio = discord.FFmpegPCMAudio(searchsong[1], **FFMPEG_OPTIONS)
+    audio = discord.FFmpegPCMAudio("Badla.mp3", **FFMPEG_OPTIONS)
     print(searchsong[0], audio)
     vc.play(audio)
     vc.volume = 100
