@@ -707,9 +707,11 @@ async def play(ctx, *, songtitle):
     old = songtitle
     vc = await ctx.author.voice.channel.connect()
     print(vc)
+    FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5','options': '-vn'}
     songtitle = songtitle + " song youtube"
     searchsong = search(songtitle, num_results=5, lang="en", proxy=None)
-    audio = discord.FFmpegPCMAudio(searchsong[0])
+    print(searchsong)
+    audio = discord.FFmpegPCMAudio(searchsong[1], **FFMPEG_OPTIONS)
     print(searchsong[0], audio)
     vc.play(audio)
     vc.volume = 100
