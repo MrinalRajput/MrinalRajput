@@ -9,6 +9,7 @@ from typing import Optional
 import json
 import time
 from discord.ext.commands.errors import BadArgument
+from discord.player import FFmpegPCMAudio
 from mcstatus import MinecraftServer
 import asyncpg
 from PIL import Image, ImageDraw
@@ -49,13 +50,31 @@ async def create_db_pool():
     await bot.pg_con.execute("CREATE TABLE IF NOT EXISTS prefixes(guild_id bigint, prefix text)") 
     print("Connected Successfully To DataBase")
 
+botstatus = discord.Status.online
+botactivity = "Server Members | >help for commands"
 
 @bot.event
 async def on_ready():
-    status = discord.Status.online
-    activity = discord.Activity(type=discord.ActivityType.watching, name="Server Members | >help for commands")
+    status = botstatus
+    activity = discord.Activity(type=discord.ActivityType.watching, name=botactivity)
     await bot.change_presence(status=status, activity=activity)
     print("I m Ready!")
+
+@bot.listen()
+async def on_message(message):
+    global botstatus, botactivity
+    if message.author.id == 758941956600102943:
+        if message.content.lower().startswith(">maintenance"):
+            channel = message.channel
+            botstatus = discord.Status.dnd
+            def check(message):
+                return message.author.id == 758941956600102943 and message.channel == channel and message.content.lower().startswith(">status")
+            reply = await bot.wait_for("message", check=check, timeout=30)
+            botactivity = reply
+
+        elif message.content.lower().startswith(">statusnormal"):
+            botstatus = discord.Status.online
+            botactivity = "Server Members | >help for commands"
 
 @bot.command()
 async def setprefix(ctx, *, newPrefix:Optional[str]=None):
@@ -695,6 +714,21 @@ async def leave(ctx):
         await ctx.send(f":exclamation: {ctx.author.mention} You must be in a Voice Channel to do that!")
 
 leavehelp = f"leave"
+
+@bot.command()
+async def play(ctx, *, songtitle):
+    old = songtitle
+    vc = await ctx.author.voice.channel.connect()
+    print(vc)
+    songtitle = songtitle + " song youtube"
+    searchsong = search(songtitle, num_results=5, lang="en", proxy=None)
+    audio = discord.FFmpegPCMAudio(searchsong[0])
+    print(searchsong[0], audio)
+    vc.play(audio)
+    vc.volume = 100
+    songEmbed = discord.Embed(title="Playing", description=f"Playing A Song for {old}", color=embedTheme)
+    await ctx.reply(embed=songEmbed)
+
 
 @bot.command()
 @commands.has_permissions(manage_roles=True)
