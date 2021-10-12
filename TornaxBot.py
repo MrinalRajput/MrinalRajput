@@ -51,15 +51,15 @@ async def create_db_pool():
     print("Connected Successfully To DataBase")
 
 botstatus = discord.Status.online
-botactivity = "Server Members | >help for commands"
+botactivity = discord.Activity(type=discord.ActivityType.watching, name="Server Members | >help for commands")
 
 maintain1 = discord.Status.dnd
-maintain2 = "Maintenance"
+maintain2 = discord.Game(name="Maintenance")
 
 @bot.event
 async def on_ready():
     status = maintain1
-    activity = discord.Activity(type=discord.ActivityType.watching, name=maintain2)
+    activity = maintain2
     await bot.change_presence(status=status, activity=activity)
     print("I m Ready!")
 
