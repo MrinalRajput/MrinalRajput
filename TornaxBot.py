@@ -53,31 +53,15 @@ async def create_db_pool():
 botstatus = discord.Status.online
 botactivity = "Server Members | >help for commands"
 
+maintain1 = discord.Status.dnd
+maintain2 = "Maintenance"
+
 @bot.event
 async def on_ready():
-    status = botstatus
-    activity = discord.Activity(type=discord.ActivityType.watching, name=botactivity)
+    status = maintain1
+    activity = discord.Activity(type=discord.ActivityType.watching, name=maintain2)
     await bot.change_presence(status=status, activity=activity)
     print("I m Ready!")
-
-@bot.listen()
-async def on_message(message):
-    global botstatus, botactivity
-    if message.author.id == 758941956600102943:
-        if message.content.lower().startswith(">maintenance"):
-            channel = message.channel
-            botstatus = discord.Status.dnd
-            await message.channel.send(f"Specify the Status of Tornax")
-            def check(message):
-                return message.author.id == 758941956600102943 and message.channel == channel and message.content.lower().startswith(">status")
-            reply = await bot.wait_for("message", check=check, timeout=50)
-            botactivity = reply
-            await message.channel.send("Done ✅")
-
-        elif message.content.lower().startswith(">statusnormal"):
-            botstatus = discord.Status.online
-            botactivity = "Server Members | >help for commands"
-            await message.channel.send("Done ✅")
 
 @bot.command()
 async def setprefix(ctx, *, newPrefix:Optional[str]=None):
