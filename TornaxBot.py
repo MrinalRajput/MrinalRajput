@@ -19,7 +19,7 @@ from googlesearch import search
 import topgg
 from PyDictionary import PyDictionary
 
-from discord.ext.commands import has_permissions,has_role, BadArgument, MissingPermissions,MissingRole,CommandNotFound,CommandInvokeError, MissingAnyRole
+from discord.ext.commands import BadArgument, MissingPermissions,MissingRole,CommandInvokeError, MissingAnyRole, BotMissingPermissions
 from discord.member import Member
 
 
@@ -332,7 +332,7 @@ async def kick(ctx, member:discord.Member, *, reason=None):
                 await member.kick(reason=reason)
                 await ctx.send(f"Kicked: {member.mention} has been Kicked from the Server by {ctx.author.mention}" if reason is None else f"Kicked: {member.mention} has been Kicked from the Server by {ctx.author.mention} \n\t With the Reason of :\t{reason}")
                 await member.send(f"You are Kicked by an Admin from {ctx.guild.name}"if reason is None else f"You are Kicked by an Admin from {ctx.guild.name} \n\t With the Reason of :\t{reason}")
-            except BotMissingPermissions:
+            except commands.BotMissingPermissions:
                 await ctx.reply(f":exclamation: Failed to Kick {member} || Reason: Missing Permissions")
     else:
         await ctx.send(f"You must Specify the User whom you want to Kick from the Server")
