@@ -30,14 +30,11 @@ async def load_prefix(bot, message):
     if not message.guild:
         current_prefix = DEFAULT_PREFIX
     else:        
-        current_prefix = await bot.pg_con.fetchrow("SELECT prefix FROM prefixes")
-        if message.guild.id in current_prefix:
-            theprefix = current_prefix[message.guild.id]
-        else:
-            current_prefix[message.guild.id] = DEFAULT_PREFIX
-            theprefix = await bot.pg_con.execute("UPDATE prefixes SET prefix=$1", current_prefix)
+        current_prefix = await bot.pg_con.fetchrow("SELECT prefix FROM prefixes WHERE guild_id  = $1", message.guild.id)
+        if not current_prefix:
+            current_prefix = await bot.pg_con.execute("INSERT INTO prefixes(guild_id, prefix) VALUES($1,$2)", message.guild.id, DEFAULT_PREFIX)
 
-    return theprefix
+    return current_prefix
 
 intents = discord.Intents.all()
 intents.members = True
@@ -70,11 +67,11 @@ async def on_ready():
 async def setprefix(ctx, *, newPrefix:Optional[str]=None):
     if ctx.author.guild_permissions.administrator:
         if newPrefix is not None:
-            custom_prefix = await bot.pg_con.fetch("SELECT prefix FROM prefixes")
-            print(custom_prefix)
-            # if ctx.guild.id not in custom_prefix:
-            #     await bot.pg_con.execute("INSERT INTO prefixes(guild_id,prefix) VALUES($1,$2)", ctx.guild.id, DEFAULT_PREFIX)
-            # await bot.pg_con.execute("UPDATE prefixes SET prefix=$1 WHERE guild_id=$2",newPrefix,ctx.guild.id)
+            custom_prefix = await bot.pg_con.fetch("SELECT prefix FROM prefixes WHERE guild_id = $1", ctx.guild.id)
+            if not custom_prefix:
+                await bot.pg_con.execute("INSERT INTO prefixes(guild_id,prefix) VALUES($1,$2)", ctx.guild.id, DEFAULT_PREFIX)
+            await bot.pg_con.execute("UPDATE prefixes SET prefix=$1 WHERE guild_id=$2",newPrefix,ctx.guild.id)
+            await bot.user.edit(nick=f"[{newPrefix}] Tornax")
             await ctx.send(f"The Prefix for this Server is Successfully Changed to {newPrefix}")
         else:
             await ctx.send(f"You Must Specify the New Prefix")
