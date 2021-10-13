@@ -333,7 +333,7 @@ async def kick(ctx, member:discord.Member, *, reason=None):
                 await ctx.send(f"Kicked: {member.mention} has been Kicked from the Server by {ctx.author.mention}" if reason is None else f"Kicked: {member.mention} has been Kicked from the Server by {ctx.author.mention} \n\t With the Reason of :\t{reason}")
                 await member.send(f"You are Kicked by an Admin from {ctx.guild.name}"if reason is None else f"You are Kicked by an Admin from {ctx.guild.name} \n\t With the Reason of :\t{reason}")
             else:
-                await ctx.reply(f":exclamation: Failed to Kick {member} Because he Mod or Admin of this Server")
+                await ctx.reply(f":exclamation: Failed to Kick that User Because he is Mod or Admin in this Server  :what:")
     else:
         await ctx.send(f"You must Specify the User whom you want to Kick from the Server")
 
