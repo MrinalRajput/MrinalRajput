@@ -68,6 +68,7 @@ async def setprefix(ctx, *, newPrefix:Optional[str]=None):
     if ctx.author.guild_permissions.administrator:
         if newPrefix is not None:
             custom_prefix = await bot.pg_con.fetch("SELECT prefix FROM prefixes WHERE guild_id = $1", ctx.guild.id)
+            print(custom_prefix)
             if not custom_prefix:
                 await bot.pg_con.execute("INSERT INTO prefixes(guild_id,prefix) VALUES($1,$2)", ctx.guild.id, DEFAULT_PREFIX)
             await bot.pg_con.execute("UPDATE prefixes SET prefix=$1 WHERE guild_id=$2",newPrefix,ctx.guild.id)
@@ -707,21 +708,21 @@ async def leave(ctx):
 
 leavehelp = f"leave"
 
-@bot.command()
-async def play(ctx, *, songtitle):
-    old = songtitle
-    vc = await ctx.author.voice.channel.connect()
-    print(vc)
-    FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5','options': '-vn'}
-    songtitle = songtitle + " song youtube"
-    searchsong = search(songtitle, num_results=5, lang="en", proxy=None)
-    print(searchsong)
-    audio = discord.FFmpegPCMAudio("Badla.mp3", **FFMPEG_OPTIONS)
-    print(searchsong[0], audio)
-    vc.play(audio)
-    vc.volume = 100
-    songEmbed = discord.Embed(title="Playing", description=f"Playing A Song for {old}", color=embedTheme)
-    await ctx.reply(embed=songEmbed)
+# @bot.command()
+# async def play(ctx, *, songtitle):
+#     old = songtitle
+#     vc = await ctx.author.voice.channel.connect()
+#     print(vc)
+#     FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5','options': '-vn'}
+#     songtitle = songtitle + " song youtube"
+#     searchsong = search(songtitle, num_results=5, lang="en", proxy=None)
+#     print(searchsong)
+#     audio = discord.FFmpegPCMAudio("Badla.mp3", **FFMPEG_OPTIONS)
+#     print(searchsong[0], audio)
+#     vc.play(audio)
+#     vc.volume = 100
+#     songEmbed = discord.Embed(title="Playing", description=f"Playing A Song for {old}", color=embedTheme)
+#     await ctx.reply(embed=songEmbed)
 
 
 @bot.command()
