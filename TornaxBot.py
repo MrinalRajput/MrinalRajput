@@ -8,7 +8,7 @@ import random
 from typing import Optional
 import json
 import time
-from discord.ext.commands.errors import BadArgument
+from discord.ext.commands.errors import BadArgument, BotMissingPermissions
 from discord.player import FFmpegPCMAudio
 from mcstatus import MinecraftServer
 import asyncpg
@@ -332,9 +332,8 @@ async def kick(ctx, member:discord.Member, *, reason=None):
                 await member.kick(reason=reason)
                 await ctx.send(f"Kicked: {member.mention} has been Kicked from the Server by {ctx.author.mention}" if reason is None else f"Kicked: {member.mention} has been Kicked from the Server by {ctx.author.mention} \n\t With the Reason of :\t{reason}")
                 await member.send(f"You are Kicked by an Admin from {ctx.guild.name}"if reason is None else f"You are Kicked by an Admin from {ctx.guild.name} \n\t With the Reason of :\t{reason}")
-            except Exception as e:
-                print(e)
-                await ctx.reply(f":exclamation: Failed to Kick {member}")
+            except BotMissingPermissions:
+                await ctx.reply(f":exclamation: Failed to Kick {member} || Reason: Missing Permissions")
     else:
         await ctx.send(f"You must Specify the User whom you want to Kick from the Server")
 
