@@ -1037,7 +1037,7 @@ async def pokemon(ctx, pokename=None, wantmove: Optional[str]=None):
             if wantmove != "moves":
                 pokeEmbed = discord.Embed(color= embedTheme)
                 pokeEmbed.set_author(icon_url=poke.sprites[0]['default'], name=f"#{poke.dex} - {poke.name.capitalize()}")
-                pokeEmbed.set_thumbnail(url=f"https://play.pokemonshowdown.com/sprites/ani/{pokename}.gif")
+                pokeEmbed.set_thumbnail(url=f"https://play.pokemonshowdown.com/sprites/ani/{poke.name}.gif")
                 pokeEmbed.add_field(name="Type(s)", value=", ".join(poke.types).capitalize(), inline=True)
                 pability = []
                 pstats = f"HP: **{poke.base_stats[0]}**, ATK: **{poke.base_stats[1]}**, DEF: **{poke.base_stats[2]}**, SPA: **{poke.base_stats[3]}**, SPD: **{poke.base_stats[4]}**, SPE: **{poke.base_stats[5]}**"
@@ -1060,7 +1060,7 @@ async def pokemon(ctx, pokename=None, wantmove: Optional[str]=None):
             elif wantmove == "moves":
                 moveEmbed = discord.Embed(color=embedTheme)
                 moveEmbed.set_author(icon_url=poke.sprites[0]['default'], name=f"#{poke.dex} - {poke.name.capitalize()}")
-                moveEmbed.set_thumbnail(url=f"https://play.pokemonshowdown.com/sprites/ani/{pokename}.gif")
+                moveEmbed.set_thumbnail(url=f"https://play.pokemonshowdown.com/sprites/ani/{poke.name}.gif")
                 pmoves = []
                 allmove = poke.moves
                 for move in allmove['ultra-sun-ultra-moon']:
