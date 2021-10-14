@@ -20,6 +20,7 @@ import topgg
 from PyDictionary import PyDictionary
 import pypokedex
 from countryinfo.countryinfo import CountryInfo
+import pycountry
 
 from discord.ext.commands import BadArgument, MissingPermissions,MissingRole,CommandInvokeError, MissingAnyRole, BotMissingPermissions
 from discord.member import Member
@@ -1127,6 +1128,88 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
 
 tellhelp = f"tell [channel] <message>"
 
+atlasgames = {}
+
+@bot.command()
+async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[discord.Member]=None, player3: Optional[discord.Member]=None, player4: Optional[discord.Member]=None):
+    if ctx.guild.id not in atlasgames:
+        atlasgames[ctx.guild.id] = []
+    if player1 is None or player2 is None or player3 is None or player4 is None:
+        await ctx.reply(f"There Must be 4 Players to Play Atlas Game")
+    else:
+        if player1.id not in atlasgames[ctx.guild.id] and player2.id not in atlasgames[ctx.guild.id] and player3.id not in atlasgames[ctx.guild.id] and player4.id not in atlasgames[ctx.guild.id]:
+            atlasgames[ctx.guild.id].append(player1.id)
+            atlasgames[ctx.guild.id].append(player2.id)
+            atlasgames[ctx.guild.id].append(player3.id)
+            atlasgames[ctx.guild.id].append(player4.id)
+
+            turn = player4
+
+            places = []
+            for c in list(pycountry.countries):
+                if c.name.lower() not in places:
+                    places.append(c.name.lower())
+            for s in list(pycountry.subdivisions):
+                if s.name.lower() not in places:
+                    places.append(s.name.lower())
+            
+            alphabets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+            await ctx.send(f":map: Atlas Game :map:\n Players - {player1.mention} {player2.mention} {player3.mention} {player4.mention}")
+
+            while True:
+                if turn == player4:
+                    turn = player1
+                elif turn == player1:
+                    turn = player2
+                elif turn == player2:
+                    turn = player3
+                elif turn == player3:
+                    turn = player4
+                letter = random.choice(alphabets)
+                await ctx.send(f"{turn.mention} Its Your Turn, You Have to tell Any Place Name Starts with `{letter}`")
+
+                def check(message):
+                    return message.author == turn and message.content.lower().startswith(letter) and message.channel == ctx.channel
+                try:
+                    userplace = await bot.wait_for("message", check=check, timeout=15)
+                    if userplace.content.lower() in places:
+                        await ctx.reply(f"You Told Correct {userplace.content} is a Valid Place Starts With `{letter}`")
+                    else:
+                        await ctx.reply(f"You Told Incorrect Place, {userplace.content} doesn't Exist")
+                        if turn == player1:
+                            await ctx.send(f"Loser - {player1.mention}\nWinners - {player2.mention}{player3.mention}{player4.mention}")
+                        elif turn == player2:
+                            await ctx.send(f"Loser - {player2.mention}\nWinners - {player1.mention}{player3.mention}{player4.mention}")
+                        elif turn == player3:
+                            await ctx.send(f"Loser - {player3.mention}\nWinners - {player1.mention}{player2.mention}{player4.mention}")
+                        elif turn == player4:
+                            await ctx.send(f"Loser - {player4.mention}\nWinners - {player1.mention}{player2.mention}{player3.mention}")
+                        atlasgames[ctx.guild.id].remove(player1.id)
+                        atlasgames[ctx.guild.id].remove(player2.id)
+                        atlasgames[ctx.guild.id].remove(player3.id)
+                        atlasgames[ctx.guild.id].remove(player4.id)
+                except Exception as e:
+                    print(e)
+                    await ctx.send(f"{turn.mention} Your Chance Timeout!")
+                    if turn == player1:
+                        await ctx.send(f"Loser - {player1.mention}\nWinners - {player2.mention}{player3.mention}{player4.mention}")
+                    elif turn == player2:
+                        await ctx.send(f"Loser - {player2.mention}\nWinners - {player1.mention}{player3.mention}{player4.mention}")
+                    elif turn == player3:
+                        await ctx.send(f"Loser - {player3.mention}\nWinners - {player1.mention}{player2.mention}{player4.mention}")
+                    elif turn == player4:
+                        await ctx.send(f"Loser - {player4.mention}\nWinners - {player1.mention}{player2.mention}{player3.mention}")
+                    atlasgames[ctx.guild.id].remove(player1.id)
+                    atlasgames[ctx.guild.id].remove(player2.id)
+                    atlasgames[ctx.guild.id].remove(player3.id)
+                    atlasgames[ctx.guild.id].remove(player4.id)
+                    break        
+        else:
+            await ctx.reply(f"Anyone's Match is Currently Active")
+
+atlashelp = f"atlas <player1> <player2> <player3> <player4>"
+
 active = {}
 gamingChannel = {}
 
@@ -2196,7 +2279,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, allcommands, gstatus, gstop, gparticipate, gquit, setprefix, whois, serverinfo, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
-        myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, mcserver, wikipedia, google, youtube, meaning, pokemon, country \n----------------------\n", inline=False)
+        myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, atlas, mcserver, wikipedia, google, youtube, meaning, pokemon, country \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{ctx.prefix}`\n > Command Usage Example :   `{ctx.prefix}info`\n\n----------------------", inline=False)
         myEmbed.add_field(name="Readme", value=f"`{ctx.prefix}help` Shows this Message, use `{ctx.prefix}help [command]` to get more information about that Command\n\n")
         myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creater}")
@@ -2258,6 +2341,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "tictactoe": content=tictactoehelp
         elif anycommand == "tttstop": content=tttstophelp
         elif anycommand == "guess": content=guesshelp
+        elif anycommand == "atlas": content=atlashelp
         elif anycommand == "mcserver": content=mcserverhelp
         elif anycommand == "pokemon": content=pokemonhelp
         elif anycommand == "country": content=countryhelp
@@ -2331,7 +2415,7 @@ async def allcommands(ctx):
     funcmd = " \n ".join(funcmd)
     funEmbed = discord.Embed(title="Fun Commands", description=f"{funcmd} \n\n 5/8", color=embedTheme)
 
-    minigamesList = {f"{ctx.prefix}tictactoe":"Challenge Your Friends for a Tictactoe Match",f"{ctx.prefix}tttstop":"Stop a Tictactoe Game in Between",f"{ctx.prefix}guess":"Start a Guess the Number Challenge with Your Server Members"}
+    minigamesList = {f"{ctx.prefix}tictactoe":"Challenge Your Friends for a Tictactoe Match",f"{ctx.prefix}tttstop":"Stop a Tictactoe Game in Between",f"{ctx.prefix}guess":"Start a Guess the Number Challenge with Your Server Members",f"{ctx.prefix}atlas":"Enjoy With Your Friends with Atlas Game and Recalling Some Countries"}
     minigamescmd = []
     for cmd in list(minigamesList.keys()):
         minigamescmd.append(f"• {cmd} {sign}  {minigamesList[cmd]}.")
