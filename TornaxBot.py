@@ -1031,13 +1031,13 @@ async def pokemon(ctx, *, pokename=None):
             else:
                 poke = pypokedex.get(dex=pokename)
             pokeEmbed = discord.Embed(color= embedTheme)
-            pokeEmbed.set_author(icon_url=poke.sprites[0]['default'], name=f"#{poke.dex} - {poke.name}")
+            pokeEmbed.set_author(icon_url=poke.sprites[0]['default'], name=f"#{poke.dex} - {poke.name.capitalize()}")
             pokeEmbed.set_thumbnail(url=poke.other_sprites['official-artwork'][0]['default'])
-            pokeEmbed.add_field(name="Type(s)", value=", ".join(poke.types), inline=True)
+            pokeEmbed.add_field(name="Type(s)", value=", ".join(poke.types).capitalize(), inline=True)
             pability = []
             pstats = f"HP: **{poke.base_stats[0]}**, ATK: **{poke.base_stats[1]}**, DEF: **{poke.base_stats[2]}**, SPA: **{poke.base_stats[3]}**, SPD: **{poke.base_stats[4]}**, SPE: **{poke.base_stats[5]}**"
             for ability in poke.abilities:
-                pability.append(ability.name)
+                pability.append(ability.name.capitalize())
             pokeEmbed.add_field(name="Abilities", value=", ".join(pability), inline=True)
             pokeEmbed.add_field(name="Base Stats", value=pstats, inline=False)
             pokeEmbed.add_field(name="Base Exp", value=poke.base_experience, inline=True)
@@ -1045,9 +1045,9 @@ async def pokemon(ctx, *, pokename=None):
             pokeEmbed.add_field(name="Weight", value=f"{poke.weight / 10} kg", inline=True)
             pmoves = []
             allmove = poke.moves
-            for move in allmove['red-blue']:
-                while len(pmoves) < 6:
-                    pmoves.append(move.name)
+            for move in allmove['ultra-sun-ultra-moon']:
+                if len(pmoves) < 6:
+                    pmoves.append(move.name.capitalize())
             pokeEmbed.add_field(name="Moves", value=", ".join(pmoves), inline=True)
             pokeEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
             await ctx.send(embed=pokeEmbed)
