@@ -1049,7 +1049,7 @@ async def pokemon(ctx, pokename=None, wantmove: Optional[str]=None):
                 for move in allmove['ultra-sun-ultra-moon']:
                     if len(pmoves) < 6:
                         pmoves.append(move.name.capitalize())
-                pokeEmbed.add_field(name=f"Moves[{len(pmoves)}]", value=f'{", ".join(pmoves)} \n Send `{ctx.prefix}pokemon {poke} moves` for All Moves in DM', inline=True)
+                pokeEmbed.add_field(name=f"Moves[{len(pmoves)}]", value=f'{", ".join(pmoves)} \n\n Send `{ctx.prefix}pokemon {poke.name.capitalize()} moves` for All Moves in DM', inline=True)
                 pokeEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
                 await ctx.send(embed=pokeEmbed)
             elif wantmove == "moves":
