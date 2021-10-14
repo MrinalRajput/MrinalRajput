@@ -18,6 +18,7 @@ import wikipedia
 from googlesearch import search
 import topgg
 from PyDictionary import PyDictionary
+import pypokedex
 
 from discord.ext.commands import BadArgument, MissingPermissions,MissingRole,CommandInvokeError, MissingAnyRole, BotMissingPermissions
 from discord.member import Member
@@ -1019,6 +1020,43 @@ async def meaning(ctx, *, keyword: Optional[str]=None):
         await ctx.send(embed=embed)        
 
 meaninghelp = f"meaning <Word>"
+
+@bot.command()
+async def pokemon(ctx, *, pokename=None):
+    if pokename is not None:
+        nums = [1,2,3,4,5,6,7,8,9,0]
+        try:
+            if pokename not in nums:
+                poke = pypokedex.get(name=pokename)
+            else:
+                poke = pypokedex.get(dex=pokename)
+            pokeEmbed = discord.Embed(color= embedTheme)
+            pokeEmbed.set_author(icon_url=poke.sprites[0]['default'], name=f"#{poke.dex} - {poke.name}")
+            pokeEmbed.set_thumbnail(url=poke.other_sprites['official-artwork'][0]['default'])
+            pokeEmbed.add_field(name="Type(s)", value=", ".join(poke.types), inline=True)
+            pability = []
+            pstats = f"HP: **{poke.base_stats[0]}**, ATK: **{poke.base_stats[1]}**, DEF: **{poke.base_stats[2]}**, SPA: **{poke.base_stats[3]}**, SPD: **{poke.base_stats[4]}**, SPE: **{poke.base_stats[5]}**"
+            for ability in poke.abilities:
+                pability.append(ability.name)
+            pokeEmbed.add_field(name="Abilities", value=", ".join(pability), inline=True)
+            pokeEmbed.add_field(name="Base Stats", value=pstats, inline=False)
+            pokeEmbed.add_field(name="Base Exp", value=poke.base_experience, inline=True)
+            pokeEmbed.add_field(name="Height", value=f"{poke.height * 10} cm", inline=True)
+            pokeEmbed.add_field(name="Weight", value=f"{poke.weight / 10} kg", inline=True)
+            pmoves = []
+            allmove = poke.moves
+            for move in allmove['red-blue']:
+                while len(pmoves) < 6:
+                    pmoves.append(move.name)
+            pokeEmbed.add_field(name="Moves", value=", ".join(pmoves), inline=True)
+            pokeEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+        except Exception as e:
+            print(e)
+            await ctx.reply(embed=discord.Embed(description=f"Pokemon {pokename} Not Found! Please Recheck the Name",color=embedTheme))
+    elif pokename is None:
+        await ctx.send(embed=discord.Embed(description=f"Please Specify the Pokemon you are Looking For!",color=embedTheme))
+
+pokemonhelp = f"pokemon <Pokemon Name or Dex>"
 
 @bot.command()
 async def Time(ctx):
@@ -2107,7 +2145,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, allcommands, gstatus, gstop, gparticipate, gquit, setprefix, whois, serverinfo, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
-        myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, mcserver, wikipedia, google, youtube, meaning \n----------------------\n", inline=False)
+        myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, mcserver, wikipedia, google, youtube, meaning, pokemon \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{ctx.prefix}`\n > Command Usage Example :   `{ctx.prefix}info`\n\n----------------------", inline=False)
         myEmbed.add_field(name="Readme", value=f"`{ctx.prefix}help` Shows this Message, use `{ctx.prefix}help [command]` to get more information about that Command\n\n")
         myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creater}")
@@ -2170,6 +2208,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "tttstop": content=tttstophelp
         elif anycommand == "guess": content=guesshelp
         elif anycommand == "mcserver": content=mcserverhelp
+        elif anycommand == "pokemon": content=pokemonhelp
         elif anycommand == "allcommands": content=allcommandshelp
         elif anycommand == "help": content=helphelp
         else:
@@ -2247,7 +2286,7 @@ async def allcommands(ctx):
     minigamescmd = " \n ".join(minigamescmd)
     minigamesEmbed = discord.Embed(title="Mini-Games Commands", description=f"{minigamescmd} \n\n 6/8", color=embedTheme)
 
-    infoList = {f"{ctx.prefix}rule":"Get a Rule of a Server in Detail",f"{ctx.prefix}rules":"Get all Rules of a Server in a Listed and Proper Manner",f"{ctx.prefix}serverinfo":"Get Complete Detail and Information of a Server",f"{ctx.prefix}mcserver":"Get Status and Details of a Minecraft Java Server",f"{ctx.prefix}wikipedia":"Get a Biography or Informations in Details of a Particular Topic with Wikipedia",f"{ctx.prefix}google":"Get all Links Related With your Topic Quickly and in a Listed Manner",f"{ctx.prefix}youtube":"Search for Youtube Videos Fast and Efficiently",f"{ctx.prefix}meaning":"Get Meaning of Any Word Quickly and Easily"}
+    infoList = {f"{ctx.prefix}rule":"Get a Rule of a Server in Detail",f"{ctx.prefix}rules":"Get all Rules of a Server in a Listed and Proper Manner",f"{ctx.prefix}serverinfo":"Get Complete Detail and Information of a Server",f"{ctx.prefix}mcserver":"Get Status and Details of a Minecraft Java Server",f"{ctx.prefix}wikipedia":"Get a Biography or Informations in Details of a Particular Topic with Wikipedia",f"{ctx.prefix}google":"Get all Links Related With your Topic Quickly and in a Listed Manner",f"{ctx.prefix}youtube":"Search for Youtube Videos Fast and Efficiently",f"{ctx.prefix}meaning":"Get Meaning of Any Word Quickly and Easily",f"{ctx.prefix}pokemon":"Get All About of Your Favourite Pokemon in Detail"}
     infocmd = []
     for cmd in list(infoList.keys()):
         infocmd.append(f"• {cmd} {sign}  {infoList[cmd]}.")
