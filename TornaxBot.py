@@ -1064,6 +1064,7 @@ async def pokemon(ctx, pokename=None, wantmove: Optional[str]=None):
                         pmoves.append(move.name.capitalize())
                 moveEmbed.add_field(name=f"Moves[{len(pmoves)}]", value="\n".join(pmoves), inline=True)
                 await ctx.author.send(embed=moveEmbed)
+                await ctx.send(embed=discord.Embed(description="Successfully Sent All Moves List, Please Check Your DM"))
         except Exception as e:
             print(e)
             await ctx.reply(embed=discord.Embed(description=f"Pokemon {pokename} Not Found! Please Recheck the Name",color=embedTheme))
