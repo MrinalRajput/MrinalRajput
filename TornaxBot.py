@@ -1050,6 +1050,7 @@ async def pokemon(ctx, *, pokename=None):
                     pmoves.append(move.name)
             pokeEmbed.add_field(name="Moves", value=", ".join(pmoves), inline=True)
             pokeEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+            await ctx.send(embed=pokeEmbed)
         except Exception as e:
             print(e)
             await ctx.reply(embed=discord.Embed(description=f"Pokemon {pokename} Not Found! Please Recheck the Name",color=embedTheme))
