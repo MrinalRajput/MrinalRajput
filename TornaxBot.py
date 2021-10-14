@@ -1098,8 +1098,8 @@ async def country(ctx, *, thecountry: Optional[str]=None):
             countryEmbed.add_field(name="Demonym", value=query.demonym(), inline=True)
             countryEmbed.add_field(name="Country Latlng", value=query.latlng(), inline=True)
             countryEmbed.add_field(name="Capital Latlng", value=query.capital_latlng(), inline=True)
-            countryEmbed.add_field(name="Alt Spelling(s)", value=", ".join(query.alt_spellings()), inline=False)
-            countryEmbed.add_field(name="Country Capitals", value=f'{", ".join(query.provinces())} \n\n [Wikipedia]({query.wiki()}) || [Britannica](https://www.britannica.com/place/{query.name})', inline=False)
+            countryEmbed.add_field(name="Alt Spelling(s)", value=", ".join(query.alt_spellings()), inline=True)
+            countryEmbed.add_field(name="Country Capitals", value=f'{", ".join(query.provinces())} \n\n [Wikipedia]({query.wiki()}) || [Britannica](https://www.britannica.com/place/{query.name()})', inline=False)
             countryEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
             await ctx.send(embed=countryEmbed)
         except Exception as e:
