@@ -1033,7 +1033,7 @@ async def pokemon(ctx, *, pokename=None):
             pokeEmbed = discord.Embed(color= embedTheme)
             pokeEmbed.set_author(icon_url=poke.sprites[0]['default'], name=f"#{poke.dex} - {poke.name.capitalize()}")
             pokeEmbed.set_thumbnail(url=poke.other_sprites['official-artwork'][0]['default'])
-            pokeEmbed.add_field(name="Type(s)", value=", ".join(poke.types).capitalize(), inline=True)
+            pokeEmbed.add_field(name="Type(s)", value=", ".join(poke.types.capitalize()), inline=True)
             pability = []
             pstats = f"HP: **{poke.base_stats[0]}**, ATK: **{poke.base_stats[1]}**, DEF: **{poke.base_stats[2]}**, SPA: **{poke.base_stats[3]}**, SPD: **{poke.base_stats[4]}**, SPE: **{poke.base_stats[5]}**"
             for ability in poke.abilities:
