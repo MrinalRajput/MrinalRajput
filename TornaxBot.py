@@ -1048,7 +1048,8 @@ async def pokemon(ctx, pokename=None, wantmove: Optional[str]=None):
                 allmove = poke.moves
                 for move in allmove['ultra-sun-ultra-moon']:
                     if len(pmoves) < 6:
-                        pmoves.append(move.name.capitalize())
+                        if move.name not in pmoves:
+                            pmoves.append(move.name.capitalize())
                 pokeEmbed.add_field(name=f"Moves[{len(pmoves)}]", value=f'{", ".join(pmoves)} \n\n Send `{ctx.prefix}pokemon {poke.name.capitalize()} moves` for All Moves in DM', inline=True)
                 pokeEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
                 await ctx.send(embed=pokeEmbed)
@@ -1059,7 +1060,8 @@ async def pokemon(ctx, pokename=None, wantmove: Optional[str]=None):
                 pmoves = []
                 allmove = poke.moves
                 for move in allmove['ultra-sun-ultra-moon']:
-                    pmoves.append(move.name.capitalize())
+                    if move.name not in pmoves:
+                        pmoves.append(move.name.capitalize())
                 moveEmbed.add_field(name=f"Moves[{len(pmoves)}]", value="\n".join(pmoves), inline=True)
                 await ctx.author.send(embed=moveEmbed)
         except Exception as e:
