@@ -1022,7 +1022,7 @@ async def meaning(ctx, *, keyword: Optional[str]=None):
 meaninghelp = f"meaning <Word>"
 
 @bot.command()
-async def pokemon(ctx, *, pokename=None):
+async def pokemon(ctx, pokename=None, wantmove: Optional[str]=None):
     if pokename is not None:
         nums = [1,2,3,4,5,6,7,8,9,0]
         try:
@@ -1030,27 +1030,38 @@ async def pokemon(ctx, *, pokename=None):
                 poke = pypokedex.get(name=pokename)
             else:
                 poke = pypokedex.get(dex=pokename)
-            pokeEmbed = discord.Embed(color= embedTheme)
-            pokeEmbed.set_author(icon_url=poke.sprites[0]['default'], name=f"#{poke.dex} - {poke.name.capitalize()}")
-            pokeEmbed.set_thumbnail(url=poke.other_sprites['official-artwork'][0]['default'])
-            pokeEmbed.add_field(name="Type(s)", value=", ".join(poke.types).capitalize(), inline=True)
-            pability = []
-            pstats = f"HP: **{poke.base_stats[0]}**, ATK: **{poke.base_stats[1]}**, DEF: **{poke.base_stats[2]}**, SPA: **{poke.base_stats[3]}**, SPD: **{poke.base_stats[4]}**, SPE: **{poke.base_stats[5]}**"
-            for ability in poke.abilities:
-                pability.append(ability.name.capitalize())
-            pokeEmbed.add_field(name="Abilities", value=", ".join(pability), inline=True)
-            pokeEmbed.add_field(name="Base Stats", value=pstats, inline=False)
-            pokeEmbed.add_field(name="Base Exp", value=poke.base_experience, inline=True)
-            pokeEmbed.add_field(name="Height", value=f"{poke.height * 10} cm", inline=True)
-            pokeEmbed.add_field(name="Weight", value=f"{poke.weight / 10} kg", inline=True)
-            pmoves = []
-            allmove = poke.moves
-            for move in allmove['ultra-sun-ultra-moon']:
-                if len(pmoves) < 6:
+            if wantmove != "moves":
+                pokeEmbed = discord.Embed(color= embedTheme)
+                pokeEmbed.set_author(icon_url=poke.sprites[0]['default'], name=f"#{poke.dex} - {poke.name.capitalize()}")
+                pokeEmbed.set_thumbnail(url=poke.other_sprites['official-artwork'][0]['default'])
+                pokeEmbed.add_field(name="Type(s)", value=", ".join(poke.types).capitalize(), inline=True)
+                pability = []
+                pstats = f"HP: **{poke.base_stats[0]}**, ATK: **{poke.base_stats[1]}**, DEF: **{poke.base_stats[2]}**, SPA: **{poke.base_stats[3]}**, SPD: **{poke.base_stats[4]}**, SPE: **{poke.base_stats[5]}**"
+                for ability in poke.abilities:
+                    pability.append(ability.name.capitalize())
+                pokeEmbed.add_field(name="Abilities", value=", ".join(pability), inline=True)
+                pokeEmbed.add_field(name="Base Stats", value=pstats, inline=False)
+                pokeEmbed.add_field(name="Base Exp", value=poke.base_experience, inline=True)
+                pokeEmbed.add_field(name="Height", value=f"{poke.height * 10} cm", inline=True)
+                pokeEmbed.add_field(name="Weight", value=f"{poke.weight / 10} kg", inline=True)
+                pmoves = []
+                allmove = poke.moves
+                for move in allmove['ultra-sun-ultra-moon']:
+                    if len(pmoves) < 6:
+                        pmoves.append(move.name.capitalize())
+                pokeEmbed.add_field(name=f"Moves[{len(pmoves)}]", value=f'{", ".join(pmoves)} \n Send `{ctx.prefix}pokemon {poke} moves` for All Moves in DM', inline=True)
+                pokeEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+                await ctx.send(embed=pokeEmbed)
+            elif wantmove == "moves":
+                moveEmbed = discord.Embed(color=embedTheme)
+                moveEmbed.set_author(icon_url=poke.sprites[0]['default'], name=f"#{poke.dex} - {poke.name.capitalize()}")
+                moveEmbed.set_thumbnail(url=poke.other_sprites['official-artwork'][0]['default'])
+                pmoves = []
+                allmove = poke.moves
+                for move in allmove['ultra-sun-ultra-moon']:
                     pmoves.append(move.name.capitalize())
-            pokeEmbed.add_field(name="Moves", value=", ".join(pmoves), inline=True)
-            pokeEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-            await ctx.send(embed=pokeEmbed)
+                moveEmbed.add_field(name=f"Moves[{len(pmoves)}]", value="\n".join(pmoves), inline=True)
+                await ctx.author.send(embed=moveEmbed)
         except Exception as e:
             print(e)
             await ctx.reply(embed=discord.Embed(description=f"Pokemon {pokename} Not Found! Please Recheck the Name",color=embedTheme))
