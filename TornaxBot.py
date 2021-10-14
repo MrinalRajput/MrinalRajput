@@ -1079,26 +1079,27 @@ async def pokemon(ctx, pokename=None, wantmove: Optional[str]=None):
 pokemonhelp = f"pokemon <Pokemon Name or Dex>"
 
 @bot.command()
-async def country(ctx, thecountry: Optional[str]=None):
+async def country(ctx, *, thecountry: Optional[str]=None):
     if thecountry is not None:
         try:
             query = CountryInfo(thecountry)
             countryEmbed = discord.Embed(title=query.name(), color=embedTheme)
-            countryEmbed.set_thumbnail(url=query.flag())
+            countryEmbed.set_thumbnail(url=f"https://www.countryflags.io/{query.iso()['alpha2']}/shiny/64.png")
             countryEmbed.add_field(name="Name", value=query.name(), inline=True)
             countryEmbed.add_field(name="Capital", value=query.capital(), inline=True)
-            countryEmbed.add_field(name="Population", value=query.population(), inline=False)
-            countryEmbed.add_field(name="Currency", value=query.currencies(), inline=True)
-            countryEmbed.add_field(name="TimeZone", value=query.timezones(), inline=True)
+            countryEmbed.add_field(name="ISO Code", value=query.iso()['alpha2'], inline=True)
+            countryEmbed.add_field(name="Population", value=query.population(), inline=True)
+            countryEmbed.add_field(name="Currency", value=", ".join(query.currencies()), inline=True)
+            countryEmbed.add_field(name="TimeZone", value=", ".join(query.timezones()), inline=True)
             countryEmbed.add_field(name="SubRegion", value=query.subregion(), inline=True)
             countryEmbed.add_field(name="Area", value=query.area(), inline=True)
-            countryEmbed.add_field(name="Calling Codes", value=query.calling_codes(), inline=True)
+            countryEmbed.add_field(name="Calling Codes", value=", ".join(query.calling_codes()), inline=True)
             countryEmbed.add_field(name="Languages", value=", ".join(query.languages()), inline=True)
             countryEmbed.add_field(name="Demonym", value=query.demonym(), inline=True)
-            countryEmbed.add_field(name="Country Latlng", value=query.latlng(), inline=True)
-            countryEmbed.add_field(name="Capital Latlng", value=query.capital_latlng(), inline=True)
+            countryEmbed.add_field(name="Country Latlng", value=", ".join(query.latlng()), inline=True)
+            countryEmbed.add_field(name="Capital Latlng", value=", ".join(query.capital_latlng()), inline=True)
             countryEmbed.add_field(name="Alt Spelling(s)", value=", ".join(query.alt_spellings()), inline=False)
-            countryEmbed.add_field(name="Country Capitals", value=f'{", ".join(query.provinces())} \n [Wikipedia]({query.wiki()})', inline=False)
+            countryEmbed.add_field(name="Country Capitals", value=f'{", ".join(query.provinces())} \n\n [Wikipedia]({query.wiki()})||[Britannica](https://www.britannica.com/place/{query.name})', inline=False)
             countryEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
             await ctx.send(embed=countryEmbed)
         except Exception as e:
