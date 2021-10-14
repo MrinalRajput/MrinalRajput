@@ -1189,6 +1189,7 @@ async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[d
                         atlasgames[ctx.guild.id].remove(player2.id)
                         atlasgames[ctx.guild.id].remove(player3.id)
                         atlasgames[ctx.guild.id].remove(player4.id)
+                        break
                 except Exception as e:
                     print(e)
                     await ctx.send(f"{turn.mention} Your Chance Timeout!")
