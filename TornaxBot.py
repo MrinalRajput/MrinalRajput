@@ -985,6 +985,7 @@ async def meaning(ctx, *, keyword: Optional[str]=None):
             result = dictionary.meaning(keyword.lower())
             print(result)
             if result is not None:
+                meaningresult = await ctx.send(embed=discord.Embed(description=f":mag: Searching Meaning For the Word in Dictionary",color=embedTheme))
                 embed = discord.Embed(title="Dictionary", description=f"**Results for - {keyword}**", color=embedTheme)
                 embed.set_thumbnail(url="http://ragmamoul.net/wp-content/uploads/2019/08/3-Paligian.jpg")
 
@@ -1010,7 +1011,7 @@ async def meaning(ctx, *, keyword: Optional[str]=None):
                     embed.add_field(name=f"[{len(list(result.values())[4])}] " + list(result.keys())[4], value= '• ' + '\n • '.join(list(result.values())[4]), inline=False)
                     
                 embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-                await ctx.send(embed=embed)
+                await meaningresult.edit(embed=embed)
             else:
                 await ctx.reply(f"I Didn't Found Meaning of {keyword} in Dictionary")
         else:
