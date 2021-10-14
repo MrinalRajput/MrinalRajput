@@ -223,15 +223,17 @@ async def ban(ctx, member:discord.Member, days: Optional[int]=None, *, reason:Op
 banhelp = f"ban <member> [days] [reason]"
 
 @bot.command()
-async def unban(ctx, id:int):
+async def unban(ctx, user: Optional[str]=None):
     global embedContent
     try:
         if ctx.author.guild_permissions.ban_members:
-            user = await bot.fetch_user(id)
-            await ctx.guild.unban(user)
-            embedContent = f"Unbanned : Successfully Unbanned {user} from {ctx.guild.name}"
-            embed = discord.Embed(description=embedContent, color=embedTheme)
-            await ctx.send(embed=embed)
+            if user is not None:
+                await ctx.guild.unban(user)
+                embedContent = f"Unbanned : Successfully Unbanned {user} from {ctx.guild.name}"
+                embed = discord.Embed(description=embedContent, color=embedTheme)
+                await ctx.send(embed=embed)
+            else:
+                await ctx.reply(f"Please Specify The User By his/her ID to Unban")
         else:
             await ctx.reply(f":exclamation: You don't have Permissions to do that!'")
     except BadArgument:
