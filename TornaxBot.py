@@ -1153,6 +1153,7 @@ async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[d
                 playersare.append(player4.mention)
 
             places = []
+            toldplaces = []
             for c in list(pycountry.countries):
                 if c.name.lower() not in places:
                     places.append(c.name.lower())
@@ -1187,8 +1188,9 @@ async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[d
                     return message.author == turn and message.content.lower().startswith(letter) and message.channel == ctx.channel
                 try:
                     userplace = await bot.wait_for("message", check=check, timeout=15)
-                    if userplace.content.lower() in places:
+                    if userplace.content.lower() in places and userplace.content.lower() not in toldplaces:
                         await ctx.reply(f"You Told Correct {userplace.content} is a Valid Place Starts With `{letter}`")
+                        toldplaces.append(userplace.content.lower())
                         if turn == player1:
                             turn = player2
                         elif turn == player2:
@@ -1203,6 +1205,18 @@ async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[d
                                 turn = player1
                         elif turn == player4:
                             turn = player1
+
+                    elif userplace.content.lower() in toldplaces:
+                        await ctx.reply(f"{userplace.content} is Already Told by Someone")
+                        playersare.remove(turn.mention)
+                        await ctx.send(f"Loser - {turn.mention}\nWinners - {', '.join(playersare)}")
+                        atlasgames[ctx.guild.id].remove(player1.id)
+                        atlasgames[ctx.guild.id].remove(player2.id)
+                        if player3 is not None:
+                            atlasgames[ctx.guild.id].remove(player3.id)
+                        if player4 is not None:
+                            atlasgames[ctx.guild.id].remove(player4.id)
+                        break
                     else:
                         await ctx.reply(f"You Told Incorrect Place, {userplace.content} doesn't Exist")
                         playersare.remove(turn.mention)
@@ -1217,14 +1231,8 @@ async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[d
                 except Exception as e:
                     print(e)
                     await ctx.send(f"{turn.mention} Your Chance Timeout!")
-                    if turn == player1:
-                        await ctx.send(f"Loser - {player1.mention}\nWinners - {player2.mention}{player3.mention}{player4.mention}")
-                    elif turn == player2:
-                        await ctx.send(f"Loser - {player2.mention}\nWinners - {player1.mention}{player3.mention}{player4.mention}")
-                    elif turn == player3:
-                        await ctx.send(f"Loser - {player3.mention}\nWinners - {player1.mention}{player2.mention}{player4.mention}")
-                    elif turn == player4:
-                        await ctx.send(f"Loser - {player4.mention}\nWinners - {player1.mention}{player2.mention}{player3.mention}")
+                    playersare.remove(turn.mention)
+                    await ctx.send(f"Loser - {turn.mention}\nWinners - {', '.join(playersare)}")
                     atlasgames[ctx.guild.id].remove(player1.id)
                     atlasgames[ctx.guild.id].remove(player2.id)
                     if player3 is not None:
