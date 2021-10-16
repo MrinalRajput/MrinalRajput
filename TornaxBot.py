@@ -68,18 +68,19 @@ async def on_ready():
 
 @bot.command()
 async def setprefix(ctx, *, newPrefix:Optional[str]=None):
-    if ctx.author.guild_permissions.administrator:
-        if newPrefix is not None:
-            custom_prefix = await bot.pg_con.fetch("SELECT prefix FROM prefixes WHERE guild_id = $1", ctx.guild.id)
-            if not custom_prefix:
-                await bot.pg_con.execute("INSERT INTO prefixes(guild_id,prefix) VALUES($1,$2)", ctx.guild.id, DEFAULT_PREFIX)
-            await bot.pg_con.execute("UPDATE prefixes SET prefix=$1 WHERE guild_id=$2",newPrefix,ctx.guild.id)
-            await bot.user.edit(nick=f"[{newPrefix}] Tornax")
-            await ctx.send(f"The Prefix for this Server is Successfully Changed to {newPrefix}")
+    if ctx.guild:
+        if ctx.author.guild_permissions.administrator:
+            if newPrefix is not None:
+                custom_prefix = await bot.pg_con.fetch("SELECT prefix FROM prefixes WHERE guild_id = $1", ctx.guild.id)
+                if not custom_prefix:
+                    await bot.pg_con.execute("INSERT INTO prefixes(guild_id,prefix) VALUES($1,$2)", ctx.guild.id, DEFAULT_PREFIX)
+                await bot.pg_con.execute("UPDATE prefixes SET prefix=$1 WHERE guild_id=$2",newPrefix,ctx.guild.id)
+                await bot.user.edit(nick=f"[{newPrefix}] Tornax")
+                await ctx.send(f"The Prefix for this Server is Successfully Changed to {newPrefix}")
+            else:
+                await ctx.send(f"You Must Specify the New Prefix")
         else:
-            await ctx.send(f"You Must Specify the New Prefix")
-    else:
-        await ctx.send(f"You don't have Permissions to do that")
+            await ctx.send(f"You don't have Permissions to do that")
 
 setprefixhelp = "setprefix <New Bot Prefix>"
 
@@ -376,20 +377,21 @@ leaveserverhelp = f"leaveserver"
 @bot.listen()
 async def on_message(message):
     global leaveRequest, leaveConfirmation
-    if message.guild.id not in leavingRequest:
-            leavingRequest[message.guild.id] = ""
+    if message.guild:
+        if message.guild.id not in leavingRequest:
+                leavingRequest[message.guild.id] = ""
 
-    if leaveConfirmation == 20:
-        if message.author.id == leavingRequest[message.guild.id]:
-            if message.content.lower() == "yes":
-                await message.channel.send(f"{message.author.mention} Successfully Left Your Server Bye Bye! :(")
-                await message.guild.leave()
-            elif message.content.lower() == "no":
-                await message.channel.send(f"Thank You So Much :) for Keeping me in {message.guild.name} Server")
-                leaveConfirmation = 0
-                del leavingRequest[message.guild.id]
-        else:
-            pass
+        if leaveConfirmation == 20:
+            if message.author.id == leavingRequest[message.guild.id]:
+                if message.content.lower() == "yes":
+                    await message.channel.send(f"{message.author.mention} Successfully Left Your Server Bye Bye! :(")
+                    await message.guild.leave()
+                elif message.content.lower() == "no":
+                    await message.channel.send(f"Thank You So Much :) for Keeping me in {message.guild.name} Server")
+                    leaveConfirmation = 0
+                    del leavingRequest[message.guild.id]
+            else:
+                pass
 
 @bot.command()
 @commands.has_permissions(manage_nicknames=True)
@@ -1119,12 +1121,13 @@ timehelp = f"time"
 
 @bot.command()
 async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
-    if channel is None:
-        channel = ctx.channel
-    if ctx.author.guild_permissions.administrator:
-        await channel.send(msg)
-    else:
-        await ctx.reply(f"You don't have Permissions to do that, Only Admins Can Use the Command")
+    if ctx.guild:
+        if channel is None:
+            channel = ctx.channel
+        if ctx.author.guild_permissions.administrator:
+            await channel.send(msg)
+        else:
+            await ctx.reply(f"You don't have Permissions to do that, Only Admins Can Use the Command")
 
 tellhelp = f"tell [channel] <message>"
 
@@ -1287,32 +1290,33 @@ guesshelp = f"guess"
 @bot.listen()
 async def on_message(message):
     global active, gamingChannel
-    if message.guild.id not in active:
-        active[message.guild.id] = False
-    try:
-        if message.author.id not in gamingChannel[message.guild.id]:
-            gamingChannel[message.guild.id][message.author.id] = {}
-            gamingChannel[message.guild.id][message.author.id]["attempts"] = 0
-        if message.author != bot.user:
-            if active[message.guild.id] == True:
-                if message.channel == gamingChannel[message.guild.id]["channel"]:
-                    guesses = int(message.content)
-                    if guesses > gamingChannel[message.guild.id]['secretNumber']:
-                        await message.reply(f"Try a Smaller Number")
-                        gamingChannel[message.guild.id][message.author.id]["attempts"] += 1
-                    elif guesses < gamingChannel[message.guild.id]['secretNumber']:
-                        await message.reply("Try a Bigger Number")
-                        gamingChannel[message.guild.id][message.author.id]["attempts"] += 1
-                    elif guesses == gamingChannel[message.guild.id]['secretNumber']:
-                        gamingChannel[message.guild.id][message.author.id]["attempts"] += 1
-                        await message.reply(f"{message.author.mention} You Guessed Correct in {gamingChannel[message.guild.id][message.author.id]['attempts']} Attempts and Won the Challenge, the Secret Number was `{gamingChannel[message.guild.id]['secretNumber']}`")
-                        gamingChannel[message.guild.id]["guessed"] = True
-                        gamingChannel[message.guild.id]["countdown"] = 1
-                        active[message.guild.id] = False
-                        del gamingChannel[message.guild.id]
-    except Exception as e:
-        print(e)
-        pass
+    if message.guild:
+        if message.guild.id not in active:
+            active[message.guild.id] = False
+        try:
+            if message.author.id not in gamingChannel[message.guild.id]:
+                gamingChannel[message.guild.id][message.author.id] = {}
+                gamingChannel[message.guild.id][message.author.id]["attempts"] = 0
+            if message.author != bot.user:
+                if active[message.guild.id] == True:
+                    if message.channel == gamingChannel[message.guild.id]["channel"]:
+                        guesses = int(message.content)
+                        if guesses > gamingChannel[message.guild.id]['secretNumber']:
+                            await message.reply(f"Try a Smaller Number")
+                            gamingChannel[message.guild.id][message.author.id]["attempts"] += 1
+                        elif guesses < gamingChannel[message.guild.id]['secretNumber']:
+                            await message.reply("Try a Bigger Number")
+                            gamingChannel[message.guild.id][message.author.id]["attempts"] += 1
+                        elif guesses == gamingChannel[message.guild.id]['secretNumber']:
+                            gamingChannel[message.guild.id][message.author.id]["attempts"] += 1
+                            await message.reply(f"{message.author.mention} You Guessed Correct in {gamingChannel[message.guild.id][message.author.id]['attempts']} Attempts and Won the Challenge, the Secret Number was `{gamingChannel[message.guild.id]['secretNumber']}`")
+                            gamingChannel[message.guild.id]["guessed"] = True
+                            gamingChannel[message.guild.id]["countdown"] = 1
+                            active[message.guild.id] = False
+                            del gamingChannel[message.guild.id]
+        except Exception as e:
+            print(e)
+            pass
 
 matches = {}
 gameBoards = {}
@@ -2118,28 +2122,29 @@ async def on_message(message):
     # print(afkdata)
     # print(reasontopic)
     # if not message.author.bot:
-    if message.guild.id not in afkdata:
-        afkdata[message.guild.id] = []
-    users = afkdata[message.guild.id]
-    print(users)
-    if len(users) > 0:
-        # print(users)
-        for user in users:
-            # print(user)
-            username = await bot.fetch_user(user)
-            print(username)
-            if "@here" in message.content or "@everyone" in message.content:
-                print("Mentioned by here or everyone")
-            else:
-                if username.mentioned_in(message):
-                    print(1)
-                    if not message.author.bot:
-                        if user in afkdata[message.guild.id]:
-                            print(2)
-                            await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[user]}")
+    if message.guild:
+        if message.guild.id not in afkdata:
+            afkdata[message.guild.id] = []
+        users = afkdata[message.guild.id]
+        print(users)
+        if len(users) > 0:
+            # print(users)
+            for user in users:
+                # print(user)
+                username = await bot.fetch_user(user)
+                print(username)
+                if "@here" in message.content or "@everyone" in message.content:
+                    print("Mentioned by here or everyone")
                 else:
-                    # print("He is not afk")
-                    pass
+                    if username.mentioned_in(message):
+                        print(1)
+                        if not message.author.bot:
+                            if user in afkdata[message.guild.id]:
+                                print(2)
+                                await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[user]}")
+                    else:
+                        # print("He is not afk")
+                        pass
 
 @bot.listen()
 async def on_message(message):   
@@ -2567,7 +2572,33 @@ count = {}
 @bot.listen()
 async def on_message(message):
     global count
-    if not message.author.bot:
+    if message.guild:
+        if not message.author.bot:
+            if message.guild.id not in count:
+                count[message.guild.id]  = {}
+            if message.author.id not in count[message.guild.id]:
+                count[message.guild.id][message.author.id] = {}
+            if "counting" not in count[message.guild.id][message.author.id]:
+                count[message.guild.id][message.author.id]["counting"] = False
+            if "strikes" not in count[message.guild.id][message.author.id]:
+                count[message.guild.id][message.author.id]["strikes"] = 0
+            if "warnings" not in count[message.guild.id][message.author.id]:
+                count[message.guild.id][message.author.id]["warnings"] = 0
+
+            
+            if count[message.guild.id][message.author.id]["counting"] == False:
+                count[message.guild.id][message.author.id]["counting"] = True        
+            await asyncio.sleep(4)
+            count[message.guild.id][message.author.id]["counting"] = False
+            count[message.guild.id][message.author.id]["strikes"] = 0
+            # print(count[message.guild.id][message.author.id]["counting"])
+            await asyncio.sleep(2600)
+            count[message.guild.id][message.author.id]["warnings"] = 0
+
+@bot.listen()
+async def on_message(message):
+    global count
+    if message.guild:
         if message.guild.id not in count:
             count[message.guild.id]  = {}
         if message.author.id not in count[message.guild.id]:
@@ -2579,60 +2610,36 @@ async def on_message(message):
         if "warnings" not in count[message.guild.id][message.author.id]:
             count[message.guild.id][message.author.id]["warnings"] = 0
 
-        
-        if count[message.guild.id][message.author.id]["counting"] == False:
-            count[message.guild.id][message.author.id]["counting"] = True        
-        await asyncio.sleep(4)
-        count[message.guild.id][message.author.id]["counting"] = False
-        count[message.guild.id][message.author.id]["strikes"] = 0
-        # print(count[message.guild.id][message.author.id]["counting"])
-        await asyncio.sleep(2600)
-        count[message.guild.id][message.author.id]["warnings"] = 0
+        if message.content is not None:
+            if not message.author.bot:
+                if not message.author.guild_permissions.administrator:
+                    # print(f'Count:{count[message.guild.id][message.author.id]["counting"]}",f"Strikes:{count[message.guild.id][message.author.id]["strikes"]}')
+                    
+                    if count[message.guild.id][message.author.id]["counting"] == True:
+                        count[message.guild.id][message.author.id]["strikes"] += 1
+                    if count[message.guild.id][message.author.id]["strikes"] > 3:
+                        if count[message.guild.id][message.author.id]["warnings"] != 3:
+                            await message.channel.send(f":exclamation: {message.author.mention} You are Sending Message So Quickly, Slowdown your Speed")
+                        count[message.guild.id][message.author.id]["warnings"] += 1
+                        if count[message.guild.id][message.author.id]["warnings"] >= 3:
+                            try:
+                                mutedRole = discord.utils.get(message.guild.roles, name="Muted")
+                                if not mutedRole:
+                                    mutedRole = await message.guild.create_role(name="Muted")
 
-@bot.listen()
-async def on_message(message):
-    global count
-    if message.guild.id not in count:
-        count[message.guild.id]  = {}
-    if message.author.id not in count[message.guild.id]:
-        count[message.guild.id][message.author.id] = {}
-    if "counting" not in count[message.guild.id][message.author.id]:
-        count[message.guild.id][message.author.id]["counting"] = False
-    if "strikes" not in count[message.guild.id][message.author.id]:
-        count[message.guild.id][message.author.id]["strikes"] = 0
-    if "warnings" not in count[message.guild.id][message.author.id]:
-        count[message.guild.id][message.author.id]["warnings"] = 0
+                                    for channel in message.guild.channels:
+                                        await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False)
+                                await message.author.add_roles(mutedRole)
+                                embed = discord.Embed(description = f"** {message.author.mention} has been Muted by {bot.user.mention} for `15` Seconds \n\t With the Reason of :\t Spamming**",color=embedTheme)
+                                await message.channel.send(embed=embed)
+                                count[message.guild.id][message.author.id]["warnings"] = 0
+                                await asyncio.sleep(15)
+                                await message.author.remove_roles(mutedRole)
+                            except:
+                                count[message.guild.id][message.author.id]["warnings"] = 0
+                                pass
 
-    if message.content is not None:
-        if not message.author.bot:
-            if not message.author.guild_permissions.administrator:
-                # print(f'Count:{count[message.guild.id][message.author.id]["counting"]}",f"Strikes:{count[message.guild.id][message.author.id]["strikes"]}')
-                
-                if count[message.guild.id][message.author.id]["counting"] == True:
-                    count[message.guild.id][message.author.id]["strikes"] += 1
-                if count[message.guild.id][message.author.id]["strikes"] > 3:
-                    if count[message.guild.id][message.author.id]["warnings"] != 3:
-                        await message.channel.send(f":exclamation: {message.author.mention} You are Sending Message So Quickly, Slowdown your Speed")
-                    count[message.guild.id][message.author.id]["warnings"] += 1
-                    if count[message.guild.id][message.author.id]["warnings"] >= 3:
-                        try:
-                            mutedRole = discord.utils.get(message.guild.roles, name="Muted")
-                            if not mutedRole:
-                                mutedRole = await message.guild.create_role(name="Muted")
-
-                                for channel in message.guild.channels:
-                                    await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False)
-                            await message.author.add_roles(mutedRole)
-                            embed = discord.Embed(description = f"** {message.author.mention} has been Muted by {bot.user.mention} for `15` Seconds \n\t With the Reason of :\t Spamming**",color=embedTheme)
-                            await message.channel.send(embed=embed)
-                            count[message.guild.id][message.author.id]["warnings"] = 0
-                            await asyncio.sleep(15)
-                            await message.author.remove_roles(mutedRole)
-                        except:
-                            count[message.guild.id][message.author.id]["warnings"] = 0
-                            pass
-
-                    count[message.guild.id][message.author.id]["strikes"] = 0    
+                        count[message.guild.id][message.author.id]["strikes"] = 0    
 
 @bot.listen()
 async def on_message(message):
@@ -2644,12 +2651,13 @@ restricted_words = ["harami","wtf","fuck","fuk","baap ","stfu"]
 
 @bot.listen()
 async def on_message(message):
-    if not message.author.bot:
-        if not message.author.guild_permissions.administrator:
-            for word in restricted_words:
-                if word in message.content.lower():
-                    await message.delete()
-                    await message.channel.send(f":exclamation: The Word you are Using is Not Allowed in this Server {message.author.mention}",delete_after=8)
+    if message.guild:
+        if not message.author.bot:
+            if not message.author.guild_permissions.administrator:
+                for word in restricted_words:
+                    if word in message.content.lower():
+                        await message.delete()
+                        await message.channel.send(f":exclamation: The Word you are Using is Not Allowed in this Server {message.author.mention}",delete_after=8)
                 
 bot.loop.run_until_complete(create_db_pool())
 bot.run(TOKEN)
