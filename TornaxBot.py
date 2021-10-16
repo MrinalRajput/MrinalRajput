@@ -2224,45 +2224,51 @@ avatarhelp = f"avatar [user]"
 
 @bot.command()
 async def whois(ctx, member: Optional[discord.Member]=None):
-    if member is None:
-        member = ctx.author
-    userEmbed = discord.Embed(description=member.mention, color=embedTheme)
-    userEmbed.set_author(icon_url=member.avatar_url, name=member)
-    userEmbed.set_thumbnail(url=member.avatar_url)
-    userEmbed.add_field(name=f"Joined {ctx.guild.name}", value= member.joined_at.strftime("%a, %d %b %Y %I:%M %p"),inline=True)
-    userEmbed.add_field(name=f"Joined Discord", value= member.created_at.strftime("%a, %d %b %Y %I:%M %p"),inline=True)
-    if len(member.roles) > 1: 
-        role_string = ' '.join([r.mention for r in member.roles][1:])
-        userEmbed.add_field(name=f"Roles[{len(member.roles)-1}]", value= role_string,inline=False)
-    perm_string = ', '.join([str(p[0]).replace("_", " ").title() for p in member.guild_permissions if p[1]])
-    userEmbed.add_field(name=f"Key Permissions", value= perm_string,inline=False)
-    if member == ctx.guild.owner:
-        userEmbed.add_field(name="Acknowledgements", value="Server Owner", inline=False)
-    elif member.guild_permissions.administrator:
-        userEmbed.add_field(name="Acknowledgements", value="Server Admin", inline=False)
+    if ctx.guild:
+        if member is None:
+            member = ctx.author
+        userEmbed = discord.Embed(description=member.mention, color=embedTheme)
+        userEmbed.set_author(icon_url=member.avatar_url, name=member)
+        userEmbed.set_thumbnail(url=member.avatar_url)
+        userEmbed.add_field(name=f"Joined {ctx.guild.name}", value= member.joined_at.strftime("%a, %d %b %Y %I:%M %p"),inline=True)
+        userEmbed.add_field(name=f"Joined Discord", value= member.created_at.strftime("%a, %d %b %Y %I:%M %p"),inline=True)
+        if len(member.roles) > 1: 
+            role_string = ' '.join([r.mention for r in member.roles][1:])
+            userEmbed.add_field(name=f"Roles[{len(member.roles)-1}]", value= role_string,inline=False)
+        perm_string = ', '.join([str(p[0]).replace("_", " ").title() for p in member.guild_permissions if p[1]])
+        userEmbed.add_field(name=f"Key Permissions", value= perm_string,inline=False)
+        if member == ctx.guild.owner:
+            userEmbed.add_field(name="Acknowledgements", value="Server Owner", inline=False)
+        elif member.guild_permissions.administrator:
+            userEmbed.add_field(name="Acknowledgements", value="Server Admin", inline=False)
+        else:
+            userEmbed.add_field(name="Acknowledgements", value="Server Member", inline=False)
+        userEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+        await ctx.send(embed=userEmbed)
     else:
-        userEmbed.add_field(name="Acknowledgements", value="Server Member", inline=False)
-    userEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-    await ctx.send(embed=userEmbed)
+        await ctx.send(f":exclamation: This Command Only Works in a Server")
 
 whoishelp = f"whois [user]"
 
 @bot.command()
 async def serverinfo(ctx):
-    serverEmbed = discord.Embed(color=embedTheme)
-    serverEmbed.set_author(icon_url=ctx.guild.icon_url, name=f"{ctx.guild.name}")
-    serverEmbed.set_thumbnail(url=ctx.guild.icon_url)
-    serverEmbed.add_field(name="Owner", value=ctx.guild.owner.mention, inline=True)
-    serverEmbed.add_field(name="Channel Categories", value=len(ctx.guild.categories), inline=True)
-    serverEmbed.add_field(name="Text Channels", value=len(ctx.guild.text_channels), inline=True)
-    serverEmbed.add_field(name="Voice Channels", value=len(ctx.guild.voice_channels), inline=True)
-    serverEmbed.add_field(name="Members", value=len(ctx.guild.members), inline=True)
-    serverEmbed.add_field(name="Roles", value=len(ctx.guild.roles), inline=True)
-    serverEmbed.add_field(name="ID", value=ctx.guild.id, inline=True)
-    serverEmbed.add_field(name="Created at", value=ctx.guild.created_at.strftime("%a, %d %b %Y %I:%M %p"), inline=True)
-    serverEmbed.add_field(name="Region", value=ctx.guild.region, inline=True)
-    serverEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-    await ctx.send(embed=serverEmbed)
+    if ctx.guild:
+        serverEmbed = discord.Embed(color=embedTheme)
+        serverEmbed.set_author(icon_url=ctx.guild.icon_url, name=f"{ctx.guild.name}")
+        serverEmbed.set_thumbnail(url=ctx.guild.icon_url)
+        serverEmbed.add_field(name="Owner", value=ctx.guild.owner.mention, inline=True)
+        serverEmbed.add_field(name="Channel Categories", value=len(ctx.guild.categories), inline=True)
+        serverEmbed.add_field(name="Text Channels", value=len(ctx.guild.text_channels), inline=True)
+        serverEmbed.add_field(name="Voice Channels", value=len(ctx.guild.voice_channels), inline=True)
+        serverEmbed.add_field(name="Members", value=len(ctx.guild.members), inline=True)
+        serverEmbed.add_field(name="Roles", value=len(ctx.guild.roles), inline=True)
+        serverEmbed.add_field(name="ID", value=ctx.guild.id, inline=True)
+        serverEmbed.add_field(name="Created at", value=ctx.guild.created_at.strftime("%a, %d %b %Y %I:%M %p"), inline=True)
+        serverEmbed.add_field(name="Region", value=ctx.guild.region, inline=True)
+        serverEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+        await ctx.send(embed=serverEmbed)
+    else:
+        await ctx.send(f":exclamation: This Command Only Works in a Server")
 
 serverinfohelp = f"serverinfo"
 
@@ -2300,7 +2306,6 @@ allcommandshelp = f"allcommands"
 
 @bot.command()
 async def help(ctx, anycommand: Optional[str]=None):
-    server_prefix = await bot.pg_con.fetchrow("SELECT prefix FROM prefixes WHERE guild_id  = $1", ctx.guild.id)
 
     print(bot.all_commands.keys())
     totalCommands = len(bot.all_commands.keys())
@@ -2401,96 +2406,99 @@ cmdcode = {}
 @bot.command()
 async def allcommands(ctx):
     global activecmd, cmdcode
-    if ctx.guild.id not in activecmd:
-        activecmd[ctx.guild.id] = {}
-    if ctx.guild.id not in cmdcode:
-        cmdcode[ctx.guild.id] = {}
+    if ctx.guild:
+        if ctx.guild.id not in activecmd:
+            activecmd[ctx.guild.id] = {}
+        if ctx.guild.id not in cmdcode:
+            cmdcode[ctx.guild.id] = {}
 
-    if ctx.author.id in cmdcode[ctx.guild.id]:
-        code = cmdcode[ctx.guild.id][ctx.author.id]
-        await activecmd[ctx.guild.id][code]["message"].clear_reactions()
+        if ctx.author.id in cmdcode[ctx.guild.id]:
+            code = cmdcode[ctx.guild.id][ctx.author.id]
+            await activecmd[ctx.guild.id][code]["message"].clear_reactions()
 
-    genCode = random.randint(000000, 999999)
-    while genCode in activecmd[ctx.guild.id].keys():
         genCode = random.randint(000000, 999999)
-    cmdcode[ctx.guild.id][ctx.author.id] = genCode
-    activecmd[ctx.guild.id][genCode] = {}
-    activecmd[ctx.guild.id][genCode]["page"] = 1
+        while genCode in activecmd[ctx.guild.id].keys():
+            genCode = random.randint(000000, 999999)
+        cmdcode[ctx.guild.id][ctx.author.id] = genCode
+        activecmd[ctx.guild.id][genCode] = {}
+        activecmd[ctx.guild.id][genCode]["page"] = 1
 
-    sign = "→"
+        sign = "→"
 
-    toolsList = {f"{ctx.prefix}tell":"Send Your Message From Tornax for Announcements and Fun",f"{ctx.prefix}poll":"Easily Host Reaction Based Polls",f"{ctx.prefix}ping":"Get the Current Latency in ms value",f"{ctx.prefix}afk":"Let Others Know Your Status and What are You Doing Currently",f"{ctx.prefix}thought":"Show your Current Thinking in a Different & Higlighted Way",f"{ctx.prefix}avatar":"See Someone's Profile Picture/Avatar in Large Size",f"{ctx.prefix}whois":"Get All Details About an User of a Server",f"{ctx.prefix}react":"Let Tornax React on a Message for You",f"{ctx.prefix}solve":"Use Tornax for Simple to Difficult Calculations",f"{ctx.prefix}timerstart":"Let Tornax Start Countdown for You",f"{ctx.prefix}timerstop":"Stop The Countdown in Between Started by Tornax"}
-    toolscmd = []
-    for cmd in list(toolsList.keys()):
-        toolscmd.append(f"• {cmd} {sign}  {toolsList[cmd]}.")
-    toolscmd = " \n ".join(toolscmd)
+        toolsList = {f"{ctx.prefix}tell":"Send Your Message From Tornax for Announcements and Fun",f"{ctx.prefix}poll":"Easily Host Reaction Based Polls",f"{ctx.prefix}ping":"Get the Current Latency in ms value",f"{ctx.prefix}afk":"Let Others Know Your Status and What are You Doing Currently",f"{ctx.prefix}thought":"Show your Current Thinking in a Different & Higlighted Way",f"{ctx.prefix}avatar":"See Someone's Profile Picture/Avatar in Large Size",f"{ctx.prefix}whois":"Get All Details About an User of a Server",f"{ctx.prefix}react":"Let Tornax React on a Message for You",f"{ctx.prefix}solve":"Use Tornax for Simple to Difficult Calculations",f"{ctx.prefix}timerstart":"Let Tornax Start Countdown for You",f"{ctx.prefix}timerstop":"Stop The Countdown in Between Started by Tornax"}
+        toolscmd = []
+        for cmd in list(toolsList.keys()):
+            toolscmd.append(f"• {cmd} {sign}  {toolsList[cmd]}.")
+        toolscmd = " \n ".join(toolscmd)
 
-    toolsEmbed = discord.Embed(title="Tools Commands", description=f"{toolscmd} \n\n 1/8", color=embedTheme)
+        toolsEmbed = discord.Embed(title="Tools Commands", description=f"{toolscmd} \n\n 1/8", color=embedTheme)
 
-    managementList = {f"{ctx.prefix}addrole":"Give/Add Any Role to Anyone",f"{ctx.prefix}removerole":"Take/Remove Any Role From Anyone",f"{ctx.prefix}clean":"Clean/Delete So Many Messages Quickly by Just Specifing the Quanitity",f"{ctx.prefix}setprefix":"Change Prefix of Tornax According to your Choice",f"{ctx.prefix}join":"Let Tornax Join a Voice Channel With You",f"{ctx.prefix}leave":"Let Tornax Leave a Voice Channel",f"{ctx.prefix}leaveserver":"Tell Tornax to Leave Your Server \:(",f"{ctx.prefix}lock":"Lock any Channel of Your Server to Disallow Members to Send Messages in it",f"{ctx.prefix}unlock":"Unlock a Locked Channel of Your Server",f"{ctx.prefix}slowmode":"Set Slowmode for a Channel of Your Server",f"{ctx.prefix}setnick":"Set or Change Nick of YourSelf or any Member",f"{ctx.prefix}resetnick":"Reset/Remove Your or SomeBodies Nick"}
-    managementcmd = []
-    for cmd in list(managementList.keys()):
-        managementcmd.append(f"• {cmd} {sign}  {managementList[cmd]}.")
-    managementcmd = " \n ".join(managementcmd)
-    managementEmbed = discord.Embed(title="Management Commands", description=f"{managementcmd} \n\n 2/8", color=embedTheme)
-    
-    giveawayList = {f"{ctx.prefix}gstart":"Start and Host a New Giveaway",f"{ctx.prefix}gparticipate":"Participate in Currently Active Giveaway",f"{ctx.prefix}gquit":"Quit the Giveaway of a Server in Between",f"{ctx.prefix}gstatus":"Get the Active Giveaway Status of Your Server",f"{ctx.prefix}gstop":"Stop a Giveaway in Between"}
-    giveawaycmd = []
-    for cmd in list(giveawayList.keys()):
-        giveawaycmd.append(f"• {cmd} {sign}  {giveawayList[cmd]}.")
-    giveawaycmd = " \n ".join(giveawaycmd)
-    giveawayEmbed = discord.Embed(title="Giveaways Commands", description=f"{giveawaycmd} \n\n 3/8", color=embedTheme)
+        managementList = {f"{ctx.prefix}addrole":"Give/Add Any Role to Anyone",f"{ctx.prefix}removerole":"Take/Remove Any Role From Anyone",f"{ctx.prefix}clean":"Clean/Delete So Many Messages Quickly by Just Specifing the Quanitity",f"{ctx.prefix}setprefix":"Change Prefix of Tornax According to your Choice",f"{ctx.prefix}join":"Let Tornax Join a Voice Channel With You",f"{ctx.prefix}leave":"Let Tornax Leave a Voice Channel",f"{ctx.prefix}leaveserver":"Tell Tornax to Leave Your Server \:(",f"{ctx.prefix}lock":"Lock any Channel of Your Server to Disallow Members to Send Messages in it",f"{ctx.prefix}unlock":"Unlock a Locked Channel of Your Server",f"{ctx.prefix}slowmode":"Set Slowmode for a Channel of Your Server",f"{ctx.prefix}setnick":"Set or Change Nick of YourSelf or any Member",f"{ctx.prefix}resetnick":"Reset/Remove Your or SomeBodies Nick"}
+        managementcmd = []
+        for cmd in list(managementList.keys()):
+            managementcmd.append(f"• {cmd} {sign}  {managementList[cmd]}.")
+        managementcmd = " \n ".join(managementcmd)
+        managementEmbed = discord.Embed(title="Management Commands", description=f"{managementcmd} \n\n 2/8", color=embedTheme)
+        
+        giveawayList = {f"{ctx.prefix}gstart":"Start and Host a New Giveaway",f"{ctx.prefix}gparticipate":"Participate in Currently Active Giveaway",f"{ctx.prefix}gquit":"Quit the Giveaway of a Server in Between",f"{ctx.prefix}gstatus":"Get the Active Giveaway Status of Your Server",f"{ctx.prefix}gstop":"Stop a Giveaway in Between"}
+        giveawaycmd = []
+        for cmd in list(giveawayList.keys()):
+            giveawaycmd.append(f"• {cmd} {sign}  {giveawayList[cmd]}.")
+        giveawaycmd = " \n ".join(giveawaycmd)
+        giveawayEmbed = discord.Embed(title="Giveaways Commands", description=f"{giveawaycmd} \n\n 3/8", color=embedTheme)
 
-    moderationList = {f"{ctx.prefix}kick":"Kick Anyone From Your Server",f"{ctx.prefix}mute":"Mute a Member of Your Server",f"{ctx.prefix}unmute":"Unmute a Muted Member in Your Server",f"{ctx.prefix}warn":"Warn a Member of Your Server With/Without a Reason",f"{ctx.prefix}ban":"Ban a Member from your Server Permanently or Temporary",f"{ctx.prefix}unban":"Unban a Banned Member in Your Server"}
-    moderationcmd = []
-    for cmd in list(moderationList.keys()):
-        moderationcmd.append(f"• {cmd} {sign}  {moderationList[cmd]}.")
-    moderationcmd = " \n ".join(moderationcmd)
-    moderationEmbed = discord.Embed(title="Moderation Commands", description=f"{moderationcmd} \n\n 4/8", color=embedTheme)
+        moderationList = {f"{ctx.prefix}kick":"Kick Anyone From Your Server",f"{ctx.prefix}mute":"Mute a Member of Your Server",f"{ctx.prefix}unmute":"Unmute a Muted Member in Your Server",f"{ctx.prefix}warn":"Warn a Member of Your Server With/Without a Reason",f"{ctx.prefix}ban":"Ban a Member from your Server Permanently or Temporary",f"{ctx.prefix}unban":"Unban a Banned Member in Your Server"}
+        moderationcmd = []
+        for cmd in list(moderationList.keys()):
+            moderationcmd.append(f"• {cmd} {sign}  {moderationList[cmd]}.")
+        moderationcmd = " \n ".join(moderationcmd)
+        moderationEmbed = discord.Embed(title="Moderation Commands", description=f"{moderationcmd} \n\n 4/8", color=embedTheme)
 
-    funList = {f"{ctx.prefix}slap":"Slap Somebody with a Highlighted Text",f"{ctx.prefix}kill":"Kill Somebody with a Highlighted Text",f"{ctx.prefix}punch":"Punch Somebody with a Highlighted Text",f"{ctx.prefix}wanted":"Make Somebody a Wanted Person with Cash Prize"}
-    funcmd = []
-    for cmd in list(funList.keys()):
-        funcmd.append(f"• {cmd} {sign}  {funList[cmd]}.")
-    funcmd = " \n ".join(funcmd)
-    funEmbed = discord.Embed(title="Fun Commands", description=f"{funcmd} \n\n 5/8", color=embedTheme)
+        funList = {f"{ctx.prefix}slap":"Slap Somebody with a Highlighted Text",f"{ctx.prefix}kill":"Kill Somebody with a Highlighted Text",f"{ctx.prefix}punch":"Punch Somebody with a Highlighted Text",f"{ctx.prefix}wanted":"Make Somebody a Wanted Person with Cash Prize"}
+        funcmd = []
+        for cmd in list(funList.keys()):
+            funcmd.append(f"• {cmd} {sign}  {funList[cmd]}.")
+        funcmd = " \n ".join(funcmd)
+        funEmbed = discord.Embed(title="Fun Commands", description=f"{funcmd} \n\n 5/8", color=embedTheme)
 
-    minigamesList = {f"{ctx.prefix}tictactoe":"Challenge Your Friends for a Tictactoe Match",f"{ctx.prefix}tttstop":"Stop a Tictactoe Game in Between",f"{ctx.prefix}guess":"Start a Guess the Number Challenge with Your Server Members",f"{ctx.prefix}atlas":"Enjoy With Your Friends with Atlas Game and Recalling Some Countries"}
-    minigamescmd = []
-    for cmd in list(minigamesList.keys()):
-        minigamescmd.append(f"• {cmd} {sign}  {minigamesList[cmd]}.")
-    minigamescmd = " \n ".join(minigamescmd)
-    minigamesEmbed = discord.Embed(title="Mini-Games Commands", description=f"{minigamescmd} \n\n 6/8", color=embedTheme)
+        minigamesList = {f"{ctx.prefix}tictactoe":"Challenge Your Friends for a Tictactoe Match",f"{ctx.prefix}tttstop":"Stop a Tictactoe Game in Between",f"{ctx.prefix}guess":"Start a Guess the Number Challenge with Your Server Members",f"{ctx.prefix}atlas":"Enjoy With Your Friends with Atlas Game and Recalling Some Countries"}
+        minigamescmd = []
+        for cmd in list(minigamesList.keys()):
+            minigamescmd.append(f"• {cmd} {sign}  {minigamesList[cmd]}.")
+        minigamescmd = " \n ".join(minigamescmd)
+        minigamesEmbed = discord.Embed(title="Mini-Games Commands", description=f"{minigamescmd} \n\n 6/8", color=embedTheme)
 
-    infoList = {f"{ctx.prefix}rule":"Get a Rule of a Server in Detail",f"{ctx.prefix}rules":"Get all Rules of a Server in a Listed and Proper Manner",f"{ctx.prefix}serverinfo":"Get Complete Detail and Information of a Server",f"{ctx.prefix}mcserver":"Get Status and Details of a Minecraft Java Server",f"{ctx.prefix}wikipedia":"Get a Biography or Informations in Details of a Particular Topic with Wikipedia",f"{ctx.prefix}google":"Get all Links Related With your Topic Quickly and in a Listed Manner",f"{ctx.prefix}youtube":"Search for Youtube Videos Fast and Efficiently",f"{ctx.prefix}meaning":"Get Meaning of Any Word Quickly and Easily",f"{ctx.prefix}pokemon":"Get All About of Your Favourite Pokemon in Detail",f"{ctx.prefix}country":"Get Full Information About a Country in Detail"}
-    infocmd = []
-    for cmd in list(infoList.keys()):
-        infocmd.append(f"• {cmd} {sign}  {infoList[cmd]}.")
-    infocmd = " \n ".join(infocmd)
-    infoEmbed = discord.Embed(title="Information Commands", description=f"{infocmd} \n\n 7/8", color=embedTheme)
+        infoList = {f"{ctx.prefix}rule":"Get a Rule of a Server in Detail",f"{ctx.prefix}rules":"Get all Rules of a Server in a Listed and Proper Manner",f"{ctx.prefix}serverinfo":"Get Complete Detail and Information of a Server",f"{ctx.prefix}mcserver":"Get Status and Details of a Minecraft Java Server",f"{ctx.prefix}wikipedia":"Get a Biography or Informations in Details of a Particular Topic with Wikipedia",f"{ctx.prefix}google":"Get all Links Related With your Topic Quickly and in a Listed Manner",f"{ctx.prefix}youtube":"Search for Youtube Videos Fast and Efficiently",f"{ctx.prefix}meaning":"Get Meaning of Any Word Quickly and Easily",f"{ctx.prefix}pokemon":"Get All About of Your Favourite Pokemon in Detail",f"{ctx.prefix}country":"Get Full Information About a Country in Detail"}
+        infocmd = []
+        for cmd in list(infoList.keys()):
+            infocmd.append(f"• {cmd} {sign}  {infoList[cmd]}.")
+        infocmd = " \n ".join(infocmd)
+        infoEmbed = discord.Embed(title="Information Commands", description=f"{infocmd} \n\n 7/8", color=embedTheme)
 
-    generalList = {f"{ctx.prefix}info":"Get Information of Tornax in a brief way",f"{ctx.prefix}support":"Get Advantages, Details and Link of Our Official Server",f"{ctx.prefix}vote":"Get Tornax Voting Link with Rewards Information",f"{ctx.prefix}time":"Get the Current Time of Tornax",f"{ctx.prefix}invite":"Get a Link to Invite Tornax",f"{ctx.prefix}about":"Get Details and Information about Tornax with its Specialities",f"{ctx.prefix}help":"Get all Command's Names in a Quick and Brief Manner with Other Details ",f"{ctx.prefix}allcommands":"Shows this Embed Containing all Commands with Information in Details"}
-    generalcmd = []
-    for cmd in list(generalList.keys()):
-        generalcmd.append(f"• {cmd} {sign}  {generalList[cmd]}.")
-    generalcmd = " \n ".join(generalcmd)
-    generalEmbed = discord.Embed(title="General Commands", description=f"{generalcmd} \n\n 8/8", color=embedTheme)
+        generalList = {f"{ctx.prefix}info":"Get Information of Tornax in a brief way",f"{ctx.prefix}support":"Get Advantages, Details and Link of Our Official Server",f"{ctx.prefix}vote":"Get Tornax Voting Link with Rewards Information",f"{ctx.prefix}time":"Get the Current Time of Tornax",f"{ctx.prefix}invite":"Get a Link to Invite Tornax",f"{ctx.prefix}about":"Get Details and Information about Tornax with its Specialities",f"{ctx.prefix}help":"Get all Command's Names in a Quick and Brief Manner with Other Details ",f"{ctx.prefix}allcommands":"Shows this Embed Containing all Commands with Information in Details"}
+        generalcmd = []
+        for cmd in list(generalList.keys()):
+            generalcmd.append(f"• {cmd} {sign}  {generalList[cmd]}.")
+        generalcmd = " \n ".join(generalcmd)
+        generalEmbed = discord.Embed(title="General Commands", description=f"{generalcmd} \n\n 8/8", color=embedTheme)
 
-    print(len(toolsList.keys()) + len(managementList.keys()) + len(giveawayList.keys()) + len(moderationList.keys()) + len(funList.keys()) + len(minigamesList.keys()) + len(infoList.keys()) + len(generalList.keys()))
+        print(len(toolsList.keys()) + len(managementList.keys()) + len(giveawayList.keys()) + len(moderationList.keys()) + len(funList.keys()) + len(minigamesList.keys()) + len(infoList.keys()) + len(generalList.keys()))
 
-    await ctx.send(f"Each Page have One Category of Commands. If You have Problem with this and want Another way to get all Commands in brief way Try - `{ctx.prefix}help`")
-    activecmd[ctx.guild.id][genCode]["message"] = await ctx.send(embed=toolsEmbed)
-    controlbuttons = ["🔢","⏮️","◀️","▶️","⏭️","⏹️"]
-    for btns in controlbuttons:
-        await activecmd[ctx.guild.id][genCode]["message"].add_reaction(btns)
-    
-    activecmd[ctx.guild.id][genCode]["Embeds"] = [toolsEmbed,managementEmbed,giveawayEmbed,moderationEmbed,funEmbed,minigamesEmbed,infoEmbed,generalEmbed]
+        await ctx.send(f"Each Page have One Category of Commands. If You have Problem with this and want Another way to get all Commands in brief way Try - `{ctx.prefix}help`")
+        activecmd[ctx.guild.id][genCode]["message"] = await ctx.send(embed=toolsEmbed)
+        controlbuttons = ["🔢","⏮️","◀️","▶️","⏭️","⏹️"]
+        for btns in controlbuttons:
+            await activecmd[ctx.guild.id][genCode]["message"].add_reaction(btns)
+        
+        activecmd[ctx.guild.id][genCode]["Embeds"] = [toolsEmbed,managementEmbed,giveawayEmbed,moderationEmbed,funEmbed,minigamesEmbed,infoEmbed,generalEmbed]
 
-    await asyncio.sleep(300)
-    if ctx.author.id in cmdcode[ctx.guild.id]:
-        await activecmd[ctx.guild.id][genCode]["message"].clear_reactions()
-        del activecmd[ctx.guild.id][genCode]
-        del cmdcode[ctx.guild.id][ctx.author.id]
+        await asyncio.sleep(300)
+        if ctx.author.id in cmdcode[ctx.guild.id]:
+            await activecmd[ctx.guild.id][genCode]["message"].clear_reactions()
+            del activecmd[ctx.guild.id][genCode]
+            del cmdcode[ctx.guild.id][ctx.author.id]
+    else:
+        await ctx.send(f":exclamation: You Can Only this Command in a Server")
 
 @bot.listen()
 async def on_reaction_add(reaction, user):
