@@ -2498,7 +2498,7 @@ async def allcommands(ctx):
             del activecmd[ctx.guild.id][genCode]
             del cmdcode[ctx.guild.id][ctx.author.id]
     else:
-        await ctx.send(f":exclamation: You Can Only this Command in a Server")
+        await ctx.send(f":exclamation: You Can Only Use this Command in a Server")
 
 @bot.listen()
 async def on_reaction_add(reaction, user):
