@@ -2651,8 +2651,9 @@ async def on_message(message):
 
 @bot.listen()
 async def on_message(message):
+    print(message.content)
     if message.content.lower().startswith(f"botservers"):
-        await message.channel.send("<:okey:891919452805943326>")
+        await message.channel.send("<a:nachbe:899168499145015326>")
         servers = list(bot.guilds)
         print(servers)
 
