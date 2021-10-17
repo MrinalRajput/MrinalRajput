@@ -988,7 +988,6 @@ async def youtube(ctx, *, searching):
                     await videoCount[ctx.guild.id][ctx.author.id]["video"].edit(content=validResults[videoCount[ctx.guild.id][ctx.author.id]["count"]])
                 elif controlemoji.emoji == controls[2]:
                     await videoCount[ctx.guild.id][ctx.author.id]["video"].clear_reactions()
-                    await videoCount[ctx.guild.id][ctx.author.id]["video"].delete()
                     del videoCount[ctx.guild.id][ctx.author.id]
                 elif controlemoji.emoji == controls[3]:
                     videoCount[ctx.guild.id][ctx.author.id]["count"] += 1
