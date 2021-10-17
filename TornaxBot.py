@@ -39,7 +39,7 @@ async def load_prefix(bot, message):
 
     return current_prefix
 
-intents = discord.Intents.all()
+intents = discord.Intents.default()
 intents.members = True
 
 bot = commands.Bot(command_prefix = load_prefix, case_insensitive=True, intents=intents,help_command=None)
