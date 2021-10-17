@@ -137,6 +137,8 @@ async def on_message(message):
     if not message.author.bot:
         if message.content == "<@!832897602768076816>":
             prfx = await bot.pg_con.fetchrow("SELECT prefix FROM prefixes WHERE guild_id = $1", message.guild.id)
+            emoji = "<a:dance_stickman:899174400132255844>"
+            await message.add_reaction(emoji)
             await message.channel.send(f"My Prefix in {message.guild} is - `{prfx[0]}`")
 
 ###############
