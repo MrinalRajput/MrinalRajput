@@ -141,18 +141,18 @@ async def on_message(message):
             await message.add_reaction(emoji)
             await message.channel.send(f"My Prefix in {message.guild} is - `{prfx[0]}`")
 
-async def modlogs(ctx, case, user, timing, logreason, cased):
+async def modlogs(ctx, case, user, mod, timing, logreason, cased):
     for channel in ctx.guild.channels:
         if "mod" in channel.name or "mod-logs" in channel.name or "server-logs" in channel.name:
             logEmbed = discord.Embed(title=f"Mod Logs", color=embedTheme)
             logEmbed.set_author(icon_url=ctx.guild.icon_url, name=f"{ctx.guild} || {case}")
             logEmbed.set_thumbnail(url=user.avatar_url)
             logEmbed.add_field(name="User", value=user.mention, inline=True)
-            logEmbed.add_field(name="Moderator", value=ctx.author.mention, inline=True)
+            logEmbed.add_field(name="Moderator", value=mod.mention, inline=True)
             if timing is not None:
                 logEmbed.add_field(name="Period", value=timing, inline=True)
             logEmbed.add_field(name="Reason", value=logreason, inline=True)
-            logEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"{cased} By {ctx.author.name}")
+            logEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"{cased} By {mod.name}")
             await channel.send(embed=logEmbed)
 
 ###############
@@ -204,7 +204,7 @@ async def status(ctx):
         elif SmpStatus == False:
             await ctx.send(f":red_circle:  Server Is Offline")
 
-##############################
+###############################
 #### All Servers Commands ####
 ############0##################
 
@@ -221,10 +221,10 @@ async def ban(ctx, member:discord.Member, days: Optional[int]=None, *, reason:Op
                 await ctx.send(embed=embed)
                 await member.ban(reason=reason)
                 await member.send(embed=dmuser)
-                await modlogs(ctx, "Ban", member, f"{days} Day(s)" , reason, "Banned")
+                await modlogs(ctx, "Ban", member, ctx.author, f"{days} Day(s)" , reason, "Banned")
                 await asyncio.sleep(wait)
                 await ctx.guild.unban(memberId)
-                await modlogs(ctx, "Unban", member, "None", "Auto", "Unbanned")
+                await modlogs(ctx, "Unban", member, bot.user, None, "Auto", "Unbanned")
             except Exception as e:
                 print(e)
                 await ctx.reply(f":exclamation: Failed to Ban {member} From {ctx.guild}")
@@ -235,7 +235,7 @@ async def ban(ctx, member:discord.Member, days: Optional[int]=None, *, reason:Op
                 await ctx.send(embed=embed)
                 await member.send(embed=dmuser)
                 await member.ban(reason=reason)
-                await modlogs(ctx, "Ban", member, "None" , reason, "Banned")
+                await modlogs(ctx, "Ban", member, ctx.author, None , reason, "Banned")
             else:
                 await ctx.reply(f":exclamation: You Cannot Ban an Admin")
     except Exception as e:
@@ -255,7 +255,7 @@ async def unban(ctx, memberid: Optional[int]=None):
                 embedContent = f"Unbanned : Successfully Unbanned {user} from {ctx.guild.name}"
                 embed = discord.Embed(description=embedContent, color=embedTheme)
                 await ctx.send(embed=embed)
-                await modlogs(ctx, "Unban", user, "None", None, "Unbanned")
+                await modlogs(ctx, "Unban", user, ctx.author, None, None, "Unbanned")
             else:
                 await ctx.reply(f":exclamation: You don't have Permissions to do that!'")
         else:
@@ -300,10 +300,10 @@ async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: O
                         if "s" in unit: period = f"{duration} Seconds"
                         elif "m" in unit: period = f"{duration} Minute"
                         elif "h" in unit: period = f"{duration} Hour"
-                        await modlogs(ctx, "Mute", member, period, reason, "Muted")
+                        await modlogs(ctx, "Mute", member, ctx.author, period, reason, "Muted")
                         await asyncio.sleep(wait)
                         await member.remove_roles(mutedRole)
-                        await modlogs(ctx, "Unmute", member, "None", "Auto", "Unmuted")
+                        await modlogs(ctx, "Unmute", member, bot.user, None, "Auto", "Unmuted")
                     else:
                         await ctx.reply(f":exclamation: You Cannot Mute an Admin")
                 else:
@@ -312,7 +312,7 @@ async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: O
                         await member.add_roles(mutedRole)
                         await ctx.send(embed=embed,delete_after=15)
                         await member.send(f"You are Muted in the Server by an Admin"if reason is None else f"You are Muted in the Server by an Admin\n\t With the Reason of {reason}")
-                        await modlogs(ctx, "Mute", member, "None", reason, "Muted")
+                        await modlogs(ctx, "Mute", member, ctx.author, "None", reason, "Muted")
                     else:
                         await ctx.reply(f":exclamation: You Cannot Mute an Admin")
             else:
@@ -332,7 +332,7 @@ async def unmute(ctx, member:discord.Member, *, reason: Optional[str]=None):
         embed = discord.Embed(description=f"** {member.mention} has been Unmuted Successfully by {ctx.author.mention}**" if reason is None else f"** {member.mention} has been Unmuted Successfully by {ctx.author.mention}\n\t With the Reason of :\t{reason}**",color=embedTheme)
         await member.remove_roles(mutedRole)
         await ctx.send(embed=embed,delete_after=15)
-        await modlogs(ctx, "Unmute", member, "None", reason, "Unmuted")
+        await modlogs(ctx, "Unmute", member, ctx.author, None, reason, "Unmuted")
     else:
         embed = discord.Embed(description=f"** :exclamation: {member.mention} is Not Muted in this Server **",color=embedTheme)
         await ctx.send(embed=embed,delete_after=15)
@@ -347,7 +347,7 @@ async def warn(ctx, member:discord.Member, *, reason=None):
         await member.send(f"You are Warned by an Admin in {ctx.guild.name}"if reason is None else f"You are Warned by an Admin in {ctx.guild.name} \n\t With the Reason of :\t{reason}")
         if reason is None:
             reason = "Not Specified"
-        await modlogs(ctx, "Warn", member, "None", reason, "Warned")
+        await modlogs(ctx, "Warn", member, ctx.author, None, reason, "Warned")
     else:
         await ctx.send(f"You must Specify the User whom you want to Warn")
 
@@ -369,6 +369,7 @@ async def kick(ctx, member:discord.Member, *, reason=None):
                 await member.kick(reason=reason)
                 await ctx.send(f"Kicked: {member.mention} has been Kicked from the Server by {ctx.author.mention}" if reason is None else f"Kicked: {member.mention} has been Kicked from the Server by {ctx.author.mention} \n\t With the Reason of :\t{reason}")
                 await member.send(f"You are Kicked by an Admin from {ctx.guild.name}"if reason is None else f"You are Kicked by an Admin from {ctx.guild.name} \n\t With the Reason of :\t{reason}")
+                await modlogs(ctx, "Kick", member, ctx.author, None, reason, "Kicked")
             else:
                 await ctx.reply(f":exclamation: Failed to Kick that User Because he/she is Mod or Admin in this Server")
     else:
