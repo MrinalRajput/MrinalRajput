@@ -91,7 +91,7 @@ async def on_guild_join(guild):
             if "chat" in channel.name or "general" in channel.name:
                 await bot.pg_con.execute("UPDATE prefixes SET prefix=$1 WHERE guild_id=$2",DEFAULT_PREFIX,guild.id)
                 custom_prefix = await bot.pg_con.fetchrow("SELECT prefix FROM prefixes WHERE guild_id = $1", guild.id)
-                await channel.send(f'Hey there! Thanks for Adding me in {guild.name}, Type `{custom_prefix[0]}help` to get All about me \n <a:arrow:899290375007645726>  My Auto Functions and Stuff i Can do Automatically \n\t <a:arrow:899290375007645726> Welcome and Bye Messages \n\t <a:arrow:899290375007645726> Mod Logs of Warn, Mute, Ban etc. \n\t <a:arrow:899290375007645726> AutoModeration')
+                await channel.send(f'Hey there! Thanks for Adding me in {guild.name}, Type `{custom_prefix[0]}help` to get All about me \n <a:doublearrow:899299966957256745>  My Auto Functions and Stuff i Can do Automatically \n\t <a:doublearrow:899299966957256745> Welcome and Bye Messages \n\t <a:doublearrow:899299966957256745> Mod Logs of Warn, Mute, Ban etc. \n\t <a:doublearrow:899299966957256745> AutoModeration')
     # inviteChannel = bot.get_channel(890819215588741191)
     # inviteEmbed = discord.Embed(title = "Joined!", description=f"{bot.user.mention} Just Joined {guild.name}", color=embedTheme)
     # inviteEmbed.set_thumbnail(url=guild.icon_url)
@@ -988,6 +988,7 @@ async def youtube(ctx, *, searching):
                     await videoCount[ctx.guild.id][ctx.author.id]["video"].edit(content=validResults[videoCount[ctx.guild.id][ctx.author.id]["count"]])
                 elif controlemoji.emoji == controls[2]:
                     await videoCount[ctx.guild.id][ctx.author.id]["video"].clear_reactions()
+                    await videoCount[ctx.guild.id][ctx.author.id]["video"].delete()
                     del videoCount[ctx.guild.id][ctx.author.id]
                 elif controlemoji.emoji == controls[3]:
                     videoCount[ctx.guild.id][ctx.author.id]["count"] += 1
