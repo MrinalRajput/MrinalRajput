@@ -609,7 +609,7 @@ class Giveaway():
                     embed = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||\n",color=embedTheme)
                     embed.add_field(name="Winner of the Giveaway",value=f"{winner}",inline=True)
                     embed.add_field(name="Prize",value=f"{prize}",inline=True)
-                    embed.add_field(name="Participants",value=f"{MembersList[ctx.guild.id]}\n\n Please Contact with The Giveaway Players For the Prize of this Giveaway",inline=False)
+                    embed.add_field(name="Participants",value=f"{MembersList[ctx.guild.id]}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
 
                     await GiveawayChannel[ctx.guild.id].send(embed=embed)
                     Participants[ctx.guild.id].clear()
@@ -619,7 +619,7 @@ class Giveaway():
             else:
                 await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
         else:
-            await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}, use `>help gstart` for more help')
+            await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" to do that {ctx.author.mention}, use `>help gstart` for more help')
 
     @bot.command()
     async def gparticipate(ctx):
