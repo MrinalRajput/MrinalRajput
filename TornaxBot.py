@@ -2379,6 +2379,50 @@ async def about(ctx):
 
 abouthelp = f"about"
 
+recordscore = {}
+recordmsg = {}
+
+@bot.command()
+async def msglbd(ctx):
+    l = sorted(recordscore[ctx.guild.id].values())
+    r = list(recordscore[ctx.guild.id].keys())
+    finallbd = {}
+    for y in l:
+        for t in r:
+            if recordscore[ctx.guild.id][t] == y:
+                finallbd[t] = y
+    users = []
+    usermsg = []
+    for keys in finallbd.keys():
+        users.append(f"{keys} \n ")
+        usermsg.append(recordmsg[ctx.guild.id][keys])
+
+    userscores = []
+    for scr in finallbd.values():
+        userscores.append(scr)
+
+    msglbdEmbed = discord.Embed(title="Chats LeaderBoard", color=embedTheme)
+    msglbdEmbed.add_field(name="Users", value="\n".join(users), inline=True)
+    msglbdEmbed.add_field(name="Messages", value="\n".join(usermsg), inline=True)
+    msglbdEmbed.add_field(name="Scores", value="\n".join(userscores), inline=True)
+    msglbdEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+    await ctx.send(embed=msglbdEmbed)
+
+@bot.listen()
+async def on_message(message):
+    global recordscore, recordmsg
+    if message.guild.id not in recordscore:
+        recordscore[message.guild.id] = {}
+    if message.guild.id not in recordmsg:
+        recordmsg[message.guild.id] = {}
+    if message.author not in recordscore[message.guild.id]:
+        recordscore[message.guild.id][message.author] = 0
+    if message.author not in recordmsg[message.guild.id]:
+        recordmsg[message.guild.id][message.author] = 0
+    
+    recordscore[message.guild.id][message.author] += 1
+    recordmsg[message.guild.id][message.author] += 15
+
 helphelp = f"help [anycommand]"
 
 allcommandshelp = f"allcommands"
