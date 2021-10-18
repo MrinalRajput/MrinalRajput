@@ -2396,7 +2396,7 @@ async def msglbd(ctx):
                     if recordscore[ctx.guild.id][key] == k[x]:
                         if str(key) not in tlbd:
                             tlbd.append(str(key))
-                            pinglbd.append(str(key.name))
+                            pinglbd.append(key.name)
         except:pass
 
     usermsg = []
@@ -2406,7 +2406,7 @@ async def msglbd(ctx):
         userscore.append(str(recordscore[ctx.guild.id][tl]))
 
     msglbdEmbed = discord.Embed(title=f"{ctx.guild}'s Chat LeaderBoard", color=embedTheme)
-    msglbdEmbed.add_field(name="Users", value="\n".join(pinglbd), inline=True)
+    msglbdEmbed.add_field(name="Users", value="\n".join(tlbd), inline=True)
     msglbdEmbed.add_field(name="Messages", value="\n".join(usermsg), inline=True)
     msglbdEmbed.add_field(name="Scores", value="\n".join(userscore), inline=True)
     msglbdEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
