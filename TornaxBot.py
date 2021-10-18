@@ -343,7 +343,6 @@ unmutehelp = f"unmute <member> [reason]"
 @commands.has_permissions(administrator=True)
 async def warn(ctx, member:discord.Member, *, reason=None):
     if member is not None:
-        await ctx.send(f"Warned: {member.mention} has been Warned by {ctx.author.mention}" if reason is None else f"Warned: {member.mention} has been Warned by {ctx.author.mention} \n\t With the Reason of :\t{reason}")
         await ctx.send(embed= discord.Embed(description=f"✅ Successfully Warned {member.mention}" if reason is None else f"✅ Successfully Warned {member.mention} \n\t Reason: {reason}",color=embedTheme))
         if reason is None:
             reason = "Not Specified"
@@ -371,7 +370,7 @@ async def kick(ctx, member:discord.Member, *, reason=None):
                 await member.send(f"You are Kicked by an Admin from {ctx.guild.name}"if reason is None else f"You are Kicked by an Admin from {ctx.guild.name} \n\t With the Reason of :\t{reason}")
                 await modlogs(ctx, "Kick", member, ctx.author, None, reason, "Kicked")
             else:
-                await ctx.reply(f":exclamation: Failed to Kick that User Because he/she is Mod or Admin in this Server")
+                await ctx.reply(f":exclamation: Failed to Kick that User Because that User is Mod or Admin in this Server")
     else:
         await ctx.send(f"You must Specify the User whom you want to Kick from the Server")
 
