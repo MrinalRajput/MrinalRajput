@@ -403,6 +403,25 @@ async def softban(ctx, member: Optional[discord.Member]=None, *, reason: Optiona
 
 softbanhelp = f"softban <member> [reason]"
 
+@bot.command()
+async def voicekick(ctx, member: Optional[discord.Member]=None):
+    if ctx.guild:
+        if member is not None:
+            if ctx.author.guild_permissions.move_members:
+                if not member.guild_permissions.administrator:
+                    await member.move_to(channel = None)
+                    await ctx.message.add_reaction("✅")
+                else:
+                    await ctx.reply(f"The User is Either Mod or Admin in this Server, I Cannot do that")
+            else:
+                await ctx.send(":exclamation: You don't have Permissions to do that")
+        else:
+            await ctx.reply(f":exclamation: You Must Specify the User")
+    else:
+        await ctx.send(f":exclamation: You can Only Use it in a Server")
+
+voicekickhelp = f"voicekick <member>"
+
 leaveConfirmation = 0
 leavingRequest = {}
 
@@ -2388,7 +2407,6 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creater}")
         await ctx.send(embed=myEmbed)
     else:
-        voicekick = "die"
         content = ""
 
         if anycommand == "tell": content=tellhelp
