@@ -344,7 +344,7 @@ unmutehelp = f"unmute <member> [reason]"
 async def warn(ctx, member:discord.Member, *, reason=None):
     if member is not None:
         await ctx.send(f"Warned: {member.mention} has been Warned by {ctx.author.mention}" if reason is None else f"Warned: {member.mention} has been Warned by {ctx.author.mention} \n\t With the Reason of :\t{reason}")
-        await member.send(f"You are Warned by an Admin in {ctx.guild.name}"if reason is None else f"You are Warned by an Admin in {ctx.guild.name} \n\t With the Reason of :\t{reason}")
+        await ctx.send(embed= discord.Embed(description=f"✅ Successfully Warned {member.mention}" if reason is None else f"✅ Successfully Warned {member.mention} \n\t Reason: {reason}",color=embedTheme))
         if reason is None:
             reason = "Not Specified"
         await modlogs(ctx, "Warn", member, ctx.author, None, reason, "Warned")
@@ -367,7 +367,7 @@ async def kick(ctx, member:discord.Member, *, reason=None):
         else:
             if not member.guild_permissions.administrator:
                 await member.kick(reason=reason)
-                await ctx.send(f"Kicked: {member.mention} has been Kicked from the Server by {ctx.author.mention}" if reason is None else f"Kicked: {member.mention} has been Kicked from the Server by {ctx.author.mention} \n\t With the Reason of :\t{reason}")
+                await ctx.send(embed= discord.Embed(description=f"✅ Successfully Kicked {member.mention} from the Server" if reason is None else f"✅ Successfully Kicked {member.mention} from the Server \n\t Reason: {reason}",color=embedTheme))
                 await member.send(f"You are Kicked by an Admin from {ctx.guild.name}"if reason is None else f"You are Kicked by an Admin from {ctx.guild.name} \n\t With the Reason of :\t{reason}")
                 await modlogs(ctx, "Kick", member, ctx.author, None, reason, "Kicked")
             else:
@@ -389,7 +389,7 @@ async def softban(ctx, member: Optional[discord.Member]=None, *, reason: Optiona
             if ctx.author.guild_permissions.ban_members:
                 if not member.guild_permissions.administrator:
                     await member.ban(reason=reason)
-                    await ctx.send(embed= discord.Embed(description=f"✅ Successfully gave Softban to {member.mention}" if reason is None else f"✅ Successfully gave Softban to {member} \n Reason: {reason}",color=embedTheme))
+                    await ctx.send(embed= discord.Embed(description=f"✅ Successfully gave Softban to {member.mention}" if reason is None else f"✅ Successfully gave Softban to {member.mention} \n\t Reason: {reason}",color=embedTheme))
                     await ctx.guild.unban(member)
                     await modlogs(ctx, "Softban", member, ctx.author, None, reason, "Softbanned")
                 else:
