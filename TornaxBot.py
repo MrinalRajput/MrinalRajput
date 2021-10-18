@@ -385,19 +385,19 @@ async def kick_error(error, ctx):
 @bot.command()
 async def softban(ctx, member: Optional[discord.Member]=None, *, reason: Optional[str]=None):
     if ctx.guild:
-        if ctx.author.guild_permissions.ban_members:
-            if not member.guild_permissions.administrator:
-                if member is not None:
+        if member is not None:
+            if ctx.author.guild_permissions.ban_members:
+                if not member.guild_permissions.administrator:
                     await member.ban(reason=reason)
-                    await ctx.send(embed= discord.Embed(description=f"✅ Successfully gave Softban to {member}" if reason is None else f"✅ Successfully gave Softban to {member} \n Reason: {reason}",color=embedTheme))
+                    await ctx.send(embed= discord.Embed(description=f"✅ Successfully gave Softban to {member.mention}" if reason is None else f"✅ Successfully gave Softban to {member} \n Reason: {reason}",color=embedTheme))
                     await ctx.guild.unban(member)
                     await modlogs(ctx, "Softban", member, ctx.author, None, reason, "Softbanned")
                 else:
-                    await ctx.reply(f":exclamation: You Must Specify the User")
+                    await ctx.reply(f"The User is Either Mod or Admin in this Server, I Cannot do that")
             else:
-                await ctx.reply(f"The User is Either Mod or Admin in this Server, I Cannot do that")
+                await ctx.send(":exclamation: You don't have Permissions to do that")
         else:
-            await ctx.send(":exclamation: You don't have Permissions to do that")
+            await ctx.reply(f":exclamation: You Must Specify the User")
     else:
         await ctx.send(f"This Only Works in a Server not in Dm")
 
