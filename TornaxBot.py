@@ -409,8 +409,11 @@ async def voicekick(ctx, member: Optional[discord.Member]=None):
         if member is not None:
             if ctx.author.guild_permissions.move_members:
                 if not member.guild_permissions.administrator:
-                    await member.move_to(channel = None)
-                    await ctx.message.add_reaction("✅")
+                    if member.voice:
+                        await member.move_to(channel=None)
+                        await ctx.message.add_reaction("✅")
+                    else:
+                        await ctx.reply(f"The User is not in any Voice Channel")
                 else:
                     await ctx.reply(f"The User is Either Mod or Admin in this Server, I Cannot do that")
             else:
