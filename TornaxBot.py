@@ -2394,12 +2394,12 @@ async def msglbd(ctx):
     users = []
     usermsg = []
     for keys in finallbd.keys():
-        users.append(f"{keys} \n ")
-        usermsg.append(recordmsg[ctx.guild.id][keys])
+        users.append(keys.name)
+        usermsg.append(str(recordmsg[ctx.guild.id][keys]))
 
     userscores = []
     for scr in finallbd.values():
-        userscores.append(scr)
+        userscores.append(str(scr))
 
     msglbdEmbed = discord.Embed(title="Chats LeaderBoard", color=embedTheme)
     msglbdEmbed.add_field(name="Users", value="\n".join(users), inline=True)
@@ -2420,8 +2420,9 @@ async def on_message(message):
     if message.author not in recordmsg[message.guild.id]:
         recordmsg[message.guild.id][message.author] = 0
     
-    recordscore[message.guild.id][message.author] += 1
-    recordmsg[message.guild.id][message.author] += 15
+    recordmsg[message.guild.id][message.author] += 1
+    recordscore[message.guild.id][message.author] += 15
+    print(recordscore[message.guild.id][message.author], recordmsg[message.guild.id][message.author])
 
 helphelp = f"help [anycommand]"
 
