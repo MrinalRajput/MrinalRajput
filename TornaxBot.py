@@ -2385,10 +2385,9 @@ recordmsg = {}
 @bot.command()
 async def msglbd(ctx):
     k = sorted(recordscore[ctx.guild.id].values())
-    x = 80
+    x = 30000
     tlbd = []
     pinglbd = []
-    spaces = "\n"
     while x > 0:
         x-=1
         try:
@@ -2399,16 +2398,6 @@ async def msglbd(ctx):
                             tlbd.append(str(key))
                             pinglbd.append(str(key.name))
         except:pass
-    if len(tlbd) == 1: spaces = "\n\n\n\n\n\n\n\n\n"
-    elif len(tlbd) == 2: spaces = "\n\n\n\n\n\n\n\n"
-    elif len(tlbd) == 3: spaces = "\n\n\n\n\n\n\n"
-    elif len(tlbd) == 4: spaces = "\n\n\n\n\n\n"
-    elif len(tlbd) == 5: spaces = "\n\n\n\n\n"
-    elif len(tlbd) == 6: spaces = "\n\n\n\n"
-    elif len(tlbd) == 7: spaces = "\n\n\n"
-    elif len(tlbd) == 8: spaces = "\n\n"
-    elif len(tlbd) == 9: spaces = "\n"
-    elif len(tlbd) == 10: spaces = "\n"
 
     usermsg = []
     userscore = []
@@ -2419,7 +2408,7 @@ async def msglbd(ctx):
     msglbdEmbed = discord.Embed(title=f"{ctx.guild}'s Chat LeaderBoard", color=embedTheme)
     msglbdEmbed.add_field(name="Users", value="\n".join(pinglbd), inline=True)
     msglbdEmbed.add_field(name="Messages", value="\n".join(usermsg), inline=True)
-    msglbdEmbed.add_field(name="Scores", value=f'{"\n".join(userscore)}{spaces}', inline=True)
+    msglbdEmbed.add_field(name="Scores", value="\n".join(userscore), inline=True)
     msglbdEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=msglbdEmbed)
 
@@ -2439,6 +2428,7 @@ async def on_message(message):
     
     recordmsg[message.guild.id][str(message.author)] += 1
     recordscore[message.guild.id][str(message.author)] += 15
+    print(recordscore[message.guild.id][str(message.author)], recordmsg[message.guild.id][str(message.author)])
 
 helphelp = f"help [anycommand]"
 
