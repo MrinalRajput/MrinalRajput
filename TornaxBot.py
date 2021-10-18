@@ -382,6 +382,27 @@ async def kick_error(error, ctx):
    if isinstance(error, MissingPermissions):
        await ctx.send("You don't have permission to do that!")
 
+@bot.command()
+async def softban(ctx, member: Optional[discord.Member]=None, *, reason: Optional[str]=None):
+    if ctx.guild:
+        if ctx.author.guild_permissions.ban_members:
+            if not ctx.author.guild_permissions.administrator:
+                if member is not None:
+                    await member.ban(reason=reason)
+                    await ctx.send(embed= discord.Embed(description=f"✅ Successfully gave Softban to {member}" if reason is None else f"✅ Successfully gave Softban to {member} \n Reason: {reason}",color=embedTheme))
+                    await ctx.guild.unban(member)
+                    await modlogs(ctx, "Softban", member, ctx.author, None, reason, "Softbanned")
+                else:
+                    await ctx.reply(f":exclamation: You Must Specify the User")
+            else:
+                await ctx.reply(f"The User is Either Mod or Admin in this Server, I Cannot do that")
+        else:
+            await ctx.send(":exclamation: You don't have Permissions to do that")
+    else:
+        await ctx.send(f"This Only Works in a Server not in Dm")
+
+softbanhelp = f"softban <member> [reason]"
+
 leaveConfirmation = 0
 leavingRequest = {}
 
@@ -2360,10 +2381,10 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name=f"Commands — {int(totalCommands)-2}",value="----------------------\n",inline=False)
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop ", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, allcommands, gstatus, gstop, gparticipate, gquit, setprefix, whois, serverinfo, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
-        myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban ", inline=False)
+        myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban, softban, voicekick ", inline=False)
         myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, atlas, mcserver, wikipedia, google, youtube, meaning, pokemon, country \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{ctx.prefix}`\n > Command Usage Example :   `{ctx.prefix}info`\n\n----------------------", inline=False)
-        myEmbed.add_field(name="Readme", value=f"`{ctx.prefix}help` Shows this Message, use `{ctx.prefix}help [command]` to get more information about that Command\n\n")
+        myEmbed.add_field(name="Readme", value=f"`{ctx.prefix}help` Shows this Message, use `{ctx.prefix}help [command]` to get more information about that Command and `{ctx.prefix}allcommands for more information of all commands in detail`\n\n")
         myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creater}")
         await ctx.send(embed=myEmbed)
     else:
@@ -2416,6 +2437,9 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "unmute": content=unmutehelp
         elif anycommand == "ban": content=banhelp
         elif anycommand == "unban": content=unbanhelp
+        elif anycommand == "softban": content=softbanhelp
+        voicekick = "die"
+        elif anycommand == "voicekick": content=voicekickhelp
         elif anycommand == "slap": content=slaphelp
         elif anycommand == "kill": content=killhelp
         elif anycommand == "punch": content=punchhelp
@@ -2484,7 +2508,7 @@ async def allcommands(ctx):
         giveawaycmd = " \n ".join(giveawaycmd)
         giveawayEmbed = discord.Embed(title="Giveaways Commands", description=f"{giveawaycmd} \n\n 3/8", color=embedTheme)
 
-        moderationList = {f"{ctx.prefix}kick":"Kick Anyone From Your Server",f"{ctx.prefix}mute":"Mute a Member of Your Server",f"{ctx.prefix}unmute":"Unmute a Muted Member in Your Server",f"{ctx.prefix}warn":"Warn a Member of Your Server With/Without a Reason",f"{ctx.prefix}ban":"Ban a Member from your Server Permanently or Temporary",f"{ctx.prefix}unban":"Unban a Banned Member in Your Server"}
+        moderationList = {f"{ctx.prefix}kick":"Kick Anyone From Your Server",f"{ctx.prefix}mute":"Mute a Member of Your Server",f"{ctx.prefix}unmute":"Unmute a Muted Member in Your Server",f"{ctx.prefix}warn":"Warn a Member of Your Server With/Without a Reason",f"{ctx.prefix}ban":"Ban a Member from your Server Permanently or Temporary",f"{ctx.prefix}unban":"Unban a Banned Member in Your Server",f"{ctx.prefix}softban":"Ban a User and then Instantly Unban that user to Delete all his Messages with a Kick",f"{ctx.prefix}voicekick":"Kick a User from a Voice Channel"}
         moderationcmd = []
         for cmd in list(moderationList.keys()):
             moderationcmd.append(f"• {cmd} {sign}  {moderationList[cmd]}.")
