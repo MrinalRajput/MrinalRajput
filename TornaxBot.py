@@ -2388,6 +2388,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creater}")
         await ctx.send(embed=myEmbed)
     else:
+        voicekick = "die"
         content = ""
 
         if anycommand == "tell": content=tellhelp
@@ -2438,7 +2439,6 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "ban": content=banhelp
         elif anycommand == "unban": content=unbanhelp
         elif anycommand == "softban": content=softbanhelp
-        voicekick = "die"
         elif anycommand == "voicekick": content=voicekickhelp
         elif anycommand == "slap": content=slaphelp
         elif anycommand == "kill": content=killhelp
