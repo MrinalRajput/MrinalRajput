@@ -2388,7 +2388,7 @@ async def msglbd(ctx):
     x = 80
     tlbd = []
     pinglbd = []
-    spaces = ""
+    spaces = "\n"
     while x > 0:
         x-=1
         try:
@@ -2419,7 +2419,7 @@ async def msglbd(ctx):
     msglbdEmbed = discord.Embed(title=f"{ctx.guild}'s Chat LeaderBoard", color=embedTheme)
     msglbdEmbed.add_field(name="Users", value="\n".join(pinglbd), inline=True)
     msglbdEmbed.add_field(name="Messages", value="\n".join(usermsg), inline=True)
-    msglbdEmbed.add_field(name="Scores", value="\n".join(userscore) + spaces, inline=True)
+    msglbdEmbed.add_field(name="Scores", value=f'{"\n".join(userscore)}{spaces}', inline=True)
     msglbdEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=msglbdEmbed)
 
