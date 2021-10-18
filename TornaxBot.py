@@ -386,7 +386,7 @@ async def kick_error(error, ctx):
 async def softban(ctx, member: Optional[discord.Member]=None, *, reason: Optional[str]=None):
     if ctx.guild:
         if ctx.author.guild_permissions.ban_members:
-            if not ctx.author.guild_permissions.administrator:
+            if not member.guild_permissions.administrator:
                 if member is not None:
                     await member.ban(reason=reason)
                     await ctx.send(embed= discord.Embed(description=f"✅ Successfully gave Softban to {member}" if reason is None else f"✅ Successfully gave Softban to {member} \n Reason: {reason}",color=embedTheme))
