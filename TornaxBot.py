@@ -2408,7 +2408,7 @@ async def msglbd(ctx):
     elif len(tlbd) == 7: spaces = "\n\n\n"
     elif len(tlbd) == 8: spaces = "\n\n"
     elif len(tlbd) == 9: spaces = "\n"
-    elif len(tlbd) == 10: spaces = ""
+    elif len(tlbd) == 10: spaces = "\n"
 
     usermsg = []
     userscore = []
