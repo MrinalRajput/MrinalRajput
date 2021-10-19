@@ -5,9 +5,11 @@ from discord.ext import commands, tasks
 from datetime import datetime
 import asyncio
 import random
+import aiohttp
 from typing import Optional
 import json
 import time
+from discord.ext.commands.converter import EmojiConverter
 from discord.ext.commands.errors import BadArgument, BotMissingPermissions
 from discord.player import FFmpegPCMAudio
 from mcstatus import MinecraftServer
@@ -563,6 +565,40 @@ async def slowmode(ctx, seconds: Optional[str]=None):
         await ctx.send(f":exclamation: {ctx.author.mention} You don't have Permissions to do that")
 
 slowmodehelp = f"slowmode <seconds>"
+
+# @bot.command()
+# async def addemoji(ctx, name: Optional[str]=None):
+#     if name is None:
+#         await ctx.send(f"Please Enter a Name for your Emoji")
+#         def check(message):
+#             return message.author == ctx.author and message.channel == ctx.channel
+#         try:
+#             name = await bot.wait_for("message", check=check, timeout=30)
+#         except:
+#             await ctx.send(f"Your Time for Sending Name of the Emoji has Ended")
+#             return False
+
+#     await ctx.send(f"Please Send the Emoji itself here!")
+#     try:
+#         def check(message):
+#             return message.author == ctx.author and message.channel == ctx.channel
+#         emoji:discord.Emoji = await bot.wait_for("message", check=check, timeout=30)
+#     except:
+#         await ctx.send(f"Your 30 Seconds for Sending the Emoji has Ended")
+#         return False
+#     # try:
+#     print(emoji.content)
+#     print(type(emoji.content))
+    
+#     # img = await EmojiConverter().convert(ctx, emoji.content)
+#     # img = BytesIO(await img.read())
+#     await ctx.guild.create_custom_emoji(name = (name), image = emoji.content)
+#     # except Exception as e:
+#     #     await ctx.send(embed=discord.Embed(description=f":exclamation: **Failed to Upload that as a Emoji Please Check that;**\n\t- Server has Space to Upload an Emoji, \n\t- The file that you uploaded is an image/gif, \n\t- File is not above 256kb in size.", color=embedTheme))
+#     #     print(e)
+#     #     return False
+#     await ctx.send(f"Successfully Added - {emoji}")
+
 
 @bot.command()
 async def thought(ctx, *, word):
