@@ -2388,13 +2388,13 @@ async def serverinfo(ctx):
 serverinfohelp = f"serverinfo"
 
 @bot.command()
-async def emotes(ctx):
+async def emojis(ctx):
     serveremoji = []
     for emoji in ctx.guild.emojis:
         serveremoji.append(str(emoji))
     await ctx.send(embed=discord.Embed(title=f"{ctx.guild}'s Emojis [{len(ctx.guild.emojis)}]", description="  ".join(serveremoji), color=embedTheme).set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}"))
 
-emoteshelp = f"emotes"
+emojishelp = f"emojis"
 
 @bot.command()
 async def vote(ctx):
@@ -2446,7 +2446,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n \n \t-> [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=536870911991&scope=bot)")
         myEmbed.add_field(name=f"Commands — {int(totalCommands)-2}",value="----------------------\n",inline=False)
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop", inline=False)
-        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, allcommands, gstatus, gstop, gparticipate, gquit, setprefix, whois, emotes, serverinfo, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
+        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, allcommands, gstatus, gstop, gparticipate, gquit, setprefix, whois, emojis, serverinfo, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban, softban, voicekick ", inline=False)
         myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, atlas, mcserver, wikipedia, google, youtube, meaning, pokemon, country \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{ctx.prefix}`\n > Command Usage Example :   `{ctx.prefix}info`\n\n----------------------", inline=False)
@@ -2480,7 +2480,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "poll": content=pollhelp
         elif anycommand == "whois": content=whoishelp
         elif anycommand == "serverinfo": content=serverinfohelp
-        elif anycommand == "emotes": content=emoteshelp
+        elif anycommand == "emojis": content=emojishelp
         elif anycommand == "info": content=infohelp
         elif anycommand == "setprefix": content=setprefixhelp
         elif anycommand == "about": content=abouthelp
@@ -2595,7 +2595,7 @@ async def allcommands(ctx):
         minigamescmd = " \n ".join(minigamescmd)
         minigamesEmbed = discord.Embed(title="Mini-Games Commands", description=f"{minigamescmd} \n\n 6/8", color=embedTheme)
 
-        infoList = {f"{ctx.prefix}rule":"Get a Rule of a Server in Detail",f"{ctx.prefix}rules":"Get all Rules of a Server in a Listed and Proper Manner",f"{ctx.prefix}serverinfo":"Get Complete Detail and Information of a Server",f"{ctx.prefix}emotes":"Get All Emotes and Animated Emojis of a Server",f"{ctx.prefix}mcserver":"Get Status and Details of a Minecraft Java Server",f"{ctx.prefix}wikipedia":"Get a Biography or Informations in Details of a Particular Topic with Wikipedia",f"{ctx.prefix}google":"Get all Links Related With your Topic Quickly and in a Listed Manner",f"{ctx.prefix}youtube":"Search for Youtube Videos Fast and Efficiently",f"{ctx.prefix}meaning":"Get Meaning of Any Word Quickly and Easily",f"{ctx.prefix}pokemon":"Get All About of Your Favourite Pokemon in Detail",f"{ctx.prefix}country":"Get Full Information About a Country in Detail"}
+        infoList = {f"{ctx.prefix}rule":"Get a Rule of a Server in Detail",f"{ctx.prefix}rules":"Get all Rules of a Server in a Listed and Proper Manner",f"{ctx.prefix}serverinfo":"Get Complete Detail and Information of a Server",f"{ctx.prefix}emojis":"Get All Emotes and Animated Emojis of a Server",f"{ctx.prefix}mcserver":"Get Status and Details of a Minecraft Java Server",f"{ctx.prefix}wikipedia":"Get a Biography or Informations in Details of a Particular Topic with Wikipedia",f"{ctx.prefix}google":"Get all Links Related With your Topic Quickly and in a Listed Manner",f"{ctx.prefix}youtube":"Search for Youtube Videos Fast and Efficiently",f"{ctx.prefix}meaning":"Get Meaning of Any Word Quickly and Easily",f"{ctx.prefix}pokemon":"Get All About of Your Favourite Pokemon in Detail",f"{ctx.prefix}country":"Get Full Information About a Country in Detail"}
         infocmd = []
         for cmd in list(infoList.keys()):
             infocmd.append(f"• {cmd} {sign}  {infoList[cmd]}.")
