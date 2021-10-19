@@ -2379,57 +2379,6 @@ async def about(ctx):
 
 abouthelp = f"about"
 
-recordscore = {}
-recordmsg = {}
-
-@bot.command()
-async def msglbd(ctx):
-    k = sorted(recordscore[ctx.guild.id].values())
-    x = 30000
-    tlbd = []
-    pinglbd = []
-    while x > 0:
-        x-=1
-        try:
-            if k[x] in recordscore[ctx.guild.id].values():
-                for key in recordscore[ctx.guild.id].keys():
-                    if recordscore[ctx.guild.id][key] == k[x]:
-                        if str(key) not in tlbd:
-                            tlbd.append(str(key))
-                            pinglbd.append(key.name)
-        except:pass
-
-    usermsg = []
-    userscore = []
-    for tl in tlbd:
-        usermsg.append(str(recordmsg[ctx.guild.id][tl]))
-        userscore.append(str(recordscore[ctx.guild.id][tl]))
-
-    msglbdEmbed = discord.Embed(title=f"{ctx.guild}'s Chat LeaderBoard", color=embedTheme)
-    msglbdEmbed.add_field(name="Users", value="\n".join(tlbd), inline=True)
-    msglbdEmbed.add_field(name="Messages", value="\n".join(usermsg), inline=True)
-    msglbdEmbed.add_field(name="Scores", value="\n".join(userscore), inline=True)
-    msglbdEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-    await ctx.send(embed=msglbdEmbed)
-
-msglbdhelp = f"msglbd"
-
-@bot.listen()
-async def on_message(message):
-    global recordscore, recordmsg
-    if message.guild.id not in recordscore:
-        recordscore[message.guild.id] = {}
-    if message.guild.id not in recordmsg:
-        recordmsg[message.guild.id] = {}
-    if str(message.author) not in recordscore[message.guild.id]:
-        recordscore[message.guild.id][str(message.author)] = 0
-    if str(message.author) not in recordmsg[message.guild.id]:
-        recordmsg[message.guild.id][str(message.author)] = 0
-    
-    recordmsg[message.guild.id][str(message.author)] += 1
-    recordscore[message.guild.id][str(message.author)] += 15
-    print(recordscore[message.guild.id][str(message.author)], recordmsg[message.guild.id][str(message.author)])
-
 helphelp = f"help [anycommand]"
 
 allcommandshelp = f"allcommands"
@@ -2451,7 +2400,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed = discord.Embed(color = embedTheme)
         myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n \n \t-> [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=536870911991&scope=bot)")
         myEmbed.add_field(name=f"Commands — {int(totalCommands)-2}",value="----------------------\n",inline=False)
-        myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop, msglbd ", inline=False)
+        myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, allcommands, gstatus, gstop, gparticipate, gquit, setprefix, whois, serverinfo, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban, softban, voicekick ", inline=False)
         myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, atlas, mcserver, wikipedia, google, youtube, meaning, pokemon, country \n----------------------\n", inline=False)
@@ -2475,7 +2424,6 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "time": content=timehelp
         elif anycommand == "timerstart": content=timerstarthelp
         elif anycommand == "timerstop": content=timerstophelp
-        elif anycommand == "msglbd": content=msglbdhelp
         elif anycommand == "addrole": content=addrolehelp
         elif anycommand == "removerole": content=removerolehelp
         elif anycommand == "clean": content=cleanhelp
@@ -2601,7 +2549,7 @@ async def allcommands(ctx):
         minigamescmd = " \n ".join(minigamescmd)
         minigamesEmbed = discord.Embed(title="Mini-Games Commands", description=f"{minigamescmd} \n\n 6/8", color=embedTheme)
 
-        infoList = {f"{ctx.prefix}rule":"Get a Rule of a Server in Detail",f"{ctx.prefix}rules":"Get all Rules of a Server in a Listed and Proper Manner",f"{ctx.prefix}serverinfo":"Get Complete Detail and Information of a Server",f"{ctx.prefix}mcserver":"Get Status and Details of a Minecraft Java Server",f"{ctx.prefix}wikipedia":"Get a Biography or Informations in Details of a Particular Topic with Wikipedia",f"{ctx.prefix}google":"Get all Links Related With your Topic Quickly and in a Listed Manner",f"{ctx.prefix}youtube":"Search for Youtube Videos Fast and Efficiently",f"{ctx.prefix}meaning":"Get Meaning of Any Word Quickly and Easily",f"{ctx.prefix}pokemon":"Get All About of Your Favourite Pokemon in Detail",f"{ctx.prefix}country":"Get Full Information About a Country in Detail",f"{ctx.prefix}msglbd":"Get a LeaderBoard of a Server Showing Top Most Chatters in the Server"}
+        infoList = {f"{ctx.prefix}rule":"Get a Rule of a Server in Detail",f"{ctx.prefix}rules":"Get all Rules of a Server in a Listed and Proper Manner",f"{ctx.prefix}serverinfo":"Get Complete Detail and Information of a Server",f"{ctx.prefix}mcserver":"Get Status and Details of a Minecraft Java Server",f"{ctx.prefix}wikipedia":"Get a Biography or Informations in Details of a Particular Topic with Wikipedia",f"{ctx.prefix}google":"Get all Links Related With your Topic Quickly and in a Listed Manner",f"{ctx.prefix}youtube":"Search for Youtube Videos Fast and Efficiently",f"{ctx.prefix}meaning":"Get Meaning of Any Word Quickly and Easily",f"{ctx.prefix}pokemon":"Get All About of Your Favourite Pokemon in Detail",f"{ctx.prefix}country":"Get Full Information About a Country in Detail"}
         infocmd = []
         for cmd in list(infoList.keys()):
             infocmd.append(f"• {cmd} {sign}  {infoList[cmd]}.")
