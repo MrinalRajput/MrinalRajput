@@ -477,7 +477,7 @@ async def setnick(ctx, member: Optional[discord.Member]=None, *, newname):
     await member.edit(nick=newname)
     embed = discord.Embed(description=f"<a:checked:899643253882769530>  Changed {membername}'s Nickname to {newname}! ", color=embedTheme)
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-    await ctx.send(embed=embed, delete_after=15)
+    await ctx.send(embed=embed)
 
 setnickhelp = f"setnick [member] <newname>"
 
@@ -495,7 +495,7 @@ async def resetnick(ctx, member: Optional[discord.Member]=None):
     await member.edit(nick=None)
     embed = discord.Embed(description=f"<a:checked:899643253882769530>  Removed {membername}'s Nickname Successfully! ", color=embedTheme)
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-    await ctx.send(embed=embed, delete_after=15)
+    await ctx.send(embed=embed)
 
 resetnickhelp = f"resetnick [member]"
 
