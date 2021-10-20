@@ -148,8 +148,15 @@ async def modlogs(ctx, case, user, mod, timing, logreason, cased):
         if "mod" in channel.name or "mod-log" in channel.name or "server-log" in channel.name:
             logEmbed = discord.Embed(title=f"Mod Logs", color=embedTheme)
             logEmbed.set_author(icon_url=ctx.guild.icon_url, name=f"{ctx.guild} || {case}")
-            logEmbed.set_thumbnail(url=user.avatar_url)
-            logEmbed.add_field(name="User", value=user.mention, inline=True)
+            try:
+                logEmbed.set_thumbnail(url=user.avatar_url)
+                target="user"
+            except:
+                logEmbed.set_thumbnail(url=ctx.guild.icon_url)
+                target="channel"
+            if target == "user":logEmbed.add_field(name="User", value=user.mention, inline=True)
+            elif target == "channel":logEmbed.add_field(name="Channel", value=user.mention, inline=True)
+
             logEmbed.add_field(name="Moderator", value=mod.mention, inline=True)
             if timing is not None:
                 logEmbed.add_field(name="Period", value=timing, inline=True)
@@ -528,9 +535,9 @@ async def lock(ctx, channel: Optional[discord.TextChannel]=None):
     overwrite = channel.overwrites_for(ctx.guild.default_role)
     overwrite.send_messages=False
     await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
-    embed = discord.Embed(description=f"** Locked : {channel.mention} has been Locked by {ctx.author.mention} **", color=embedTheme)
-    embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+    embed = discord.Embed(description=f"🔒 Locked {channel.mention} for Members", color=embedTheme)
     await ctx.send(embed=embed)
+    await modlogs(ctx, "Lock", channel, ctx.author, None, None, "Locked")
 
 lockhelp = f"lock [channel]"
 
@@ -542,9 +549,9 @@ async def unlock(ctx, channel: Optional[discord.TextChannel]=None):
     overwrite = channel.overwrites_for(ctx.guild.default_role)
     overwrite.send_messages=True
     await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
-    embed = discord.Embed(description=f"** Unlocked : {channel.mention} has been Unlocked by {ctx.author.mention} **", color=embedTheme)
-    embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+    embed = discord.Embed(description=f"🔓 Unlocked {channel.mention} for Members", color=embedTheme)
     await ctx.send(embed=embed)
+    await modlogs(ctx, "Unlock", channel, ctx.author, None, None, "Unlocked")
 
 unlockhelp = f"unlock [channel]"
 
