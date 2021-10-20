@@ -2399,7 +2399,7 @@ async def emojis(ctx):
     serveremoji = []
     for emoji in ctx.guild.emojis:
         serveremoji.append(str(emoji))
-    await ctx.send(embed=discord.Embed(color=embedTheme).add_field(name=f"{ctx.guild}'s Emojis [{len(ctx.guild.emojis)}]", value="  ".join(serveremoji) if len(ctx.guild.emojis) != 0 else "The Server doesn't Have any Emoji", ).set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}"))
+    await ctx.send(embed=discord.Embed(title=f"{ctx.guild}'s Emojis [{len(ctx.guild.emojis)}]", description="  ".join(serveremoji) if len(ctx.guild.emojis) != 0 else "The Server doesn't Have any Emoji", color=embedTheme).set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}"))
 
 emojishelp = f"emojis"
 
