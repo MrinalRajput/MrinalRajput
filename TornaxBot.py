@@ -2263,7 +2263,7 @@ async def on_message(message):
                         if not message.author.bot:
                             if user in afkdata[message.guild.id]:
                                 print(2)
-                                await message.channel.send(f"Afk: {message.author.mention} He is Currently Afk | Reason: {reasontopic[user]}")
+                                await message.channel.send(f"Afk: {username} is Currently Afk | Reason: {reasontopic[user]}")
                     else:
                         # print("He is not afk")
                         pass
