@@ -1301,7 +1301,7 @@ async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[d
                     playersare.append(player4.mention)
                 
                 letter = random.choice(alphabets)
-                await ctx.send(f"{turn.mention} Its Your Turn, You Have to tell Any Place Name Starts with `{letter}`")
+                await ctx.send(f"{turn.mention} Its Your Turn, You Have to tell a Country or State name Starts with `{letter}`")
 
                 def check(message):
                     return message.author == turn and message.content.lower().startswith(letter) and message.channel == ctx.channel
@@ -1337,7 +1337,7 @@ async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[d
                             atlasgames[ctx.guild.id].remove(player4.id)
                         break
                     else:
-                        await userplace.reply(f"You Told Incorrect Place, {userplace.content} doesn't Exist")
+                        await userplace.reply(f"You Told Incorrect Place, {userplace.content} is not a Country or State")
                         playersare.remove(turn.mention)
                         await ctx.send(f"Loser - {turn.mention}\nWinners - {', '.join(playersare)}")
                         atlasgames[ctx.guild.id].remove(player1.id)
