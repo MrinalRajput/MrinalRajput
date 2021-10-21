@@ -983,7 +983,7 @@ async def mcserver(ctx, server: Optional[str]=None):
             await ctx.reply("You Must Specify the Server Whose Detail You want to See")
     except Exception as e:
         print(e)
-        await ctx.reply(f"The Server You are Looking For Does Not Exist, Recheck The Server IP")
+        await ctx.reply(f"The Server You are Looking For Does Not Exist or is Currently Down, Recheck The Server IP")
 
 mcserverhelp = f"mcserver <Minecaft Java Server Ip>"
 
