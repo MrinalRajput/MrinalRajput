@@ -975,7 +975,7 @@ async def mcserver(ctx, server: Optional[str]=None):
                 mcEmbed = discord.Embed(title=f"Looking For {server}", color=embedTheme)
                 mcEmbed.add_field(name="Players Online", value=f"{status.players.online}", inline = False)
                 mcEmbed.add_field(name="Server Pings", value=f"`{round(status.latency)}ms`", inline = False)
-                mcEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author}")
+                mcEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
                 await ctx.send(embed=mcEmbed)
             else:
                 await ctx.reply("You can Search a Server by its Ip not by Name")
@@ -2263,7 +2263,7 @@ async def on_message(message):
                         if not message.author.bot:
                             if user in afkdata[message.guild.id]:
                                 print(2)
-                                await message.channel.send(f"Afk: {username} is Currently Afk | Reason: {reasontopic[user]}")
+                                await message.channel.send(f"Afk: {username.name} is Currently Afk | Reason: {reasontopic[user]}")
                     else:
                         # print("He is not afk")
                         pass
