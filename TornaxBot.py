@@ -2352,8 +2352,8 @@ async def whois(ctx, member: Optional[discord.Member]=None):
         userEmbed = discord.Embed(description=member.mention, color=embedTheme)
         userEmbed.set_author(icon_url=member.avatar_url, name=member)
         userEmbed.set_thumbnail(url=member.avatar_url)
-        userEmbed.add_field(name=f"Joined {ctx.guild.name}", value= member.joined_at.strftime("%a, %d %b %Y %I:%M %p"),inline=True)
-        userEmbed.add_field(name=f"Joined Discord", value= member.created_at.strftime("%a, %d %b %Y %I:%M %p"),inline=True)
+        userEmbed.add_field(name=f"Joined {ctx.guild.name}", value= member.joined_at.strftime("%a, %d %b %Y %H:%M %p"),inline=True)
+        userEmbed.add_field(name=f"Joined Discord", value= member.created_at.strftime("%a, %d %b %Y %H:%M %p"),inline=True)
         if len(member.roles) > 1: 
             role_string = ' '.join([r.mention for r in member.roles][1:])
             userEmbed.add_field(name=f"Roles[{len(member.roles)-1}]", value= role_string,inline=False)
