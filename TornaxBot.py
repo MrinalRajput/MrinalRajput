@@ -105,7 +105,7 @@ async def on_guild_join(guild):
 @bot.event
 async def on_member_join(member):
     for channel in member.guild.channels:
-        if "welcome" in channel.name or "join" in channel.name:
+        if "welcome" in channel.name.lower() or "join" in channel.name.lower():
             created_at = member.created_at.strftime("%a, %d %b %Y %I:%M %p")
             joined_at = member.joined_at.strftime("%a, %d %b %Y %I:%M %p")
             welcomeEmbed = discord.Embed(title="Welcome!", description=f"A Member Just Joined **{member.guild.name}**",color=embedTheme)
@@ -121,8 +121,8 @@ async def on_member_join(member):
 @bot.event
 async def on_member_remove(member):
     for channel in member.guild.channels:
-        if "bye" in channel.name or "leave" in channel.name:
-            byeEmbed = discord.Embed(title=f"{member} Just Left {member.guild.name} Server!",color=embedTheme)
+        if "bye" in channel.name.lower() or "leave" in channel.name.lower():
+            byeEmbed = discord.Embed(title="Bye!",description=f"{member.mention} Just Left {member.guild.name} Server",color=embedTheme)
             await channel.send(embed=byeEmbed)
 
 @bot.event
