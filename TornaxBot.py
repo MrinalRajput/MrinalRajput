@@ -219,7 +219,7 @@ async def status(ctx):
 
 @bot.command()
 @commands.has_permissions(ban_members=True)
-async def ban(ctx, member:discord.Member, days: Optional[int]=None, *, reason:Optional[str]=None):
+async def ban(ctx, member: Optional[discord.Member]=None, days: Optional[int]=None, *, reason:Optional[str]=None):
     try:
         if member is not None:
             memberId = member.id
@@ -279,7 +279,7 @@ unbanhelp = f"unban <member id>"
 
 @bot.command()
 @commands.has_permissions(kick_members=True)
-async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: Optional[str]=None, *, reason: Optional[str]=None ):
+async def mute(ctx, member: Optional[discord.Member]=None, duration: Optional[int]=None, unit: Optional[str]=None, *, reason: Optional[str]=None ):
     try:
         try:
             if member is not None:
@@ -341,7 +341,7 @@ mutehelp = f"mute <member> [duration] [unit = s,m,h] [reason]"
 
 @bot.command()
 @commands.has_permissions(kick_members=True)
-async def unmute(ctx, member:discord.Member, *, reason: Optional[str]=None):
+async def unmute(ctx, member: Optional[discord.Member]=None, *, reason: Optional[str]=None):
     if member is not None:
         mutedRole = discord.utils.get(ctx.message.guild.roles, name="Muted")
         if mutedRole in member.roles:
@@ -359,7 +359,7 @@ unmutehelp = f"unmute <member> [reason]"
 
 @bot.command()
 @commands.has_permissions(administrator=True)
-async def warn(ctx, member:discord.Member, *, reason=None):
+async def warn(ctx, member: Optional[discord.Member]=None, *, reason=None):
     if member is not None:
         await ctx.send(embed= discord.Embed(description=f"✅ Successfully Warned {member.mention}" if reason is None else f"✅ Successfully Warned {member.mention} \n\t Reason: {reason}",color=embedTheme))
         if reason is None:
@@ -377,7 +377,7 @@ async def warn_error(error, ctx):
 
 @bot.command()
 @commands.has_permissions(kick_members=True)
-async def kick(ctx, member:discord.Member, *, reason=None):
+async def kick(ctx, member: Optional[discord.Member]=None, *, reason=None):
     if member is not None:
         if member == ctx.author:
             await ctx.send(f":exclamation: You cannot Kick yourself {ctx.author.mention}")
@@ -897,7 +897,7 @@ async def removerole(ctx, member: Optional[discord.Member]=None, role: discord.R
 removerolehelp = f"removerole [member] <role>"
 
 @bot.command()
-async def solve(ctx, num1, operation, num2):
+async def solve(ctx, num1: Optional[str]=None, operation: Optional[str]=None, num2: Optional[str]=None):
     if num1 is not None and operation is not None and num2 is not None:
         if "." in num1:
             num1 = float(num1)
