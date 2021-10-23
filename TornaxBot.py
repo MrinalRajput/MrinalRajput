@@ -221,32 +221,35 @@ async def status(ctx):
 @commands.has_permissions(ban_members=True)
 async def ban(ctx, member:discord.Member, days: Optional[int]=None, *, reason:Optional[str]=None):
     try:
-        memberId = member.id
-        if days is not None:
-            wait = days * 86400
-            try:
-                embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} for `{days}` Days **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} for `{days}` Days \n\t With the Reason of :\t{reason}**",color=embedTheme)
-                dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.name} for `{days}` Days **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.name} for `{days}` Days \n\t With the Reason of :\t{reason}**",color=embedTheme)
-                await ctx.send(embed=embed)
-                await member.ban(reason=reason)
-                await member.send(embed=dmuser)
-                await modlogs(ctx, "Ban", member, ctx.author, f"{days} Day(s)" , reason, "Banned")
-                await asyncio.sleep(wait)
-                await ctx.guild.unban(memberId)
-                await modlogs(ctx, "Unban", member, bot.user, None, "Auto", "Unbanned")
-            except Exception as e:
-                print(e)
-                await ctx.reply(f":exclamation: Failed to Ban {member} From {ctx.guild}")
-        else:
-            if not member.guild_permissions.administrator:
-                embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} \n\t With the Reason of :\t{reason}**",color=embedTheme)
-                dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.name} **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.name} \n\t With the Reason of :\t{reason}**",color=embedTheme)
-                await ctx.send(embed=embed)
-                await member.send(embed=dmuser)
-                await member.ban(reason=reason)
-                await modlogs(ctx, "Ban", member, ctx.author, None , reason, "Banned")
+        if member is not None:
+            memberId = member.id
+            if days is not None:
+                wait = days * 86400
+                try:
+                    embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} for `{days}` Days **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} for `{days}` Days \n\t With the Reason of :\t{reason}**",color=embedTheme)
+                    dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.name} for `{days}` Days **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.name} for `{days}` Days \n\t With the Reason of :\t{reason}**",color=embedTheme)
+                    await ctx.send(embed=embed)
+                    await member.ban(reason=reason)
+                    await member.send(embed=dmuser)
+                    await modlogs(ctx, "Ban", member, ctx.author, f"{days} Day(s)" , reason, "Banned")
+                    await asyncio.sleep(wait)
+                    await ctx.guild.unban(memberId)
+                    await modlogs(ctx, "Unban", member, bot.user, None, "Auto", "Unbanned")
+                except Exception as e:
+                    print(e)
+                    await ctx.reply(f":exclamation: Failed to Ban {member} From {ctx.guild}")
             else:
-                await ctx.reply(f":exclamation: You Cannot Ban an Admin")
+                if not member.guild_permissions.administrator:
+                    embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} \n\t With the Reason of :\t{reason}**",color=embedTheme)
+                    dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.name} **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.name} \n\t With the Reason of :\t{reason}**",color=embedTheme)
+                    await ctx.send(embed=embed)
+                    await member.send(embed=dmuser)
+                    await member.ban(reason=reason)
+                    await modlogs(ctx, "Ban", member, ctx.author, None , reason, "Banned")
+                else:
+                    await ctx.reply(f":exclamation: You Cannot Ban an Admin")
+        else:
+            await ctx.reply(f"You must Specify the User to Ban")
     except Exception as e:
         print(e)
         await ctx.reply(f":exclamation: You don't have Permissions to do that!")
@@ -279,53 +282,56 @@ unbanhelp = f"unban <member id>"
 async def mute(ctx, member:discord.Member, duration: Optional[int]=None, unit: Optional[str]=None, *, reason: Optional[str]=None ):
     try:
         try:
-            if member != ctx.author:
-                if duration is None and unit is not None:
-                    reason = unit
-                    unit = None
-                mutedRole = discord.utils.get(ctx.message.guild.roles, name="Muted")
-                if not mutedRole:
-                    mutedRole = await ctx.guild.create_role(name="Muted")
+            if member is not None:
+                if member != ctx.author:
+                    if duration is None and unit is not None:
+                        reason = unit
+                        unit = None
+                    mutedRole = discord.utils.get(ctx.message.guild.roles, name="Muted")
+                    if not mutedRole:
+                        mutedRole = await ctx.guild.create_role(name="Muted")
 
-                    for channel in ctx.guild.channels:
-                        await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False)
-                if duration is not None and unit is not None:
-                    if unit == "s" or "sec" in unit:
-                        wait = 1 * duration 
-                        embed = discord.Embed(description = f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Seconds **" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Seconds \n\t With the Reason of :\t{reason}**",color=embedTheme)
-                        dmAlert = f"You are Muted in the Server by an Admin for `{duration}` Seconds"if reason is None else f"You are Muted in the Server by an Admin for `{duration}`` Seconds\n\t With the Reason of {reason}"
-                    elif unit == "m" or "min" in unit:
-                        wait = 60 * duration 
-                        embed = discord.Embed(description = f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Minutes **" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Minutes \n\t With the Reason of :\t{reason}**",color=embedTheme)
-                        dmAlert = f"You are Muted in the Server by an Admin for `{duration}` Minutes"if reason is None else f"You are Muted in the Server by an Admin for `{duration}`` Minutes\n\t With the Reason of {reason}"
-                    elif unit == "h" or unit == "hour":
-                        wait = 60 * 60 * duration 
-                        embed = discord.Embed(description = f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Hours **" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Hours \n\t With the Reason of :\t{reason}**",color=embedTheme)
-                        dmAlert = f"You are Muted in the {ctx.guild.name} Server by an Admin for `{duration}` Hours"if reason is None else f"You are Muted in the {ctx.guild.name} Server by an Admin for `{duration}`` Hours\n\t With the Reason of {reason}"
-                    if not member.guild_permissions.administrator:
-                        await member.add_roles(mutedRole)
-                        await ctx.send(embed=embed,delete_after=15)
-                        await member.send(dmAlert)
-                        if "s" in unit: period = f"{duration} Seconds"
-                        elif "m" in unit: period = f"{duration} Minute"
-                        elif "h" in unit: period = f"{duration} Hour"
-                        await modlogs(ctx, "Mute", member, ctx.author, period, reason, "Muted")
-                        await asyncio.sleep(wait)
-                        await member.remove_roles(mutedRole)
-                        await modlogs(ctx, "Unmute", member, bot.user, None, "Auto", "Unmuted")
+                        for channel in ctx.guild.channels:
+                            await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False)
+                    if duration is not None and unit is not None:
+                        if unit == "s" or "sec" in unit:
+                            wait = 1 * duration 
+                            embed = discord.Embed(description = f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Seconds **" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Seconds \n\t With the Reason of :\t{reason}**",color=embedTheme)
+                            dmAlert = f"You are Muted in the Server by an Admin for `{duration}` Seconds"if reason is None else f"You are Muted in the Server by an Admin for `{duration}`` Seconds\n\t With the Reason of {reason}"
+                        elif unit == "m" or "min" in unit:
+                            wait = 60 * duration 
+                            embed = discord.Embed(description = f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Minutes **" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Minutes \n\t With the Reason of :\t{reason}**",color=embedTheme)
+                            dmAlert = f"You are Muted in the Server by an Admin for `{duration}` Minutes"if reason is None else f"You are Muted in the Server by an Admin for `{duration}`` Minutes\n\t With the Reason of {reason}"
+                        elif unit == "h" or unit == "hour":
+                            wait = 60 * 60 * duration 
+                            embed = discord.Embed(description = f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Hours **" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention} for `{duration}` Hours \n\t With the Reason of :\t{reason}**",color=embedTheme)
+                            dmAlert = f"You are Muted in the {ctx.guild.name} Server by an Admin for `{duration}` Hours"if reason is None else f"You are Muted in the {ctx.guild.name} Server by an Admin for `{duration}`` Hours\n\t With the Reason of {reason}"
+                        if not member.guild_permissions.administrator:
+                            await member.add_roles(mutedRole)
+                            await ctx.send(embed=embed,delete_after=15)
+                            await member.send(dmAlert)
+                            if "s" in unit: period = f"{duration} Seconds"
+                            elif "m" in unit: period = f"{duration} Minute"
+                            elif "h" in unit: period = f"{duration} Hour"
+                            await modlogs(ctx, "Mute", member, ctx.author, period, reason, "Muted")
+                            await asyncio.sleep(wait)
+                            await member.remove_roles(mutedRole)
+                            await modlogs(ctx, "Unmute", member, bot.user, None, "Auto", "Unmuted")
+                        else:
+                            await ctx.reply(f":exclamation: You Cannot Mute an Admin")
                     else:
-                        await ctx.reply(f":exclamation: You Cannot Mute an Admin")
+                        if not member.guild_permissions.administrator:
+                            embed = discord.Embed(description=f"** {member.mention} has been Muted Successfully by {ctx.author.mention}**" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention}\n\t With the Reason of :\t{reason}**",color=embedTheme)
+                            await member.add_roles(mutedRole)
+                            await ctx.send(embed=embed,delete_after=15)
+                            await member.send(f"You are Muted in the Server by an Admin"if reason is None else f"You are Muted in the Server by an Admin\n\t With the Reason of {reason}")
+                            await modlogs(ctx, "Mute", member, ctx.author, "None", reason, "Muted")
+                        else:
+                            await ctx.reply(f":exclamation: You Cannot Mute an Admin")
                 else:
-                    if not member.guild_permissions.administrator:
-                        embed = discord.Embed(description=f"** {member.mention} has been Muted Successfully by {ctx.author.mention}**" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention}\n\t With the Reason of :\t{reason}**",color=embedTheme)
-                        await member.add_roles(mutedRole)
-                        await ctx.send(embed=embed,delete_after=15)
-                        await member.send(f"You are Muted in the Server by an Admin"if reason is None else f"You are Muted in the Server by an Admin\n\t With the Reason of {reason}")
-                        await modlogs(ctx, "Mute", member, ctx.author, "None", reason, "Muted")
-                    else:
-                        await ctx.reply(f":exclamation: You Cannot Mute an Admin")
+                    await ctx.reply(f":exclamation: You cannot Mute YourSelf")
             else:
-                await ctx.reply(f":exclamation: You cannot Mute YourSelf")
+                await ctx.reply(f"Please Specify the User to Mute")
         except Exception:
             pass
     except MissingPermissions:
@@ -336,15 +342,18 @@ mutehelp = f"mute <member> [duration] [unit = s,m,h] [reason]"
 @bot.command()
 @commands.has_permissions(kick_members=True)
 async def unmute(ctx, member:discord.Member, *, reason: Optional[str]=None):
-    mutedRole = discord.utils.get(ctx.message.guild.roles, name="Muted")
-    if mutedRole in member.roles:
-        embed = discord.Embed(description=f"** {member.mention} has been Unmuted Successfully by {ctx.author.mention}**" if reason is None else f"** {member.mention} has been Unmuted Successfully by {ctx.author.mention}\n\t With the Reason of :\t{reason}**",color=embedTheme)
-        await member.remove_roles(mutedRole)
-        await ctx.send(embed=embed,delete_after=15)
-        await modlogs(ctx, "Unmute", member, ctx.author, None, reason, "Unmuted")
+    if member is not None:
+        mutedRole = discord.utils.get(ctx.message.guild.roles, name="Muted")
+        if mutedRole in member.roles:
+            embed = discord.Embed(description=f"** {member.mention} has been Unmuted Successfully by {ctx.author.mention}**" if reason is None else f"** {member.mention} has been Unmuted Successfully by {ctx.author.mention}\n\t With the Reason of :\t{reason}**",color=embedTheme)
+            await member.remove_roles(mutedRole)
+            await ctx.send(embed=embed,delete_after=15)
+            await modlogs(ctx, "Unmute", member, ctx.author, None, reason, "Unmuted")
+        else:
+            embed = discord.Embed(description=f"** :exclamation: {member.mention} is Not Muted in this Server **",color=embedTheme)
+            await ctx.send(embed=embed,delete_after=15)
     else:
-        embed = discord.Embed(description=f"** :exclamation: {member.mention} is Not Muted in this Server **",color=embedTheme)
-        await ctx.send(embed=embed,delete_after=15)
+        await ctx.reply(f"Please Specify the User to Unmute")
 
 unmutehelp = f"unmute <member> [reason]"
 
@@ -850,40 +859,46 @@ leavehelp = f"leave"
 @bot.command()
 @commands.has_permissions(manage_roles=True)
 async def addrole(ctx, member: Optional[discord.Member]=None, role: discord.Role=None):
-    if member is None:
-        member = ctx.author
-    if role in member.roles:
-        embed = discord.Embed(description=f"** :exclamation: {member.mention} Already have {role.mention} Role **", color=embedTheme)
-        embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-        await ctx.send(embed=embed, delete_after=8)
+    if role is not None:
+        if member is None:
+            member = ctx.author
+        if role in member.roles:
+            embed = discord.Embed(description=f"** :exclamation: {member.mention} Already have {role.mention} Role **", color=embedTheme)
+            embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+            await ctx.send(embed=embed, delete_after=8)
+        else:
+            await member.add_roles(role)
+            embed = discord.Embed(description=f"** Successfully Added {role.mention} Role to {member.mention} **", color=embedTheme)
+            embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+            await ctx.send(embed=embed, delete_after=8)
     else:
-        await member.add_roles(role)
-        embed = discord.Embed(description=f"** Successfully Added {role.mention} Role to {member.mention} **", color=embedTheme)
-        embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-        await ctx.send(embed=embed, delete_after=8)
+        await ctx.reply(f"Please Specify the Role by Mentioning it!")
 
 addrolehelp = f"addrole [member] <role>"
 
 @bot.command()
 @commands.has_permissions(manage_roles=True)
 async def removerole(ctx, member: Optional[discord.Member]=None, role: discord.Role=None):
-    if member is None:
-        member = ctx.author
-    if role in member.roles:
-        await member.remove_roles(role)
-        embed = discord.Embed(description=f"** Successfully Removed {role.mention} Role from {member.mention} **", color=embedTheme)
-        embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-        await ctx.send(embed=embed, delete_after=8)
+    if role is not None:
+        if member is None:
+            member = ctx.author
+        if role in member.roles:
+            await member.remove_roles(role)
+            embed = discord.Embed(description=f"** Successfully Removed {role.mention} Role from {member.mention} **", color=embedTheme)
+            embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+            await ctx.send(embed=embed, delete_after=8)
+        else:
+            embed = discord.Embed(description=f"** :exclamation: {member.mention} Doesn't have {role.mention} Role **", color=embedTheme)
+            embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+            await ctx.send(embed=embed, delete_after=8)
     else:
-        embed = discord.Embed(description=f"** :exclamation: {member.mention} Doesn't have {role.mention} Role **", color=embedTheme)
-        embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-        await ctx.send(embed=embed, delete_after=8)
+        await ctx.reply(f"Please Specify the Role by Mentioning it!")
 
 removerolehelp = f"removerole [member] <role>"
 
 @bot.command()
 async def solve(ctx, num1, operation, num2):
-    try:
+    if num1 is not None and operation is not None and num2 is not None:
         if "." in num1:
             num1 = float(num1)
         else:
@@ -900,8 +915,8 @@ async def solve(ctx, num1, operation, num2):
             await ctx.send(f"{ctx.author.mention}  {num1} × {num2} = {num1 * num2}")
         elif operation == "/" or operation == "÷":
             await ctx.send(f"{ctx.author.mention}  {num1} ÷ {num2} = {num1 / num2}")
-    except:
-        server_prefix = await bot.pg_con.fetchrow("SELECT prefix FROM prefixes WHERE guild_id  = $1", ctx.guild.id)
+    else:
+        print(e)
         embed = discord.Embed(title=f"Command : {ctx.prefix}solve", description=f"Usage : {ctx.prefix}solve [Number1] [Operation: +,-,*,/] [Number2]",color=embedTheme)
         await ctx.send(embed=embed)
 
