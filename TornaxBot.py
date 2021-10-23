@@ -122,7 +122,7 @@ async def on_member_join(member):
 async def on_member_remove(member):
     for channel in member.guild.channels:
         if "bye" in channel.name.lower() or "leave" in channel.name.lower():
-            byeEmbed = discord.Embed(description=f"**Bye!**{member.mention} Just Left {member.guild.name} Server",color=embedTheme)
+            byeEmbed = discord.Embed(description=f"**Bye!**  {member.mention} Just Left {member.guild.name} Server",color=embedTheme)
             await channel.send(embed=byeEmbed)
 
 @bot.event
@@ -808,11 +808,34 @@ gquithelp = f"gquit"
 gstatushelp = f"gstatus"
 
 @bot.command()
-async def react(ctx, chat:Optional[discord.Message], emoji):
-    message = chat
-    await message.add_reaction(emoji)
+async def react(ctx, chat:Optional[discord.Message]=None, emoji:Optional[discord.Emoji]=None):
+    if ctx.author.guild_permissions.manage_messages:
+        if emoji is not None:
+            if chat is not None:
+                message = chat
+                await message.add_reaction(emoji)
+            else:
+                await ctx.reply(f"Please Specify the Message by its ID to React")
+        else:
+            await ctx.reply(f"Please Specify the Emoji to React")
+    else:
+        await ctx.reply(f":exclamation: You don't have Permissions to do that!'")
+
 
 reacthelp = f"react <message id> <emoji>"
+
+@bot.command()
+async def clearreacts(ctx, chat: Optional[discord.Message]=None):
+    if ctx.author.guild_permissions.manage_messages:
+        if chat is not None:
+            message = chat
+            await message.clear_reactions()
+        else:
+            await ctx.reply(f"Please Specify the Message by its ID to Remove Reactions")
+    else:
+        await ctx.reply(f":exclamation: You don't have Permissions to do that!'")
+
+clearreactshelp = f"clearreacts <message id>"
 
 @bot.command()
 async def join(ctx):
@@ -2466,7 +2489,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed = discord.Embed(color = embedTheme)
         myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n \n \t-> [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=536870911991&scope=bot)")
         myEmbed.add_field(name=f"Commands — {int(totalCommands)-2}",value="----------------------\n",inline=False)
-        myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, rule, rules, solve, time, timerstart, timerstop", inline=False)
+        myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, clearreacts, rule, rules, solve, time, timerstart, timerstop", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, allcommands, gstatus, gstop, gparticipate, gquit, setprefix, whois, emojis, serverinfo, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban, softban, voicekick ", inline=False)
         myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, atlas, mcserver, wikipedia, google, youtube, meaning, pokemon, country \n----------------------\n", inline=False)
@@ -2484,6 +2507,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "avatar": content=avatarhelp
         elif anycommand == "afk": content=afkhelp
         elif anycommand == "react": content=reacthelp
+        elif anycommand == "clearreacts": content=clearreactshelp
         elif anycommand == "rule": content=rulehelp
         elif anycommand == "rules": content=ruleshelp
         elif anycommand == "solve": content=solvehelp
@@ -2573,7 +2597,7 @@ async def allcommands(ctx):
 
         sign = "→"
 
-        toolsList = {f"{ctx.prefix}tell":"Send Your Message From Tornax for Announcements and Fun",f"{ctx.prefix}poll":"Easily Host Reaction Based Polls",f"{ctx.prefix}ping":"Get the Current Latency in ms value",f"{ctx.prefix}afk":"Let Others Know Your Status and What are You Doing Currently",f"{ctx.prefix}thought":"Show your Current Thinking in a Different & Higlighted Way",f"{ctx.prefix}avatar":"See Someone's Profile Picture/Avatar in Large Size",f"{ctx.prefix}whois":"Get All Details About an User of a Server",f"{ctx.prefix}react":"Let Tornax React on a Message for You",f"{ctx.prefix}solve":"Use Tornax for Simple to Difficult Calculations",f"{ctx.prefix}timerstart":"Let Tornax Start Countdown for You",f"{ctx.prefix}timerstop":"Stop The Countdown in Between Started by Tornax"}
+        toolsList = {f"{ctx.prefix}tell":"Send Your Message From Tornax for Announcements and Fun",f"{ctx.prefix}poll":"Easily Host Reaction Based Polls",f"{ctx.prefix}ping":"Get the Current Latency in ms value",f"{ctx.prefix}afk":"Let Others Know Your Status and What are You Doing Currently",f"{ctx.prefix}thought":"Show your Current Thinking in a Different & Higlighted Way",f"{ctx.prefix}avatar":"See Someone's Profile Picture/Avatar in Large Size",f"{ctx.prefix}whois":"Get All Details About an User of a Server",f"{ctx.prefix}react":"Let Tornax React on a Message for You",f"{ctx.prefix}clearreacts":"Remove/Clear All Reactions from a Message",f"{ctx.prefix}solve":"Use Tornax for Simple to Difficult Calculations",f"{ctx.prefix}timerstart":"Let Tornax Start Countdown for You",f"{ctx.prefix}timerstop":"Stop The Countdown in Between Started by Tornax"}
         toolscmd = []
         for cmd in list(toolsList.keys()):
             toolscmd.append(f"• {cmd} {sign}  {toolsList[cmd]}.")
