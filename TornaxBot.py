@@ -697,7 +697,7 @@ class Giveaway():
                     winnerCode = random.choice(list(Participants[ctx.guild.id].values()))
                     CodeOwner = [k for k, v in Participants[ctx.guild.id].items() if v == winnerCode]
                     # print(CodeOwner)
-                    winnerName = str(CodeOwner[0])
+                    winnerName = CodeOwner[0]
                     winner = f"{winnerName.name} || {winnerCode}"
 
                     embed = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||\n",color=embedTheme)
@@ -751,8 +751,10 @@ class Giveaway():
                         code = random.randint(000000,999999)
                     Participants[ctx.guild.id][ctx.author] = code
 
-                    listtostr = list(Participants[ctx.guild.id].keys())
-                    members = str(listtostr)
+                    # listtostr = list(Participants[ctx.guild.id].keys())
+                    members = []
+                    for key in Participants[ctx.guild.id].keys():
+                        members.append(key.name)
 
                     members = members.replace("'","")
                     members = members.replace("[","")
