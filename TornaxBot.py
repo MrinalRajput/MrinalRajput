@@ -122,7 +122,7 @@ async def on_member_join(member):
 async def on_member_remove(member):
     for channel in member.guild.channels:
         if "bye" in channel.name or "leave" in channel.name:
-            byeEmbed = discord.Embed(description=f"{member.mention} Just Left {member.guild.name} Server!",color=embedTheme)
+            byeEmbed = discord.Embed(description=f"**{member.mention} Just Left {member.guild.name} Server!**",color=embedTheme)
             await channel.send(embed=byeEmbed)
 
 @bot.event
