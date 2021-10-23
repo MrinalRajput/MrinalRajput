@@ -916,7 +916,6 @@ async def solve(ctx, num1, operation, num2):
         elif operation == "/" or operation == "÷":
             await ctx.send(f"{ctx.author.mention}  {num1} ÷ {num2} = {num1 / num2}")
     else:
-        print(e)
         embed = discord.Embed(title=f"Command : {ctx.prefix}solve", description=f"Usage : {ctx.prefix}solve [Number1] [Operation: +,-,*,/] [Number2]",color=embedTheme)
         await ctx.send(embed=embed)
 
