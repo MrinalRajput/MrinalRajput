@@ -137,7 +137,7 @@ async def on_dbl_vote(data):
 @bot.listen()
 async def on_message(message):
     if not message.author.bot:
-        if message.content == "<@!832897602768076816>":
+        if message.content == "<@!832897602768076816>" or message.content == "<@832897602768076816>":
             prfx = await bot.pg_con.fetchrow("SELECT prefix FROM prefixes WHERE guild_id = $1", message.guild.id)
             emoji = "<a:dance_stickman:899174400132255844>"
             await message.add_reaction(emoji)
@@ -799,10 +799,7 @@ class Giveaway():
             if ctx.guild.id not in GiveawayActive:
                 GiveawayActive[ctx.guild.id] = False
             if GiveawayActive[ctx.guild.id]:
-                members = []
-                for k, v in Participants[ctx.guild.id]:
-                    members.append(f"{k} || {v}")
-                await ctx.send(embed=discord.Embed(title="Current Giveaway's Details", color=embedTheme).add_field(name="Participants", value="\n".join(members)).add_field(name="Channel", value=GiveawayChannel[ctx.guild.id].mention))
+                await ctx.send(embed=discord.Embed(title="Current Giveaway's Details", color=embedTheme).add_field(name="Total Participants", value=len(list(Participants[ctx.guild.id].keys()))).add_field(name="Channel", value=GiveawayChannel[ctx.guild.id].mention))
             else:
                 await ctx.send(":exclamation: There is No Giveaway Active in this Server")
         else:
