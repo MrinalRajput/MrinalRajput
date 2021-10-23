@@ -756,10 +756,7 @@ class Giveaway():
                     for key in Participants[ctx.guild.id].keys():
                         members.append(key.name)
 
-                    members = members.replace("'","")
-                    members = members.replace("[","")
-                    members = members.replace("]","")
-                    MembersList[ctx.guild.id] = members
+                    MembersList[ctx.guild.id] = ", ".join(members)
 
                     await ctx.author.send(f":partying_face: You have Successfully Participated in the Giveaway and Your Special Code for The Giveaway is `{code}`")
                     await ctx.send(f"{ctx.author.mention} We Accepted your Request, Please Check your Dm", delete_after=15)
