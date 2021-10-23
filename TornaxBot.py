@@ -706,14 +706,37 @@ class Giveaway():
                     embed.add_field(name="Participants",value=f"{MembersList[ctx.guild.id]}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
 
                     await GiveawayChannel[ctx.guild.id].send(embed=embed)
-                    Participants[ctx.guild.id].clear()
                     MembersList[ctx.guild.id] = ""
                     GiveawayActive[ctx.guild.id] = False
+                    await asyncio.sleep(3600)
+                    Participants[ctx.guild.id].clear()
                     GiveawayChannel[ctx.guild.id] = None
             else:
                 await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
         else:
             await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" to do that {ctx.author.mention}, use `>help gstart` for more help')
+
+    @bot.command()
+    async def greroll(ctx):
+        GiveawayRole = discord.utils.get(ctx.guild.roles, name="Giveaway Handler")
+        if GiveawayRole in ctx.author.roles:
+            if ctx.guild.id not in GiveawayActive:
+                GiveawayActive[ctx.guild.id] = False
+            if GiveawayActive[ctx.guild.id] == False:
+                if ctx.guild.id in Participants:
+                    if "No One" not in Participants[ctx.guild.id]:
+                        winnerCode = random.choice(list(Participants[ctx.guild.id].values()))
+                        CodeOwner = [k for k, v in Participants[ctx.guild.id].items() if v == winnerCode]
+                        winnerName = str(CodeOwner[0])
+                        await ctx.send(f":tada: Congratulations! The New Winner is {winnerName.mention} || {winnerCode} :partying_face:")
+                    else:
+                        await ctx.reply(f"I Cannot do that Because No One Participated in Last Giveaway")
+                else:
+                    await ctx.reply(f"The Server Don't have Rerolling Chances or Time Left")
+            else:
+                await ctx.reply(f"I Cannot do that now, Winner isn't Announced Yet")
+        else:
+            await ctx.reply(f':exclamation: You must have a Role "Giveaway Handler" to do that')
 
     @bot.command()
     async def gparticipate(ctx):
@@ -806,6 +829,7 @@ gstophelp = f"gstop"
 gparticipatehelp = f"gparticipate"
 gquithelp = f"gquit"
 gstatushelp = f"gstatus"
+grerollhelp = f"greroll"
 
 @bot.command()
 async def react(ctx, chat:Optional[discord.Message]=None, emoji:Optional[discord.Emoji]=None):
@@ -2490,7 +2514,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n \n \t-> [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=536870911991&scope=bot)")
         myEmbed.add_field(name=f"Commands — {int(totalCommands)-2}",value="----------------------\n",inline=False)
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, clearreacts, rule, rules, solve, time, timerstart, timerstop", inline=False)
-        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, gstart, allcommands, gstatus, gstop, gparticipate, gquit, setprefix, whois, emojis, serverinfo, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
+        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, allcommands, gstart, gstatus, gstop, greroll, gparticipate, gquit, setprefix, whois, emojis, serverinfo, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban, softban, voicekick ", inline=False)
         myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, atlas, mcserver, wikipedia, google, youtube, meaning, pokemon, country \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{ctx.prefix}`\n > Command Usage Example :   `{ctx.prefix}info`\n\n----------------------", inline=False)
@@ -2520,6 +2544,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "gstart": content=gstarthelp
         elif anycommand == "gstatus": content=gstatushelp
         elif anycommand == "gstop": content=gstophelp
+        elif anycommand == "greroll": content=grerollhelp
         elif anycommand == "gparticipate": content=gparticipatehelp
         elif anycommand == "gquit": content=gquithelp
         elif anycommand == "poll": content=pollhelp
@@ -2612,7 +2637,7 @@ async def allcommands(ctx):
         managementcmd = " \n ".join(managementcmd)
         managementEmbed = discord.Embed(title="Management Commands", description=f"{managementcmd} \n\n 2/8", color=embedTheme)
         
-        giveawayList = {f"{ctx.prefix}gstart":"Start and Host a New Giveaway",f"{ctx.prefix}gparticipate":"Participate in Currently Active Giveaway",f"{ctx.prefix}gquit":"Quit the Giveaway of a Server in Between",f"{ctx.prefix}gstatus":"Get the Active Giveaway Status of Your Server",f"{ctx.prefix}gstop":"Stop a Giveaway in Between"}
+        giveawayList = {f"{ctx.prefix}gstart":"Start and Host a New Giveaway",f"{ctx.prefix}gparticipate":"Participate in Currently Active Giveaway",f"{ctx.prefix}gquit":"Quit the Giveaway of a Server in Between",f"{ctx.prefix}gstatus":"Get the Active Giveaway Status of Your Server",f"{ctx.prefix}gstop":"Stop a Giveaway in Between",f"{ctx.prefix}greroll":"Get a New Winner or Second Winner of a Giveaway"}
         giveawaycmd = []
         for cmd in list(giveawayList.keys()):
             giveawaycmd.append(f"• {cmd} {sign}  {giveawayList[cmd]}.")
