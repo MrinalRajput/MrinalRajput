@@ -727,7 +727,7 @@ class Giveaway():
                     if "No One" not in Participants[ctx.guild.id]:
                         winnerCode = random.choice(list(Participants[ctx.guild.id].values()))
                         CodeOwner = [k for k, v in Participants[ctx.guild.id].items() if v == winnerCode]
-                        winnerName = str(CodeOwner[0])
+                        winnerName = CodeOwner[0]
                         await ctx.send(f":tada: Congratulations! The New Winner is {winnerName.mention} || {winnerCode} :partying_face:")
                     else:
                         await ctx.reply(f"I Cannot do that Because No One Participated in Last Giveaway")
