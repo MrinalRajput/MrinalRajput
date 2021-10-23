@@ -714,7 +714,7 @@ class Giveaway():
                     await GiveawayChannel[ctx.guild.id].send(embed=embed)
                     LastGiveaway[ctx.guild.id]["parts"] = Participants[ctx.guild.id]
                     LastGiveaway[ctx.guild.id]["winner"] = winnerName
-                    LastGiveaway[ctx.guild.id]["channel"] = GiveawayChannel[ctx.guild.id]
+                    LastGiveaway[ctx.guild.id]["everything"] = Participants[ctx.guild.id]
 
                     MembersList[ctx.guild.id] = ""
                     GiveawayActive[ctx.guild.id] = False
@@ -737,7 +737,7 @@ class Giveaway():
                         newwinner = random.choice(LastGiveaway[ctx.guild.id]["parts"])
                         while newwinner == LastGiveaway[ctx.guild.id]["winner"]:
                             newwinner = random.choice(LastGiveaway[ctx.guild.id]["parts"])
-                        await ctx.send(f":tada: Congratulations! The New Winner is {newwinner.mention} || `{Participants[ctx.guild.id][newwinner]}`  :partying_face:")
+                        await ctx.send(f":tada: Congratulations! The New Winner is {newwinner.mention} || `{LastGiveaway[ctx.guild.id]['everything'][newwinner]}`  :partying_face:")
                     else:
                         await ctx.reply(f"I Cannot do that Because No One Participated in Last Giveaway")
                 else:
