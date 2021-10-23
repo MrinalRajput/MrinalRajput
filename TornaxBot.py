@@ -90,7 +90,7 @@ setprefixhelp = "setprefix <New Bot Prefix>"
 async def on_guild_join(guild):
     for channel in guild.text_channels:
         if channel.permissions_for(guild.me).send_messages:
-            if "chat" in channel.name or "general" in channel.name:
+            if "chat" in channel.name.lower() or "general" in channel.name.lower():
                 await bot.pg_con.execute("UPDATE prefixes SET prefix=$1 WHERE guild_id=$2",DEFAULT_PREFIX,guild.id)
                 custom_prefix = await bot.pg_con.fetchrow("SELECT prefix FROM prefixes WHERE guild_id = $1", guild.id)
                 await channel.send(f'Hey there! Thanks for Adding me in {guild.name}, Type `{custom_prefix[0]}help` to get All about me \n <a:doublearrow:899299966957256745>  My Auto Functions and Stuff i Can do Automatically \n\t <a:doublearrow:899299966957256745> Welcome and Bye Messages \n\t <a:doublearrow:899299966957256745> Mod Logs of Warn, Mute, Ban etc. \n\t <a:doublearrow:899299966957256745> AutoModeration')
@@ -122,7 +122,7 @@ async def on_member_join(member):
 async def on_member_remove(member):
     for channel in member.guild.channels:
         if "bye" in channel.name.lower() or "leave" in channel.name.lower():
-            byeEmbed = discord.Embed(title="Bye!",description=f"{member.mention} Just Left {member.guild.name} Server",color=embedTheme)
+            byeEmbed = discord.Embed(description=f"**Bye!**{member.mention} Just Left {member.guild.name} Server",color=embedTheme)
             await channel.send(embed=byeEmbed)
 
 @bot.event
@@ -145,7 +145,7 @@ async def on_message(message):
 
 async def modlogs(ctx, case, user, mod, timing, logreason, cased):
     for channel in ctx.guild.channels:
-        if "mod" in channel.name or "mod-log" in channel.name or "server-log" in channel.name:
+        if "mod" in channel.name.lower() or "mod-log" in channel.name.lower() or "server-log" in channel.name.lower():
             logEmbed = discord.Embed(title=f"Mod Logs", color=embedTheme)
             logEmbed.set_author(icon_url=ctx.guild.icon_url, name=f"{ctx.guild} || {case}")
             try:
