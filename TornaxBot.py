@@ -698,7 +698,7 @@ class Giveaway():
                     CodeOwner = [k for k, v in Participants[ctx.guild.id].items() if v == winnerCode]
                     # print(CodeOwner)
                     winnerName = str(CodeOwner[0])
-                    winner = f"{winnerName} || {winnerCode}"
+                    winner = f"{winnerName.name} || {winnerCode}"
 
                     embed = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||\n",color=embedTheme)
                     embed.add_field(name="Winner of the Giveaway",value=f"{winner}",inline=True)
@@ -745,11 +745,11 @@ class Giveaway():
                 GiveawayActive[ctx.guild.id] = False
         if GiveawayActive[ctx.guild.id] == True:
             if ctx.channel == GiveawayChannel[ctx.guild.id]:
-                if ctx.author.name not in Participants[ctx.guild.id]:
+                if ctx.author not in Participants[ctx.guild.id]:
                     code = random.randint(000000,999999)
                     if code in Participants[ctx.guild.id]:
                         code = random.randint(000000,999999)
-                    Participants[ctx.guild.id][ctx.author.name] = code
+                    Participants[ctx.guild.id][ctx.author] = code
 
                     listtostr = list(Participants[ctx.guild.id].keys())
                     members = str(listtostr)
@@ -774,9 +774,9 @@ class Giveaway():
                 GiveawayActive[ctx.guild.id] = False
         if GiveawayActive[ctx.guild.id] == True:
             if ctx.channel == GiveawayChannel[ctx.guild.id]:
-                if ctx.author.name in Participants[ctx.guild.id]:
+                if ctx.author in Participants[ctx.guild.id]:
 
-                    del Participants[ctx.guild.id][ctx.author.name]
+                    del Participants[ctx.guild.id][ctx.author]
 
                     listtostr = list(Participants[ctx.guild.id].keys())
                     members = str(listtostr)
