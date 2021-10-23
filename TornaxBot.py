@@ -634,6 +634,8 @@ class Giveaway():
     global ParticipantsMsg
     global MembersList
     global Participants
+    global LastGiveaway
+
     GiveawayActive = {}
     GiveawayChannel = {}
 
@@ -641,13 +643,15 @@ class Giveaway():
     ParticipantsMsg = {}
     MembersList = {}
 
+    LastGiveaway = {}
+
     Participants = {
 
     }
 
     @bot.command()
     async def gstart(ctx, Channel:discord.TextChannel, prize:str, endtime):
-        global GiveawayActive, GiveawayChannel, StartAnnounce, MembersList, ParticipantsMsg
+        global GiveawayActive, GiveawayChannel, StartAnnounce, MembersList, ParticipantsMsg, LastGiveaway
         GiveawayRole = discord.utils.get(ctx.guild.roles, name="Giveaway Handler")
         if GiveawayRole in ctx.author.roles:
             if ctx.guild.id not in GiveawayActive:
@@ -658,6 +662,8 @@ class Giveaway():
                 MembersList[ctx.guild.id] = ""
             if ctx.guild.id not in ParticipantsMsg:
                 ParticipantsMsg[ctx.guild.id] = ""
+            if ctx.guild.id not in LastGiveaway:
+                LastGiveaway[ctx.guild.id] = {}
 
             if GiveawayActive[ctx.guild.id] == False:
                 GiveawayActive[ctx.guild.id] = True
@@ -706,9 +712,12 @@ class Giveaway():
                     embed.add_field(name="Participants",value=f"{MembersList[ctx.guild.id]}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
 
                     await GiveawayChannel[ctx.guild.id].send(embed=embed)
+                    LastGiveaway[ctx.guild.id]["parts"] = Participants[ctx.guild.id]
+                    LastGiveaway[ctx.guild.id]["winner"] = winnerName
+                    LastGiveaway[ctx.guild.id]["channel"] = GiveawayChannel[ctx.guild.id]
+
                     MembersList[ctx.guild.id] = ""
                     GiveawayActive[ctx.guild.id] = False
-                    await asyncio.sleep(3600)
                     Participants[ctx.guild.id].clear()
                     GiveawayChannel[ctx.guild.id] = None
             else:
@@ -725,10 +734,10 @@ class Giveaway():
             if GiveawayActive[ctx.guild.id] == False:
                 if ctx.guild.id in Participants:
                     if "No One" not in Participants[ctx.guild.id]:
-                        winnerCode = random.choice(list(Participants[ctx.guild.id].values()))
-                        CodeOwner = [k for k, v in Participants[ctx.guild.id].items() if v == winnerCode]
-                        winnerName = CodeOwner[0]
-                        await ctx.send(f":tada: Congratulations! The New Winner is {winnerName.mention} || `{winnerCode}`  :partying_face:")
+                        newwinner = random.choice(LastGiveaway[ctx.guild.id]["parts"])
+                        while newwinner == LastGiveaway[ctx.guild.id]["winner"]:
+                            newwinner = random.choice(LastGiveaway[ctx.guild.id]["parts"])
+                        await ctx.send(f":tada: Congratulations! The New Winner is {newwinner.mention} || `{Participants[ctx.guild.id][newwinner]}`  :partying_face:")
                     else:
                         await ctx.reply(f"I Cannot do that Because No One Participated in Last Giveaway")
                 else:
