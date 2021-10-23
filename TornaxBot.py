@@ -728,7 +728,7 @@ class Giveaway():
                         winnerCode = random.choice(list(Participants[ctx.guild.id].values()))
                         CodeOwner = [k for k, v in Participants[ctx.guild.id].items() if v == winnerCode]
                         winnerName = CodeOwner[0]
-                        await ctx.send(f":tada: Congratulations! The New Winner is {winnerName.mention} || {winnerCode} :partying_face:")
+                        await ctx.send(f":tada: Congratulations! The New Winner is {winnerName.mention} || `{winnerCode}`  :partying_face:")
                     else:
                         await ctx.reply(f"I Cannot do that Because No One Participated in Last Giveaway")
                 else:
@@ -799,7 +799,10 @@ class Giveaway():
             if ctx.guild.id not in GiveawayActive:
                 GiveawayActive[ctx.guild.id] = False
             if GiveawayActive[ctx.guild.id]:
-                await ctx.send(f"A Giveaway is Currently Active in this Server \n Number of Participants :- {Participants[ctx.guild.id]}\n Giveaway Channel :- {GiveawayChannel[ctx.guild.id]}")
+                members = []
+                for k, v in Participants[ctx.guild.id]:
+                    members.append(f"{k} || {v}")
+                await ctx.send(embed=discord.Embed(title="Current Giveaway's Details", color=embedTheme).add_field(name="Participants", value="\n".join(members)).add_field(name="Channel", value=GiveawayChannel[ctx.guild.id].mention))
             else:
                 await ctx.send(":exclamation: There is No Giveaway Active in this Server")
         else:
