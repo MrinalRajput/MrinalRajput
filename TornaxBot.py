@@ -466,19 +466,19 @@ leaveConfirmation = 0
 leavingRequest = {}
 
 @bot.command()
-@commands.has_permissions(manage_guild=True)
 async def leaveserver(ctx):
     global leaveConfirmation, leavingRequest
     try:
-        if ctx.guild.id not in leavingRequest:
-            leavingRequest[ctx.guild.id] = ""
-        leavingRequest[ctx.guild.id] = ctx.author.id
-        await ctx.send(f"{ctx.author.mention} Do You Really Want me to Leave {ctx.guild.name} Server \:( , Send - Yes or No")
-        leaveConfirmation = 20
-        await asyncio.sleep(20)
-        if leaveConfirmation == 20:
-            await ctx.send(f"{ctx.author.mention} Your Replying/Answering Time Ended!")
-            leaveConfirmation = 0
+        if ctx.author.guild_permissions.manage_server or ctx.author.id == 758941956600102943:
+            if ctx.guild.id not in leavingRequest:
+                leavingRequest[ctx.guild.id] = ""
+            leavingRequest[ctx.guild.id] = ctx.author.id
+            await ctx.send(f"{ctx.author.mention} Do You Really Want me to Leave {ctx.guild.name} Server \:( , Send - Yes or No")
+            leaveConfirmation = 20
+            await asyncio.sleep(20)
+            if leaveConfirmation == 20:
+                await ctx.send(f"{ctx.author.mention} Your Replying/Answering Time Ended!")
+                leaveConfirmation = 0
     except Exception as e:
         print(e)
         await ctx.send(f"{ctx.author.mention} Sorry you don't have Access to use this Command")
