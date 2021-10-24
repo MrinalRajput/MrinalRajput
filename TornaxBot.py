@@ -462,24 +462,6 @@ async def voicekick(ctx, member: Optional[discord.Member]=None):
 
 voicekickhelp = f"voicekick <member>"
 
-@bot.command()
-async def getmsg(ctx, chat: Optional[str]=None, limit:Optional[int]=None):
-    try:
-        if limit is None:
-            limit = 500
-        if chat is not None:
-            async for message in bot.logs_from(ctx.channel, limit=limit):
-                if chat.lower() in message.content.lower():
-                    await message.channel.reply("<a:checked:899643253882769530> Found")
-                    return
-            await ctx.reply(f"No Results for {chat}, Try to Increase Search Limit")
-        else:
-            await ctx.reply(f"Please Specify Word or Sentence of Message to Find it")
-    except Exception as e:
-        print(e)
-        await ctx.reply(f"You are Doing any Mistake, Use `>help getmsg` for Some help")
-        
-
 leaveConfirmation = 0
 leavingRequest = {}
 
