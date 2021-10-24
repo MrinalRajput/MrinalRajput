@@ -734,7 +734,7 @@ class Giveaway():
             if GiveawayActive[ctx.guild.id] == False:
                 if ctx.guild.id in Participants:
                     if "No One" != LastGiveaway[ctx.guild.id]["winner"]:
-                        if len(list(LastGiveaway[ctx.guild.id]["parts"].keys())) <= 1:
+                        if len(list(LastGiveaway[ctx.guild.id]["parts"].keys())) > 1:
                             newwinner = random.choice(list(LastGiveaway[ctx.guild.id]["parts"].keys()))
                             while newwinner == LastGiveaway[ctx.guild.id]["winner"]:
                                 newwinner = random.choice(list(LastGiveaway[ctx.guild.id]["parts"].keys()))
@@ -813,7 +813,7 @@ class Giveaway():
             if GiveawayActive[ctx.guild.id]:
                 await ctx.send(embed=discord.Embed(title="Current Giveaway's Details", color=embedTheme).add_field(name="Total Participants", value=len(list(Participants[ctx.guild.id].keys()))).add_field(name="Channel", value=GiveawayChannel[ctx.guild.id].mention))
             else:
-                await ctx.send(":exclamation: There is No Giveaway Active in this Server")
+                await ctx.send(":exclamation: Currently No Giveaway is Active in this Server")
         else:
             await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}, use `>help gstatus` for more help')
 
