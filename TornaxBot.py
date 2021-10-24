@@ -102,6 +102,8 @@ async def on_guild_join(guild):
     # inviteEmbed.add_field(name="Guild ID", value=guild.id,inline=False)
     # await inviteChannel.send(embed=inviteEmbed)
 
+mutelist = {}
+
 @bot.event
 async def on_member_join(member):
     for channel in member.guild.channels:
@@ -117,6 +119,14 @@ async def on_member_join(member):
             welcomeEmbed.add_field(name=f"Member Number", value=f"#{member.guild.member_count}", inline=True)
             await channel.send(embed=welcomeEmbed)
     await member.send(f"We Are So Excited to have you on {member.guild.name}")
+    if member.guild.id in mutelist:
+        if member.id in mutelist[member.guild.id]:
+            try:
+                mutedRole = discord.utils.get(member.guild.roles, name="Muted")
+                await member.add_roles(mutedRole)
+            except Exception as e:
+                print(e)
+                pass
 
 @bot.event
 async def on_member_remove(member):
@@ -280,8 +290,11 @@ unbanhelp = f"unban <member id>"
 @bot.command()
 @commands.has_permissions(kick_members=True)
 async def mute(ctx, member: Optional[discord.Member]=None, duration: Optional[int]=None, unit: Optional[str]=None, *, reason: Optional[str]=None ):
+    global mutelist
     try:
         try:
+            if ctx.guild.id not in mutelist:
+                mutelist[ctx.guild.id] = []
             if member is not None:
                 if member != ctx.author:
                     if duration is None and unit is not None:
@@ -308,6 +321,7 @@ async def mute(ctx, member: Optional[discord.Member]=None, duration: Optional[in
                             dmAlert = f"You are Muted in the {ctx.guild.name} Server by an Admin for `{duration}` Hours"if reason is None else f"You are Muted in the {ctx.guild.name} Server by an Admin for `{duration}`` Hours\n\t With the Reason of {reason}"
                         if not member.guild_permissions.administrator:
                             await member.add_roles(mutedRole)
+                            mutelist[ctx.guild.id].append(member.id)
                             await ctx.send(embed=embed,delete_after=15)
                             await member.send(dmAlert)
                             if "s" in unit: period = f"{duration} Seconds"
@@ -323,6 +337,7 @@ async def mute(ctx, member: Optional[discord.Member]=None, duration: Optional[in
                         if not member.guild_permissions.administrator:
                             embed = discord.Embed(description=f"** {member.mention} has been Muted Successfully by {ctx.author.mention}**" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention}\n\t With the Reason of :\t{reason}**",color=embedTheme)
                             await member.add_roles(mutedRole)
+                            mutelist[ctx.guild.id].append(member.id)
                             await ctx.send(embed=embed,delete_after=15)
                             await member.send(f"You are Muted in the Server by an Admin"if reason is None else f"You are Muted in the Server by an Admin\n\t With the Reason of {reason}")
                             await modlogs(ctx, "Mute", member, ctx.author, "None", reason, "Muted")
