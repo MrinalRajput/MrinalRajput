@@ -700,11 +700,17 @@ class Giveaway():
                 if GiveawayActive[ctx.guild.id] == True:
                     if len(Participants[ctx.guild.id]) == 0:
                         Participants[ctx.guild.id]["No One"] = "No one Participated"
-                    winnerCode = random.choice(list(Participants[ctx.guild.id].values()))
-                    CodeOwner = [k for k, v in Participants[ctx.guild.id].items() if v == winnerCode]
-                    # print(CodeOwner).0
-                    winnerName:discord.Member = CodeOwner[0]
-                    winner = f"{winnerName.name} || {winnerCode}"
+                        winnerCode = random.choice(list(Participants[ctx.guild.id].values()))
+                        CodeOwner = [k for k, v in Participants[ctx.guild.id].items() if v == winnerCode]
+                        # print(CodeOwner).0
+                        winnerName:discord.Member = CodeOwner[0]
+                        winner = f"{winnerName} || {winnerCode}"
+                    else:
+                        winnerCode = random.choice(list(Participants[ctx.guild.id].values()))
+                        CodeOwner = [k for k, v in Participants[ctx.guild.id].items() if v == winnerCode]
+                        # print(CodeOwner).0
+                        winnerName:discord.Member = CodeOwner[0]
+                        winner = f"{winnerName.name} || {winnerCode}"
 
                     embed = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||\n",color=embedTheme)
                     embed.add_field(name="Winner of the Giveaway",value=f"{winner}",inline=True)
@@ -736,7 +742,7 @@ class Giveaway():
                 if ctx.guild.id in Participants:
                     if "No One" != LastGiveaway[ctx.guild.id]["winner"]:
                         if len(list(LastGiveaway[ctx.guild.id]["parts"].keys())) != 1:
-                            print(list(LastGiveaway[ctx.guild.id]["parts"].items()))
+                            print(list(LastGiveaway[ctx.guild.id]["parts"]), len(list(LastGiveaway[ctx.guild.id]["parts"])))
                             newwinner = random.choice(list(LastGiveaway[ctx.guild.id]["parts"].keys()))
                             while newwinner == LastGiveaway[ctx.guild.id]["winner"]:
                                 newwinner = random.choice(list(LastGiveaway[ctx.guild.id]["parts"].keys()))
