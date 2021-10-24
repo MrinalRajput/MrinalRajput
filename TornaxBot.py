@@ -735,9 +735,9 @@ class Giveaway():
                 if ctx.guild.id in Participants:
                     if "No One" not in Participants[ctx.guild.id]:
                         if not len(list(Participants[ctx.guild.id].keys())) == 1:
-                            newwinner = random.choice(LastGiveaway[ctx.guild.id]["parts"].keys())
+                            newwinner = random.choice(list(LastGiveaway[ctx.guild.id]["parts"].keys()))
                             while newwinner == LastGiveaway[ctx.guild.id]["winner"]:
-                                newwinner = random.choice(LastGiveaway[ctx.guild.id]["parts"].keys())
+                                newwinner = random.choice(list(LastGiveaway[ctx.guild.id]["parts"].keys()))
                             await ctx.send(f":tada: Congratulations! The New Winner is {newwinner.mention} || `{LastGiveaway[ctx.guild.id]['parts'][newwinner]}`  :partying_face:")
                         else:
                             await ctx.reply(f"No Enough Participants to Reroll the Giveaway")
