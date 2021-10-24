@@ -712,7 +712,7 @@ class Giveaway():
                         winnerName:discord.Member = CodeOwner[0]
                         winner = f"{winnerName.name} || {winnerCode}"
 
-                    embed = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||\n",color=embedTheme)
+                    embed = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t Congratulations\n",color=embedTheme)
                     embed.add_field(name="Winner of the Giveaway",value=f"{winner}",inline=True)
                     embed.add_field(name="Prize",value=f"{prize}",inline=True)
                     embed.add_field(name="Participants",value=f"{MembersList[ctx.guild.id]}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
