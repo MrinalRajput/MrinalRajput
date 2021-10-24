@@ -522,19 +522,25 @@ async def resetnick_error(error, ctx):
 
 @bot.command()
 @commands.has_permissions(manage_messages=True)
-async def clean(ctx, limit:int):
+async def clean(ctx, limit:int, member: Optional[discord.Member]=None):
     if limit > 0:
         quantity = "Messages"
         if limit == 1:
             quantity = "Message"
-        await ctx.channel.purge(limit=limit+1)
-        embed = discord.Embed(description=f"🗑️   Successfully Deleted {limit} {quantity} in this Channel", color=embedTheme)
+        if member is None:
+            await ctx.channel.purge(limit=limit+1)
+            embed = discord.Embed(description=f"🗑️   Successfully Deleted {limit} {quantity} in this Channel", color=embedTheme)
+        else:
+            def check(message):
+                return message.author == member
+            await ctx.channel.purge(limit=limit+1, check=check)
+            embed = discord.Embed(description=f"🗑️   Successfully Deleted {limit} {quantity} of {member.mention} in this Channel", color=embedTheme)
         await ctx.send(embed=embed,delete_after=5)
     else:
         embed = discord.Embed(description=f"Nothing Deleted in this Channel", color=embedTheme)
         await ctx.send(embed=embed,delete_after=5)    
 
-cleanhelp = f"clean <limit>"
+cleanhelp = f"clean <limit> [member]"
 
 @bot.command()
 @commands.has_permissions(manage_channels=True)
@@ -2688,7 +2694,7 @@ async def allcommands(ctx):
 
         toolsEmbed = discord.Embed(title="Tools Commands", description=f"{toolscmd} \n\n 1/8", color=embedTheme)
 
-        managementList = {f"{ctx.prefix}addrole":"Give/Add Any Role to Anyone",f"{ctx.prefix}removerole":"Take/Remove Any Role From Anyone",f"{ctx.prefix}clean":"Clean/Delete So Many Messages Quickly by Just Specifing the Quanitity",f"{ctx.prefix}setprefix":"Change Prefix of Tornax According to your Choice",f"{ctx.prefix}join":"Let Tornax Join a Voice Channel With You",f"{ctx.prefix}leave":"Let Tornax Leave a Voice Channel",f"{ctx.prefix}leaveserver":"Tell Tornax to Leave Your Server \:(",f"{ctx.prefix}lock":"Lock any Channel of Your Server to Disallow Members to Send Messages in it",f"{ctx.prefix}unlock":"Unlock a Locked Channel of Your Server",f"{ctx.prefix}slowmode":"Set Slowmode for a Channel of Your Server",f"{ctx.prefix}setnick":"Set or Change Nick of YourSelf or any Member",f"{ctx.prefix}resetnick":"Reset/Remove Your or SomeBodies Nick"}
+        managementList = {f"{ctx.prefix}addrole":"Give/Add Any Role to Anyone",f"{ctx.prefix}removerole":"Take/Remove Any Role From Anyone",f"{ctx.prefix}clean":"Clean/Delete So Many Messages of a User or Channel Quickly by Just Specifing the Quanitity",f"{ctx.prefix}setprefix":"Change Prefix of Tornax According to your Choice",f"{ctx.prefix}join":"Let Tornax Join a Voice Channel With You",f"{ctx.prefix}leave":"Let Tornax Leave a Voice Channel",f"{ctx.prefix}leaveserver":"Tell Tornax to Leave Your Server \:(",f"{ctx.prefix}lock":"Lock any Channel of Your Server to Disallow Members to Send Messages in it",f"{ctx.prefix}unlock":"Unlock a Locked Channel of Your Server",f"{ctx.prefix}slowmode":"Set Slowmode for a Channel of Your Server",f"{ctx.prefix}setnick":"Set or Change Nick of YourSelf or any Member",f"{ctx.prefix}resetnick":"Reset/Remove Your or SomeBodies Nick"}
         managementcmd = []
         for cmd in list(managementList.keys()):
             managementcmd.append(f"• {cmd} {sign}  {managementList[cmd]}.")
