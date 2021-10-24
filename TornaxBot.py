@@ -56,7 +56,7 @@ async def create_db_pool():
     print("Connected Successfully To DataBase")
 
 botstatus = discord.Status.online
-botactivity = discord.Activity(type=discord.ActivityType.watching, name="Server Members | >help for commands")
+botactivity = discord.Activity(type=discord.ActivityType.watching, name="Server Members | >help")
 
 maintain1 = discord.Status.dnd
 maintain2 = discord.Game(name="Maintenance")
