@@ -736,7 +736,7 @@ class Giveaway():
                 if ctx.guild.id in Participants:
                     if "No One" != LastGiveaway[ctx.guild.id]["winner"]:
                         if len(list(LastGiveaway[ctx.guild.id]["parts"].keys())) != 1:
-                            print(list(LastGiveaway[ctx.guild.id]["parts"].keys()))
+                            print(list(LastGiveaway[ctx.guild.id]["parts"].items()))
                             newwinner = random.choice(list(LastGiveaway[ctx.guild.id]["parts"].keys()))
                             while newwinner == LastGiveaway[ctx.guild.id]["winner"]:
                                 newwinner = random.choice(list(LastGiveaway[ctx.guild.id]["parts"].keys()))
