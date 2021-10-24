@@ -463,7 +463,7 @@ async def voicekick(ctx, member: Optional[discord.Member]=None):
 voicekickhelp = f"voicekick <member>"
 
 @bot.command()
-async def getmsg(ctx, chat: Optional[discord.Message]=None, limit:Optional[int]=None):
+async def getmsg(ctx, chat: Optional[str]=None, limit:Optional[int]=None):
     try:
         if limit is None:
             limit = 500
