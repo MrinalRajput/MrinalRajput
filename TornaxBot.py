@@ -2549,6 +2549,17 @@ async def emojis(ctx):
 emojishelp = f"emojis"
 
 @bot.command()
+async def getinvites(ctx, member: Optional[discord.Member]=None):
+    if member is None:
+        member = ctx.author
+    totalinvites = 0
+    get = await ctx.guild.invites()
+    for i in get:
+        if i.inviter == member:
+            totalinvites += i.uses
+    await ctx.send(embed=discord.Embed(color=embedTheme).set_author(icon_url=member.avatar_url, name=member).add_field(name="Invites", value=totalinvites).set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}"))
+
+@bot.command()
 async def vote(ctx):
     symbol = " ♦ "
     embed = discord.Embed(title="Vote For Tornax\t\t", color=embedTheme)
