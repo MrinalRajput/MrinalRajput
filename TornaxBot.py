@@ -330,6 +330,8 @@ async def mute(ctx, member: Optional[discord.Member]=None, duration: Optional[in
                             await modlogs(ctx, "Mute", member, ctx.author, period, reason, "Muted")
                             await asyncio.sleep(wait)
                             await member.remove_roles(mutedRole)
+                            if member.id in mutelist[ctx.guild.id]:
+                                mutelist[ctx.guild.id].remove(member.id)
                             await modlogs(ctx, "Unmute", member, bot.user, None, "Auto", "Unmuted")
                         else:
                             await ctx.reply(f":exclamation: You Cannot Mute an Admin")
@@ -357,11 +359,14 @@ mutehelp = f"mute <member> [duration] [unit = s,m,h] [reason]"
 @bot.command()
 @commands.has_permissions(kick_members=True)
 async def unmute(ctx, member: Optional[discord.Member]=None, *, reason: Optional[str]=None):
+    global mutelist
     if member is not None:
         mutedRole = discord.utils.get(ctx.message.guild.roles, name="Muted")
         if mutedRole in member.roles:
             embed = discord.Embed(description=f"** {member.mention} has been Unmuted Successfully by {ctx.author.mention}**" if reason is None else f"** {member.mention} has been Unmuted Successfully by {ctx.author.mention}\n\t With the Reason of :\t{reason}**",color=embedTheme)
             await member.remove_roles(mutedRole)
+            if member.id in mutelist[ctx.guild.id]:
+                mutelist[ctx.guild.id].remove(member.id)
             await ctx.send(embed=embed,delete_after=15)
             await modlogs(ctx, "Unmute", member, ctx.author, None, reason, "Unmuted")
         else:
