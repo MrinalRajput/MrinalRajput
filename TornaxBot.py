@@ -718,10 +718,9 @@ class Giveaway():
                     embed.add_field(name="Participants",value=f"{MembersList[ctx.guild.id]}\n\n Please Contact with The Giveaway Host For the Prize of this Giveaway",inline=False)
 
                     await GiveawayChannel[ctx.guild.id].send(embed=embed)
-                    LastGiveaway[ctx.guild.id]["parts"] = Participants[ctx.guild.id]
+                    LastGiveaway[ctx.guild.id]["parts"] = Participants[ctx.guild.id].copy()
                     LastGiveaway[ctx.guild.id]["winner"] = winnerName
-                    LastGiveaway[ctx.guild.id]["everything"] = Participants[ctx.guild.id]
-                    print(LastGiveaway[ctx.guild.id])
+                    LastGiveaway[ctx.guild.id]["everything"] = Participants[ctx.guild.id].copy()
 
                     MembersList[ctx.guild.id] = ""
                     GiveawayActive[ctx.guild.id] = False
@@ -740,10 +739,9 @@ class Giveaway():
             if ctx.guild.id not in GiveawayActive:
                 GiveawayActive[ctx.guild.id] = False
             if GiveawayActive[ctx.guild.id] == False:
-                if ctx.guild.id in Participants:
+                if ctx.guild.id in LastGiveaway:
                     if "No One" != LastGiveaway[ctx.guild.id]["winner"]:
                         if len(list(LastGiveaway[ctx.guild.id]["parts"].keys())) != 1:
-                            print(LastGiveaway[ctx.guild.id], len(list(LastGiveaway[ctx.guild.id]["parts"])))
                             newwinner = random.choice(list(LastGiveaway[ctx.guild.id]["parts"].keys()))
                             while newwinner == LastGiveaway[ctx.guild.id]["winner"]:
                                 newwinner = random.choice(list(LastGiveaway[ctx.guild.id]["parts"].keys()))
