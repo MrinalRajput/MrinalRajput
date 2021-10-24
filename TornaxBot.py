@@ -702,8 +702,8 @@ class Giveaway():
                         Participants[ctx.guild.id]["No One"] = "No one Participated"
                     winnerCode = random.choice(list(Participants[ctx.guild.id].values()))
                     CodeOwner = [k for k, v in Participants[ctx.guild.id].items() if v == winnerCode]
-                    # print(CodeOwner)
-                    winnerName = CodeOwner[0]
+                    # print(CodeOwner).0
+                    winnerName:discord.Member = CodeOwner[0]
                     winner = f"{winnerName.name} || {winnerCode}"
 
                     embed = discord.Embed(title=f":loudspeaker: Giveaway has been Finished :exclamation: :partying_face:\t ||{ctx.message.guild.default_role}||\n",color=embedTheme)
@@ -810,13 +810,32 @@ class Giveaway():
 
                     del Participants[ctx.guild.id][ctx.author]
 
-                    listtostr = list(Participants[ctx.guild.id].keys())
-                    members = str(listtostr)
+                    members = []
+                    nums = str(len(list(Participants[ctx.guild.id].keys())))
+                    nums = list(map(int,nums))
+                    for integer in nums:
+                        if integer == 1:
+                            members.append("1️⃣")
+                        elif integer == 2:
+                            members.append("2️⃣")
+                        elif integer == 3:
+                            members.append("3️⃣")
+                        elif integer == 4:
+                            members.append("4️⃣")
+                        elif integer == 5:
+                            members.append("5️⃣")
+                        elif integer == 6:
+                            members.append("6️⃣")
+                        elif integer == 7:
+                            members.append("7️⃣")
+                        elif integer == 8:
+                            members.append("8️⃣")
+                        elif integer == 9:
+                            members.append("9️⃣")
+                        elif integer == 0:
+                            members.append("0️⃣")
 
-                    members = members.replace("'","") 
-                    members = members.replace("[","") 
-                    members = members.replace("]","")
-                    MembersList[ctx.guild.id] = members
+                    MembersList[ctx.guild.id] = "".join(members)
 
                     await ctx.send(f"{ctx.author.mention} You have Successfully Quitted the Giveaway", delete_after=15)
                     await ParticipantsMsg[ctx.guild.id].edit(content=f":busts_in_silhouette: Participants - {MembersList[ctx.guild.id]}")
