@@ -740,7 +740,7 @@ class Giveaway():
                                 newwinner = random.choice(list(LastGiveaway[ctx.guild.id]["parts"].keys()))
                             await ctx.send(f":tada: Congratulations! The New Winner is {newwinner.mention} || `{LastGiveaway[ctx.guild.id]['parts'][newwinner]}`  :partying_face:")
                         else:
-                            await ctx.reply(f"No Enough Participants to Reroll the Giveaway")
+                            await ctx.reply(f"Not Enough Participants to Reroll the Giveaway")
                     else:
                         await ctx.reply(f"I Cannot do that Because No One Participated in Last Giveaway")
                 else:
@@ -765,10 +765,31 @@ class Giveaway():
 
                     # listtostr = list(Participants[ctx.guild.id].keys())
                     members = []
-                    for key in Participants[ctx.guild.id].keys():
-                        members.append(key.name)
+                    nums = str(len(list(Participants[ctx.guild.id].keys())))
+                    nums = list(map(int,nums))
+                    for integer in nums:
+                        if integer == 1:
+                            members.append("1️⃣")
+                        elif integer == 2:
+                            members.append("2️⃣")
+                        elif integer == 3:
+                            members.append("3️⃣")
+                        elif integer == 4:
+                            members.append("4️⃣")
+                        elif integer == 5:
+                            members.append("5️⃣")
+                        elif integer == 6:
+                            members.append("6️⃣")
+                        elif integer == 7:
+                            members.append("7️⃣")
+                        elif integer == 8:
+                            members.append("8️⃣")
+                        elif integer == 9:
+                            members.append("9️⃣")
+                        elif integer == 0:
+                            members.append("0️⃣")
 
-                    MembersList[ctx.guild.id] = ", ".join(members)
+                    MembersList[ctx.guild.id] = "".join(members)
 
                     await ctx.author.send(f":partying_face: You have Successfully Participated in the Giveaway and Your Special Code for The Giveaway is `{code}`")
                     await ctx.send(f"{ctx.author.mention} We Accepted your Request, Please Check your Dm", delete_after=15)
