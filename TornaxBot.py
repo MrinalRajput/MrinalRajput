@@ -721,6 +721,7 @@ class Giveaway():
                     LastGiveaway[ctx.guild.id]["parts"] = Participants[ctx.guild.id]
                     LastGiveaway[ctx.guild.id]["winner"] = winnerName
                     LastGiveaway[ctx.guild.id]["everything"] = Participants[ctx.guild.id]
+                    print(LastGiveaway[ctx.guild.id])
 
                     MembersList[ctx.guild.id] = ""
                     GiveawayActive[ctx.guild.id] = False
@@ -742,7 +743,7 @@ class Giveaway():
                 if ctx.guild.id in Participants:
                     if "No One" != LastGiveaway[ctx.guild.id]["winner"]:
                         if len(list(LastGiveaway[ctx.guild.id]["parts"].keys())) != 1:
-                            print(list(LastGiveaway[ctx.guild.id]["parts"]), len(list(LastGiveaway[ctx.guild.id]["parts"])))
+                            print(LastGiveaway[ctx.guild.id], len(list(LastGiveaway[ctx.guild.id]["parts"])))
                             newwinner = random.choice(list(LastGiveaway[ctx.guild.id]["parts"].keys()))
                             while newwinner == LastGiveaway[ctx.guild.id]["winner"]:
                                 newwinner = random.choice(list(LastGiveaway[ctx.guild.id]["parts"].keys()))
