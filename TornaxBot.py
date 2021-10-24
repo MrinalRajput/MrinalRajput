@@ -679,7 +679,7 @@ class Giveaway():
     async def gstart(ctx, Channel:discord.TextChannel, prize:str, endtime):
         global GiveawayActive, GiveawayChannel, StartAnnounce, MembersList, ParticipantsMsg, LastGiveaway
         GiveawayRole = discord.utils.get(ctx.guild.roles, name="Giveaway Handler")
-        if GiveawayRole in ctx.author.roles:
+        if GiveawayRole in ctx.author.roles or ctx.author.guild_permissions.manage_guild:
             if ctx.guild.id not in GiveawayActive:
                 GiveawayActive[ctx.guild.id] = False
             if ctx.guild.id not in Participants:
@@ -755,13 +755,13 @@ class Giveaway():
             else:
                 await ctx.send(":exclamation: A Giveaway is Already Active in this Server")
         else:
-            await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" to do that {ctx.author.mention}, use `>help gstart` for more help')
+            await ctx.reply(f'You Must have a Role "Giveaway Handler" or `Manage Server` Permissions to do that')
 
     @bot.command()
     async def greroll(ctx):
         global LastGiveaway, GiveawayActive
         GiveawayRole = discord.utils.get(ctx.guild.roles, name="Giveaway Handler")
-        if GiveawayRole in ctx.author.roles:
+        if GiveawayRole in ctx.author.roles or ctx.author.guild_permissions.manage_guild:
             if ctx.guild.id not in GiveawayActive:
                 GiveawayActive[ctx.guild.id] = False
             if GiveawayActive[ctx.guild.id] == False:
@@ -781,7 +781,7 @@ class Giveaway():
             else:
                 await ctx.reply(f"I Cannot do that now, Winner isn't Announced Yet")
         else:
-            await ctx.reply(f':exclamation: You must have a Role "Giveaway Handler" to do that')
+            await ctx.reply(f'You Must have a Role "Giveaway Handler" or `Manage Server` Permissions to do that')
 
     @bot.command()
     async def gparticipate(ctx):
@@ -880,7 +880,7 @@ class Giveaway():
     @bot.command()
     async def gstatus(ctx):
         GiveawayRole = discord.utils.get(ctx.guild.roles, name="Giveaway Handler")
-        if GiveawayRole in ctx.author.roles:
+        if GiveawayRole in ctx.author.roles or ctx.author.guild_permissions.manage_guild:
             if ctx.guild.id not in GiveawayActive:
                 GiveawayActive[ctx.guild.id] = False
             if GiveawayActive[ctx.guild.id]:
@@ -888,13 +888,13 @@ class Giveaway():
             else:
                 await ctx.send(":exclamation: Currently No Giveaway is Active in this Server")
         else:
-            await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}, use `>help gstatus` for more help')
+            await ctx.reply(f'You Must have a Role "Giveaway Handler" or `Manage Server` Permissions to do that')
 
     @bot.command()
     async def gstop(ctx):
         global GiveawayActive, Participants, GiveawayChannel, MembersList
         GiveawayRole = discord.utils.get(ctx.guild.roles, name="Giveaway Handler")
-        if GiveawayRole in ctx.author.roles:
+        if GiveawayRole in ctx.author.roles or ctx.author.guild_permissions.manage_guild:
             if ctx.guild.id not in GiveawayActive:
                 GiveawayActive[ctx.guild.id] = False
             if GiveawayActive[ctx.guild.id] == True:
@@ -906,7 +906,7 @@ class Giveaway():
             else:
                 await ctx.send(":exclamation: There is No Giveaway Active in this Server")
         else:
-            await ctx.send(f':exclamation: You must have a Role "Giveaway Handler" {ctx.author.mention}, use `>help gstop` for more help')
+            await ctx.reply(f'You Must have a Role "Giveaway Handler" or `Manage Server` Permissions to do that')
 
 gstarthelp = f"gstart <channel> <prize> <endtime> <unit , for ex:- s,m,h>"
 gstophelp = f"gstop"
