@@ -44,7 +44,7 @@ async def load_prefix(bot, message):
 intents = discord.Intents.default()
 intents.members = True
 
-bot = commands.Bot(command_prefix = load_prefix, case_insensitive=True, intents=intents,help_command=None)
+bot = commands.Bot(command_prefix = [load_prefix, "tornax ", "<@832897602768076816> ", "<@!832897602768076816> "], case_insensitive=True, intents=intents,help_command=None)
 
 TOKEN = "ODMyODk3NjAyNzY4MDc2ODE2.YHqeVg.yfzVgB8hHizDFH7hSMTORIv5weg"
 
