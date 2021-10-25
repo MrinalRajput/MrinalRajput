@@ -462,48 +462,6 @@ async def voicekick(ctx, member: Optional[discord.Member]=None):
 
 voicekickhelp = f"voicekick <member>"
 
-leaveConfirmation = 0
-leavingRequest = {}
-
-@bot.command()
-async def leaveserver(ctx):
-    global leaveConfirmation, leavingRequest
-    try:
-        if ctx.author.guild_permissions.manage_server or ctx.author.id == 758941956600102943:
-            if ctx.guild.id not in leavingRequest:
-                leavingRequest[ctx.guild.id] = ""
-            leavingRequest[ctx.guild.id] = ctx.author.id
-            await ctx.send(f"{ctx.author.mention} Do You Really Want me to Leave {ctx.guild.name} Server \:( , Send - Yes or No")
-            leaveConfirmation = 20
-            await asyncio.sleep(20)
-            if leaveConfirmation == 20:
-                await ctx.send(f"{ctx.author.mention} Your Replying/Answering Time Ended!")
-                leaveConfirmation = 0
-    except Exception as e:
-        print(e)
-        await ctx.send(f"{ctx.author.mention} Sorry you don't have Access to use this Command")
-
-leaveserverhelp = f"leaveserver"
-
-@bot.listen()
-async def on_message(message):
-    global leaveRequest, leaveConfirmation
-    if message.guild:
-        if message.guild.id not in leavingRequest:
-                leavingRequest[message.guild.id] = ""
-
-        if leaveConfirmation == 20:
-            if message.author.id == leavingRequest[message.guild.id]:
-                if message.content.lower() == "yes":
-                    await message.channel.send(f"{message.author.mention} Successfully Left Your Server Bye Bye! :(")
-                    await message.guild.leave()
-                elif message.content.lower() == "no":
-                    await message.channel.send(f"Thank You So Much :) for Keeping me in {message.guild.name} Server")
-                    leaveConfirmation = 0
-                    del leavingRequest[message.guild.id]
-            else:
-                pass
-
 @bot.command()
 @commands.has_permissions(manage_nicknames=True)
 async def setnick(ctx, member: Optional[discord.Member]=None, *, newname):
@@ -2599,7 +2557,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n \n \t-> [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=536870911991&scope=bot)")
         myEmbed.add_field(name=f"Commands — {int(totalCommands)-2}",value="----------------------\n",inline=False)
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, clearreacts, rule, rules, solve, time, timerstart, timerstop", inline=False)
-        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, allcommands, gstart, gstatus, gstop, greroll, gparticipate, gquit, setprefix, whois, emojis, serverinfo, info, invite, about, support, join, leave, leaveserver, lock, slowmode, resetnick, setnick, unlock ", inline=False)
+        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, allcommands, gstart, gstatus, gstop, greroll, gparticipate, gquit, setprefix, whois, emojis, serverinfo, info, invite, about, support, join, leave, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban, softban, voicekick ", inline=False)
         myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, atlas, mcserver, wikipedia, google, youtube, meaning, pokemon, country \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{ctx.prefix}`\n > Command Usage Example :   `{ctx.prefix}info`\n\n----------------------", inline=False)
@@ -2647,7 +2605,6 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "meaning": content=meaninghelp
         elif anycommand == "join": content=joinhelp
         elif anycommand == "leave": content=leavehelp
-        elif anycommand == "leaveserver": content=leaveserverhelp
         elif anycommand == "lock": content=lockhelp
         elif anycommand == "unlock": content=unlockhelp
         elif anycommand == "slowmode": content=slowmodehelp
@@ -2715,7 +2672,7 @@ async def allcommands(ctx):
 
         toolsEmbed = discord.Embed(title="Tools Commands", description=f"{toolscmd} \n\n 1/8", color=embedTheme)
 
-        managementList = {f"{ctx.prefix}addrole":"Give/Add Any Role to Anyone",f"{ctx.prefix}removerole":"Take/Remove Any Role From Anyone",f"{ctx.prefix}clean":"Clean/Delete So Many Messages of a User or Channel Quickly by Just Specifing the Quanitity",f"{ctx.prefix}setprefix":"Change Prefix of Tornax According to your Choice",f"{ctx.prefix}join":"Let Tornax Join a Voice Channel With You",f"{ctx.prefix}leave":"Let Tornax Leave a Voice Channel",f"{ctx.prefix}leaveserver":"Tell Tornax to Leave Your Server \:(",f"{ctx.prefix}lock":"Lock any Channel of Your Server to Disallow Members to Send Messages in it",f"{ctx.prefix}unlock":"Unlock a Locked Channel of Your Server",f"{ctx.prefix}slowmode":"Set Slowmode for a Channel of Your Server",f"{ctx.prefix}setnick":"Set or Change Nick of YourSelf or any Member",f"{ctx.prefix}resetnick":"Reset/Remove Your or SomeBodies Nick"}
+        managementList = {f"{ctx.prefix}addrole":"Give/Add Any Role to Anyone",f"{ctx.prefix}removerole":"Take/Remove Any Role From Anyone",f"{ctx.prefix}clean":"Clean/Delete So Many Messages of a User or Channel Quickly by Just Specifing the Quanitity",f"{ctx.prefix}setprefix":"Change Prefix of Tornax According to your Choice",f"{ctx.prefix}join":"Let Tornax Join a Voice Channel With You",f"{ctx.prefix}leave":"Let Tornax Leave a Voice Channel",f"{ctx.prefix}lock":"Lock any Channel of Your Server to Disallow Members to Send Messages in it",f"{ctx.prefix}unlock":"Unlock a Locked Channel of Your Server",f"{ctx.prefix}slowmode":"Set Slowmode for a Channel of Your Server",f"{ctx.prefix}setnick":"Set or Change Nick of YourSelf or any Member",f"{ctx.prefix}resetnick":"Reset/Remove Your or SomeBodies Nick"}
         managementcmd = []
         for cmd in list(managementList.keys()):
             managementcmd.append(f"• {cmd} {sign}  {managementList[cmd]}.")
