@@ -39,12 +39,12 @@ async def load_prefix(bot, message):
         if not current_prefix:
             current_prefix = await bot.pg_con.execute("INSERT INTO prefixes(guild_id, prefix) VALUES($1,$2)", message.guild.id, DEFAULT_PREFIX)
 
-    return current_prefix
+    return [current_prefix[0], "tornax ", "<@832897602768076816> ", "<@!832897602768076816> "]
 
 intents = discord.Intents.default()
 intents.members = True
 
-bot = commands.Bot(command_prefix = [load_prefix, "tornax ", "<@832897602768076816> ", "<@!832897602768076816> "], case_insensitive=True, intents=intents,help_command=None)
+bot = commands.Bot(command_prefix = load_prefix, case_insensitive=True, intents=intents,help_command=None)
 
 TOKEN = "ODMyODk3NjAyNzY4MDc2ODE2.YHqeVg.yfzVgB8hHizDFH7hSMTORIv5weg"
 
