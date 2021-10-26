@@ -1351,6 +1351,63 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
 
 tellhelp = f"tell [channel] <message>"
 
+triviaexist = {}
+question = {"How many versions of 'Minecraft' are there?":["Two","2"],"Which equipment must you utilize to mine stone and ores in 'Minecraft'?":"Pickaxe","In Which Year was 'Minecraft' released?":"2011","How many slabs of iron ore are used to make one iron ingot?":["One","1"],"What can you wear to avoid Enderman ambushing you?":"Pumpkin","How tall is a Ghast (not including the tentacles)?":["Four","4"],"What ore can you construct complex machines with?":"RedStone","What vegetable can you wield to make a night vision mixture?":"golden carrot","Which real life animal was recorded to produce the sound effects of the Ghasts?":"cat","In which country is playing 'Minecraft' in school allowed?":"Sweden","How many days did it take to create the first version of 'Minecraft'?":["Six","6"],"How many night creatures can you find in 'Minecraft'?":["Five","5"],"In which version of the game were skeletons first introduced?":"alpha",'Who Is The "Feared Player" In Minecraft?':"Herobrine","Which Is The Most Important Block Type In Minecraft And Is Used To Make Everything Else?":"Wood","What Is The Name Of An Alternate World To Which You Can Travel?":["Nether","End"],"What Is The Smallest Animal In The Game?":"Chicken","How Far Away Can You Be From A Ghast For It To See You?":["100","Hundred"],"What Does The Creeper Mob Usually Drop After It Is Killed?":["GunPowder","gun powder"],"How Much Wool Is Required To Build A Bed?":["3","three"],"What Color Is The Default Skin's Shirt?":"Blue","Which Mob Never Drop An Item?":["SilverFish","bat"],"How Many Dyes Can Be Crafted?":["12","twelve"],"Which Was The First Enemy Introduced To ‘Minecraft’?":"Zombie","In A Full Set, How Many Pieces Of Armor Are There?":["4","four"],"How Many Items Are Required To Get An Active Conduit?":["3","three"],"Which Item Make A Creeper Explode Without It Noticing You?":"Flint and Steel","As Of The Aquatic Update, How Many Bad Mobs Are In The Game?":["32","thirty two"],"What Update Was The Phantom Released?":"1.6","During The Pretty Scary Update Which Hostile Mob Was Added?":"Witch"}
+serverque = {}
+participants = {}
+
+@bot.command()
+async def triviamc(ctx):
+    global triviaexist, serverque, participants
+    if ctx.guild.id not in triviaexist:
+        triviaexist[ctx.guild.id] = False
+    if ctx.guild.id not in participants:
+        participants[ctx.guild.id] = {}
+    if ctx.guild.id not in serverque:
+        serverque[ctx.guild.id] = {}
+
+    if triviaexist[ctx.guild.id] == False:
+        triviaexist[ctx.guild.id] = True
+        donelist = []
+        await ctx.send(embed=discord.Embed(title="❔ Trivia Mc Game", description=f"**Total Questions** - 6 \n **Participants** - {', '.join(participants)} \n\n Give Correct Answers to Win the Game").set_footer(icon_url=ctx.author.avatar_url, text=f"Game By {ctx.author.name}"))
+        while len(donelist) < 6:
+            choosedque = random.choice(list(question.keys()))
+            serverque[ctx.guild.id]["que"] = choosedque
+            serverque[ctx.guild.id]["channel"] = ctx.channel
+            while choosedque in donelist:
+                choosedque = random.choice(list(question.keys()))
+            donelist.append(choosedque)
+            await ctx.send(embed=discord.Embed(description=f"**{choosedque}**", color=embedTheme).set_author(icon_url=bot.user.avatar_url, name=f"# Question no. {len(donelist)}"))
+            asyncio.wait(15)
+
+        points = sorted(dict.values())
+
+        setup = []
+        for i in points:
+            for l in participants[ctx.guild.id] :
+                if participants[ctx.guild.id][l] == i:
+                    setup.append(l)
+        lbd = ["**Name**\t\t\t**Points**"]
+        for key in range(len(list(participants[ctx.guild.id].keys()))):
+            lbd.append(f"{setup[key]}\t\t\t{points[key]}")
+        await ctx.send(embed=discord.Embed(title="Last Match LeaderBoard 📋", description="\n".join(lbd), color=embedTheme))
+        del triviaexist[ctx.guild.id]
+        del serverque[ctx.guild.id]
+        del participants[ctx.guild.id]
+    else:
+        await ctx.reply(f"A Trivia Game is Already Active in this Server")
+
+@bot.listen()
+async def on_message(message):
+    global serverque, participants
+    if message.guild.id in triviaexist:
+        if triviaexist[message.guild.id] == True:
+            if message.channel == serverque[message.guild.id]["channel"]:
+                if message.author not in participants[message.guild.id]:
+                    participants[message.guild.id][message.author] = 0
+                    if question[serverque[message.channel.id]["que"]].lower() in message.content.lower():
+                        participants[message.guild.id][message.author] += 1
+
 atlasgames = {}
 
 @bot.command()
