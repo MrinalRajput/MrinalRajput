@@ -874,7 +874,7 @@ gstatushelp = f"gstatus"
 grerollhelp = f"greroll"
 
 @bot.command()
-async def react(ctx, chat:Optional[discord.Message]=None, emoji:Optional[discord.Emoji]=None):
+async def react(ctx, chat:Optional[discord.Message]=None, emoji:Optional[str]=None):
     if ctx.author.guild_permissions.manage_messages:
         if emoji is not None:
             if chat is not None:
