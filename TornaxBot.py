@@ -1352,7 +1352,8 @@ async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
 tellhelp = f"tell [channel] <message>"
 
 triviaexist = {}
-question = {"How many versions of 'Minecraft' are there?":["Two","2"],"Which equipment must you utilize to mine stone and ores in 'Minecraft'?":"Pickaxe","In Which Year was 'Minecraft' released?":"2011","How many slabs of iron ore are used to make one iron ingot?":["One","1"],"What can you wear to avoid Enderman ambushing you?":"Pumpkin","How tall is a Ghast (not including the tentacles)?":["Four","4"],"What ore can you construct complex machines with?":"RedStone","What vegetable can you wield to make a night vision mixture?":"golden carrot","Which real life animal was recorded to produce the sound effects of the Ghasts?":"cat","In which country is playing 'Minecraft' in school allowed?":"Sweden","How many days did it take to create the first version of 'Minecraft'?":["Six","6"],"How many night creatures can you find in 'Minecraft'?":["Five","5"],"In which version of the game were skeletons first introduced?":"alpha",'Who Is The "Feared Player" In Minecraft?':"Herobrine","Which Is The Most Important Block Type In Minecraft And Is Used To Make Everything Else?":"Wood","What Is The Name Of An Alternate World To Which You Can Travel?":["Nether","End"],"What Is The Smallest Animal In The Game?":"Chicken","How Far Away Can You Be From A Ghast For It To See You?":["100","Hundred"],"What Does The Creeper Mob Usually Drop After It Is Killed?":["GunPowder","gun powder"],"How Much Wool Is Required To Build A Bed?":["3","three"],"What Color Is The Default Skin's Shirt?":"Blue","Which Mob Never Drop An Item?":["SilverFish","bat"],"How Many Dyes Can Be Crafted?":["12","twelve"],"Which Was The First Enemy Introduced To ‘Minecraft’?":"Zombie","In A Full Set, How Many Pieces Of Armor Are There?":["4","four"],"How Many Items Are Required To Get An Active Conduit?":["3","three"],"Which Item Make A Creeper Explode Without It Noticing You?":"Flint and Steel","As Of The Aquatic Update, How Many Bad Mobs Are In The Game?":["32","thirty two"],"What Update Was The Phantom Released?":"1.6","During The Pretty Scary Update Which Hostile Mob Was Added?":"Witch"}
+question = {"How many versions of 'Minecraft' are there?":["Two","2"],"Which equipment must you utilize to mine stone and ores in 'Minecraft'?":"Pickaxe","In Which Year was 'Minecraft' released?":"2011","How many slabs of iron ore are used to make one iron ingot?":["One","1"],"What can you wear to avoid Enderman ambushing you?":"Pumpkin","How tall is a Ghast (not including the tentacles)?":["Four","4"],"What ore can you construct complex machines with?":"RedStone","What vegetable can you wield to make a night vision mixture?":"golden carrot","Which real life animal was recorded to produce the sound effects of the Ghasts?":"cat","In which country is playing 'Minecraft' in school allowed?":"Sweden","How many days did it take to create the first version of 'Minecraft'?":["Six","6"],"How many night creatures can you find in 'Minecraft'?":["Five","5"],"In which version of the game were skeletons first introduced?":"alpha",'Who Is The "Feared Player" In Minecraft?':"Herobrine","Which Is The Most Important Block Type In Minecraft And Is Used To Make Everything Else?":"Wood","What Is The Name Of An Alternate World To Which You Can Travel?":["Nether","End"],"What Is The Smallest Animal In The Game?":"Chicken","How Far Away Can You Be From A Ghast For It To See You?":["100","Hundred"],"What Does The Creeper Mob Usually Drop After It Is Killed?":["GunPowder","gun powder"],"How Much Wool Is Required To Build A Bed?":["3","three"],"What Color Is The Default Skin's Shirt?":"Blue","Which Mob Never Drop An Item?":["SilverFish","bat"],"How Many Dyes Can Be Crafted?":["12","twelve"],"Which Was The First Enemy Introduced To ‘Minecraft’?":"Zombie","In A Full Set, How Many Pieces Of Armor Are There?":["4","four"],"How Many Items Are Required To Get An Active Conduit?":["3","three"],"Which Item Make A Creeper Explode Without It Noticing You?":"Flint and Steel","As Of The Aquatic Update, How Many Bad Mobs Are In The Game?":["32","thirty two"],"What Update Was The Phantom Released?":"1.6","During The Pretty Scary Update Which Hostile Mob Was Added?":"Witch","How many Different Types of Biomes are there in Minecraft?":["78","Seventy Eight"],"Which Type of Armor Cannot be Enchanted?":"horse","How many Health Points Does a Player Start with?":["20","Twenty"],"Which Mob Drop No Xp When Killed?":"bat","How many Types of Potions are Available to Players of Minecraft?":["32","thirty two"],"Which Mob was Accidentally Created While Trying to Make a Pig?":"creeper","Which Direction do Brewing Stands Always Face?":"East","What Color is the Bottle in a Brewing Stand after the Brewing Process?":"red","What's the Short Key to Clear Your Chat Spam?":["F3+D","F3 + D"],"How many Block Can a Stone Tool Mine Before Breaking?":"137","Below Which Depth Does One Typically Find Diamonds?":"15","What is the Maximum Enchantment Level in a Enchanting Table?":["30","thirty"],"How Much Gunpowder Do you Need to Craft a Tnt?":["5","Five"],"What is Notch's Real Name?":"Markus Persson","How Many Slots are there in a Double Chest?":"54","How Many Slots are there in a Single Chest?":"27","What is the Second Largest Mob in Minecraft?":"ghast","What is the Third Largest Mob in Minecraft?":"elder guardian","What is the Name of this Mob?":"Spider jockey","Which Mob is this?":"strider","What is the Name of this Underwater Mob?":"guardian"}
+questionimg = {"What is the Name of this Mob?":"https://www.pngkit.com/png/full/375-3758344_minecraft-spider-jockey-spawn-egg-download-minecraft-spider.png","Which Mob is this?":"https://static.wikia.nocookie.net/minecraft/images/5/53/StriderWalking.gif/revision/latest/scale-to-width-down/162?cb=20200328203707","What is the Name of this Underwater Mob?":"https://static.wikia.nocookie.net/minecraft_gamepedia/images/9/94/Guardian.gif/revision/latest/scale-to-width-down/250?cb=20190925152101"}
 serverque = {}
 participants = {}
 
@@ -1371,15 +1372,22 @@ async def triviamc(ctx):
         await ctx.send(embed=discord.Embed(title="❔ Trivia Mc Game", description=f"**Total Questions** - 6 \n Answering Time for Each Question - `15` Seconds)", color=embedTheme).set_footer(icon_url=ctx.author.avatar_url, text=f"Game By {ctx.author.name}"))
         await asyncio.sleep(2)
         triviaexist[ctx.guild.id] = True
+        serverque[ctx.guild.id]["channel"] = ctx.channel
+        serverque[ctx.guild.id]["1time"] = []
+        serverque[ctx.guild.id]["points"] = 3
         while len(donelist) < 6:
             choosedque = random.choice(list(question.keys()))
-            serverque[ctx.guild.id]["que"] = choosedque
-            serverque[ctx.guild.id]["channel"] = ctx.channel
             while choosedque in donelist:
                 choosedque = random.choice(list(question.keys()))
+            serverque[ctx.guild.id]["que"] = choosedque
             donelist.append(choosedque)
-            await ctx.send(embed=discord.Embed(description=f"**{choosedque}**", color=embedTheme).set_author(icon_url=bot.user.avatar_url, name=f"# Question no. {len(donelist)}"))
+            if choosedque not in questionimg:
+                await ctx.send(embed=discord.Embed(description=f"**{choosedque}**", color=embedTheme).set_author(icon_url=bot.user.avatar_url, name=f"# Question no. {len(donelist)}"))
+            else:
+                await ctx.send(embed=discord.Embed(description=f"**{choosedque}**", color=embedTheme).set_author(icon_url=bot.user.avatar_url, name=f"# Question no. {len(donelist)}").set_image(url=questionimg[choosedque]))
             await asyncio.sleep(10)
+            serverque[ctx.guild.id]["1time"].clear()
+            serverque[ctx.guild.id]["points"] = 3
 
         all = sorted(participants[ctx.guild.id].values())
         points = []
@@ -1388,7 +1396,7 @@ async def triviamc(ctx):
 
         setup = []
         for i in points:
-            for l in participants[ctx.guild.id] :
+            for l in participants[ctx.guild.id]:
                 if participants[ctx.guild.id][l] == int(i):
                     setup.append(l.name)
         points.reverse()
@@ -1410,19 +1418,27 @@ async def on_message(message):
             if triviaexist[message.guild.id] == True:
                 if message.channel == serverque[message.guild.id]["channel"]:
                     if not message.author.bot:
-                        if message.author not in participants[message.guild.id]:
-                            participants[message.guild.id][message.author] = 0
-                        try:
-                            if question[serverque[message.guild.id]["que"]].lower() in message.content.lower():
-                                participants[message.guild.id][message.author] += 1
-                                print("correct")
-                        except Exception as e:
-                            print(e)
-                            for x in question[serverque[message.guild.id]["que"]]:
-                                if x.lower() in message.content.lower():
-                                    participants[message.guild.id][message.author] += 1
+                        if message.author.id not in serverque[message.guild.id]["1time"]:
+                            if message.author not in participants[message.guild.id]:
+                                participants[message.guild.id][message.author] = 0
+                            try:
+                                if question[serverque[message.guild.id]["que"]].lower() in message.content.lower():
+                                    participants[message.guild.id][message.author] += serverque[message.guild.id]["points"]
+                                    serverque[message.guild.id]["1time"].append(message.author.id)
+                                    if serverque[message.guild.id]["points"] > 1:
+                                        serverque[message.guild.id]["points"] -= 1
                                     print("correct")
-                                    break
+                            except Exception as e:
+                                print(e)
+                                for x in question[serverque[message.guild.id]["que"]]:
+                                    if x.lower() in message.content.lower():
+                                        participants[message.guild.id][message.author] += serverque[message.guild.id]["points"]
+                                        serverque[message.guild.id]["1time"].append(message.author.id)
+                                        if serverque[message.guild.id]["points"] > 1:
+                                            serverque[message.guild.id]["points"] -= 1
+                                        print("correct")
+                                        break
+
 atlasgames = {}
 
 @bot.command()
