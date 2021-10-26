@@ -1381,7 +1381,10 @@ async def triviamc(ctx):
             await ctx.send(embed=discord.Embed(description=f"**{choosedque}**", color=embedTheme).set_author(icon_url=bot.user.avatar_url, name=f"# Question no. {len(donelist)}"))
             await asyncio.sleep(10)
 
-        points = sorted(participants[ctx.guild.id].values())
+        all = sorted(participants[ctx.guild.id].values())
+        points = []
+        for lt in all:
+            points.append(str(lt))
 
         setup = []
         for i in points:
