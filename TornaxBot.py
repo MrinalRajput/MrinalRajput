@@ -1367,9 +1367,9 @@ async def triviamc(ctx):
         serverque[ctx.guild.id] = {}
 
     if triviaexist[ctx.guild.id] == False:
-        triviaexist[ctx.guild.id] = True
         donelist = []
-        await ctx.send(embed=discord.Embed(title="❔ Trivia Mc Game", description=f"**Total Questions** - 6 \n **Participants** - {', '.join(participants)} \n\n Give Correct Answers to Win the Game").set_footer(icon_url=ctx.author.avatar_url, text=f"Game By {ctx.author.name}"))
+        await ctx.send(embed=discord.Embed(title="❔ Trivia Mc Game", description=f"**Total Questions** - 6 \n Answering Time for Each Question - `15` Seconds)", color=embedTheme).set_footer(icon_url=ctx.author.avatar_url, text=f"Game By {ctx.author.name}"))
+        triviaexist[ctx.guild.id] = True
         while len(donelist) < 6:
             choosedque = random.choice(list(question.keys()))
             serverque[ctx.guild.id]["que"] = choosedque
@@ -1378,19 +1378,21 @@ async def triviamc(ctx):
                 choosedque = random.choice(list(question.keys()))
             donelist.append(choosedque)
             await ctx.send(embed=discord.Embed(description=f"**{choosedque}**", color=embedTheme).set_author(icon_url=bot.user.avatar_url, name=f"# Question no. {len(donelist)}"))
-            asyncio.wait(15)
+            await asyncio.sleep(10)
 
-        points = sorted(dict.values())
+        points = sorted(participants[ctx.guild.id].values())
 
         setup = []
         for i in points:
             for l in participants[ctx.guild.id] :
                 if participants[ctx.guild.id][l] == i:
                     setup.append(l)
-        lbd = ["**Name**\t\t\t**Points**"]
+        points.reverse()
+        setup.reverse()
+        lbd = ["**Name**                    **Points**"]
         for key in range(len(list(participants[ctx.guild.id].keys()))):
-            lbd.append(f"{setup[key]}\t\t\t{points[key]}")
-        await ctx.send(embed=discord.Embed(title="Last Match LeaderBoard 📋", description="\n".join(lbd), color=embedTheme))
+            lbd.append(f"{setup[key]}                    {points[key]}")
+        await ctx.send(embed=discord.Embed(title="Last Match Leaderboard 📋", description="\n".join(lbd), color=embedTheme))
         del triviaexist[ctx.guild.id]
         del serverque[ctx.guild.id]
         del participants[ctx.guild.id]
@@ -1401,13 +1403,21 @@ async def triviamc(ctx):
 async def on_message(message):
     global serverque, participants
     if message.guild.id in triviaexist:
-        if triviaexist[message.guild.id] == True:
-            if message.channel == serverque[message.guild.id]["channel"]:
-                if message.author not in participants[message.guild.id]:
-                    participants[message.guild.id][message.author] = 0
-                    if question[serverque[message.channel.id]["que"]].lower() in message.content.lower():
-                        participants[message.guild.id][message.author] += 1
-
+        if message.guild.id in serverque:
+            print(serverque[message.guild.id]["que"])
+            if triviaexist[message.guild.id] == True:
+                if message.channel == serverque[message.guild.id]["channel"]:
+                    if message.author not in participants[message.guild.id]:
+                        participants[message.guild.id][message.author] = 0
+                    try:
+                        if question[serverque[message.guild.id]["que"]].lower() in message.content.lower():
+                            participants[message.guild.id][message.author] += 1
+                    except Exception as e:
+                        print(e)
+                        for x in question[serverque[message.guild.id]["que"]]:
+                            if str(x).lower() in message.content.lower():
+                                participants[message.guild.id][message.author] += 1
+                                break
 atlasgames = {}
 
 @bot.command()
