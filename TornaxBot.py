@@ -1404,20 +1404,20 @@ async def on_message(message):
     global serverque, participants
     if message.guild.id in triviaexist:
         if message.guild.id in serverque:
-            print(serverque[message.guild.id]["que"])
             if triviaexist[message.guild.id] == True:
                 if message.channel == serverque[message.guild.id]["channel"]:
-                    if message.author not in participants[message.guild.id]:
-                        participants[message.guild.id][message.author] = 0
-                    try:
-                        if question[serverque[message.guild.id]["que"]].lower() in message.content.lower():
-                            participants[message.guild.id][message.author] += 1
-                    except Exception as e:
-                        print(e)
-                        for x in question[serverque[message.guild.id]["que"]]:
-                            if str(x).lower() in message.content.lower():
+                    if not message.author.bot:
+                        if message.author not in participants[message.guild.id]:
+                            participants[message.guild.id][message.author] = 0
+                        try:
+                            if question[serverque[message.guild.id]["que"]].lower() in message.content.lower():
                                 participants[message.guild.id][message.author] += 1
-                                break
+                        except Exception as e:
+                            print(e)
+                            for x in question[serverque[message.guild.id]["que"]]:
+                                if str(x).lower() in message.content.lower():
+                                    participants[message.guild.id][message.author] += 1
+                                    break
 atlasgames = {}
 
 @bot.command()
