@@ -1389,15 +1389,14 @@ async def triviamc(ctx):
                     setup.append(l)
         points.reverse()
         setup.reverse()
-        lbd = ["**Name**                    **Points**"]
-        for key in range(len(list(participants[ctx.guild.id].keys()))):
-            lbd.append(f"{setup[key]}                    {points[key]}")
-        await ctx.send(embed=discord.Embed(title="Last Match Leaderboard 📋", description="\n".join(lbd), color=embedTheme))
+        await ctx.send(embed=discord.Embed(title="Last Match Leaderboard 📋", color=embedTheme).add_field(name="Name", value="\n".join(setup)).add_field(name="Points", value="\n".join(setup)))
         del triviaexist[ctx.guild.id]
         del serverque[ctx.guild.id]
         del participants[ctx.guild.id]
     else:
         await ctx.reply(f"A Trivia Game is Already Active in this Server")
+
+triviamchelp = f"triviamc"
 
 @bot.listen()
 async def on_message(message):
@@ -1412,10 +1411,11 @@ async def on_message(message):
                         try:
                             if question[serverque[message.guild.id]["que"]].lower() in message.content.lower():
                                 participants[message.guild.id][message.author] += 1
+                                print("correct")
                         except Exception as e:
                             print(e)
                             for x in question[serverque[message.guild.id]["que"]]:
-                                if str(x).lower() in message.content.lower():
+                                if x.lower() in message.content.lower():
                                     participants[message.guild.id][message.author] += 1
                                     break
 atlasgames = {}
@@ -2626,7 +2626,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, clearreacts, rule, rules, solve, time, timerstart, timerstop", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, allcommands, gstart, gstatus, gstop, greroll, gparticipate, gquit, setprefix, whois, emojis, serverinfo, info, invite, about, support, join, leave, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban, softban, voicekick ", inline=False)
-        myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, atlas, mcserver, wikipedia, google, youtube, meaning, pokemon, country \n----------------------\n", inline=False)
+        myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, atlas, triviamc, mcserver, wikipedia, google, youtube, meaning, pokemon, country \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{ctx.prefix}`\n > Command Usage Example :   `{ctx.prefix}info`\n\n----------------------", inline=False)
         myEmbed.add_field(name="Readme", value=f"`{ctx.prefix}help` Shows this Message, use `{ctx.prefix}help [command]` to get more information about that Command and `{ctx.prefix}allcommands` for more information of all commands in detail - `<>` means Required and `[]` means Optional \n\n")
         myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creater}")
@@ -2693,6 +2693,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "tttstop": content=tttstophelp
         elif anycommand == "guess": content=guesshelp
         elif anycommand == "atlas": content=atlashelp
+        elif anycommand == "triviamc": content=triviamchelp
         elif anycommand == "mcserver": content=mcserverhelp
         elif anycommand == "pokemon": content=pokemonhelp
         elif anycommand == "country": content=countryhelp
@@ -2767,7 +2768,7 @@ async def allcommands(ctx):
         funcmd = " \n ".join(funcmd)
         funEmbed = discord.Embed(title="Fun Commands", description=f"{funcmd} \n\n 5/8", color=embedTheme)
 
-        minigamesList = {f"{ctx.prefix}tictactoe":"Challenge Your Friends for a Tictactoe Match",f"{ctx.prefix}tttstop":"Stop a Tictactoe Game in Between",f"{ctx.prefix}guess":"Start a Guess the Number Challenge with Your Server Members",f"{ctx.prefix}atlas":"Enjoy With Your Friends with Atlas Game and Recalling Some Countries"}
+        minigamesList = {f"{ctx.prefix}tictactoe":"Challenge Your Friends for a Tictactoe Match",f"{ctx.prefix}tttstop":"Stop a Tictactoe Game in Between",f"{ctx.prefix}guess":"Start a Guess the Number Challenge with Your Server Members",f"{ctx.prefix}atlas":"Enjoy With Your Friends with Atlas Game and Recalling Some Countries",f"{ctx.prefix}triviamc":"Give Answers of Minecraft Quizes with Friends and Try to Achieve the Leaderboard"}
         minigamescmd = []
         for cmd in list(minigamesList.keys()):
             minigamescmd.append(f"• {cmd} {sign}  {minigamesList[cmd]}.")
