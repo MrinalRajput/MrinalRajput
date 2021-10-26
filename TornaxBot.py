@@ -1389,7 +1389,7 @@ async def triviamc(ctx):
         setup = []
         for i in points:
             for l in participants[ctx.guild.id] :
-                if participants[ctx.guild.id][l] == i:
+                if participants[ctx.guild.id][l] == int(i):
                     setup.append(l.name)
         points.reverse()
         setup.reverse()
