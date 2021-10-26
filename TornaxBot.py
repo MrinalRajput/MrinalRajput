@@ -1369,6 +1369,7 @@ async def triviamc(ctx):
     if triviaexist[ctx.guild.id] == False:
         donelist = []
         await ctx.send(embed=discord.Embed(title="❔ Trivia Mc Game", description=f"**Total Questions** - 6 \n Answering Time for Each Question - `15` Seconds)", color=embedTheme).set_footer(icon_url=ctx.author.avatar_url, text=f"Game By {ctx.author.name}"))
+        await asyncio.sleep(2)
         triviaexist[ctx.guild.id] = True
         while len(donelist) < 6:
             choosedque = random.choice(list(question.keys()))
@@ -1389,7 +1390,7 @@ async def triviamc(ctx):
                     setup.append(l.name)
         points.reverse()
         setup.reverse()
-        await ctx.send(embed=discord.Embed(title="Last Match Leaderboard 📋", color=embedTheme).add_field(name="Name", value="\n".join(setup)).add_field(name="Points", value="\n".join(setup)))
+        await ctx.send(embed=discord.Embed(title="Last Match Leaderboard 📋", color=embedTheme).add_field(name="Name", value="\n".join(setup)).add_field(name="Points", value="\n".join(points)))
         del triviaexist[ctx.guild.id]
         del serverque[ctx.guild.id]
         del participants[ctx.guild.id]
