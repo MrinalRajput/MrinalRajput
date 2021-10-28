@@ -118,7 +118,7 @@ async def on_member_join(member):
             welcomeEmbed.add_field(name=f"Joined {member.guild.name}", value=f"{joined_at}", inline=True)
             welcomeEmbed.add_field(name=f"Member Number", value=f"#{member.guild.member_count}", inline=True)
             await channel.send(embed=welcomeEmbed)
-    await member.send(f"We Are So Excited to have you on {member.guild.name}")
+    await member.send(embed=discord.Embed(title="Welcome", description="Hey! We Are So Excited to have you on team legends", color=embedTheme).set_thumbnail(url="https://emoji.discord.st/emojis/72af46cd-fdbd-4846-902c-62a97a9c7996.gif").add_field(name="Server",value=member.guild, inline=False).add_field(name="Member Number", value=f"#{member.guild.member_count}", inline=False))
     if member.guild.id in mutelist:
         if member.id in mutelist[member.guild.id]:
             try:
