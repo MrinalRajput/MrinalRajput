@@ -2742,7 +2742,11 @@ async def allcommands(ctx):
 
         if ctx.author.id in cmdcode[ctx.guild.id]:
             code = cmdcode[ctx.guild.id][ctx.author.id]
-            await activecmd[ctx.guild.id][code]["message"].clear_reactions()
+            try:
+                await activecmd[ctx.guild.id][code]["message"].clear_reactions()
+            except Exception as e:
+                print(e)
+                pass
 
         genCode = random.randint(000000, 999999)
         while genCode in activecmd[ctx.guild.id].keys():
