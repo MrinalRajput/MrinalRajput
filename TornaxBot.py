@@ -1398,7 +1398,8 @@ async def triviamc(ctx):
         for i in points:
             for l in participants[ctx.guild.id]:
                 if participants[ctx.guild.id][l] == int(i):
-                    setup.append(l.name)
+                    if l.name not in setup:
+                        setup.append(l.name)
         points.reverse()
         setup.reverse()
         await ctx.send(embed=discord.Embed(title="Last Match Leaderboard 📋", color=embedTheme).add_field(name="Name", value="\n".join(setup)).add_field(name="Points", value="\n".join(points)))
