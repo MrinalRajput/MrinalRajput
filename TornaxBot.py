@@ -124,6 +124,8 @@ async def on_member_join(member):
             try:
                 mutedRole = discord.utils.get(member.guild.roles, name="Muted")
                 await member.add_roles(mutedRole)
+                for channel in ctx.guild.channels:
+                    await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, add_reactions=False)
             except Exception as e:
                 print(e)
                 pass
@@ -305,7 +307,7 @@ async def mute(ctx, member: Optional[discord.Member]=None, duration: Optional[in
                         mutedRole = await ctx.guild.create_role(name="Muted")
 
                         for channel in ctx.guild.channels:
-                            await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False)
+                            await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, add_reactions=False)
                     if duration is not None and unit is not None:
                         if unit == "s" or "sec" in unit:
                             wait = 1 * duration 
@@ -322,6 +324,8 @@ async def mute(ctx, member: Optional[discord.Member]=None, duration: Optional[in
                         if not member.guild_permissions.administrator:
                             await member.add_roles(mutedRole)
                             mutelist[ctx.guild.id].append(member.id)
+                            for channel in ctx.guild.channels:
+                                await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, add_reactions=False)
                             await ctx.send(embed=embed,delete_after=15)
                             await member.send(dmAlert)
                             if "s" in unit: period = f"{duration} Seconds"
@@ -340,6 +344,8 @@ async def mute(ctx, member: Optional[discord.Member]=None, duration: Optional[in
                             embed = discord.Embed(description=f"** {member.mention} has been Muted Successfully by {ctx.author.mention}**" if reason is None else f"** {member.mention} has been Muted Successfully by {ctx.author.mention}\n\t With the Reason of :\t{reason}**",color=embedTheme)
                             await member.add_roles(mutedRole)
                             mutelist[ctx.guild.id].append(member.id)
+                            for channel in ctx.guild.channels:
+                                await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, add_reactions=False)
                             await ctx.send(embed=embed,delete_after=15)
                             await member.send(f"You are Muted in the Server by an Admin"if reason is None else f"You are Muted in the Server by an Admin\n\t With the Reason of {reason}")
                             await modlogs(ctx, "Mute", member, ctx.author, "None", reason, "Muted")
@@ -1176,6 +1182,7 @@ async def youtube(ctx, *, searching):
                     await videoCount[ctx.guild.id][ctx.author.id]["video"].edit(content=validResults[videoCount[ctx.guild.id][ctx.author.id]["count"]])
                 elif controlemoji.emoji == controls[2]:
                     await videoCount[ctx.guild.id][ctx.author.id]["video"].clear_reactions()
+                    validResults.clear()
                     del videoCount[ctx.guild.id][ctx.author.id]
                 elif controlemoji.emoji == controls[3]:
                     videoCount[ctx.guild.id][ctx.author.id]["count"] += 1
@@ -1198,6 +1205,7 @@ async def youtube(ctx, *, searching):
                             print(e)
                             pass
                         del videoCount[ctx.guild.id][ctx.author.id]
+                        validResults.clear()
     else:
         await ctx.reply(f'''I didn't Found Result for "{old}" in Youtube''')
 
@@ -2971,6 +2979,8 @@ async def on_message(message):
                                     for channel in message.guild.channels:
                                         await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False)
                                 await message.author.add_roles(mutedRole)
+                                for channel in ctx.guild.channels:
+                                    await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, add_reactions=False)
                                 embed = discord.Embed(description = f"** {message.author.mention} has been Muted by {bot.user.mention} for `15` Seconds \n\t With the Reason of :\t Spamming**",color=embedTheme)
                                 await message.channel.send(embed=embed)
                                 count[message.guild.id][message.author.id]["warnings"] = 0
