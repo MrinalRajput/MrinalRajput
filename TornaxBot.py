@@ -117,7 +117,10 @@ async def on_member_join(member):
             welcomeEmbed.add_field(name="Joined Discord", value=f"{created_at}", inline=False)
             welcomeEmbed.add_field(name=f"Joined {member.guild.name}", value=f"{joined_at}", inline=True)
             welcomeEmbed.add_field(name=f"Member Number", value=f"#{member.guild.member_count}", inline=True)
-            await channel.send(embed=welcomeEmbed)
+            try:
+                await channel.send(embed=welcomeEmbed)
+            except:
+                pass
     await member.send(embed=discord.Embed(title="Welcome", description="Hey! We Are So Excited to have you on team legends", color=embedTheme).set_thumbnail(url="https://emoji.discord.st/emojis/72af46cd-fdbd-4846-902c-62a97a9c7996.gif").add_field(name="Server",value=member.guild, inline=False).add_field(name="Member Number", value=f"#{member.guild.member_count}", inline=False))
     if member.guild.id in mutelist:
         if member.id in mutelist[member.guild.id]:
@@ -2442,8 +2445,6 @@ afkhelp = f"afk [reason]"
 @bot.listen()
 async def on_message(message):
     global afkdata, reasontopic
-    # print(afkdata)
-    # print(reasontopic)
     # if not message.author.bot:
     if message.guild:
         if message.guild.id not in afkdata:
@@ -2472,7 +2473,6 @@ async def on_message(message):
 @bot.listen()
 async def on_message(message):   
     global afkdata, username, reasontopic
-    # print(afkdata)
     try:
         if message.author.id in afkdata[message.guild.id]:
             afkdata[message.guild.id].remove(message.author.id)
@@ -2940,7 +2940,6 @@ async def on_message(message):
             await asyncio.sleep(4)
             count[message.guild.id][message.author.id]["counting"] = False
             count[message.guild.id][message.author.id]["strikes"] = 0
-            # print(count[message.guild.id][message.author.id]["counting"])
             await asyncio.sleep(2600)
             count[message.guild.id][message.author.id]["warnings"] = 0
 
@@ -2962,7 +2961,6 @@ async def on_message(message):
         if message.content is not None:
             if not message.author.bot:
                 if not message.author.guild_permissions.administrator:
-                    # print(f'Count:{count[message.guild.id][message.author.id]["counting"]}",f"Strikes:{count[message.guild.id][message.author.id]["strikes"]}')
                     
                     if count[message.guild.id][message.author.id]["counting"] == True:
                         count[message.guild.id][message.author.id]["strikes"] += 1
@@ -2994,7 +2992,6 @@ async def on_message(message):
 
 @bot.listen()
 async def on_message(message):
-    print(message.author.id)
     if message.content.lower().startswith(f"botservers"):
         await message.channel.send("<a:nachbe:899168499145015326>")
         servers = list(bot.guilds)
