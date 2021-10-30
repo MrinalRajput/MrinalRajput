@@ -145,7 +145,6 @@ async def on_member_remove(member):
 
 @bot.event
 async def on_dbl_vote(data):
-    print(data)
     voteEmbed = discord.Embed(title="Voted!", description=f"{data}",color=embedTheme)
     # voteEmbed.add_field(name=f"Voter ID", value=f"{user.id}", inline=False)
     voteAnnounce = bot.get_channel(892260693846401054)
