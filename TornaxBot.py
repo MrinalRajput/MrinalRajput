@@ -121,7 +121,10 @@ async def on_member_join(member):
                 await channel.send(embed=welcomeEmbed)
             except:
                 pass
-    await member.send(embed=discord.Embed(title="Welcome", description="Hey! We Are So Excited to have you on team legends", color=embedTheme).set_thumbnail(url="https://emoji.discord.st/emojis/72af46cd-fdbd-4846-902c-62a97a9c7996.gif").add_field(name="Server",value=member.guild, inline=False).add_field(name="Member Number", value=f"#{member.guild.member_count}", inline=False))
+    try:
+        await member.send(embed=discord.Embed(title="Welcome", description="Hey! We Are So Excited to have you on team legends", color=embedTheme).set_thumbnail(url="https://emoji.discord.st/emojis/72af46cd-fdbd-4846-902c-62a97a9c7996.gif").add_field(name="Server",value=member.guild, inline=False).add_field(name="Member Number", value=f"#{member.guild.member_count}", inline=False))
+    except:
+        pass
     if member.guild.id in mutelist:
         if member.id in mutelist[member.guild.id]:
             try:
@@ -205,7 +208,6 @@ async def on_message(message):
             embed.add_field(name="Message\n",value=f"{message.content}\n\n--------------------------",inline=False)
             embed.set_footer(icon_url=message.author.avatar_url,text=f"ID -> {message.author.id}")
             await modmail.send(embed=embed)
-            # print(f"{message.author} -> {message.content}")
 
 @bot.listen()
 async def on_message(message):
@@ -695,13 +697,11 @@ class Giveaway():
                         Participants[ctx.guild.id]["No One"] = "No one Participated"
                         winnerCode = random.choice(list(Participants[ctx.guild.id].values()))
                         CodeOwner = [k for k, v in Participants[ctx.guild.id].items() if v == winnerCode]
-                        # print(CodeOwner).0
                         winnerName:discord.Member = CodeOwner[0]
                         winner = f"{winnerName} || {winnerCode}"
                     else:
                         winnerCode = random.choice(list(Participants[ctx.guild.id].values()))
                         CodeOwner = [k for k, v in Participants[ctx.guild.id].items() if v == winnerCode]
-                        # print(CodeOwner).0
                         winnerName:discord.Member = CodeOwner[0]
                         winner = f"{winnerName.name} || {winnerCode}"
 
@@ -1128,7 +1128,6 @@ async def google(ctx, *, query):
 
     totalresult = len(finalresult)
     finalresult = " \n ".join(finalresult)
-    print(finalresult)
     googleEmbed = discord.Embed(title="Google Results", color=embedTheme)
     googleEmbed.set_thumbnail(url="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png")
     googleEmbed.add_field(name=f"Results For {query} - {totalresult}", value=f"{finalresult}", inline=False)
@@ -1173,7 +1172,6 @@ async def youtube(ctx, *, searching):
         while ctx.author.id in videoCount[ctx.guild.id]:
             try:
                 controlemoji, user = await bot.wait_for("reaction_add", check=check, timeout=120)
-                print(controlemoji.emoji)
 
                 if controlemoji.emoji == controls[0]:
                     videoCount[ctx.guild.id][ctx.author.id]["count"] = 0
@@ -1220,7 +1218,6 @@ async def meaning(ctx, *, keyword: Optional[str]=None):
         if keyword is not None:
             dictionary  = PyDictionary()
             result = dictionary.meaning(keyword.lower())
-            print(result)
             if result is not None:
                 embed = discord.Embed(title="Dictionary", description=f"**Results for - {keyword}**", color=embedTheme)
                 embed.set_thumbnail(url="http://ragmamoul.net/wp-content/uploads/2019/08/3-Paligian.jpg")
@@ -1586,7 +1583,6 @@ async def guess(ctx):
         gamingChannel[ctx.guild.id]["anyoneRange"] = random.choice(randomRange)
         gamingChannel[ctx.guild.id]["customRange"] = gamingChannel[ctx.guild.id]["anyoneRange"] + 20
         gamingChannel[ctx.guild.id]['secretNumber'] = random.randint(gamingChannel[ctx.guild.id]["anyoneRange"],gamingChannel[ctx.guild.id]["customRange"])
-        print(gamingChannel[ctx.guild.id]['secretNumber'])
         gamingChannel[ctx.guild.id]["countdown"] = 20
         gamingChannel[ctx.guild.id]["guessed"] = False
 
@@ -1660,7 +1656,6 @@ async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Option
             member2 = member1
             member1 = ctx.author
         if member2 != member1:
-            # print(list(matches.items()))
             if member1.id not in matches[ctx.guild.id].keys() and member1.id not in matches[ctx.guild.id].values():
                 if member2.id not in matches[ctx.guild.id].keys() and member2.id not in matches[ctx.guild.id].values():
                     
@@ -1686,7 +1681,6 @@ async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Option
 
 
                     gameBoards[ctx.guild.id][codeGenerator]["chance"] = "X"
-                    # print(list(matches.items()))
                     
                 else:
                     await ctx.send(f":exclamation: {member2.mention} is Already in a TicTacToe Match in this Server")
@@ -2417,14 +2411,11 @@ async def afk(ctx, *, reason: Optional[str]=None):
         if ctx.guild.id not in afkdata:
             afkdata[ctx.guild.id] = []
 
-        # print(afkdata)
         if ctx.author not in afkdata[ctx.guild.id]:
             username[ctx.author.id] = ctx.author.nick
             if reason is None:
                 reason = f"Nothing Specified"
             reasontopic[ctx.author.id] = reason
-            # embed = discord.Embed(description=f"Afk Set : {reason}", color=embedTheme)
-            # await ctx.send(embed=embed)
             await ctx.send(f"{ctx.author.mention} Afk Set : {reason}")
             try:
                 await ctx.author.edit(nick=f"[AFK] {ctx.author.name}")
@@ -2432,8 +2423,6 @@ async def afk(ctx, *, reason: Optional[str]=None):
                 pass
 
             afkdata[ctx.guild.id].append(ctx.author.id)
-            # print(list(afkdata[ctx.guild.id].keys()))
-            # print(afkdata)
         else:
             await ctx.send(f"{ctx.author.mention} You Afk has been Removed, User `>afk` Again to Set Your Afk")
     except Exception as e:
@@ -2450,24 +2439,16 @@ async def on_message(message):
         if message.guild.id not in afkdata:
             afkdata[message.guild.id] = []
         users = afkdata[message.guild.id]
-        print(users)
         if len(users) > 0:
-            # print(users)
             for user in users:
-                # print(user)
                 username = await bot.fetch_user(user)
-                print(username)
                 if "@here" in message.content or "@everyone" in message.content:
-                    print("Mentioned by here or everyone")
                 else:
                     if username.mentioned_in(message):
-                        print(1)
                         if not message.author.bot:
                             if user in afkdata[message.guild.id]:
-                                print(2)
                                 await message.channel.send(f"Afk: {username.name} is Currently Afk | Reason: {reasontopic[user]}")
                     else:
-                        # print("He is not afk")
                         pass
 
 @bot.listen()
