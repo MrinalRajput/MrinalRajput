@@ -2443,6 +2443,7 @@ async def on_message(message):
             for user in users:
                 username = await bot.fetch_user(user)
                 if "@here" in message.content or "@everyone" in message.content:
+                    pass
                 else:
                     if username.mentioned_in(message):
                         if not message.author.bot:
