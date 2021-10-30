@@ -3000,7 +3000,6 @@ async def on_message(message):
         servers = list(bot.guilds)
         print(servers)
         
-
 restricted_words = ["harami","wtf","fuck","fuk","baap ","stfu"]
 
 @bot.listen()
