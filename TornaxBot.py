@@ -806,7 +806,8 @@ async def greroll(ctx, msg: Optional[discord.Message]=None):
                     thisgives = gives
                     if gActive[ctx.guild.id][thisgives]["status"] == False:
                         if len(gActive[ctx.guild.id][thisgives]["participants"]) > 0:
-                            winner = random.choice(gActive[ctx.guild.id][thisgives]["participants"])
+                            getwinner = random.choice(gActive[ctx.guild.id][thisgives]["participants"])
+                            winner = await bot.fetch_user(getwinner)
                             await gActive[ctx.guild.id][thisgives]["message"].reply(f":tada: Congratulations! {winner.mention} is the New Winner of the Giveaway {gActive[ctx.guild.id][thisgives]['name']}")
                         else:
                             await ctx.reply(f"The Giveaway Ended without Enough Participants!")
