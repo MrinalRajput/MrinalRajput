@@ -669,7 +669,8 @@ def ending(region, seccs):
                 houring = "0"+houring
     lent[0] = houring[0]
     lent[1] = houring[1]
-    perfecttiming = f"{''.join(lent)+ f' {AMPM}'}"
+    datemon = k.strftime("%d %b")
+    perfecttiming = f"{''.join(lent)+ f' {AMPM} | {datemon}'}"
     return perfecttiming
 
 gActive = {}
@@ -753,22 +754,26 @@ gstarthelp = f"gstart [channel] <duration> <name>"
 @bot.listen()
 async def on_reaction_add(reaction, user):
     global gActive
-    if not user.bot:
-        thisgives = None
-        for gives in gActive[reaction.message.guild.id].keys():
-            if gActive[reaction.message.guild.id][gives]["message"].id == reaction.message.id:
-                thisgives = gives
-                gActive[reaction.message.guild.id][thisgives]["participants"].append(user.id)
+    if reaction.emoji == "🎉":
+        if user != bot.user:
+            thisgives = None
+            for gives in gActive[reaction.message.guild.id].keys():
+                if gActive[reaction.message.guild.id][gives]["message"].id == reaction.message.id:
+                    if gActive[reaction.message.guild.id][gives]["status"] == True:
+                        thisgives = gives
+                        gActive[reaction.message.guild.id][thisgives]["participants"].append(user.id)
 
 @bot.listen()
 async def on_reaction_remove(reaction, user):
     global gActive
-    if not user.bot:
-        thisgives = None
-        for gives in gActive[reaction.message.guild.id].keys():
-            if gActive[reaction.message.guild.id][gives]["message"] == reaction.message:
-                thisgives = gives
-                gActive[reaction.message.guild.id][thisgives]["participants"].remove(user.id)
+    if reaction.emoji == "🎉":
+        if user != bot.user:
+            thisgives = None
+            for gives in gActive[reaction.message.guild.id].keys():
+                if gActive[reaction.message.guild.id][gives]["message"] == reaction.message:
+                    if gActive[reaction.message.guild.id][gives]["status"] == True:
+                        thisgives = gives
+                        gActive[reaction.message.guild.id][thisgives]["participants"].remove(user.id)
 
 @bot.command()
 async def gstop(ctx, msg: Optional[discord.Message]=None):
@@ -782,6 +787,7 @@ async def gstop(ctx, msg: Optional[discord.Message]=None):
                     thisgives = gives
                     gActive[ctx.guild.id][thisgives]["status"] = False
                     await gActive[ctx.guild.id][thisgives]["message"].edit(embed=discord.Embed(color=embedTheme).set_author(name="The Giveaway has Stopped"))
+                    await gActive[ctx.guild.id][thisgives]["message"].clear_reactions()
         else:
             await ctx.reply(embed=discord.Embed(description="Please Mention the Giveaway by its Message ID!", color=embedTheme))
     else:
@@ -1303,9 +1309,35 @@ async def country(ctx, *, thecountry: Optional[str]=None):
 countryhelp = f"country <Country Name>"
 
 @bot.command()
-async def Time(ctx):
-    currenttime = datetime.now()
-    await ctx.send(f"Current Time is {currenttime}")
+async def Time(ctx, region: Optional[str]=None):
+    if region is None:
+        if ctx.guild:
+            region = ctx.guild.region
+        else:
+            await ctx.reply(f"Please Mention the Country to See Time")
+            return
+    country = str(region)
+    getinfo = CountryInfo(country)
+    timezonee = str(pytz.country_timezones[str(getinfo.iso()['alpha2'])][0])
+    IST = pytz.timezone(timezonee)
+
+    now = dt.datetime.now(IST)
+    datetime_ist = now.strftime("%H:%M")
+    AMPM = now.strftime("%p")
+    lent = []
+    for t in str(datetime_ist):
+        if len(lent) < 5:
+            lent.append(t)
+    houring = lent[0] + lent[1]
+    if AMPM == "PM":
+        if houring != "12":
+            houring = str(int(houring)-12)
+            if int(houring) < 10:
+                houring = "0"+houring
+    lent[0] = houring[0]
+    lent[1] = houring[1]
+    perfecttiming = f"{''.join(lent)+ f' {AMPM}'}"
+    await ctx.reply(f"Current Time in {str(region).capitalize()} is {perfecttiming}")
 
 timehelp = f"time"
 
