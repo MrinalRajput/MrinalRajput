@@ -1263,7 +1263,12 @@ async def pokemon(ctx, pokename=None, wantmove: Optional[str]=None):
             elif wantmove == "moves":
                 moveEmbed = discord.Embed(color=embedTheme)
                 moveEmbed.set_author(icon_url=poke.sprites[0]['default'], name=f"#{poke.dex} - {poke.name.capitalize()}")
-                moveEmbed.set_thumbnail(url=f"https://play.pokemonshowdown.com/sprites/ani/{poke.name}.gif")
+                pokdex = poke.dex
+                if len(str(pokdex)) == 1:
+                    pokdex = "00"+str(pokdex)
+                elif len(str(pokdex)) == 2:
+                    pokdex = "0"+str(pokdex)
+                moveEmbed.set_thumbnail(url=f"https://assets.pokemon.com/assets/cms2/img/pokedex/detail/{pokdex}.png")
                 pmoves = []
                 allmove = poke.moves
                 for move in allmove['ultra-sun-ultra-moon']:
