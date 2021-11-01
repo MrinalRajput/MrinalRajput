@@ -2592,7 +2592,7 @@ async def roles(ctx, role: Optional[discord.Role]=None):
     rolecounts = []
     if role is not None:
         rolecount = 0
-        allrole.append(role.mention)
+        allrole.append(role.name)
         for member in ctx.guild.members:
             if role in member.roles:
                 rolecount+=1
@@ -2603,7 +2603,7 @@ async def roles(ctx, role: Optional[discord.Role]=None):
             for member in ctx.guild.members:
                 if therole in member.roles:
                     rolecount+=1
-            allrole.append(therole.mention)
+            allrole.append(therole.name)
             rolecounts.append(str(rolecount))
     roleembed = discord.Embed(title=f"Roles in {ctx.guild}", color=embedTheme)
     roleembed.add_field(name="Roles", value="\n".join(allrole))
