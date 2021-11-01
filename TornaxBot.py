@@ -745,7 +745,7 @@ async def on_reaction_remove(reaction, user):
     if not user.bot:
         thisgives = None
         for gives in gActive[reaction.message.guild.id].keys():
-            if gActive[reaction.message.guild.id][gives]["message"] == reaction.message:
+            if gActive[reaction.message.guild.id][gives]["message"].id == reaction.message.id:
                 thisgives = gives
                 gActive[reaction.message.guild.id][thisgives]["participants"].remove(user.id)
 
@@ -757,7 +757,7 @@ async def gstop(ctx, msg: Optional[discord.Message]=None):
         if msg is not None:
             thisgives = None
             for gives in gActive[ctx.message.guild.id].keys():
-                if gActive[ctx.message.guild.id][gives]["message"].id == msg:
+                if gActive[ctx.message.guild.id][gives]["message"].id == int(msg):
                     thisgives = gives
                     gActive[ctx.guild.id][thisgives]["status"] = False
                     await gActive[ctx.guild.id][thisgives]["message"].edit(embed=discord.Embed(color=embedTheme).set_author(name="The Giveaway has Stopped"))
@@ -776,7 +776,7 @@ async def gstatus(ctx, msg: Optional[discord.Message]=None):
         if msg is not None:
             thisgives = None
             for gives in gActive[ctx.message.guild.id].keys():
-                if gActive[ctx.message.guild.id][gives]["message"].id == msg:
+                if gActive[ctx.message.guild.id][gives]["message"].id == int(msg):
                     thisgives = gives
                     embed=discord.Embed(color=embedTheme)
                     embed.set_author(name=f"Status for {gActive[ctx.guild.id][thisgives]['name']}")
@@ -802,7 +802,7 @@ async def greroll(ctx, msg: Optional[discord.Message]=None):
         if msg is not None:
             thisgives = None
             for gives in gActive[ctx.message.guild.id].keys():
-                if gActive[ctx.message.guild.id][gives]["message"].id == msg:
+                if gActive[ctx.message.guild.id][gives]["message"].id == int(msg):
                     thisgives = gives
                     if gActive[ctx.guild.id][thisgives]["status"] == False:
                         if len(gActive[ctx.guild.id][thisgives]["participants"]) > 0:
