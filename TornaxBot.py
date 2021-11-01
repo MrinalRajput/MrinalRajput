@@ -1339,7 +1339,7 @@ async def Time(ctx, region: Optional[str]=None):
     perfecttiming = f"{''.join(lent)+ f' {AMPM}'}"
     await ctx.reply(f"Current Time in {str(region).capitalize()} is {perfecttiming}")
 
-timehelp = f"time"
+timehelp = f"time [country/region]"
 
 @bot.command()
 async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
