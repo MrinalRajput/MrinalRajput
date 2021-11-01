@@ -646,21 +646,31 @@ def getperiod(timing):
     alagalag = maintime.split()
     return alagalag
 
-def ending(ctx, seccs):
-    thecountry = ctx.guild.region
-    getinfo = CountryInfo(thecountry)
+def ending(region, seccs):
+    country = str(region)
+    getinfo = CountryInfo(country)
     timezonee = str(pytz.country_timezones[str(getinfo.iso()['alpha2'])][0])
     IST = pytz.timezone(timezonee)
-    
+
     datetime_ist = dt.datetime.now(IST)
     delta = dt.timedelta(seconds = int(seccs))
     t = datetime_ist.time()
-    k = (dt.datetime.combine(dt.date(1,2,3),t)+delta).time()
+    k = (dt.datetime.combine(dt.date(1,1,1),t)+delta).time()
+    AMPM = k.strftime("%p")
     lent = []
     for t in str(k):
         if len(lent) < 5:
             lent.append(t)
-    return "".join(lent)
+    houring = lent[0] + lent[1]
+    if AMPM == "PM":
+        if houring != "12":
+            houring = str(int(houring)-12)
+            if int(houring) < 10:
+                houring = "0"+houring
+    lent[0] = houring[0]
+    lent[1] = houring[1]
+    perfecttiming = f"{''.join(lent)+ f' {AMPM}'}"
+    return perfecttiming
 
 gActive = {}
 
@@ -676,8 +686,13 @@ async def gstart(ctx, gchannel: Optional[discord.TextChannel]=None, duration: Op
             if name is not None:
                 if ctx.guild.id not in gActive:
                     gActive[ctx.guild.id] = {}
-                endtime = int(getperiod(duration)[0])
-                endunit = getperiod(duration)[1]
+                try:
+                    endtime = int(getperiod(duration)[0])
+                    endunit = getperiod(duration)[1]
+                except Exception as e:
+                    print(e)
+                    await ctx.reply(f"You are Using the Command Wrong, Please Use `>help gstart` for help!")
+                    return
                 thisactive = str(len(gActive[ctx.guild.id].keys())+1)
                 while thisactive in gActive[ctx.guild.id]:
                     thisactive = str(int(thisactive)+1)
@@ -694,7 +709,7 @@ async def gstart(ctx, gchannel: Optional[discord.TextChannel]=None, duration: Op
 
                 giveawayEmbed = discord.Embed(color=embedTheme)
                 giveawayEmbed.set_author(name=name.capitalize())
-                giveawayEmbed.add_field(name="Ending Time", value=ending(ctx, str(seccs)))
+                giveawayEmbed.add_field(name="Ending Time", value=ending(ctx.guild.region, str(seccs)))
                 giveawayEmbed.add_field(name="Hosted By", value=ctx.author.mention)
                 giveawayEmbed.set_image(url="https://t4.ftcdn.net/jpg/04/61/96/99/240_F_461969925_Lu8i7asFdzjUnlo2kSEa6Yrdg3wBHHJ0.jpg")
                 giveawayEmbed.set_footer(text="React with 🎉 to Participate in the Giveaway")
