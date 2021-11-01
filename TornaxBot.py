@@ -647,8 +647,8 @@ def getperiod(timing):
     return alagalag
 
 def ending(ctx, seccs):
-    country = ctx.guild.region
-    getinfo = CountryInfo(country)
+    thecountry = ctx.guild.region
+    getinfo = CountryInfo(thecountry)
     timezonee = str(pytz.country_timezones[str(getinfo.iso()['alpha2'])][0])
     IST = pytz.timezone(timezonee)
     
