@@ -1236,9 +1236,9 @@ async def pokemon(ctx, pokename=None, wantmove: Optional[str]=None):
                 pokeEmbed = discord.Embed(color= embedTheme)
                 pokeEmbed.set_author(icon_url=poke.sprites[0]['default'], name=f"#{poke.dex} - {poke.name.capitalize()}")
                 pokdex = poke.dex
-                if len(pokdex) == 1:
+                if len(str(pokdex)) == 1:
                     pokdex = "0"+str(pokdex)
-                elif len(pokdex) == 2:
+                elif len(str(pokdex)) == 2:
                     pokdex = "00"+str(pokdex)
                 pokeEmbed.set_thumbnail(url=f"https://assets.pokemon.com/assets/cms2/img/pokedex/detail/{pokdex}.png")
                 pokeEmbed.add_field(name="Type(s)", value=", ".join(poke.types).capitalize(), inline=True)
