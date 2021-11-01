@@ -1317,8 +1317,13 @@ async def Time(ctx, region: Optional[str]=None):
             await ctx.reply(f"Please Mention the Country to See Time")
             return
     country = str(region)
-    getinfo = CountryInfo(country)
-    timezonee = str(pytz.country_timezones[str(getinfo.iso()['alpha2'])][0])
+    try:
+        getinfo = CountryInfo(country)
+        timezonee = str(pytz.country_timezones[str(getinfo.iso()['alpha2'])][0])
+    except Exception as e:
+        print(e)
+        await ctx.reply(f"That is not a Valid Country or Region, Use `>help time` for Help")
+        return
     IST = pytz.timezone(timezonee)
 
     now = dt.datetime.now(IST)
