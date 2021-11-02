@@ -539,8 +539,8 @@ async def on_message(message):
             if message.guild.id not in restricteds:
                 restricteds[message.guild.id] = []
             if not message.author.guild_permissions.administrator or not message.author.guild_permissions.manage_guild:
-                for msg in message.content.lower():
-                    if msg in restricteds[message.guild.id] and msg not in restricted_words:
+                for word in restricteds[message.guild.id]:
+                    if word in message.content.lower() and word not in restricted_words:
                         await message.delete()
                         await message.channel.send(f"{message.author.mention} The Words You are Using is Not Allowed in this Server!")
 
