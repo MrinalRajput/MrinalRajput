@@ -488,11 +488,11 @@ async def restrict(ctx, word: Optional[str]=None):
                 restricteds[ctx.guild.id].append(word.lower())
                 await ctx.reply(embed=discord.Embed(description=f"<a:checked:899643253882769530> Added {word} in Restricted Words for Some Time!", color=embedTheme))
             else:
-                await ctx.reply(embed=discord.Embed(description=f":exclamation: {word} is Already in Restricted Words!"))
+                await ctx.reply(embed=discord.Embed(description=f":exclamation: {word} is Already in Restricted Words!", color=embedTheme))
         else:
             await ctx.reply(f"Please Mention the Word You want to Ban/Restrict from the Server")
     else:
-        await ctx.reply(embed=discord.Embed(description=f"You Must have `Manage Messages` Permissions to do that!"))
+        await ctx.reply(embed=discord.Embed(description=f"You Must have `Manage Messages` Permissions to do that!", color=embedTheme))
 
 restricthelp = f"restrict <word>"
 
@@ -506,22 +506,43 @@ async def unrestrict(ctx, word: Optional[str]=None):
                 restricteds[ctx.guild.id].remove(word.lower())
                 await ctx.reply(embed=discord.Embed(description=f"<a:checked:899643253882769530> Removed {word} from Restricted Words!", color=embedTheme))
             else:
-                await ctx.reply(embed=discord.Embed(description=f":exclamation: {word} is Not in Restricted Words!"))
+                await ctx.reply(embed=discord.Embed(description=f":exclamation: {word} is Not in Restricted Words!", color=embedTheme))
         else:
             await ctx.reply(f"Please Mention the Word You want to Unban/UnRestrict from the Server")
     else:
-        await ctx.reply(embed=discord.Embed(description=f"You Must have `Manage Messages` Permissions to do that!"))
+        await ctx.reply(embed=discord.Embed(description=f"You Must have `Manage Messages` Permissions to do that!", color=embedTheme))
 
 unrestricthelp = f"unrestrict <word>"
+
+@bot.command()
+async def restricts(ctx):
+    if ctx.guild:
+        if ctx.author.guild_permissions.manage_messages:
+            if ctx.guild.id not in restricteds:
+                restricteds[ctx.guild.id] = []
+            allwords = []
+            for words in restricteds[ctx.guild.id]:
+                allwords.append(f"`{words}`")
+            if len(allwords) > 0:
+                await ctx.send(embed=discord.Embed(title=f"Restricted Words in {ctx.guild} [{len(allwords)}]", description=", ".join(allwords), color=embedTheme))
+            else:
+                await ctx.reply(embed=discord.Embed(description=f":exclamation: The Server don't have Any Custom Banned/Restricted Word!", color=embedTheme))
+        else:
+            await ctx.reply(embed=discord.Embed(description=f"You Must have `Manage Messages` Permissions to do that!", color=embedTheme))
+
+restrictshelp = f"restricts"
 
 @bot.listen()
 async def on_message(message):
     if message.guild:
-        if not message.author.guild_permissions.administrator or not message.author.guild_permissions.manage_guild:
-            for msg in message.content.lower():
-                if msg in restricteds[message.guild.id] and msg not in restricted_words:
-                    await message.delete()
-                    await message.channel.send(f"{message.author.mention} The Words You are Using is Not Allowed in this Server!")
+        if not message.author.bot:
+            if message.guild.id not in restricteds:
+                restricteds[message.guild.id] = []
+            if not message.author.guild_permissions.administrator or not message.author.guild_permissions.manage_guild:
+                for msg in message.content.lower():
+                    if msg in restricteds[message.guild.id] and msg not in restricted_words:
+                        await message.delete()
+                        await message.channel.send(f"{message.author.mention} The Words You are Using is Not Allowed in this Server!")
 
 @bot.command()
 @commands.has_permissions(manage_nicknames=True)
@@ -2726,7 +2747,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name=f"Commands — {int(totalCommands)-2}",value="----------------------\n",inline=False)
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, clearreacts, rule, rules, solve, time, timerstart, timerstop", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, allcommands, gstart, gstatus, gstop, greroll, setprefix, whois, emojis, roles, serverinfo, info, invite, about, support, join, leave, lock, slowmode, resetnick, setnick, unlock ", inline=False)
-        myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban, softban, voicekick, restrict, unrestrict ", inline=False)
+        myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban, softban, voicekick, restrict, unrestrict, restricts ", inline=False)
         myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, atlas, triviamc, mcserver, wikipedia, google, youtube, meaning, pokemon, country \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{ctx.prefix}`\n > Command Usage Example :   `{ctx.prefix}info`\n\n----------------------", inline=False)
         myEmbed.add_field(name="Readme", value=f"`{ctx.prefix}help` Shows this Message, use `{ctx.prefix}help [command]` to get more information about that Command and `{ctx.prefix}allcommands` for more information of all commands in detail - `<>` means Required and `[]` means Optional \n\n")
@@ -2787,6 +2808,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "voicekick": content=voicekickhelp
         elif anycommand == "restrict": content=restricthelp
         elif anycommand == "unrestrict": content=unrestricthelp
+        elif anycommand == "restricts": content=restrictshelp
         elif anycommand == "slap": content=slaphelp
         elif anycommand == "kill": content=killhelp
         elif anycommand == "punch": content=punchhelp
@@ -2860,7 +2882,7 @@ async def allcommands(ctx):
         giveawaycmd = " \n ".join(giveawaycmd)
         giveawayEmbed = discord.Embed(title="Giveaways Commands", description=f"{giveawaycmd} \n\n 3/8", color=embedTheme)
 
-        moderationList = {f"{ctx.prefix}kick":"Kick Anyone From Your Server",f"{ctx.prefix}mute":"Mute a Member of Your Server",f"{ctx.prefix}unmute":"Unmute a Muted Member in Your Server",f"{ctx.prefix}warn":"Warn a Member of Your Server With/Without a Reason",f"{ctx.prefix}ban":"Ban a Member from your Server Permanently or Temporary",f"{ctx.prefix}unban":"Unban a Banned Member in Your Server",f"{ctx.prefix}softban":"Ban a User and then Instantly Unban that user to Delete all his Messages with a Kick",f"{ctx.prefix}voicekick":"Kick a User from a Voice Channel",f"{ctx.prefix}restrict":"Ban Words from Your Server for Some Time",f"{ctx.prefix}unrestrict":"Unban Banned Words from Your Server"}
+        moderationList = {f"{ctx.prefix}kick":"Kick Anyone From Your Server",f"{ctx.prefix}mute":"Mute a Member of Your Server",f"{ctx.prefix}unmute":"Unmute a Muted Member in Your Server",f"{ctx.prefix}warn":"Warn a Member of Your Server With/Without a Reason",f"{ctx.prefix}ban":"Ban a Member from your Server Permanently or Temporary",f"{ctx.prefix}unban":"Unban a Banned Member in Your Server",f"{ctx.prefix}softban":"Ban a User and then Instantly Unban that user to Delete all his Messages with a Kick",f"{ctx.prefix}voicekick":"Kick a User from a Voice Channel",f"{ctx.prefix}restrict":"Ban Words from Your Server for Some Time",f"{ctx.prefix}unrestrict":"Unban Banned Words from Your Server",f"{ctx.prefix}restricts":"Get Server's Restricted Words List"}
         moderationcmd = []
         for cmd in list(moderationList.keys()):
             moderationcmd.append(f"• {cmd} {sign}  {moderationList[cmd]}.")
