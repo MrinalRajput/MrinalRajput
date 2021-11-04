@@ -722,26 +722,10 @@ def ending(region, seccs):
     timezonee = str(pytz.country_timezones[str(getinfo.iso()['alpha2'])][0])
     IST = pytz.timezone(timezonee)
 
-    datetime_ist = dt.datetime.now(IST)
-    delta = dt.timedelta(seconds = int(seccs))
-    t = datetime_ist.time()
-    k = (dt.datetime.combine(dt.date(1,1,1),t)+delta).time()
-    AMPM = k.strftime("%p")
-    lent = []
-    for t in str(k):
-        if len(lent) < 5:
-            lent.append(t)
-    houring = lent[0] + lent[1]
-    if AMPM == "PM":
-        if houring != "12":
-            houring = str(int(houring)-12)
-            if int(houring) < 10:
-                houring = "0"+houring
-    lent[0] = houring[0]
-    lent[1] = houring[1]
-    datemon = k.strftime("%d %b")
-    perfecttiming = f"{''.join(lent)+ f' {AMPM} | {datemon}'}"
-    return perfecttiming
+    datetime_ist = dt.datetime.now(IST) + dt.timedelta(seconds=seccs)
+    perfecttiming = datetime_ist.strftime("%I:%M %p | %d %b")
+    # perfecttiming = f"{''.join(lent)+ f' {AMPM} | {datemon}'}"
+    return str(perfecttiming)
 
 gActive = {}
 
