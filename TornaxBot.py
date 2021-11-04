@@ -722,7 +722,7 @@ def ending(region, seccs):
     timezonee = str(pytz.country_timezones[str(getinfo.iso()['alpha2'])][0])
     IST = pytz.timezone(timezonee)
 
-    datetime_ist = dt.datetime.now(IST) + dt.timedelta(seconds=seccs)
+    datetime_ist = dt.datetime.now(IST) + dt.timedelta(seconds=int(seccs))
     perfecttiming = datetime_ist.strftime("%I:%M %p | %d %b")
     # perfecttiming = f"{''.join(lent)+ f' {AMPM} | {datemon}'}"
     return str(perfecttiming)
