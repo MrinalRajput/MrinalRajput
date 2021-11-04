@@ -505,6 +505,9 @@ async def unrestrict(ctx, word: Optional[str]=None):
             if word.lower() in restricteds[ctx.guild.id]:
                 restricteds[ctx.guild.id].remove(word.lower())
                 await ctx.reply(embed=discord.Embed(description=f"<a:checked:899643253882769530> Removed {word} from Restricted Words!", color=embedTheme))
+            elif word.lower() == "all":
+                restricteds[ctx.guild.id].clear()
+                await ctx.reply(embed=discord.Embed(description=f"<a:checked:899643253882769530> Removed All Words from Restricted Words!", color=embedTheme))
             else:
                 await ctx.reply(embed=discord.Embed(description=f":exclamation: {word} is Not in Restricted Words!", color=embedTheme))
         else:
