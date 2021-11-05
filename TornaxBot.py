@@ -1054,12 +1054,12 @@ async def timerstart(ctx, seconds:int, *, reason: Optional[str]=None):
         timer[ctx.guild.id] = False
     if timer[ctx.guild.id] == False:
         timer[ctx.guild.id] = True
-        timerMsg[ctx.guild.id] = await ctx.send(f"Timer has Started : `{seconds}`"if reason is None else f"{reason} `{seconds}`")
+        timerMsg[ctx.guild.id] = await ctx.send(embed=discord.Embed(description=f"Timer has Started : `{seconds}`"if reason is None else f"{reason} `{seconds}`",color=embedTheme))
         while 0 < seconds < seconds+1:
             if timer[ctx.guild.id] == True:
                 await asyncio.sleep(0.7)
                 seconds-=1
-                await timerMsg[ctx.guild.id].edit(content=f"Timer has Started : `{seconds}`"if reason is None else f"{reason} `{seconds}`")
+                await timerMsg[ctx.guild.id].edit(embed=discord.Embed(description=f"Timer has Started : `{seconds}`"if reason is None else f"{reason} `{seconds}`",color=embedTheme))
             else:
                 break
         await asyncio.sleep(1)
