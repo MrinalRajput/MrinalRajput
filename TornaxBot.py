@@ -3096,13 +3096,13 @@ async def on_message(message):
     if message.guild:
         if not message.author.bot:
             if not message.author.guild_permissions.administrator:
+                characters = ['~', ':', "'", '+', '[', '\\', '@', '^', '{', '%', '(', '-', '"', '*', '|', ',', '&', '<', '`', '}', '.', '_', '=', ']', '!', '>', ';', '?', '#', '$', ')', '/',"1","2","3","4","5","6","7","8","9","0"]
+                thechat = message.content
+                for l in thechat:
+                    for c in characters:
+                        if l == c:
+                            thechat = thechat.replace(l, "")
                 if len(message.content) > 7:
-                    characters = ['~', ':', "'", '+', '[', '\\', '@', '^', '{', '%', '(', '-', '"', '*', '|', ',', '&', '<', '`', '}', '.', '_', '=', ']', '!', '>', ';', '?', '#', '$', ')', '/',"1","2","3","4","5","6","7","8","9","0"]
-                    thechat = message.content
-                    for l in thechat:
-                        for c in characters:
-                            if l == c:
-                                thechat = thechat.replace(l, "")
                     if thechat == thechat.upper():
                         await message.channel.send(f"{message.author.mention} Please Don't Use Too Many Caps!", delete_after=15)
 
