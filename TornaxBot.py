@@ -3102,7 +3102,7 @@ async def on_message(message):
                     for c in characters:
                         if l == c:
                             thechat = thechat.replace(l, "")
-                if len(message.content) > 7:
+                if len(thechat) > 7:
                     if thechat == thechat.upper():
                         await message.channel.send(f"{message.author.mention} Please Don't Use Too Many Caps!", delete_after=15)
 
