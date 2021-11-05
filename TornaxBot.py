@@ -1064,10 +1064,10 @@ async def timerstart(ctx, seconds:int, *, reason: Optional[str]=None):
                 break
         await asyncio.sleep(1)
         if timer[ctx.guild.id] == True:
-            await timerMsg[ctx.guild.id].edit(content=f"Timer has Stopped {ctx.author.mention}")
+            await timerMsg[ctx.guild.id].edit(content=f"Timer has Stopped {ctx.author.mention}", embed=discord.Embed(description="Ended!", color=embedTheme))
             timer[ctx.guild.id] = False
         else:
-            await timerMsg[ctx.guild.id].edit(content=f"Timer has Stopped {ctx.author.mention}")
+            await timerMsg[ctx.guild.id].edit(content=f"Timer has Stopped {ctx.author.mention}", embed=discord.Embed(description="Ended!", color=embedTheme))
 
     else:
         await ctx.send(f":exclamation: {ctx.author.mention} A Timer is already Running in this Server")
@@ -1081,7 +1081,7 @@ async def timerstop(ctx):
         timer[ctx.guild.id] = False
     if timer[ctx.guild.id] == True:
         timer[ctx.guild.id] = False
-        await timerMsg[ctx.guild.id].edit(content=f"Timer has Stopped by {ctx.author.mention}")
+        await timerMsg[ctx.guild.id].edit(content=f"Timer has Stopped by {ctx.author.mention}", embed=discord.Embed(description="Ended!", color=embedTheme))
     else:
         await ctx.send(f":exclamation: {ctx.author.mention} Currently No Timer is Running in this Server")
 
