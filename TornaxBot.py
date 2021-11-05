@@ -3083,6 +3083,15 @@ async def on_message(message):
     if message.guild:
         if not message.author.bot:
             if not message.author.guild_permissions.administrator:
+                if len(message.content) > 7:
+                    if message.content == message.content.upper():
+                        await message.channel.send(f"{message.author.mention} Please Don't Use Too Many Caps!")
+
+@bot.listen()
+async def on_message(message):
+    if message.guild:
+        if not message.author.bot:
+            if not message.author.guild_permissions.administrator:
                 for word in restricted_words:
                     if word in message.content.lower():
                         await message.delete()
