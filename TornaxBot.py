@@ -3102,6 +3102,7 @@ async def on_message(message):
                     for c in characters:
                         if l == c:
                             thechat = thechat.replace(l, "")
+                thechat = thechat.replace(" ","")
                 if len(thechat) > 7:
                     chances = 0
                     for tc in thechat:
