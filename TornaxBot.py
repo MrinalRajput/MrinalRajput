@@ -191,7 +191,7 @@ async def modlogs(ctx, case, user, mod, timing, logreason, cased):
 
 SmpStatus = False
 LegendServer = 869439705714933780
-Creater = "MrinalSparks#8633"
+Creator = "MrinalSparks#8633"
         
 @bot.command()
 async def dmuser(ctx, member: discord.User, *, chat):
@@ -798,6 +798,7 @@ async def gstart(ctx, gchannel: Optional[discord.TextChannel]=None, duration: Op
                         await gActive[ctx.guild.id][thisactive]["message"].reply(f":tada:  Congratulations! {winnermention} Won {name.capitalize()} :partying_face:")
                     else:
                         await gActive[ctx.guild.id][thisactive]["message"].reply(f"Giveaway Ended! No One Participated in the Giveaway")
+                    gActive[ctx.guild.id][thisactive]["winner"] = winnermention
                     gActive[ctx.guild.id][thisactive]["status"] = False
             else:
                 await ctx.reply(embed=discord.Embed(description=":exclamation: Please Keep a Name of Giveaway to Start!",color=embedTheme))
@@ -870,7 +871,11 @@ async def gstatus(ctx, msg: Optional[discord.Message]=None):
                     if gActive[ctx.guild.id][thisgives]["status"] == True:status="Active"
                     else:status="Ended!"
                     embed.add_field(name="Status", value=status)
+                    if status == "Ended!":
+                        embed.add_field(name="Winner", value=gActive[ctx.guild.id][thisgives]["winner"])
                     await gActive[ctx.guild.id][thisgives]["message"].reply(embed=embed)
+                    return
+            await ctx.reply(embed=discord.Embed(description="I Don't have Any Information for that!", color=embedTheme))
         else:
             await ctx.reply(embed=discord.Embed(description="Please Mention the Giveaway by its Message ID!", color=embedTheme))
     else:
@@ -2714,8 +2719,18 @@ votehelp = f"vote"
 async def info(ctx):
     Listedgreetings = ["Hello!","Hi!","Hey!","Heya!"]
     RandomGreetings = random.choice(Listedgreetings)
-    embed = discord.Embed(title="My Information",description=f"{RandomGreetings} I am Tornax a Multi-Talented Discord Bot, Designed, Created and Configured by MrinalSparks\n\nCurrently I Am In : {len(list(bot.guilds))} Servers", color=embedTheme)
-    await ctx.send(embed=embed)
+    infoembed = discord.Embed(description=f"{RandomGreetings} I am Tornax a Multi-Talented Discord Bot, Designed, Created and Configured by MrinalSparks", color=embedTheme)
+    infoembed.set_author(icon_url=bot.user.avatar_url, name=bot.user.name)
+    infoembed.add_field(name="Default Prefix", value=DEFAULT_PREFIX, inline=True)
+    infoembed.add_field(name="Library", value="discord.py", inline=True)
+    infoembed.add_field(name="Creator", value=str(Creator), inline=True)
+    infoembed.add_field(name="Servers", value=len(list(bot.guilds)), inline=True)
+    infoembed.add_field(name="Descriminator", value=bot.user.discriminator, inline=True)
+    infoembed.add_field(name="Registered", value=bot.user.created_at.strftime("%d %b %Y"), inline=True)
+    infoembed.add_field(name="Invite", value=f"[Click here](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=536870911991&scope=bot)", inline=True)
+    infoembed.add_field(name="Vote", value=f"[Top.gg](https://top.gg/bot/832897602768076816/vote) || [Discord Bot List](https://discordbotlist.com/bots/tornax/upvote)", inline=True)
+    infoembed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
+    await ctx.send(embed=infoembed)
 
 infohelp = f"info"
 
@@ -2753,7 +2768,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, atlas, triviamc, mcserver, wikipedia, google, youtube, meaning, pokemon, country \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{ctx.prefix}`\n > Command Usage Example :   `{ctx.prefix}info`\n\n----------------------", inline=False)
         myEmbed.add_field(name="Readme", value=f"`{ctx.prefix}help` Shows this Message, use `{ctx.prefix}help [command]` to get more information about that Command and `{ctx.prefix}allcommands` for more information of all commands in detail - `<>` means Required and `[]` means Optional \n\n")
-        myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creater}")
+        myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creator}")
         await ctx.send(embed=myEmbed)
     else:
         content = ""
