@@ -2491,6 +2491,9 @@ async def afk(ctx, *, reason: Optional[str]=None):
             afkdata[ctx.guild.id] = []
 
         if ctx.author not in afkdata[ctx.guild.id]:
+            if "@here" in reason or "@everyone" in reason:
+                await ctx.reply(embed=discord.Embed(description=f"Please Don't Use Server Default Pings!", color=embedTheme))
+                return
             username[ctx.author.id] = ctx.author.nick
             if reason is None:
                 reason = f"Nothing Specified"
@@ -2514,7 +2517,6 @@ afkhelp = f"afk [reason]"
 async def on_message(message):
     global afkdata, reasontopic
     # if not message.author.bot:
-    print(message.content)
     if message.guild:
         if message.guild.id not in afkdata:
             afkdata[message.guild.id] = []
