@@ -860,21 +860,22 @@ async def gstatus(ctx, msg: Optional[discord.Message]=None):
     if GiveawayRole in ctx.author.roles or ctx.author.guild_permissions.manage_guild:
         if msg is not None:
             thisgives = None
-            for gives in gActive[ctx.message.guild.id].keys():
-                if gActive[ctx.message.guild.id][gives]["message"] == msg:
-                    thisgives = gives
-                    embed=discord.Embed(color=embedTheme)
-                    embed.set_author(name=f"Status for {gActive[ctx.guild.id][thisgives]['name']}")
-                    embed.add_field(name="Participants", value=str(len(gActive[ctx.guild.id][thisgives]["participants"])))
-                    embed.add_field(name="Channel", value=gActive[ctx.guild.id][thisgives]["channel"].mention)
-                    embed.add_field(name="Hosted By", value=gActive[ctx.guild.id][thisgives]["host"].mention)
-                    if gActive[ctx.guild.id][thisgives]["status"] == True:status="Active"
-                    else:status="Ended!"
-                    embed.add_field(name="Status", value=status)
-                    if status == "Ended!":
-                        embed.add_field(name="Winner", value=gActive[ctx.guild.id][thisgives]["winner"])
-                    await gActive[ctx.guild.id][thisgives]["message"].reply(embed=embed)
-                    return
+            if ctx.message.guild.id in gActive:
+                for gives in gActive[ctx.message.guild.id].keys():
+                    if gActive[ctx.message.guild.id][gives]["message"] == msg:
+                        thisgives = gives
+                        embed=discord.Embed(color=embedTheme)
+                        embed.set_author(name=f"Status for {gActive[ctx.guild.id][thisgives]['name']}")
+                        embed.add_field(name="Participants", value=str(len(gActive[ctx.guild.id][thisgives]["participants"])))
+                        embed.add_field(name="Channel", value=gActive[ctx.guild.id][thisgives]["channel"].mention)
+                        embed.add_field(name="Hosted By", value=gActive[ctx.guild.id][thisgives]["host"].mention)
+                        if gActive[ctx.guild.id][thisgives]["status"] == True:status="Active"
+                        else:status="Ended!"
+                        embed.add_field(name="Status", value=status)
+                        if status == "Ended!":
+                            embed.add_field(name="Winner", value=gActive[ctx.guild.id][thisgives]["winner"])
+                        await gActive[ctx.guild.id][thisgives]["message"].reply(embed=embed)
+                        return
             await ctx.reply(embed=discord.Embed(description="I Don't have Any Information for that!", color=embedTheme))
         else:
             await ctx.reply(embed=discord.Embed(description="Please Mention the Giveaway by its Message ID!", color=embedTheme))
@@ -2719,7 +2720,7 @@ votehelp = f"vote"
 async def info(ctx):
     Listedgreetings = ["Hello!","Hi!","Hey!","Heya!"]
     RandomGreetings = random.choice(Listedgreetings)
-    infoembed = discord.Embed(description=f"{RandomGreetings} I am Tornax a Multi-Talented Discord Bot, Designed, Created and Configured by MrinalSparks", color=embedTheme)
+    infoembed = discord.Embed(description=f"{RandomGreetings} I am Tornax a Multi-Talented Discord Bot :)", color=embedTheme)
     infoembed.set_author(icon_url=bot.user.avatar_url, name=bot.user.name)
     infoembed.add_field(name="Default Prefix", value=DEFAULT_PREFIX, inline=True)
     infoembed.add_field(name="Library", value="discord.py", inline=True)
