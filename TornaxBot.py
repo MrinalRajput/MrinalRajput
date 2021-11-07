@@ -1245,7 +1245,7 @@ async def youtube(ctx, *, searching):
                         del videoCount[ctx.guild.id][ctx.author.id]
                         validResults.clear()
     else:
-        await ctx.reply(f'''I didn't Found Result for "{old}" in Youtube''')
+        await ctx.reply(embed=discord.Embed(f'''I didn't Found Result for "{old}" in Youtube''', color=embedTheme))
 
 youtubehelp = f"youtube <Search Topic>"
 
@@ -1283,7 +1283,7 @@ async def meaning(ctx, *, keyword: Optional[str]=None):
                 embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
                 await ctx.send(embed=embed)
             else:
-                await ctx.reply(f"I Didn't Found Meaning of {keyword} in Dictionary")
+                await ctx.reply(embed=discord.Embed(description=f"I Didn't Found Meaning of {keyword} in Dictionary", color=embedTheme))
         else:
             await ctx.reply(f"Please Specify the Word for its Meaning")
     else:
