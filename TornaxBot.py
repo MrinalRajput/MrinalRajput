@@ -891,19 +891,21 @@ async def greroll(ctx, msg: Optional[discord.Message]=None):
     if GiveawayRole in ctx.author.roles or ctx.author.guild_permissions.manage_guild:
         if msg is not None:
             thisgives = None
-            for gives in gActive[ctx.message.guild.id].keys():
-                if gActive[ctx.message.guild.id][gives]["message"] == msg:
-                    thisgives = gives
-                    if gActive[ctx.guild.id][thisgives]["status"] == False:
-                        if len(gActive[ctx.guild.id][thisgives]["participants"]) > 1:
-                            getwinner = random.choice(gActive[ctx.guild.id][thisgives]["participants"])
-                            winner = await bot.fetch_user(getwinner)
-                            await gActive[ctx.guild.id][thisgives]["message"].reply(f":tada: Congratulations! {winner.mention} is the New Winner of the Giveaway {gActive[ctx.guild.id][thisgives]['name']}")
+            if ctx.guild.id in gActive:
+                for gives in gActive[ctx.guild.id].keys():
+                    if gActive[ctx.guild.id][gives]["message"] == msg:
+                        thisgives = gives
+                        if gActive[ctx.guild.id][thisgives]["status"] == False:
+                            if len(gActive[ctx.guild.id][thisgives]["participants"]) > 1:
+                                getwinner = random.choice(gActive[ctx.guild.id][thisgives]["participants"])
+                                winner = await bot.fetch_user(getwinner)
+                                await gActive[ctx.guild.id][thisgives]["message"].reply(f":tada: Congratulations! {winner.mention} is the New Winner of the Giveaway {gActive[ctx.guild.id][thisgives]['name']}")
+                            else:
+                                await ctx.reply(f"The Giveaway Should Have Minimum 2 Participants to Reroll!")
                         else:
-                            await ctx.reply(f"The Giveaway Should Have Minimum 2 Participants to Reroll!")
-                    else:
-                        await gActive[ctx.guild.id][thisgives]["message"].reply(f"{ctx.author.mention} Unable to Reroll, The Giveaway is Currently Active")
-
+                            await gActive[ctx.guild.id][thisgives]["message"].reply(f"{ctx.author.mention} Unable to Reroll, The Giveaway is Currently Active")
+                        return
+            await ctx.reply(embed=discord.Embed(description="I Don't have Any Information for that!", color=embedTheme))
         else:
             await ctx.reply(embed=discord.Embed(description="Please Mention the Giveaway by its Message ID!", color=embedTheme))
     else:
