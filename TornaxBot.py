@@ -1149,7 +1149,7 @@ async def Wikipedia(ctx, *, search: Optional[str]=None):
         else:
             await ctx.reply(f"You Must Specify What you want to Search!")
     except:
-        await ctx.reply(f"Something Went Wrong! We Didn't Found a Result for {search}")
+        await ctx.reply(embed=discord.Embed(description=f"Something Went Wrong! We Didn't Found a Result for {search}", color=embedTheme))
 
 wikipediahelp = f"wikipedia <Search Topic>"
 
@@ -2514,6 +2514,7 @@ afkhelp = f"afk [reason]"
 async def on_message(message):
     global afkdata, reasontopic
     # if not message.author.bot:
+    print(message.content)
     if message.guild:
         if message.guild.id not in afkdata:
             afkdata[message.guild.id] = []
