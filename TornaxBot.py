@@ -2697,9 +2697,10 @@ async def roles(ctx, role: Optional[discord.Role]=None):
             rolecounts.append(str(rolecount))
     if role is not None:
         roleembed = discord.Embed(title=f"Role in {ctx.guild}", color=embedTheme)
+        roleembed.add_field(name=f"Role", value="\n".join(allrole))
     else:
         roleembed = discord.Embed(title=f"Roles in {ctx.guild} [{len(allrole)}]", color=embedTheme)
-    roleembed.add_field(name=f"{name}", value="\n".join(allrole))
+        roleembed.add_field(name=f"Roles", value="\n".join(allrole))
     roleembed.add_field(name="Members", value="\n".join(rolecounts))
     roleembed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=roleembed)
