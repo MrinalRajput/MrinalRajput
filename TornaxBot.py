@@ -2488,36 +2488,34 @@ async def wanted(ctx, member: Optional[discord.Member]=None):
 wantedhelp = f"wanted [member]"
 
 afkdata = {}
+afkwait = {}
 username = {}
 reasontopic = {}
 
 @bot.command()
 async def afk(ctx, *, reason: Optional[str]=None):
     global afkdata, username, reasontopic
+    if ctx.guild.id not in afkdata:
+        afkdata[ctx.guild.id] = []
+    if ctx.guild.id not in afkwait:
+        afkwait[ctx.guild.id] = []
+
+    username[ctx.author.id] = ctx.author.nick
+    if reason is None:
+        reason = f"Nothing Specified"
+    if "@here" in reason or "@everyone" in reason:
+        await ctx.reply(embed=discord.Embed(description=f"Please Don't Use Server Default Pings!", color=embedTheme))
+        return
+    reasontopic[ctx.author.id] = reason
+    await ctx.send(f"{ctx.author.mention} Afk Set : {reason}")
     try:
-        if ctx.guild.id not in afkdata:
-            afkdata[ctx.guild.id] = []
-
-        if ctx.author not in afkdata[ctx.guild.id]:
-            if "@here" in reason or "@everyone" in reason:
-                await ctx.reply(embed=discord.Embed(description=f"Please Don't Use Server Default Pings!", color=embedTheme))
-                return
-            username[ctx.author.id] = ctx.author.nick
-            if reason is None:
-                reason = f"Nothing Specified"
-            reasontopic[ctx.author.id] = reason
-            await ctx.send(f"{ctx.author.mention} Afk Set : {reason}")
-            try:
-                await ctx.author.edit(nick=f"[AFK] {ctx.author.name}")
-            except:
-                pass
-
-            afkdata[ctx.guild.id].append(ctx.author.id)
-        else:
-            await ctx.send(f"{ctx.author.mention} You Afk has been Removed, User `>afk` Again to Set Your Afk")
-    except Exception as e:
-        print(e)
+        await ctx.author.edit(nick=f"[AFK] {ctx.author.name}")
+    except:
         pass
+
+    afkdata[ctx.guild.id].append(ctx.author.id)
+    await asyncio.sleep(30)
+    afkwait[ctx.guild.id].append(ctx.author.id)
 
 afkhelp = f"afk [reason]"
 
@@ -2546,15 +2544,17 @@ async def on_message(message):
 async def on_message(message):   
     global afkdata, username, reasontopic
     try:
-        if message.author.id in afkdata[message.guild.id]:
-            afkdata[message.guild.id].remove(message.author.id)
-            await message.channel.send(f"Afk Removed: {message.author.mention} You are no More Afk Now!")
-            try:
-                await message.author.edit(nick=username[message.author.id])
-            except:
-                pass
-            del username[message.author.id]
-            del reasontopic[message.author.id]
+        if message.guild.id in afkwait:
+            if message.author.id in afkwait[message.guild.id]:
+                afkdata[message.guild.id].remove(message.author.id)
+                afkwait[message.guild.id].remove(message.author.id)
+                await message.channel.send(f"Afk Removed: {message.author.mention} You are no More Afk Now!")
+                try:
+                    await message.author.edit(nick=username[message.author.id])
+                except:
+                    pass
+                del username[message.author.id]
+                del reasontopic[message.author.id]
     except Exception as e:
         print(e)
         pass
