@@ -3118,18 +3118,16 @@ async def on_message(message):
     if message.guild:
         if not message.author.bot:
             if not message.author.guild_permissions.administrator:
-                characters = ['~', ':', "'", '+', '[', '\\', '@', '^', '{', '%', '(', '-', '"', '*', '|', ',', '&', '<', '`', '}', '.', '_', '=', ']', '!', '>', ';', '?', '#', '$', ')', '/',"1","2","3","4","5","6","7","8","9","0"]
+                characters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
                 thechat = message.content
-                for l in thechat:
-                    for c in characters:
-                        if l == c:
-                            thechat = thechat.replace(l, "")
-                thechat = thechat.replace(" ","")
                 if len(thechat) > 7:
                     chances = 0
-                    for tc in thechat:
-                        if tc == tc.upper():
-                            chances += 1
+                    for ch in thechat:
+                        if ch.lower() in characters:
+                            if ch == ch.upper():
+                                chances += 1
+                        elif ch == "\n":
+                            chances = 0
                     if chances > 6:
                         await message.channel.send(f"{message.author.mention} Please Don't Use Too Many Caps!", delete_after=15)
 
