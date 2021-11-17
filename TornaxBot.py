@@ -1369,7 +1369,7 @@ async def country(ctx, *, thecountry: Optional[str]=None):
         try:
             query = CountryInfo(thecountry)
             countryEmbed = discord.Embed(title=query.name(), color=embedTheme)
-            countryEmbed.set_thumbnail(url=f"https://www.worldometers.info/img/flags/small/tn_{query.iso()['alpha2']}-flag.gif")
+            countryEmbed.set_thumbnail(url=f"https://www.worldometers.info/img/flags/small/tn_{query.iso()['alpha2'].lower()}-flag.gif")
             countryEmbed.add_field(name="Name", value=query.name(), inline=True)
             countryEmbed.add_field(name="Capital", value=query.capital(), inline=True)
             countryEmbed.add_field(name="ISO Code", value=query.iso()['alpha2'], inline=True)
