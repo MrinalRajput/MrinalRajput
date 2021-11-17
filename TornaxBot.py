@@ -1567,6 +1567,9 @@ async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[d
             for s in list(pycountry.subdivisions):
                 if s.name.lower() not in places:
                     places.append(s.name.lower())
+            for co in CountryInfo().all().keys():
+                if co.lower() not in places:
+                    places.append(co.lower())
             
             alphabets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
@@ -1592,7 +1595,7 @@ async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[d
                 await ctx.send(f"{turn.mention} Its Your Turn, You Have to tell a Country or State name Starts with `{letter}`")
 
                 def check(message):
-                    return message.author == turn and message.content.lower().startswith(letter) and message.channel == ctx.channel
+                    return message.author == turn and message.content.lower().startswith(letter) and message.channel == ctx.channel and len(message.content) > 1
                 try:
                     userplace = await bot.wait_for("message", check=check, timeout=15)
                     if userplace.content.lower() in places and userplace.content.lower() not in toldplaces:
@@ -1651,6 +1654,121 @@ async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[d
             await ctx.reply(f"Anyone's Match is Currently Active")
 
 atlashelp = f"atlas <player1> <player2> <player3> <player4>"
+
+pokegames = {}
+
+@bot.command()
+async def pokegame(ctx, player1: Optional[discord.Member]=None, player2: Optional[discord.Member]=None, player3: Optional[discord.Member]=None, player4: Optional[discord.Member]=None):
+    if ctx.guild.id not in pokegames:
+        pokegames[ctx.guild.id] = []
+    if player1 is None or player2 is None:
+        await ctx.reply(f"There Must be Minimum 2 Players to Play Pokemon Game")
+    else:
+        if player1.id not in pokegames[ctx.guild.id] and player2.id not in pokegames[ctx.guild.id]:
+            pokegames[ctx.guild.id].append(player1.id)
+            pokegames[ctx.guild.id].append(player2.id)
+            if player3 is not None:
+                pokegames[ctx.guild.id].append(player3.id)
+            if player4 is not None:
+                pokegames[ctx.guild.id].append(player4.id)
+
+            turn = player1
+            playersare = [player1.mention, player2.mention]
+            if player3 is not None:
+                playersare.append(player3.mention)
+            if player4 is not None:
+                playersare.append(player4.mention)
+
+            toldpoke = []
+            
+            alphabets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+            await ctx.send(f"<:masterball:910489629512306688> Pokemon Game <:ultraball:910489102737096734>\n Players - {', '.join(playersare)}")
+
+            if player1 is not None: isplayer1 = True
+            else: isplayer1 = False
+            if player2 is not None: isplayer2 = True 
+            else: isplayer2 = False
+            if player3 is not None: isplayer3 = True 
+            else: isplayer3 = False
+            if player4 is not None: isplayer4 = True 
+            else: isplayer4 = False
+
+            while True:
+                playersare = [player1.mention, player2.mention]
+                if player3 is not None:
+                    playersare.append(player3.mention)
+                if player4 is not None:
+                    playersare.append(player4.mention)
+                
+                letter = random.choice(alphabets)
+                await ctx.send(f"{turn.mention} Its Your Turn, You Have to tell a Pokemon name Starts with `{letter}`")
+
+                def check(message):
+                    return message.author == turn and message.content.lower().startswith(letter) and message.channel == ctx.channel and len(message.content) > 1
+                try:
+                    pokename = await bot.wait_for("message", check=check, timeout=15)
+                    if pokename.content.lower() not in toldpoke:
+                        try:
+                            pokemon = pypokedex.get(name=str(pokename.content.lower()))
+                            await pokename.reply(f"You Told Correct {pokename.content} is a Valid Pokemon Starts With `{letter}`")
+                            toldpoke.append(pokename.content.lower())
+                            if turn == player1:
+                                turn = player2
+                            elif turn == player2:
+                                if isplayer3:
+                                    turn = player3
+                                else:
+                                    turn = player1
+                            elif turn == player3:
+                                if isplayer4:
+                                    turn = player4
+                                else:
+                                    turn = player1
+                            elif turn == player4:
+                                turn = player1
+                        except Exception as e:
+                            print(e)
+                            pass
+
+                    elif pokename.content.lower() in toldpoke:
+                        await pokename.reply(f"{pokename.content} is Already Told by Someone")
+                        playersare.remove(turn.mention)
+                        await ctx.send(f"Loser - {turn.mention}\nWinners - {', '.join(playersare)}")
+                        atlasgames[ctx.guild.id].remove(player1.id)
+                        atlasgames[ctx.guild.id].remove(player2.id)
+                        if player3 is not None:
+                            atlasgames[ctx.guild.id].remove(player3.id)
+                        if player4 is not None:
+                            atlasgames[ctx.guild.id].remove(player4.id)
+                        break
+                    else:
+                        await pokename.reply(f"You Told Wrong, {pokename.content} is not a Pokemon")
+                        playersare.remove(turn.mention)
+                        await ctx.send(f"Loser - {turn.mention}\nWinners - {', '.join(playersare)}")
+                        atlasgames[ctx.guild.id].remove(player1.id)
+                        atlasgames[ctx.guild.id].remove(player2.id)
+                        if player3 is not None:
+                            atlasgames[ctx.guild.id].remove(player3.id)
+                        if player4 is not None:
+                            atlasgames[ctx.guild.id].remove(player4.id)
+                        break
+                except Exception as e:
+                    print(e)
+                    await ctx.send(f"{turn.mention} Your Chance Timeout!")
+                    playersare.remove(turn.mention)
+                    await ctx.send(f"Loser - {turn.mention}\nWinners - {', '.join(playersare)}")
+                    atlasgames[ctx.guild.id].remove(player1.id)
+                    atlasgames[ctx.guild.id].remove(player2.id)
+                    if player3 is not None:
+                        atlasgames[ctx.guild.id].remove(player3.id)
+                    if player4 is not None:
+                        atlasgames[ctx.guild.id].remove(player4.id)
+                    break        
+        else:
+            await ctx.reply(f"Anyone's Match is Currently Active")
+
+pokegamehelp = f"pokegame <player1> <player2> <player3> <player4>"
 
 active = {}
 gamingChannel = {}
@@ -2769,7 +2887,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, clearreacts, rule, rules, solve, time, timerstart, timerstop, choose", inline=False)
         myEmbed.add_field(name="Management",value=" addrole, removerole, clean, allcommands, gstart, gstatus, gstop, greroll, setprefix, whois, emojis, roles, serverinfo, info, invite, about, support, join, leave, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban, softban, voicekick, restrict, unrestrict, restricts ", inline=False)
-        myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, atlas, triviamc, mcserver, wikipedia, google, youtube, meaning, pokemon, country \n----------------------\n", inline=False)
+        myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, atlas, pokegame, triviamc, mcserver, wikipedia, google, youtube, meaning, pokemon, country \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{ctx.prefix}`\n > Command Usage Example :   `{ctx.prefix}info`\n\n----------------------", inline=False)
         myEmbed.add_field(name="Readme", value=f"`{ctx.prefix}help` Shows this Message, use `{ctx.prefix}help [command]` to get more information about that Command and `{ctx.prefix}allcommands` for more information of all commands in detail - `<>` means Required and `[]` means Optional \n\n")
         myEmbed.set_footer(icon_url=bot.user.avatar_url,text=f"Made by {Creator}")
@@ -2839,6 +2957,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "tttstop": content=tttstophelp
         elif anycommand == "guess": content=guesshelp
         elif anycommand == "atlas": content=atlashelp
+        elif anycommand == "pokegame": content=pokegamehelp
         elif anycommand == "triviamc": content=triviamchelp
         elif anycommand == "mcserver": content=mcserverhelp
         elif anycommand == "pokemon": content=pokemonhelp
@@ -2918,7 +3037,7 @@ async def allcommands(ctx):
         funcmd = " \n ".join(funcmd)
         funEmbed = discord.Embed(title="Fun Commands", description=f"{funcmd} \n\n 5/8", color=embedTheme)
 
-        minigamesList = {f"{ctx.prefix}tictactoe":"Challenge Your Friends for a Tictactoe Match",f"{ctx.prefix}tttstop":"Stop a Tictactoe Game in Between",f"{ctx.prefix}guess":"Start a Guess the Number Challenge with Your Server Members",f"{ctx.prefix}atlas":"Enjoy With Your Friends with Atlas Game and Recalling Some Countries",f"{ctx.prefix}triviamc":"Give Answers of Minecraft Quizes with Friends and Try to Achieve the Leaderboard"}
+        minigamesList = {f"{ctx.prefix}tictactoe":"Challenge Your Friends for a Tictactoe Match",f"{ctx.prefix}tttstop":"Stop a Tictactoe Game in Between",f"{ctx.prefix}guess":"Start a Guess the Number Challenge with Your Server Members",f"{ctx.prefix}atlas":"Enjoy With Your Friends with Atlas Game and Recalling Some Countries",f"{ctx.prefix}pokegame":"Enjoy With Your Friends with Pokemon Game by Telling Pokemon names",f"{ctx.prefix}triviamc":"Give Answers of Minecraft Quizes with Friends and Try to Achieve the Leaderboard"}
         minigamescmd = []
         for cmd in list(minigamesList.keys()):
             minigamescmd.append(f"• {cmd} {sign}  {minigamesList[cmd]}.")
@@ -3118,6 +3237,8 @@ async def on_message(message):
     if message.guild:
         if not message.author.bot:
             if not message.author.guild_permissions.administrator:
+                if message.attachments:
+                    return
                 characters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
                 thechat = message.content
                 if len(thechat) > 7:
