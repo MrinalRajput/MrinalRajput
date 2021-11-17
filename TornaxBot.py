@@ -1729,7 +1729,16 @@ async def pokegame(ctx, player1: Optional[discord.Member]=None, player2: Optiona
                                 turn = player1
                         except Exception as e:
                             print(e)
-                            pass
+                            await pokename.reply(f"You Told Wrong, {pokename.content} is not a Pokemon")
+                            playersare.remove(turn.mention)
+                            await ctx.send(f"Loser - {turn.mention}\nWinners - {', '.join(playersare)}")
+                            atlasgames[ctx.guild.id].remove(player1.id)
+                            atlasgames[ctx.guild.id].remove(player2.id)
+                            if player3 is not None:
+                                atlasgames[ctx.guild.id].remove(player3.id)
+                            if player4 is not None:
+                                atlasgames[ctx.guild.id].remove(player4.id)
+                            break
 
                     elif pokename.content.lower() in toldpoke:
                         await pokename.reply(f"{pokename.content} is Already Told by Someone")
@@ -1742,17 +1751,7 @@ async def pokegame(ctx, player1: Optional[discord.Member]=None, player2: Optiona
                         if player4 is not None:
                             atlasgames[ctx.guild.id].remove(player4.id)
                         break
-                    else:
-                        await pokename.reply(f"You Told Wrong, {pokename.content} is not a Pokemon")
-                        playersare.remove(turn.mention)
-                        await ctx.send(f"Loser - {turn.mention}\nWinners - {', '.join(playersare)}")
-                        atlasgames[ctx.guild.id].remove(player1.id)
-                        atlasgames[ctx.guild.id].remove(player2.id)
-                        if player3 is not None:
-                            atlasgames[ctx.guild.id].remove(player3.id)
-                        if player4 is not None:
-                            atlasgames[ctx.guild.id].remove(player4.id)
-                        break
+
                 except Exception as e:
                     print(e)
                     await ctx.send(f"{turn.mention} Your Chance Timeout!")
