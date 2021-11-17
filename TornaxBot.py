@@ -454,7 +454,7 @@ async def softban(ctx, member: Optional[discord.Member]=None, *, reason: Optiona
 
 softbanhelp = f"softban <member> [reason]"
 
-@bot.command()
+@bot.command(aliases=["vckick","vkick"])
 async def voicekick(ctx, member: Optional[discord.Member]=None):
     if ctx.guild:
         if member is not None:
@@ -583,7 +583,7 @@ async def resetnick_error(error, ctx):
    if isinstance(error, MissingPermissions):
        await ctx.send("You don't have permission to do that!")
 
-@bot.command()
+@bot.command(aliases=["purge"])
 @commands.has_permissions(manage_messages=True)
 async def clean(ctx, limit:int, member: Optional[discord.Member]=None):
     if limit > 0:
@@ -932,7 +932,7 @@ async def react(ctx, chat:Optional[discord.Message]=None, emoji:Optional[str]=No
 
 reacthelp = f"react <message id> <emoji>"
 
-@bot.command()
+@bot.command(aliases=["deletereacts","removereacts"])
 async def clearreacts(ctx, chat: Optional[discord.Message]=None):
     if ctx.author.guild_permissions.manage_messages:
         if chat is not None:
@@ -1095,7 +1095,7 @@ async def timerstop(ctx):
 
 timerstophelp = f"timerstop"
 
-@bot.command()
+@bot.command(aliases=["select"])
 async def choose(ctx, option1: Optional[str]=None, option2: Optional[str]=None):
     if option1 is None or option2 is None:
         await ctx.reply(embed=discord.Embed(description=f"You Must Specify 2 Options", color=embedTheme))
@@ -1144,7 +1144,7 @@ async def mcserver(ctx, server: Optional[str]=None):
 
 mcserverhelp = f"mcserver <Minecaft Java Server Ip>"
 
-@bot.command()
+@bot.command(aliases=["wiki"])
 async def Wikipedia(ctx, *, search: Optional[str]=None):
     try:
         if search is not None:
@@ -1183,7 +1183,7 @@ googlehelp = f"google <Search Topic>"
 
 videoCount = {}
 
-@bot.command()
+@bot.command(aliases=["yt"])
 async def youtube(ctx, *, searching):
     if ctx.guild.id not in videoCount:
         videoCount[ctx.guild.id] = {}
@@ -1300,7 +1300,7 @@ async def meaning(ctx, *, keyword: Optional[str]=None):
 
 meaninghelp = f"meaning <Word>"
 
-@bot.command()
+@bot.command(aliases=["pokedex","dex"])
 async def pokemon(ctx, pokename=None, wantmove: Optional[str]=None):
     if pokename is not None:
         nums = [1,2,3,4,5,6,7,8,9,0]
@@ -1433,7 +1433,7 @@ async def Time(ctx, region: Optional[str]=None):
 
 timehelp = f"time [country/region]"
 
-@bot.command()
+@bot.command(aliases=["announce"])
 async def tell(ctx, channel: Optional[discord.TextChannel]=None, *, msg):
     if ctx.guild:
         if channel is None:
@@ -1843,7 +1843,7 @@ gameBoards = {}
 chances = {}
 teamCode = {}
 
-@bot.command()
+@bot.command(aliases=["ttt"])
 async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Optional[discord.Member]=None):
     global matches, gameBoards, chances, teamCode
     if ctx.guild.id not in matches:
@@ -2722,7 +2722,7 @@ async def rules(ctx):
 
 ruleshelp = f"rules"
 
-@bot.command()
+@bot.command(aliases=["av"])
 async def avatar(ctx, owner: Optional[discord.Member]=None):
     if owner is None:
         owner = ctx.author
@@ -2734,7 +2734,7 @@ async def avatar(ctx, owner: Optional[discord.Member]=None):
 
 avatarhelp = f"avatar [user]"
 
-@bot.command()
+@bot.command(aliases=["userinfo"])
 async def whois(ctx, member: Optional[discord.Member]=None):
     if ctx.guild:
         if member is None:
@@ -2836,7 +2836,7 @@ async def vote(ctx):
 
 votehelp = f"vote"
 
-@bot.command()
+@bot.command(aliases=["botinfo"])
 async def info(ctx):
     Listedgreetings = ["Hello!","Hi!","Hey!","Heya!"]
     RandomGreetings = random.choice(Listedgreetings)
@@ -2866,11 +2866,11 @@ helphelp = f"help [anycommand]"
 
 allcommandshelp = f"allcommands"
 
-@bot.command()
+@bot.command(aliases=["gethelp"])
 async def help(ctx, anycommand: Optional[str]=None):
 
     print(bot.all_commands.keys())
-    totalCommands = len(bot.all_commands.keys())
+    totalCommands = len(bot.commands)
 
     servers = list(bot.guilds)
     print("Currently on " + str(len(bot.guilds)) + " Servers:")
@@ -2974,7 +2974,7 @@ async def help(ctx, anycommand: Optional[str]=None):
 activecmd = {}
 cmdcode = {}
 
-@bot.command()
+@bot.command(aliases=["allcmd"])
 async def allcommands(ctx):
     global activecmd, cmdcode
     if ctx.guild:
