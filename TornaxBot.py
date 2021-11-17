@@ -1738,7 +1738,7 @@ async def pokegame(ctx, player1: Optional[discord.Member]=None, player2: Optiona
                                 pokegames[ctx.guild.id].remove(player3.id)
                             if player4 is not None:
                                 pokegames[ctx.guild.id].remove(player4.id)
-                            break
+                            return
 
                     elif pokename.content.lower() in toldpoke:
                         await pokename.reply(f"{pokename.content} is Already Told by Someone")
