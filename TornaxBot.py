@@ -1470,7 +1470,7 @@ async def triviamc(ctx):
                 seperate.remove('play')
                 if ctx.channel.name in seperate:
                     pass
-                elif seperate[1] == 'all':
+                elif seperate[0] == 'all':
                     pass
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
@@ -1570,7 +1570,7 @@ async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[d
                 seperate.remove('play')
                 if ctx.channel.name in seperate:
                     pass
-                elif seperate[1] == 'all':
+                elif seperate[0] == 'all':
                     pass
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
@@ -1710,7 +1710,7 @@ async def pokegame(ctx, player1: Optional[discord.Member]=None, player2: Optiona
                 seperate.remove('play')
                 if ctx.channel.name in seperate:
                     pass
-                elif seperate[1] == 'all':
+                elif seperate[0] == 'all':
                     pass
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
@@ -1849,7 +1849,7 @@ async def guess(ctx):
                 seperate.remove('play')
                 if ctx.channel.name in seperate:
                     pass
-                elif seperate[1] == 'all':
+                elif seperate[0] == 'all':
                     pass
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
@@ -1943,7 +1943,7 @@ async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Option
                 seperate.remove('play')
                 if ctx.channel.name in seperate:
                     pass
-                elif seperate[1] == 'all':
+                elif seperate[0] == 'all':
                     pass
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
@@ -2014,7 +2014,7 @@ async def tttstop(ctx):
                 seperate.remove('play')
                 if ctx.channel.name in seperate:
                     pass
-                elif seperate[1] == 'all':
+                elif seperate[0] == 'all':
                     pass
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
