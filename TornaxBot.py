@@ -166,7 +166,7 @@ async def on_message(message):
 
 async def modlogs(ctx, case, user, mod, timing, logreason, cased):
     for channel in ctx.guild.channels:
-        if "mod" in channel.name.lower() or "mod-log" in channel.name.lower() or "server-log" in channel.name.lower():
+        if "mod" in channel.name.lower() or "log" in channel.name.lower():
             logEmbed = discord.Embed(title=f"Mod Logs", color=embedTheme)
             logEmbed.set_author(icon_url=ctx.guild.icon_url, name=f"{ctx.guild} || {case}")
             try:
@@ -1462,7 +1462,17 @@ async def triviamc(ctx):
         participants[ctx.guild.id] = {}
     if ctx.guild.id not in serverque:
         serverque[ctx.guild.id] = {}
-
+    
+    for role in bot.user.roles:
+        seperate = role.split()
+        if len(seperate) > 1:
+            if seperate[0] == "play":
+                seperate.remove('play')
+                if ctx.channel.name in seperate:
+                    pass
+                else:
+                    await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
+                    return
     if triviaexist[ctx.guild.id] == False:
         donelist = []
         await ctx.send(embed=discord.Embed(title="❔ Trivia Mc Game", description=f"**Total Questions** - 6 \n Answering Time for Each Question - `15` Seconds)", color=embedTheme).set_footer(icon_url=ctx.author.avatar_url, text=f"Game By {ctx.author.name}"))
@@ -1543,6 +1553,17 @@ atlasgames = {}
 async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[discord.Member]=None, player3: Optional[discord.Member]=None, player4: Optional[discord.Member]=None):
     if ctx.guild.id not in atlasgames:
         atlasgames[ctx.guild.id] = []
+    
+    for role in bot.user.roles:
+        seperate = role.split()
+        if len(seperate) > 1:
+            if seperate[0] == "play":
+                seperate.remove('play')
+                if ctx.channel.name in seperate:
+                    pass
+                else:
+                    await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
+                    return
     if player1 is None or player2 is None:
         await ctx.reply(f"There Must be Minimum 2 Players to Play Atlas Game")
     else:
@@ -1663,6 +1684,17 @@ pokegames = {}
 async def pokegame(ctx, player1: Optional[discord.Member]=None, player2: Optional[discord.Member]=None, player3: Optional[discord.Member]=None, player4: Optional[discord.Member]=None):
     if ctx.guild.id not in pokegames:
         pokegames[ctx.guild.id] = []
+    
+    for role in bot.user.roles:
+        seperate = role.split()
+        if len(seperate) > 1:
+            if seperate[0] == "play":
+                seperate.remove('play')
+                if ctx.channel.name in seperate:
+                    pass
+                else:
+                    await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
+                    return
     if player1 is None or player2 is None:
         await ctx.reply(f"There Must be Minimum 2 Players to Play Pokemon Game")
     else:
@@ -1782,6 +1814,17 @@ async def guess(ctx):
     if ctx.guild.id not in gamingChannel:
         gamingChannel[ctx.guild.id] = {}
 
+    
+    for role in bot.user.roles:
+        seperate = role.split()
+        if len(seperate) > 1:
+            if seperate[0] == "play":
+                seperate.remove('play')
+                if ctx.channel.name in seperate:
+                    pass
+                else:
+                    await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
+                    return
     if active[ctx.guild.id] == False:
         active[ctx.guild.id] = True
         gamingChannel[ctx.guild.id]["channel"] = ctx.channel
@@ -1857,6 +1900,17 @@ async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Option
     if ctx.guild.id not in teamCode:
         teamCode[ctx.guild.id] = {}
 
+    for role in bot.user.roles:
+        seperate = role.split()
+        if len(seperate) > 1:
+            if seperate[0] == "play":
+                seperate.remove('play')
+                if ctx.channel.name in seperate:
+                    pass
+                else:
+                    await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
+                    return
+
     if member1 is not None:
         if member2 is None:
             member2 = member1
@@ -1909,7 +1963,17 @@ tictactoehelp = f"tictactoe [First Player] <Second Player>"
 @bot.command()
 async def tttstop(ctx):
     global matches, gameBoards, chances, teamCode
-    try:
+    for role in bot.user.roles:
+        seperate = role.split()
+        if len(seperate) > 1:
+            if seperate[0] == "play":
+                seperate.remove('play')
+                if ctx.channel.name in seperate:
+                    pass
+                else:
+                    await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
+                    return
+    try:        
         if ctx.author.id in matches[ctx.guild.id].keys() or ctx.author.id in matches[ctx.guild.id].values():
             await ctx.send(f"{ctx.author.mention} Your TicTacToe Game has been Stopped")
             
