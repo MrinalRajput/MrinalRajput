@@ -1469,14 +1469,16 @@ async def triviamc(ctx):
             if seperate[0] == "play":
                 seperate.remove('play')
                 if ctx.channel.name in seperate:
-                    pass
+                    rolehaving=True
+                    break
                 elif seperate[0] == 'all':
-                    pass
+                    rolehaving=True
+                    break
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
                     return
-        else:
-            rolehaving=False
+            else:
+                rolehaving=False
 
     if triviaexist[ctx.guild.id] == False:
         donelist = []
@@ -1569,14 +1571,16 @@ async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[d
             if seperate[0] == "play":
                 seperate.remove('play')
                 if ctx.channel.name in seperate:
-                    pass
+                    rolehaving=True
+                    break
                 elif seperate[0] == 'all':
-                    pass
+                    rolehaving=True
+                    break
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
                     return
-        else:
-            rolehaving=False
+            else:
+                rolehaving=False
 
     if player1 is None or player2 is None:
         await ctx.reply(f"There Must be Minimum 2 Players to Play Atlas Game")
@@ -1709,14 +1713,16 @@ async def pokegame(ctx, player1: Optional[discord.Member]=None, player2: Optiona
             if seperate[0] == "play":
                 seperate.remove('play')
                 if ctx.channel.name in seperate:
-                    pass
+                    rolehaving=True
+                    break
                 elif seperate[0] == 'all':
-                    pass
+                    rolehaving=True
+                    break
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
                     return
-        else:
-            rolehaving=False
+            else:
+                rolehaving=False
 
     if player1 is None or player2 is None:
         await ctx.reply(f"There Must be Minimum 2 Players to Play Pokemon Game")
@@ -1848,14 +1854,16 @@ async def guess(ctx):
             if seperate[0] == "play":
                 seperate.remove('play')
                 if ctx.channel.name in seperate:
-                    pass
+                    rolehaving=True
+                    break
                 elif seperate[0] == 'all':
-                    pass
+                    rolehaving=True
+                    break
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
                     return
-        else:
-            rolehaving=False
+            else:
+                rolehaving=False
 
     if active[ctx.guild.id] == False:
         active[ctx.guild.id] = True
@@ -1942,14 +1950,16 @@ async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Option
             if seperate[0] == "play":
                 seperate.remove('play')
                 if ctx.channel.name in seperate:
-                    pass
+                    rolehaving=True
+                    break
                 elif seperate[0] == 'all':
-                    pass
+                    rolehaving=True
+                    break
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
                     return
-        else:
-            rolehaving=False
+            else:
+                rolehaving=False
 
     if member1 is not None:
         if member2 is None:
@@ -2013,14 +2023,16 @@ async def tttstop(ctx):
             if seperate[0] == "play":
                 seperate.remove('play')
                 if ctx.channel.name in seperate:
-                    pass
+                    rolehaving=True
+                    break
                 elif seperate[0] == 'all':
-                    pass
+                    rolehaving=True
+                    break
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
                     return
-        else:
-            rolehaving=False
+            else:
+                rolehaving=False
 
     try:        
         if ctx.author.id in matches[ctx.guild.id].keys() or ctx.author.id in matches[ctx.guild.id].values():
