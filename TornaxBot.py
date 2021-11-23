@@ -1473,9 +1473,16 @@ async def triviamc(ctx):
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
                     return
+        else:
+            rolehaving=False
+
     if triviaexist[ctx.guild.id] == False:
         donelist = []
         await ctx.send(embed=discord.Embed(title="❔ Trivia Mc Game", description=f"**Total Questions** - 6 \n Answering Time for Each Question - `15` Seconds)", color=embedTheme).set_footer(icon_url=ctx.author.avatar_url, text=f"Game By {ctx.author.name}"))
+        if rolehaving == False:
+            choosefirst = random.choice(['yes','no'])
+            if choosefirst == 'yes':
+                await ctx.send(f"Hey! Currently You are Allowing your Server Members to Play MiniGames in Any Channel, You Can Move Mini Games to Specific Channels by Giving Tornax a Role like `play [channel name]`, For Example-`play game-area minigames`", delete_after=12)
         await asyncio.sleep(2)
         triviaexist[ctx.guild.id] = True
         serverque[ctx.guild.id]["channel"] = ctx.channel
@@ -1564,6 +1571,9 @@ async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[d
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
                     return
+        else:
+            rolehaving=False
+
     if player1 is None or player2 is None:
         await ctx.reply(f"There Must be Minimum 2 Players to Play Atlas Game")
     else:
@@ -1597,6 +1607,10 @@ async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[d
             alphabets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
             await ctx.send(f":map: Atlas Game :map:\n Players - {', '.join(playersare)}")
+            if rolehaving == False:
+                choosefirst = random.choice(['yes','no'])
+                if choosefirst == 'yes':
+                    await ctx.send(f"Hey! Currently You are Allowing your Server Members to Play MiniGames in Any Channel, You Can Move Mini Games to Specific Channels by Giving Tornax a Role like `play [channel name]`, For Example-`play game-area minigames`", delete_after=12)
 
             if player1 is not None: isplayer1 = True
             else: isplayer1 = False
@@ -1695,6 +1709,9 @@ async def pokegame(ctx, player1: Optional[discord.Member]=None, player2: Optiona
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
                     return
+        else:
+            rolehaving=False
+
     if player1 is None or player2 is None:
         await ctx.reply(f"There Must be Minimum 2 Players to Play Pokemon Game")
     else:
@@ -1718,6 +1735,10 @@ async def pokegame(ctx, player1: Optional[discord.Member]=None, player2: Optiona
             alphabets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
             await ctx.send(f"<:masterball:910489629512306688> Pokemon Game <:ultraball:910489102737096734>\n Players - {', '.join(playersare)}")
+            if rolehaving == False:
+                choosefirst = random.choice(['yes','no'])
+                if choosefirst == 'yes':
+                    await ctx.send(f"Hey! Currently You are Allowing your Server Members to Play MiniGames in Any Channel, You Can Move Mini Games to Specific Channels by Giving Tornax a Role like `play [channel name]`, For Example-`play game-area minigames`", delete_after=12)
 
             if player1 is not None: isplayer1 = True
             else: isplayer1 = False
@@ -1825,6 +1846,9 @@ async def guess(ctx):
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
                     return
+        else:
+            rolehaving=False
+
     if active[ctx.guild.id] == False:
         active[ctx.guild.id] = True
         gamingChannel[ctx.guild.id]["channel"] = ctx.channel
@@ -1838,6 +1862,10 @@ async def guess(ctx):
         await ctx.send(f"🔢 Guess The Number Game #️⃣")
         gamingChannel[ctx.guild.id]["start"] = await ctx.send(f"I Challenge You to Guess the Number between {gamingChannel[ctx.guild.id]['anyoneRange']} to {gamingChannel[ctx.guild.id]['customRange']} in `{str(gamingChannel[ctx.guild.id]['countdown'])}` Seconds")
         gamingChannel[ctx.guild.id]["hidden"] = await ctx.send(f"➡️ ⬛ ⬅️")
+        if rolehaving == False:
+            choosefirst = random.choice(['yes','no'])
+            if choosefirst == 'yes':
+                await ctx.send(f"Hey! Currently You are Allowing your Server Members to Play MiniGames in Any Channel, You Can Move Mini Games to Specific Channels by Giving Tornax a Role like `play [channel name]`, For Example-`play game-area minigames`", delete_after=12)
         while gamingChannel[ctx.guild.id]["countdown"] > 0:
             await asyncio.sleep(0.7)
             gamingChannel[ctx.guild.id]["countdown"] -=1
@@ -1910,6 +1938,8 @@ async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Option
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
                     return
+        else:
+            rolehaving=False
 
     if member1 is not None:
         if member2 is None:
@@ -1935,6 +1965,10 @@ async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Option
                     chances[ctx.guild.id][member1.id] = "X"
                     chances[ctx.guild.id][member2.id] = "O"
                     await ctx.send(f"\n Players are {member1.mention} ❎ and {member2.mention} 🅾️\n Send 1 to 9 in the Chat to Use your Turn")
+                    if rolehaving == False:
+                        choosefirst = random.choice(['yes','no'])
+                        if choosefirst == 'yes':
+                            await ctx.send(f"Hey! Currently You are Allowing your Server Members to Play MiniGames in Any Channel, You Can Move Mini Games to Specific Channels by Giving Tornax a Role like `play [channel name]`, For Example-`play game-area minigames`", delete_after=12)
 
                     matches[ctx.guild.id][member1.id] = member2.id
                     gameBoards[ctx.guild.id][codeGenerator]["blocks"] = {"block1" : False, "block2": False, "block3" : False, "block4": False, "block5" : False,"block6": False, "block7": False, "block8": False, "block9": False}
@@ -1973,9 +2007,16 @@ async def tttstop(ctx):
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
                     return
+        else:
+            rolehaving=False
+
     try:        
         if ctx.author.id in matches[ctx.guild.id].keys() or ctx.author.id in matches[ctx.guild.id].values():
             await ctx.send(f"{ctx.author.mention} Your TicTacToe Game has been Stopped")
+            if rolehaving == False:
+                choosefirst = random.choice(['yes','no'])
+                if choosefirst == 'yes':
+                    await ctx.send(f"Hey! Currently You are Allowing your Server Members to Play MiniGames in Any Channel, You Can Move Mini Games to Specific Channels by Giving Tornax a Role like `play [channel name]`, For Example-`play game-area minigames`", delete_after=12)
             
             if ctx.author.id in matches[ctx.guild.id].keys():
                 player1 = ctx.author.id
