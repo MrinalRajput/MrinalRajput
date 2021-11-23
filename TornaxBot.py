@@ -1463,7 +1463,7 @@ async def triviamc(ctx):
     if ctx.guild.id not in serverque:
         serverque[ctx.guild.id] = {}
     
-    for role in bot.roles:
+    for role in ctx.guild.me.roles:
         seperate = role.split()
         if len(seperate) > 1:
             if seperate[0] == "play":
@@ -1554,7 +1554,7 @@ async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[d
     if ctx.guild.id not in atlasgames:
         atlasgames[ctx.guild.id] = []
     
-    for role in bot.roles:
+    for role in ctx.guild.me.roles:
         seperate = role.split()
         if len(seperate) > 1:
             if seperate[0] == "play":
@@ -1685,7 +1685,7 @@ async def pokegame(ctx, player1: Optional[discord.Member]=None, player2: Optiona
     if ctx.guild.id not in pokegames:
         pokegames[ctx.guild.id] = []
     
-    for role in bot.roles:
+    for role in ctx.guild.me.roles:
         seperate = role.split()
         if len(seperate) > 1:
             if seperate[0] == "play":
@@ -1815,7 +1815,7 @@ async def guess(ctx):
         gamingChannel[ctx.guild.id] = {}
 
     
-    for role in bot.roles:
+    for role in ctx.guild.me.roles:
         seperate = role.split()
         if len(seperate) > 1:
             if seperate[0] == "play":
@@ -1900,7 +1900,7 @@ async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Option
     if ctx.guild.id not in teamCode:
         teamCode[ctx.guild.id] = {}
 
-    for role in bot.roles:
+    for role in ctx.guild.me.roles:
         seperate = role.split()
         if len(seperate) > 1:
             if seperate[0] == "play":
@@ -1963,7 +1963,7 @@ tictactoehelp = f"tictactoe [First Player] <Second Player>"
 @bot.command()
 async def tttstop(ctx):
     global matches, gameBoards, chances, teamCode
-    for role in bot.roles:
+    for role in ctx.guild.me.roles:
         seperate = role.split()
         if len(seperate) > 1:
             if seperate[0] == "play":
