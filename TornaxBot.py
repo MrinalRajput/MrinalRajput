@@ -1464,7 +1464,7 @@ async def triviamc(ctx):
         serverque[ctx.guild.id] = {}
     
     for role in ctx.guild.me.roles:
-        seperate = role.split()
+        seperate = role.name.split()
         if len(seperate) > 1:
             if seperate[0] == "play":
                 seperate.remove('play')
@@ -1555,7 +1555,7 @@ async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[d
         atlasgames[ctx.guild.id] = []
     
     for role in ctx.guild.me.roles:
-        seperate = role.split()
+        seperate = role.name.split()
         if len(seperate) > 1:
             if seperate[0] == "play":
                 seperate.remove('play')
@@ -1686,7 +1686,7 @@ async def pokegame(ctx, player1: Optional[discord.Member]=None, player2: Optiona
         pokegames[ctx.guild.id] = []
     
     for role in ctx.guild.me.roles:
-        seperate = role.split()
+        seperate = role.name.split()
         if len(seperate) > 1:
             if seperate[0] == "play":
                 seperate.remove('play')
@@ -1816,7 +1816,7 @@ async def guess(ctx):
 
     
     for role in ctx.guild.me.roles:
-        seperate = role.split()
+        seperate = role.name.split()
         if len(seperate) > 1:
             if seperate[0] == "play":
                 seperate.remove('play')
@@ -1901,7 +1901,7 @@ async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Option
         teamCode[ctx.guild.id] = {}
 
     for role in ctx.guild.me.roles:
-        seperate = role.split()
+        seperate = role.name.split()
         if len(seperate) > 1:
             if seperate[0] == "play":
                 seperate.remove('play')
@@ -1964,7 +1964,7 @@ tictactoehelp = f"tictactoe [First Player] <Second Player>"
 async def tttstop(ctx):
     global matches, gameBoards, chances, teamCode
     for role in ctx.guild.me.roles:
-        seperate = role.split()
+        seperate = role.name.split()
         if len(seperate) > 1:
             if seperate[0] == "play":
                 seperate.remove('play')
