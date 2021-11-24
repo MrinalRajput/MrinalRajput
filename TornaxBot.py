@@ -1083,30 +1083,19 @@ async def removerole(ctx, member: Optional[discord.Member]=None, role: discord.R
 
 removerolehelp = f"removerole [member] <role>"
 
-@bot.command()
-async def solve(ctx, num1: Optional[str]=None, operation: Optional[str]=None, num2: Optional[str]=None):
-    if num1 is not None and operation is not None and num2 is not None:
-        if "." in num1:
-            num1 = float(num1)
-        else:
-            num1 = int(num1)
-        if "." in num2:
-            num2 = float(num2)
-        else:
-            num2 = int(num2)
-        if operation == "+":
-            await ctx.send(f"{ctx.author.mention}  {num1} + {num2} = {num1 + num2}")
-        elif operation == "-":
-            await ctx.send(f"{ctx.author.mention}  {num1} - {operation}{num2} = {num1 - num2}")
-        elif operation == "*" or operation.lower() == "x" or operation == "×":
-            await ctx.send(f"{ctx.author.mention}  {num1} × {num2} = {num1 * num2}")
-        elif operation == "/" or operation == "÷":
-            await ctx.send(f"{ctx.author.mention}  {num1} ÷ {num2} = {num1 / num2}")
-    else:
-        embed = discord.Embed(title=f"Command : {ctx.prefix}solve", description=f"Usage : {ctx.prefix}solve [Number1] [Operation: +,-,*,/] [Number2]",color=embedTheme)
-        await ctx.send(embed=embed)
+@bot.command(aliases=["calculate","math","maths"])
+async def solve(ctx, equation: Optional[str]=None):
+    if equation is None:
+        await ctx.reply(f"Please Specify the Equation!")
+        return
+    for char in equation:
+        if char == "x" or char == "×":
+            equation = equation.replace(char,"*")
+        elif char == "÷":
+            equation = equation.replace(char,"/")
+    await ctx.send(f"{ctx.author.mention} The Answer is {eval(equation)}")
 
-solvehelp = f"solve <number1> <operation = +,-,×,÷> <number2>"
+solvehelp = f"solve <equation>"
 
 timer = {}
 timerMsg = {}
