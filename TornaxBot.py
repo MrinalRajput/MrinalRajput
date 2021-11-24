@@ -1479,6 +1479,8 @@ async def triviamc(ctx):
                     return
             else:
                 rolehaving=False
+        else:
+            rolehaving=False
 
     if triviaexist[ctx.guild.id] == False:
         donelist = []
@@ -1581,6 +1583,8 @@ async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[d
                     return
             else:
                 rolehaving=False
+        else:
+            rolehaving=False
 
     if player1 is None or player2 is None:
         await ctx.reply(f"There Must be Minimum 2 Players to Play Atlas Game")
@@ -1723,6 +1727,8 @@ async def pokegame(ctx, player1: Optional[discord.Member]=None, player2: Optiona
                     return
             else:
                 rolehaving=False
+        else:
+            rolehaving=False
 
     if player1 is None or player2 is None:
         await ctx.reply(f"There Must be Minimum 2 Players to Play Pokemon Game")
@@ -1864,6 +1870,8 @@ async def guess(ctx):
                     return
             else:
                 rolehaving=False
+        else:
+            rolehaving=False
 
     if active[ctx.guild.id] == False:
         active[ctx.guild.id] = True
@@ -1960,6 +1968,8 @@ async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Option
                     return
             else:
                 rolehaving=False
+        else:
+            rolehaving=False
 
     if member1 is not None:
         if member2 is None:
@@ -2033,6 +2043,8 @@ async def tttstop(ctx):
                     return
             else:
                 rolehaving=False
+        else:
+            rolehaving=False
 
     try:        
         if ctx.author.id in matches[ctx.guild.id].keys() or ctx.author.id in matches[ctx.guild.id].values():
