@@ -736,11 +736,17 @@ def getperiod(timing):
     return alagalag
 
 def ending(region, seccs):
-    country = str(region)
-    getinfo = CountryInfo(country)
-    timezonee = str(pytz.country_timezones[str(getinfo.iso()['alpha2'])][0])
-    IST = pytz.timezone(timezonee)
+    try:
+        country = str(region)
+        getinfo = CountryInfo(country)
+        timezonee = str(pytz.country_timezones[str(getinfo.iso()['alpha2'])][0])
+    except Exception as e:
+        print(e)
+        country = str("india")
+        getinfo = CountryInfo(country)
+        timezonee = str(pytz.country_timezones[str(getinfo.iso()['alpha2'])][0])
 
+    IST = pytz.timezone(timezonee)
     datetime_ist = dt.datetime.now(IST) + dt.timedelta(seconds=int(seccs))
     perfecttiming = datetime_ist.strftime("%I:%M %p | %d %b")
     # perfecttiming = f"{''.join(lent)+ f' {AMPM} | {datemon}'}"
@@ -1452,7 +1458,7 @@ async def Time(ctx, region: Optional[str]=None):
         if ctx.guild:
             region = ctx.guild.region
         else:
-            await ctx.reply(f"Please Mention the Country to See Time")
+            await ctx.reply(f"Please Mention the Country to See Time!")
             return
     country = str(region)
     try:
