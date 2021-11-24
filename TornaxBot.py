@@ -102,7 +102,12 @@ async def on_guild_join(guild):
                 embed.set_thumbnail(url=guild.me.avatar_url)
                 embed.add_field(name="My Features & Stuff I Can do for You!", value="<a:doublearrow:899299966957256745> Moderation\n<a:doublearrow:899299966957256745> Management\n<a:doublearrow:899299966957256745> Giveaways\n<a:doublearrow:899299966957256745> Fun\n<a:doublearrow:899299966957256745> Mini Games\n<a:doublearrow:899299966957256745> Auto Moderation\n<a:doublearrow:899299966957256745> Informational\n<a:doublearrow:899299966957256745> Welcome and Bye Messages\n\nYes, I am Multi Talented Discord Bot 🤗")
                 embed.set_footer(icon_url=guild.me.avatar_url,text=f"ID - {guild.me.id}")
-                await channel.send(embed=embed)
+                try:
+                    await channel.send(embed=embed)
+                except Exception as e:
+                    print(e)
+                    await channel.send(f"**Hey There! I'm Tornax**\nThanks for Adding me in {guild.name}, Type `{custom_prefix[0]}help` to get All about me!\n\n__**My Features & Stuff I Can do for You!**__\n<a:doublearrow:899299966957256745> Moderation\n<a:doublearrow:899299966957256745> Management\n<a:doublearrow:899299966957256745> Giveaways\n<a:doublearrow:899299966957256745> Fun\n<a:doublearrow:899299966957256745> Mini Games\n<a:doublearrow:899299966957256745> Auto Moderation\n<a:doublearrow:899299966957256745> Informational\n<a:doublearrow:899299966957256745> Welcome and Bye Messages\n\nYes, I am Multi Talented Discord Bot 🤗")
+
     # inviteChannel = bot.get_channel(890819215588741191)
     # inviteEmbed = discord.Embed(title = "Joined!", description=f"{bot.user.mention} Just Joined {guild.name}", color=embedTheme)
     # inviteEmbed.set_thumbnail(url=guild.icon_url)
