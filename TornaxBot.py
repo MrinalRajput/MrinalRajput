@@ -1093,7 +1093,11 @@ async def solve(ctx, equation: Optional[str]=None):
             equation = equation.replace(char,"*")
         elif char == "÷":
             equation = equation.replace(char,"/")
-    await ctx.send(f"{ctx.author.mention} The Answer is {eval(equation)}")
+    try:
+        await ctx.send(f"{ctx.author.mention} The Answer is {eval(equation)}")
+    except Exception as e:
+        print(e)
+        await ctx.reply(embed=discord.Embed(description=f"Please Use Valid Characters!", color=embedTheme))
 
 solvehelp = f"solve <equation>"
 
@@ -3435,6 +3439,8 @@ async def on_message(message):
                                 chances += 1
                         elif ch == "\n":
                             chances = 0
+                        else:
+                            chances -= 2
                     if chances > 6:
                         await message.channel.send(f"{message.author.mention} Please Don't Use Too Many Caps!", delete_after=15)
 
