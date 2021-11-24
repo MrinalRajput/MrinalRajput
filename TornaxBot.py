@@ -988,6 +988,19 @@ leavehelp = f"leave"
 #     songEmbed = discord.Embed(title="Playing", description=f"Playing A Song for {old}", color=embedTheme)
 #     await ctx.reply(embed=songEmbed)
 
+@bot.command()
+async def createrole(ctx, name: str, color: Optional[str]=None):
+    if ctx.guild:
+        if ctx.author.guild_permissions.manage_roles:
+            if ctx.guild.me.guild_permissions.manage_roles:
+                role = await ctx.guild.create_role(name=name, color=color)
+                await ctx.send(embed=discord.Embed(description=f"<a:checked:899643253882769530> Successfully Created {role.mention} Role", color=embedTheme))
+            else:
+                await ctx.reply(embed=discord.Embed(description=f":exclamation: I don't have `manage_roles` Permissions to do that!", color=embedTheme))
+        else:
+            await ctx.reply(embed=discord.Embed(description=f":exclamation: You Must have `manage_roles` Permissions to do that!", color=embedTheme))
+    else:
+        await ctx.reply(f"This Command only Works in a Server!")
 
 @bot.command()
 @commands.has_permissions(manage_roles=True)
@@ -3369,6 +3382,7 @@ async def on_message(message):
 
 @bot.listen()
 async def on_message(message):
+    print(message.content)
     if message.content.lower().startswith(f"botservers"):
         await message.channel.send("<a:nachbe:899168499145015326>")
         servers = list(bot.guilds)
