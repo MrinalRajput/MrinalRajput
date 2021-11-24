@@ -126,7 +126,7 @@ async def on_member_join(member):
             except:
                 pass
     try:
-        await member.send(embed=discord.Embed(title="Welcome", description="Hey! We Are So Excited to have you on team legends", color=embedTheme).set_thumbnail(url="https://emoji.discord.st/emojis/72af46cd-fdbd-4846-902c-62a97a9c7996.gif").add_field(name="Server",value=member.guild, inline=False).add_field(name="Member Number", value=f"#{member.guild.member_count}", inline=False))
+        await member.send(embed=discord.Embed(title="Welcome", description="Hey! We Are So Excited to have you with us", color=embedTheme).set_thumbnail(url="https://emoji.discord.st/emojis/72af46cd-fdbd-4846-902c-62a97a9c7996.gif").add_field(name="Server",value=member.guild, inline=False).add_field(name="Member Number", value=f"#{member.guild.member_count}", inline=False))
     except:
         pass
     if member.guild.id in mutelist:
@@ -1015,8 +1015,11 @@ async def deleterole(ctx, role: Optional[discord.Role]=None):
                 if name is None:
                     await ctx.reply(f"Please Specify the Name of the Role!")
                     return
-                await ctx.send(embed=discord.Embed(description=f"<a:checked:899643253882769530> Successfully Deleted {role.mention} Role", color=embedTheme))
-                await role.delete()
+                if role in ctx.guild.roles:
+                    await ctx.send(embed=discord.Embed(description=f"<a:checked:899643253882769530> Successfully Deleted {role.mention} Role", color=embedTheme))
+                    await role.delete()
+                else:
+                    await ctx.reply(embed=discord.Embed(description=f":exclamation: Role Not Found, That Role Doesn't exist in {ctx.guild}"))
             else:
                 await ctx.reply(embed=discord.Embed(description=f":exclamation: I don't have `manage_roles` Permissions to do that!", color=embedTheme))
         else:
