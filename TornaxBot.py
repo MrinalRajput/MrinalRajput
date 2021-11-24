@@ -988,12 +988,15 @@ leavehelp = f"leave"
 #     songEmbed = discord.Embed(title="Playing", description=f"Playing A Song for {old}", color=embedTheme)
 #     await ctx.reply(embed=songEmbed)
 
-@bot.command()
-async def createrole(ctx, name: str, color: Optional[str]=None):
+@bot.command(aliases=["makerole","newrole","crole"])
+async def createrole(ctx, name: Optional[str]=None):
     if ctx.guild:
         if ctx.author.guild_permissions.manage_roles:
             if ctx.guild.me.guild_permissions.manage_roles:
-                role = await ctx.guild.create_role(name=name, color=color)
+                if name is None:
+                    await ctx.reply(f"Please Specify the Name of the Role!")
+                    return
+                role = await ctx.guild.create_role(name=name)
                 await ctx.send(embed=discord.Embed(description=f"<a:checked:899643253882769530> Successfully Created {role.mention} Role", color=embedTheme))
             else:
                 await ctx.reply(embed=discord.Embed(description=f":exclamation: I don't have `manage_roles` Permissions to do that!", color=embedTheme))
@@ -1001,6 +1004,27 @@ async def createrole(ctx, name: str, color: Optional[str]=None):
             await ctx.reply(embed=discord.Embed(description=f":exclamation: You Must have `manage_roles` Permissions to do that!", color=embedTheme))
     else:
         await ctx.reply(f"This Command only Works in a Server!")
+
+createrolehelp = f"createrole <Name of role>"
+
+@bot.command(aliases=["delrole","drole","destroyrole"])
+async def deleterole(ctx, role: Optional[discord.Role]=None):
+    if ctx.guild:
+        if ctx.author.guild_permissions.manage_roles:
+            if ctx.guild.me.guild_permissions.manage_roles:
+                if name is None:
+                    await ctx.reply(f"Please Specify the Name of the Role!")
+                    return
+                await ctx.send(embed=discord.Embed(description=f"<a:checked:899643253882769530> Successfully Deleted {role.mention} Role", color=embedTheme))
+                await role.delete()
+            else:
+                await ctx.reply(embed=discord.Embed(description=f":exclamation: I don't have `manage_roles` Permissions to do that!", color=embedTheme))
+        else:
+            await ctx.reply(embed=discord.Embed(description=f":exclamation: You Must have `manage_roles` Permissions to do that!", color=embedTheme))
+    else:
+        await ctx.reply(f"This Command only Works in a Server!")
+
+deleterolehelp = f"deleterole <Role>"
 
 @bot.command()
 @commands.has_permissions(manage_roles=True)
@@ -3040,7 +3064,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n \n \t-> [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=536870911991&scope=bot)")
         myEmbed.add_field(name=f"Commands — {int(totalCommands)-2}",value="----------------------\n",inline=False)
         myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, clearreacts, rule, rules, solve, time, timerstart, timerstop, choose", inline=False)
-        myEmbed.add_field(name="Management",value=" addrole, removerole, clean, allcommands, gstart, gstatus, gstop, greroll, setprefix, whois, emojis, roles, serverinfo, info, invite, about, support, join, leave, lock, slowmode, resetnick, setnick, unlock ", inline=False)
+        myEmbed.add_field(name="Management",value=" createrole, deleterole, addrole, removerole, clean, allcommands, gstart, gstatus, gstop, greroll, setprefix, whois, emojis, roles, serverinfo, info, invite, about, support, join, leave, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban, softban, voicekick, restrict, unrestrict, restricts ", inline=False)
         myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, atlas, pokegame, triviamc, mcserver, wikipedia, google, youtube, meaning, pokemon, country \n----------------------\n", inline=False)
         myEmbed.add_field(name="\n\n**Official Server**",value=f"----------------------\nJoin Our Official Server for More Commands and Help \n\n \t-> [Join Now](https://discord.gg/H3688EEpWr)\n----------------------\n\n > Server's Current Prefix is :   `{ctx.prefix}`\n > Command Usage Example :   `{ctx.prefix}info`\n\n----------------------", inline=False)
@@ -3065,6 +3089,8 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "timerstart": content=timerstarthelp
         elif anycommand == "timerstop": content=timerstophelp
         elif anycommand == "choose": content=choosehelp
+        elif anycommand == "createrole": content=createrolehelp
+        elif anycommand == "deleterole": content=deleterolehelp
         elif anycommand == "addrole": content=addrolehelp
         elif anycommand == "removerole": content=removerolehelp
         elif anycommand == "clean": content=cleanhelp
@@ -3164,7 +3190,7 @@ async def allcommands(ctx):
 
         toolsEmbed = discord.Embed(title="Tools Commands", description=f"{toolscmd} \n\n 1/8", color=embedTheme)
 
-        managementList = {f"{ctx.prefix}addrole":"Give/Add Any Role to Anyone",f"{ctx.prefix}removerole":"Take/Remove Any Role From Anyone",f"{ctx.prefix}clean":"Clean/Delete So Many Messages of a User or Channel Quickly by Just Specifing the Quanitity",f"{ctx.prefix}setprefix":"Change Prefix of Tornax According to your Choice",f"{ctx.prefix}join":"Let Tornax Join a Voice Channel With You",f"{ctx.prefix}leave":"Let Tornax Leave a Voice Channel",f"{ctx.prefix}lock":"Lock any Channel of Your Server to Disallow Members to Send Messages in it",f"{ctx.prefix}unlock":"Unlock a Locked Channel of Your Server",f"{ctx.prefix}slowmode":"Set Slowmode for a Channel of Your Server",f"{ctx.prefix}setnick":"Set or Change Nick of YourSelf or any Member",f"{ctx.prefix}resetnick":"Reset/Remove Your or SomeBodies Nick"}
+        managementList = {f"{ctx.prefix}createrole":"Create a Role Quickly and Easily",f"{ctx.prefix}deleterole":"Let Tornax Delete a Role Quickly for you",f"{ctx.prefix}addrole":"Give/Add Any Role to Anyone",f"{ctx.prefix}removerole":"Take/Remove Any Role From Anyone",f"{ctx.prefix}clean":"Clean/Delete So Many Messages of a User or Channel Quickly by Just Specifing the Quanitity",f"{ctx.prefix}setprefix":"Change Prefix of Tornax According to your Choice",f"{ctx.prefix}join":"Let Tornax Join a Voice Channel With You",f"{ctx.prefix}leave":"Let Tornax Leave a Voice Channel",f"{ctx.prefix}lock":"Lock any Channel of Your Server to Disallow Members to Send Messages in it",f"{ctx.prefix}unlock":"Unlock a Locked Channel of Your Server",f"{ctx.prefix}slowmode":"Set Slowmode for a Channel of Your Server",f"{ctx.prefix}setnick":"Set or Change Nick of YourSelf or any Member",f"{ctx.prefix}resetnick":"Reset/Remove Your or SomeBodies Nick"}
         managementcmd = []
         for cmd in list(managementList.keys()):
             managementcmd.append(f"• {cmd} {sign}  {managementList[cmd]}.")
