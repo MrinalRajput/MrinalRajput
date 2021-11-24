@@ -735,21 +735,8 @@ def getperiod(timing):
     alagalag = maintime.split()
     return alagalag
 
-def ending(region, seccs):
-    try:
-        country = str(region)
-        getinfo = CountryInfo(country)
-        timezonee = str(pytz.country_timezones[str(getinfo.iso()['alpha2'])][0])
-    except Exception as e:
-        print(e)
-        country = str("india")
-        getinfo = CountryInfo(country)
-        timezonee = str(pytz.country_timezones[str(getinfo.iso()['alpha2'])][0])
-
-    IST = pytz.timezone(timezonee)
-    datetime_ist = dt.datetime.now(IST) + dt.timedelta(seconds=int(seccs))
-    perfecttiming = datetime_ist.strftime("%I:%M %p | %d %b")
-    # perfecttiming = f"{''.join(lent)+ f' {AMPM} | {datemon}'}"
+def ending(seccs):
+    perfecttiming = datetime.utcnow() + dt.timedelta(seconds=int(seccs))
     return str(perfecttiming)
 
 gActive = {}
@@ -789,7 +776,7 @@ async def gstart(ctx, gchannel: Optional[discord.TextChannel]=None, duration: Op
 
                 giveawayEmbed = discord.Embed(color=embedTheme)
                 giveawayEmbed.set_author(name=name.capitalize())
-                giveawayEmbed.add_field(name="Ending Time", value=ending(ctx.guild.region, str(seccs)))
+                giveawayEmbed.add_field(name="Ending Time", value=ending(str(seccs)))
                 giveawayEmbed.add_field(name="Hosted By", value=ctx.author.mention)
                 giveawayEmbed.set_image(url="https://t4.ftcdn.net/jpg/04/61/96/99/240_F_461969925_Lu8i7asFdzjUnlo2kSEa6Yrdg3wBHHJ0.jpg")
                 giveawayEmbed.set_footer(text="React with 🎉 to Participate in the Giveaway")
