@@ -97,16 +97,20 @@ async def on_guild_join(guild):
             if "chat" in channel.name.lower() or "general" in channel.name.lower():
                 await bot.pg_con.execute("UPDATE prefixes SET prefix=$1 WHERE guild_id=$2",DEFAULT_PREFIX,guild.id)
                 custom_prefix = await bot.pg_con.fetchrow("SELECT prefix FROM prefixes WHERE guild_id = $1", guild.id)
-                embed=discord.Embed(description=f'Thanks for Adding me in {guild.name}, Type `{custom_prefix[0]}help` to get All about me!', color=embedTheme)
-                embed.set_author(name="Hey There! I'm Tornax")
-                embed.set_thumbnail(url=guild.me.avatar_url)
-                embed.add_field(name="My Features & Stuff I Can do for You!", value="<a:doublearrow:899299966957256745> Moderation\n<a:doublearrow:899299966957256745> Management\n<a:doublearrow:899299966957256745> Giveaways\n<a:doublearrow:899299966957256745> Fun\n<a:doublearrow:899299966957256745> Mini Games\n<a:doublearrow:899299966957256745> Auto Moderation\n<a:doublearrow:899299966957256745> Informational\n<a:doublearrow:899299966957256745> Welcome and Bye Messages\n\nYes, I am Multi Talented Discord Bot 🤗")
-                embed.set_footer(icon_url=guild.me.avatar_url,text=f"ID - {guild.me.id}")
+                joinembed=discord.Embed(description=f'Thanks for Adding me in {guild.name}, Type `{custom_prefix[0]}help` to get All about me!', color=embedTheme)
+                joinembed.set_author(name="Hey There! I'm Tornax")
+                joinembed.set_thumbnail(url=guild.me.avatar_url)
+                joinembed.add_field(name="My Features & Stuff I Can do for You!", value="<a:doublearrow:899299966957256745> Moderation\n<a:doublearrow:899299966957256745> Management\n<a:doublearrow:899299966957256745> Giveaways\n<a:doublearrow:899299966957256745> Fun\n<a:doublearrow:899299966957256745> Mini Games\n<a:doublearrow:899299966957256745> Auto Moderation\n<a:doublearrow:899299966957256745> Informational\n<a:doublearrow:899299966957256745> Welcome and Bye Messages\n\nYes, I am Multi Talented Discord Bot 🤗")
+                joinembed.set_footer(icon_url=guild.me.avatar_url,text=f"ID - {guild.me.id}")
                 try:
-                    await channel.send(embed=embed)
+                    await channel.send(embed=joinembed)
+                    return
+                    break
                 except Exception as e:
                     print(e)
-                    await channel.send(f"**Hey There! I'm Tornax**\nThanks for Adding me in {guild.name}, Type `{custom_prefix[0]}help` to get All about me!\n\n__**My Features & Stuff I Can do for You!**__\n<a:doublearrow:899299966957256745> Moderation\n<a:doublearrow:899299966957256745> Management\n<a:doublearrow:899299966957256745> Giveaways\n<a:doublearrow:899299966957256745> Fun\n<a:doublearrow:899299966957256745> Mini Games\n<a:doublearrow:899299966957256745> Auto Moderation\n<a:doublearrow:899299966957256745> Informational\n<a:doublearrow:899299966957256745> Welcome and Bye Messages\n\nYes, I am Multi Talented Discord Bot 🤗")
+                    await channel.send(f"**Hey There! I'm Tornax**\nThanks for Adding me in {guild.name}, Type `{custom_prefix[0]}help` to get All about me!\n\n__**My Features & Stuff I Can do for You!**__\n🔸 Moderation\n🔸 Management\n🔸 Giveaways\n🔸 Fun\n🔸 Mini Games\n🔸 Auto Moderation\n🔸 Informational\n🔸 Welcome and Bye Messages\n\nYes, I am Multi Talented Discord Bot 🤗")
+                    return
+                    break
 
     # inviteChannel = bot.get_channel(890819215588741191)
     # inviteEmbed = discord.Embed(title = "Joined!", description=f"{bot.user.mention} Just Joined {guild.name}", color=embedTheme)
