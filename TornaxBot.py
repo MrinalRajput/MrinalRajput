@@ -3408,11 +3408,9 @@ async def on_message(message):
                                     mutedRole = await message.guild.create_role(name="Muted")
 
                                     for channel in message.guild.channels:
-                                        await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False)
+                                        await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False, add_reactions=False)
                                 await message.author.add_roles(mutedRole)
                                 embed = discord.Embed(description = f"** {message.author.mention} has been Muted by {bot.user.mention} for `15` Seconds \n\t With the Reason of :\t Spamming**",color=embedTheme)
-                                for channel in message.guild.channels:
-                                    await channel.set_permissions(mutedRole, speak=False, send_messages=False, add_reactions=False)
                                 await message.channel.send(embed=embed)
                                 count[message.guild.id][message.author.id]["warnings"] = 0
                                 await asyncio.sleep(15)
