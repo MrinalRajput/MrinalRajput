@@ -1019,7 +1019,7 @@ async def deleterole(ctx, role: Optional[discord.Role]=None):
                     await ctx.send(embed=discord.Embed(description=f"<a:checked:899643253882769530> Successfully Deleted {role.mention} Role", color=embedTheme))
                     await role.delete()
                 else:
-                    await ctx.reply(embed=discord.Embed(description=f":exclamation: Role Not Found, That Role Doesn't exist in {ctx.guild}"))
+                    await ctx.reply(embed=discord.Embed(description=f":exclamation: Role Not Found, That Role Doesn't exist in {ctx.guild}", color=embedTheme))
             else:
                 await ctx.reply(embed=discord.Embed(description=f":exclamation: I don't have `manage_roles` Permissions to do that!", color=embedTheme))
         else:
@@ -1043,7 +1043,7 @@ async def addrole(ctx, member: Optional[discord.Member]=None, role: discord.Role
             await member.add_roles(role)
             embed = discord.Embed(description=f"** Successfully Added {role.mention} Role to {member.mention} **", color=embedTheme)
             embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-            await ctx.send(embed=embed, delete_after=8)
+            await ctx.send(embed=embed)
     else:
         await ctx.reply(f"Please Specify the Role by Mentioning it!")
 
@@ -1059,7 +1059,7 @@ async def removerole(ctx, member: Optional[discord.Member]=None, role: discord.R
             await member.remove_roles(role)
             embed = discord.Embed(description=f"** Successfully Removed {role.mention} Role from {member.mention} **", color=embedTheme)
             embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
-            await ctx.send(embed=embed, delete_after=8)
+            await ctx.send(embed=embed)
         else:
             embed = discord.Embed(description=f"** :exclamation: {member.mention} Doesn't have {role.mention} Role **", color=embedTheme)
             embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
