@@ -1093,6 +1093,8 @@ async def solve(ctx, equation: Optional[str]=None):
             equation = equation.replace(char,"*")
         elif char == "÷":
             equation = equation.replace(char,"/")
+        elif char == " ":
+            equation = equation.replace(char,"")
     try:
         await ctx.send(f"{ctx.author.mention} The Answer is {eval(equation)}")
     except Exception as e:
