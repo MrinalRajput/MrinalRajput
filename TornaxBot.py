@@ -736,7 +736,7 @@ def getperiod(timing):
     return alagalag
 
 def ending(seccs):
-    thetiming = datetime.utcnow() + dt.timedelta(seconds=int(seccs))
+    thetiming = int(datetime.now().timestamp()) + dt.timedelta(seconds=int(seccs))
     perfecttiming = thetiming.strftime("%I:%M %p | %d %b")
     return str(perfecttiming)
 
