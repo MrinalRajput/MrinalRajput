@@ -126,8 +126,8 @@ mutelist = {}
 async def on_member_join(member):
     for channel in member.guild.channels:
         if "welcome" in channel.name.lower() or "join" in channel.name.lower():
-            created_at = member.created_at.strftime("%a, %d %b %Y %I:%M %p")
-            joined_at = member.joined_at.strftime("%a, %d %b %Y %I:%M %p")
+            created_at = f"<t:{int(member.created_at.timestamp())}:f>"
+            joined_at = f"<t:{int(member.joined_at.timestamp())}:f>"
             welcomeEmbed = discord.Embed(title="Welcome!", description=f"A Member Just Joined **{member.guild.name}**",color=embedTheme)
             welcomeEmbed.set_thumbnail(url=member.avatar_url)
             welcomeEmbed.add_field(name="Member Joined", value=f"{member.mention}",inline=True)
