@@ -1079,7 +1079,7 @@ async def removerole(ctx, member: Optional[discord.Member]=None, role: discord.R
 removerolehelp = f"removerole [member] <role>"
 
 @bot.command(aliases=["calculate","math","maths"])
-async def solve(ctx, equation: Optional[str]=None):
+async def solve(ctx, *, equation: Optional[str]=None):
     if equation is None:
         await ctx.reply(f"Please Specify the Equation!")
         return
