@@ -736,9 +736,10 @@ def getperiod(timing):
     return alagalag
 
 def ending(seccs):
-    thetiming = int(datetime.now().timestamp()) + dt.timedelta(seconds=int(seccs))
-    perfecttiming = thetiming.strftime("%I:%M %p | %d %b")
-    return str(perfecttiming)
+    thetiming = datetime.now() + dt.timedelta(seconds=int(seccs))
+    perfecttiming = int(thetiming.timestamp())
+    perfecttiming = f"<t:{perfecttiming}:t> | <t:{perfecttiming}:D>"
+    return perfecttiming
 
 gActive = {}
 
@@ -1443,38 +1444,35 @@ countryhelp = f"country <Country Name>"
 @bot.command()
 async def Time(ctx, region: Optional[str]=None):
     if region is None:
-        if ctx.guild:
-            region = ctx.guild.region
-        else:
-            await ctx.reply(f"Please Mention the Country to See Time!")
+        await ctx.reply(f"Current Time is <t:{int(datetime.now().timestamp())}:t>")
+    else:
+        country = str(region)
+        try:
+            getinfo = CountryInfo(country)
+            timezonee = str(pytz.country_timezones[str(getinfo.iso()['alpha2'])][0])
+        except Exception as e:
+            print(e)
+            await ctx.reply(f"That is not a Valid Country or Region, Use `>help time` for Help")
             return
-    country = str(region)
-    try:
-        getinfo = CountryInfo(country)
-        timezonee = str(pytz.country_timezones[str(getinfo.iso()['alpha2'])][0])
-    except Exception as e:
-        print(e)
-        await ctx.reply(f"That is not a Valid Country or Region, Use `>help time` for Help")
-        return
-    IST = pytz.timezone(timezonee)
+        IST = pytz.timezone(timezonee)
 
-    now = dt.datetime.now(IST)
-    datetime_ist = now.strftime("%H:%M")
-    AMPM = now.strftime("%p")
-    lent = []
-    for t in str(datetime_ist):
-        if len(lent) < 5:
-            lent.append(t)
-    houring = lent[0] + lent[1]
-    if AMPM == "PM":
-        if houring != "12":
-            houring = str(int(houring)-12)
-            if int(houring) < 10:
-                houring = "0"+houring
-    lent[0] = houring[0]
-    lent[1] = houring[1]
-    perfecttiming = f"{''.join(lent)+ f' {AMPM}'}"
-    await ctx.reply(f"Current Time in {str(region).capitalize()} is {perfecttiming}")
+        now = dt.datetime.now(IST)
+        datetime_ist = now.strftime("%H:%M")
+        AMPM = now.strftime("%p")
+        lent = []
+        for t in str(datetime_ist):
+            if len(lent) < 5:
+                lent.append(t)
+        houring = lent[0] + lent[1]
+        if AMPM == "PM":
+            if houring != "12":
+                houring = str(int(houring)-12)
+                if int(houring) < 10:
+                    houring = "0"+houring
+        lent[0] = houring[0]
+        lent[1] = houring[1]
+        perfecttiming = f"{''.join(lent)+ f' {AMPM}'}"
+        await ctx.reply(f"Current Time in {str(region).capitalize()} is {perfecttiming}")
 
 timehelp = f"time [country/region]"
 
