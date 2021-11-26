@@ -797,7 +797,7 @@ async def gstart(ctx, gchannel: Optional[discord.TextChannel]=None, duration: Op
                         winnersname = []
                         winnersid = []
                         winnersmention = []
-                        for i in range(numwins+1):
+                        for i in range(numwins):
                             getwinner = random.choice(gActive[ctx.guild.id][thisactive]["participants"])
                             if len(gActive[ctx.guild.id][thisactive]["participants"]) > numwins:
                                 while getwinner in winnersid:
