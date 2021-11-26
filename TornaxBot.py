@@ -805,10 +805,11 @@ async def gstart(ctx, gchannel: Optional[discord.TextChannel]=None, duration: Op
 
                             winner = await bot.fetch_user(getwinner)
 
-                            winners.append(winner)
-                            winnersname.append(winner.name)
-                            winnersid.append(getwinner)
-                            winnersmention.append(winner.mention)
+                            if winner not in winners:
+                                winners.append(winner)
+                                winnersname.append(winner.name)
+                                winnersid.append(getwinner)
+                                winnersmention.append(winner.mention)
                     else:
                         winners = "Nobody"
                         winnersname = "Nobody"
@@ -946,7 +947,8 @@ async def greroll(ctx, msg: Optional[discord.Message]=None, numwins: Optional[in
                                     if len(gActive[ctx.guild.id][thisgives]["participants"]) > numwins:
                                         while winner in winners:
                                             getwinner = random.choice(gActive[ctx.guild.id][thisgives]["participants"])
-                                    winners.append(winner.mention)
+                                    if winner.mention not in winners:
+                                        winners.append(winner.mention)
                                 if numwins == 1:
                                     await gActive[ctx.guild.id][thisgives]["message"].reply(f":tada: Congratulations! {''.join(winners)} is the New Winner of the Giveaway {gActive[ctx.guild.id][thisgives]['name']}")
                                 else:
