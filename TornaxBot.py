@@ -796,7 +796,7 @@ async def gstart(ctx, gchannel: Optional[discord.TextChannel]=None, duration: Op
                         winners = []
                         winnersname = []
                         winnersmention = []
-                        for i in range(numwins):
+                        for i in range(numwins+1):
                             getwinner = random.choice(gActive[ctx.guild.id][thisactive]["participants"])
                             winner = await bot.fetch_user(getwinner)
                             if winner not in winners:
@@ -931,7 +931,7 @@ async def greroll(ctx, msg: Optional[discord.Message]=None, numwins: Optional[in
                         thisgives = gives
                         if gActive[ctx.guild.id][thisgives]["status"] == False:
                             if len(gActive[ctx.guild.id][thisgives]["participants"]) > 1:
-                                for i in range(numwins):
+                                for i in range(numwins+1):
                                     winners = []
                                     getwinner = random.choice(gActive[ctx.guild.id][thisgives]["participants"])
                                     winner = await bot.fetch_user(getwinner)
