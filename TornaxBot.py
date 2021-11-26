@@ -798,11 +798,13 @@ async def gstart(ctx, gchannel: Optional[discord.TextChannel]=None, duration: Op
                         winnersmention = []
                         for i in range(numwins+1):
                             getwinner = random.choice(gActive[ctx.guild.id][thisactive]["participants"])
-                            winner = await bot.fetch_user(getwinner)
-                            if winner not in winners:
-                                winners.append(winner)
-                                winnersname.append(winner.name)
-                                winnersmention.append(winner.mention)
+                            winner = await bot.fetch_user(getwinner)  
+                            while winner in winners:
+                                getwinner = random.choice(gActive[ctx.guild.id][thisactive]["participants"])
+                                winner = await bot.fetch_user(getwinner)                                
+                            winners.append(winner)
+                            winnersname.append(winner.name)
+                            winnersmention.append(winner.mention)
                     else:
                         winners = "Nobody"
                         winnersname = "Nobody"
@@ -824,6 +826,7 @@ async def gstart(ctx, gchannel: Optional[discord.TextChannel]=None, duration: Op
                         await gActive[ctx.guild.id][thisactive]["message"].reply(f"Giveaway Ended! No One Participated in the Giveaway")
                     gActive[ctx.guild.id][thisactive]["winner"] = winnersmention
                     gActive[ctx.guild.id][thisactive]["status"] = False
+                    gActive[ctx.guild.id][thisactive]["numwins"] = numwins
             else:
                 await ctx.reply(embed=discord.Embed(description=":exclamation: Please Keep a Name of Giveaway to Start!",color=embedTheme))
         else:
@@ -920,7 +923,7 @@ async def greroll(ctx, msg: Optional[discord.Message]=None, numwins: Optional[in
     if GiveawayRole in ctx.author.roles or ctx.author.guild_permissions.manage_guild:
         if msg is not None:
             if numwins is None:
-                numwins = 1
+                numwins = gActive[ctx.guild.id][thisactive]["numwins"]
             if numwins > 5:
                 await ctx.reply(embed=discord.Embed(description=f":exclamation: Maximum Number of Winners Should be 5", color=embedTheme))
                 return
@@ -935,6 +938,9 @@ async def greroll(ctx, msg: Optional[discord.Message]=None, numwins: Optional[in
                                 for i in range(numwins):
                                     getwinner = random.choice(gActive[ctx.guild.id][thisgives]["participants"])
                                     winner = await bot.fetch_user(getwinner)
+                                    while winner in winners:
+                                        getwinner = random.choice(gActive[ctx.guild.id][thisgives]["participants"])
+                                        winner = await bot.fetch_user(getwinner)
                                     winners.append(winner.mention)
                                 if numwins == 1:
                                     await gActive[ctx.guild.id][thisgives]["message"].reply(f":tada: Congratulations! {''.join(winners)} is the New Winner of the Giveaway {gActive[ctx.guild.id][thisgives]['name']}")
