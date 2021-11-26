@@ -932,7 +932,7 @@ async def greroll(ctx, msg: Optional[discord.Message]=None, numwins: Optional[in
                         if gActive[ctx.guild.id][thisgives]["status"] == False:
                             if len(gActive[ctx.guild.id][thisgives]["participants"]) > 1:
                                 winners = []
-                                for i in range(numwins+1):
+                                for i in range(numwins):
                                     getwinner = random.choice(gActive[ctx.guild.id][thisgives]["participants"])
                                     winner = await bot.fetch_user(getwinner)
                                     winners.append(winner.mention)
