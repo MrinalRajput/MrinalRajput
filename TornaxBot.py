@@ -783,7 +783,7 @@ async def gstart(ctx, gchannel: Optional[discord.TextChannel]=None, duration: Op
                 giveawayEmbed.set_image(url="https://t4.ftcdn.net/jpg/04/61/96/99/240_F_461969925_Lu8i7asFdzjUnlo2kSEa6Yrdg3wBHHJ0.jpg")
                 giveawayEmbed.set_footer(text="React with 🎉 to Participate in the Giveaway")
 
-                gActive[ctx.guild.id][thisactive]["message"] = await ctx.send(embed=giveawayEmbed)
+                gActive[ctx.guild.id][thisactive]["message"] = await gchannel.send(embed=giveawayEmbed)
                 await gActive[ctx.guild.id][thisactive]["message"].add_reaction("🎉")
 
                 await asyncio.sleep(seccs)
