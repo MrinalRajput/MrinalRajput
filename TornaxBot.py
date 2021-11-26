@@ -795,20 +795,25 @@ async def gstart(ctx, gchannel: Optional[discord.TextChannel]=None, duration: Op
                     if len(gActive[ctx.guild.id][thisactive]["participants"]) > 0:
                         winners = []
                         winnersname = []
+                        winnersid = []
                         winnersmention = []
-                        for i in range(numwins+1):
+                        for i in range(numwins):
                             getwinner = random.choice(gActive[ctx.guild.id][thisactive]["participants"])
+                            if len(gActive[ctx.guild.id][thisactive]["participants"]) > numwins:
+                                while getwinner in winnersid:
+                                    getwinner = random.choice(gActive[ctx.guild.id][thisactive]["participants"])     
+
                             winner = await bot.fetch_user(getwinner)
-                            while winner in winners:
-                                getwinner = random.choice(gActive[ctx.guild.id][thisactive]["participants"])
-                                winner = await bot.fetch_user(getwinner)                                
+
                             winners.append(winner)
                             winnersname.append(winner.name)
+                            winnersid.append(getwinner)
                             winnersmention.append(winner.mention)
                     else:
                         winners = "Nobody"
                         winnersname = "Nobody"
                         winnersmention = "Nobody"
+                    print(5)
                     giveawayEmbed = discord.Embed(color=embedTheme)
                     giveawayEmbed.set_author(name=name.capitalize())
                     giveawayEmbed.add_field(name="Ending Time", value="Ended!")
@@ -938,9 +943,9 @@ async def greroll(ctx, msg: Optional[discord.Message]=None, numwins: Optional[in
                                 for i in range(numwins):
                                     getwinner = random.choice(gActive[ctx.guild.id][thisgives]["participants"])
                                     winner = await bot.fetch_user(getwinner)
-                                    while winner in winners:
-                                        getwinner = random.choice(gActive[ctx.guild.id][thisgives]["participants"])
-                                        winner = await bot.fetch_user(getwinner)
+                                    if len(gActive[ctx.guild.id][thisgives]["participants"]) > numwins:
+                                        while winner in winners:
+                                            getwinner = random.choice(gActive[ctx.guild.id][thisgives]["participants"])
                                     winners.append(winner.mention)
                                 if numwins == 1:
                                     await gActive[ctx.guild.id][thisgives]["message"].reply(f":tada: Congratulations! {''.join(winners)} is the New Winner of the Giveaway {gActive[ctx.guild.id][thisgives]['name']}")
