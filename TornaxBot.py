@@ -744,13 +744,17 @@ def ending(seccs):
 gActive = {}
 
 @bot.command()
-async def gstart(ctx, gchannel: Optional[discord.TextChannel]=None, duration: Optional[str]=None, *, name: Optional[str]=None):
+async def gstart(ctx, gchannel: Optional[discord.TextChannel]=None, duration: Optional[str]=None, numwins: Optional[int]=None, *, name: Optional[str]=None):
     global gActive
     GiveawayRole = discord.utils.get(ctx.guild.roles, name="Giveaway Handler")
     if GiveawayRole in ctx.author.roles or ctx.author.guild_permissions.manage_guild:
         if gchannel is None:
             gchannel = ctx.channel
-
+        if numwins is None:
+            numwins = 1
+        if numwins > 5:
+            await ctx.reply(embed=discord.Embed(description=f":exclamation: Maximum Number of Winners Should be 5", color=embedTheme))
+            return
         if duration is not None:
             if name is not None:
                 if ctx.guild.id not in gActive:
@@ -781,7 +785,7 @@ async def gstart(ctx, gchannel: Optional[discord.TextChannel]=None, duration: Op
                 giveawayEmbed.add_field(name="Ending Time", value=ending(str(seccs)))
                 giveawayEmbed.add_field(name="Hosted By", value=ctx.author.mention)
                 giveawayEmbed.set_image(url="https://t4.ftcdn.net/jpg/04/61/96/99/240_F_461969925_Lu8i7asFdzjUnlo2kSEa6Yrdg3wBHHJ0.jpg")
-                giveawayEmbed.set_footer(text="React with 🎉 to Participate in the Giveaway")
+                giveawayEmbed.set_footer(text=f"React with 🎉 to Participate in the Giveaway  |  Wins - {numwins}")
 
                 gActive[ctx.guild.id][thisactive]["message"] = await gchannel.send(embed=giveawayEmbed)
                 await gActive[ctx.guild.id][thisactive]["message"].add_reaction("🎉")
@@ -789,27 +793,36 @@ async def gstart(ctx, gchannel: Optional[discord.TextChannel]=None, duration: Op
                 await asyncio.sleep(seccs)
                 if gActive[ctx.guild.id][thisactive]["status"] == True:
                     if len(gActive[ctx.guild.id][thisactive]["participants"]) > 0:
-                        getwinner = random.choice(gActive[ctx.guild.id][thisactive]["participants"])
-                        winner = await bot.fetch_user(getwinner)
-                        winnername = winner.name
-                        winnermention = winner.mention
+                        winners = []
+                        winnersname = []
+                        winnersmention = []
+                        for i in range(numwins):
+                            getwinner = random.choice(gActive[ctx.guild.id][thisactive]["participants"])
+                            winner = await bot.fetch_user(getwinner)
+                            if winner not in winners:
+                                winners.append(winner)
+                                winnersname.append(winner.name)
+                                winnersmention.append(winner.mention)
                     else:
-                        winner = "Nobody"
-                        winnername = "Nobody"
-                        winnermention = "Nobody"
+                        winners = "Nobody"
+                        winnersname = "Nobody"
+                        winnersmention = "Nobody"
                     giveawayEmbed = discord.Embed(color=embedTheme)
                     giveawayEmbed.set_author(name=name.capitalize())
                     giveawayEmbed.add_field(name="Ending Time", value="Ended!")
                     giveawayEmbed.add_field(name="Hosted By", value=ctx.author.mention)
-                    giveawayEmbed.add_field(name="Winners", value=winnermention)
+                    giveawayEmbed.add_field(name="Winners", value="\n".join(winnersmention) if winnersname != "Nobody" else winnersmention)
                     giveawayEmbed.set_image(url="https://t4.ftcdn.net/jpg/04/61/96/99/240_F_461969925_Lu8i7asFdzjUnlo2kSEa6Yrdg3wBHHJ0.jpg")
-                    giveawayEmbed.set_footer(text=f"Winner - {winnername} | Host - {ctx.author.name}")
+                    if numwins == 1:
+                        giveawayEmbed.set_footer(text=f"Winner - {' '.join(winnersname)} | Host - {ctx.author.name}" if winnersname != "Nobody" else f"Winner - {winnersname} | Host - {ctx.author.name}")
+                    else:
+                        giveawayEmbed.set_footer(text=f"Winners - {numwins} | Host - {ctx.author.name}" if winnersname != "Nobody" else f"Winners - {winnersname} | Host - {ctx.author.name}")
                     await gActive[ctx.guild.id][thisactive]["message"].edit(embed=giveawayEmbed)
-                    if winnername != "Nobody":
-                        await gActive[ctx.guild.id][thisactive]["message"].reply(f":tada:  Congratulations! {winnermention} Won {name.capitalize()} :partying_face:")
+                    if winnersname != "Nobody":
+                        await gActive[ctx.guild.id][thisactive]["message"].reply(f":tada:  Congratulations! {', '.join(winnersmention)} Won {name.capitalize()} :partying_face:")
                     else:
                         await gActive[ctx.guild.id][thisactive]["message"].reply(f"Giveaway Ended! No One Participated in the Giveaway")
-                    gActive[ctx.guild.id][thisactive]["winner"] = winnermention
+                    gActive[ctx.guild.id][thisactive]["winner"] = winnersmention
                     gActive[ctx.guild.id][thisactive]["status"] = False
             else:
                 await ctx.reply(embed=discord.Embed(description=":exclamation: Please Keep a Name of Giveaway to Start!",color=embedTheme))
@@ -818,7 +831,7 @@ async def gstart(ctx, gchannel: Optional[discord.TextChannel]=None, duration: Op
     else:
         await ctx.reply(embed=discord.Embed(description="You Must Have a Role `Giveaway Handler` or `Manage Guild` Permissions to do that!", color=embedTheme))
 
-gstarthelp = f"gstart [channel] <duration> <name>"
+gstarthelp = f"gstart [channel] <duration> [no. of winners] <name>"
 
 @bot.listen()
 async def on_reaction_add(reaction, user):
@@ -854,9 +867,14 @@ async def gstop(ctx, msg: Optional[discord.Message]=None):
             for gives in gActive[ctx.message.guild.id].keys():
                 if gActive[ctx.message.guild.id][gives]["message"] == msg:
                     thisgives = gives
-                    gActive[ctx.guild.id][thisgives]["status"] = False
-                    await gActive[ctx.guild.id][thisgives]["message"].edit(embed=discord.Embed(color=embedTheme).set_author(name="The Giveaway has Stopped"))
-                    await gActive[ctx.guild.id][thisgives]["message"].clear_reactions()
+                    if gActive[ctx.guild.id][thisgives]["status"] == True:
+                        gActive[ctx.guild.id][thisgives]["status"] = False
+                        await gActive[ctx.guild.id][thisgives]["message"].edit(embed=discord.Embed(color=embedTheme).set_author(name="The Giveaway has Stopped"))
+                        await gActive[ctx.guild.id][thisgives]["message"].clear_reactions()
+                        return
+                    else:
+                        await ctx.reply(f":exclamation: That Giveaway is Already Ended!")
+                        return
         else:
             await ctx.reply(embed=discord.Embed(description="Please Mention the Giveaway by its Message ID!", color=embedTheme))
     else:
@@ -884,7 +902,7 @@ async def gstatus(ctx, msg: Optional[discord.Message]=None):
                         else:status="Ended!"
                         embed.add_field(name="Status", value=status)
                         if status == "Ended!":
-                            embed.add_field(name="Winner", value=gActive[ctx.guild.id][thisgives]["winner"])
+                            embed.add_field(name="Winner", value="\n".join(gActive[ctx.guild.id][thisgives]["winner"]))
                         await gActive[ctx.guild.id][thisgives]["message"].reply(embed=embed)
                         return
             await ctx.reply(embed=discord.Embed(description="I Don't have Any Information for that!", color=embedTheme))
@@ -896,11 +914,16 @@ async def gstatus(ctx, msg: Optional[discord.Message]=None):
 gstatushelp = f"gstatus <message id>"
 
 @bot.command()
-async def greroll(ctx, msg: Optional[discord.Message]=None):
+async def greroll(ctx, msg: Optional[discord.Message]=None, numwins: Optional[int]=None):
     global gActive
     GiveawayRole = discord.utils.get(ctx.guild.roles, name="Giveaway Handler")
     if GiveawayRole in ctx.author.roles or ctx.author.guild_permissions.manage_guild:
         if msg is not None:
+            if numwins is None:
+                numwins = 1
+            if numwins > 5:
+                await ctx.reply(embed=discord.Embed(description=f":exclamation: Maximum Number of Winners Should be 5", color=embedTheme))
+                return
             thisgives = None
             if ctx.guild.id in gActive:
                 for gives in gActive[ctx.guild.id].keys():
@@ -908,9 +931,15 @@ async def greroll(ctx, msg: Optional[discord.Message]=None):
                         thisgives = gives
                         if gActive[ctx.guild.id][thisgives]["status"] == False:
                             if len(gActive[ctx.guild.id][thisgives]["participants"]) > 1:
-                                getwinner = random.choice(gActive[ctx.guild.id][thisgives]["participants"])
-                                winner = await bot.fetch_user(getwinner)
-                                await gActive[ctx.guild.id][thisgives]["message"].reply(f":tada: Congratulations! {winner.mention} is the New Winner of the Giveaway {gActive[ctx.guild.id][thisgives]['name']}")
+                                for i in range(numwins):
+                                    winners = []
+                                    getwinner = random.choice(gActive[ctx.guild.id][thisgives]["participants"])
+                                    winner = await bot.fetch_user(getwinner)
+                                    winners.append(winner.mention)
+                                if numwins == 1:
+                                    await gActive[ctx.guild.id][thisgives]["message"].reply(f":tada: Congratulations! {''.join(winners)} is the New Winner of the Giveaway {gActive[ctx.guild.id][thisgives]['name']}")
+                                else:
+                                    await gActive[ctx.guild.id][thisgives]["message"].reply(f":tada: Congratulations! {', '.join(winners)} are the New Winners of the Giveaway {gActive[ctx.guild.id][thisgives]['name']}")
                             else:
                                 await ctx.reply(f"The Giveaway Should Have Minimum 2 Participants to Reroll!")
                         else:
@@ -922,7 +951,7 @@ async def greroll(ctx, msg: Optional[discord.Message]=None):
     else:
         await ctx.reply(embed=discord.Embed(description="You Must Have a Role `Giveaway Handler` or `Manage Guild` Permissions to do that!", color=embedTheme))
 
-grerollhelp = f"greroll <message id>"
+grerollhelp = f"greroll <message id> [no. of winners]"
 
 #######################
 
