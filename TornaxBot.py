@@ -798,7 +798,7 @@ async def gstart(ctx, gchannel: Optional[discord.TextChannel]=None, duration: Op
                         winnersmention = []
                         for i in range(numwins+1):
                             getwinner = random.choice(gActive[ctx.guild.id][thisactive]["participants"])
-                            winner = await bot.fetch_user(getwinner)  
+                            winner = await bot.fetch_user(getwinner)
                             while winner in winners:
                                 getwinner = random.choice(gActive[ctx.guild.id][thisactive]["participants"])
                                 winner = await bot.fetch_user(getwinner)                                
@@ -922,11 +922,6 @@ async def greroll(ctx, msg: Optional[discord.Message]=None, numwins: Optional[in
     GiveawayRole = discord.utils.get(ctx.guild.roles, name="Giveaway Handler")
     if GiveawayRole in ctx.author.roles or ctx.author.guild_permissions.manage_guild:
         if msg is not None:
-            if numwins is None:
-                numwins = gActive[ctx.guild.id][thisactive]["numwins"]
-            if numwins > 5:
-                await ctx.reply(embed=discord.Embed(description=f":exclamation: Maximum Number of Winners Should be 5", color=embedTheme))
-                return
             thisgives = None
             if ctx.guild.id in gActive:
                 for gives in gActive[ctx.guild.id].keys():
@@ -934,6 +929,11 @@ async def greroll(ctx, msg: Optional[discord.Message]=None, numwins: Optional[in
                         thisgives = gives
                         if gActive[ctx.guild.id][thisgives]["status"] == False:
                             if len(gActive[ctx.guild.id][thisgives]["participants"]) > 1:
+                                if numwins is None:
+                                    numwins = gActive[ctx.guild.id][thisgives]["numwins"]
+                                if numwins > 5:
+                                    await ctx.reply(embed=discord.Embed(description=f":exclamation: Maximum Number of Winners Should be 5", color=embedTheme))
+                                    return
                                 winners = []
                                 for i in range(numwins):
                                     getwinner = random.choice(gActive[ctx.guild.id][thisgives]["participants"])
