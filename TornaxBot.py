@@ -247,6 +247,21 @@ async def status(ctx):
         elif SmpStatus == False:
             await ctx.send(f":red_circle:  Server Is Offline")
 
+ignore = []
+
+@bot.listen()
+async def on_message(message):
+    global ignore
+    if message.guild.id == LegendServer:
+        if not message.author.bot:
+            if message.author.id not in ignore:
+                if ":/" in message.content or ">:/" in message.content or "<:/" in message.content:
+                    await message.reply(f"{message.content}")
+                    ignore.append(message.author.id)
+                    await asyncio.sleep(600)
+                    if message.author.id in ignore:
+                        ignore.remove(message.author.id)
+
 ###############################
 #### All Servers Commands ####
 ############0##################
@@ -1699,7 +1714,7 @@ async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[d
                 if co.lower() not in places:
                     places.append(co.lower())
             
-            alphabets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+            alphabets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'y', 'z']
 
             await ctx.send(f":map: Atlas Game :map:\n Players - {', '.join(playersare)}")
             if rolehaving == False:
