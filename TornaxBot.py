@@ -241,26 +241,29 @@ async def on_message(message):
 
 @bot.command()
 async def status(ctx):
-    if ctx.guild.id == LegendServer:
-        if SmpStatus == True:
-            await ctx.send(f":green_circle:  Server Is Online")
-        elif SmpStatus == False:
-            await ctx.send(f":red_circle:  Server Is Offline")
+    if ctx.guild:
+        if ctx.guild.id == LegendServer:
+            if SmpStatus == True:
+                await ctx.send(f":green_circle:  Server Is Online")
+            elif SmpStatus == False:
+                await ctx.send(f":red_circle:  Server Is Offline")
 
 ignore = []
 
 @bot.listen()
 async def on_message(message):
     global ignore
-    if message.guild.id == LegendServer:
-        if not message.author.bot:
-            if message.author.id not in ignore:
-                if ":/" in message.content or ">:/" in message.content or "<:/" in message.content:
-                    await message.reply(f"{message.content}")
-                    ignore.append(message.author.id)
-                    await asyncio.sleep(600)
-                    if message.author.id in ignore:
-                        ignore.remove(message.author.id)
+    if message.guild:
+        if message.guild.id == LegendServer:
+            if not message.author.bot:
+                if message.author.id not in ignore:
+                    if ":/" in message.content or ">:/" in message.content or "<:/" in message.content:
+                        await asyncio.sleep(1)
+                        await message.reply(f"{message.content}")
+                        ignore.append(message.author.id)
+                        await asyncio.sleep(2500)
+                        if message.author.id in ignore:
+                            ignore.remove(message.author.id)
 
 ###############################
 #### All Servers Commands ####
