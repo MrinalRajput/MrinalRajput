@@ -645,7 +645,7 @@ async def lock(ctx, channel: Optional[discord.TextChannel]=None, isserver: Optio
     if channel is None:
         channel = ctx.channel
     taking = ["server","guild","all","every","each","allchannel","allchannels","whole"]
-    if isserver.lower() in taking:
+    if isserver is not None and isserver.lower() in taking:
         overwrite = channel.overwrites_for(ctx.guild.default_role)
         overwrite.send_messages=False
         embed = discord.Embed(description=f"🔒 Locked {ctx.guild} Server for Members", color=embedTheme)
