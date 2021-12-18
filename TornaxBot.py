@@ -641,31 +641,51 @@ cleanhelp = f"clean <limit> [member]"
 
 @bot.command()
 @commands.has_permissions(manage_channels=True)
-async def lock(ctx, channel: Optional[discord.TextChannel]=None):
+async def lock(ctx, channel: Optional[discord.TextChannel]=None, isserver: Optional[str]=None):
     if channel is None:
         channel = ctx.channel
-    overwrite = channel.overwrites_for(ctx.guild.default_role)
-    overwrite.send_messages=False
-    await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
-    embed = discord.Embed(description=f"🔒 Locked {channel.mention} for Members", color=embedTheme)
-    await ctx.send(embed=embed)
-    await modlogs(ctx, "Lock", channel, ctx.author, None, None, "Locked")
+    taking = ["server","guild","all","every","each","allchannel","allchannels","whole"]
+    if isserver.lower() in taking:
+        overwrite = channel.overwrites_for(ctx.guild.default_role)
+        overwrite.send_messages=False
+        embed = discord.Embed(description=f"🔒 Locked {ctx.guild} Server for Members", color=embedTheme)
+        for ch in ctx.guild.channels:
+            await ch.set_permissions(ctx.guild.default_role, overwrite=overwrite)
+        await ctx.send(embed=embed)
+        await modlogs(ctx, "Lock", channel, ctx.author, None, None, "Locked")
+    else:
+        overwrite = channel.overwrites_for(ctx.guild.default_role)
+        overwrite.send_messages=False
+        await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
+        embed = discord.Embed(description=f"🔒 Locked {channel.mention} for Members", color=embedTheme)
+        await ctx.send(embed=embed)
+        await modlogs(ctx, "Lock", channel, ctx.author, None, None, "Locked")
 
-lockhelp = f"lock [channel]"
+lockhelp = f"lock [channel/server]"
 
 @bot.command()
 @commands.has_permissions(manage_channels=True)
-async def unlock(ctx, channel: Optional[discord.TextChannel]=None):
+async def unlock(ctx, channel: Optional[discord.TextChannel]=None, isserver: Optional[str]=None):
     if channel is None:
         channel = ctx.channel
-    overwrite = channel.overwrites_for(ctx.guild.default_role)
-    overwrite.send_messages=True
-    await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
-    embed = discord.Embed(description=f"🔓 Unlocked {channel.mention} for Members", color=embedTheme)
-    await ctx.send(embed=embed)
-    await modlogs(ctx, "Unlock", channel, ctx.author, None, None, "Unlocked")
+    taking = ["server","guild","all","every","each","allchannel","allchannels","whole"]
+    if isserver.lower() in taking:
+        overwrite = channel.overwrites_for(ctx.guild.default_role)
+        overwrite.send_messages=True
+        embed = discord.Embed(description=f"🔓 Unlocked {ctx.guild} Server for Members", color=embedTheme)
+        for ch in ctx.guild.channels:
+            await ch.set_permissions(ctx.guild.default_role, overwrite=overwrite)
+        await ctx.send(embed=embed)
+        await modlogs(ctx, "Unlock", channel, ctx.author, None, None, "Unlocked")
+    else:
+        overwrite = channel.overwrites_for(ctx.guild.default_role)
+        overwrite.send_messages=True
+        await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
+        embed = discord.Embed(description=f"🔓 Unlocked {channel.mention} for Members", color=embedTheme)
+        await ctx.send(embed=embed)
+        await modlogs(ctx, "Unlock", channel, ctx.author, None, None, "Unlocked")
 
-unlockhelp = f"unlock [channel]"
+unlockhelp = f"unlock [channel/server]"
 
 @bot.command()
 @commands.has_permissions(manage_channels=True)
@@ -3254,7 +3274,7 @@ async def allcommands(ctx):
 
         toolsEmbed = discord.Embed(title="Tools Commands", description=f"{toolscmd} \n\n 1/8", color=embedTheme)
 
-        managementList = {f"{ctx.prefix}createrole":"Create a Role Quickly and Easily",f"{ctx.prefix}deleterole":"Let Tornax Delete a Role Quickly for you",f"{ctx.prefix}addrole":"Give/Add Any Role to Anyone",f"{ctx.prefix}removerole":"Take/Remove Any Role From Anyone",f"{ctx.prefix}clean":"Clean/Delete So Many Messages of a User or Channel Quickly by Just Specifing the Quanitity",f"{ctx.prefix}setprefix":"Change Prefix of Tornax According to your Choice",f"{ctx.prefix}join":"Let Tornax Join a Voice Channel With You",f"{ctx.prefix}leave":"Let Tornax Leave a Voice Channel",f"{ctx.prefix}lock":"Lock any Channel of Your Server to Disallow Members to Send Messages in it",f"{ctx.prefix}unlock":"Unlock a Locked Channel of Your Server",f"{ctx.prefix}slowmode":"Set Slowmode for a Channel of Your Server",f"{ctx.prefix}setnick":"Set or Change Nick of YourSelf or any Member",f"{ctx.prefix}resetnick":"Reset/Remove Your or SomeBodies Nick"}
+        managementList = {f"{ctx.prefix}createrole":"Create a Role Quickly and Easily",f"{ctx.prefix}deleterole":"Let Tornax Delete a Role Quickly for you",f"{ctx.prefix}addrole":"Give/Add Any Role to Anyone",f"{ctx.prefix}removerole":"Take/Remove Any Role From Anyone",f"{ctx.prefix}clean":"Clean/Delete So Many Messages of a User or Channel Quickly by Just Specifing the Quanitity",f"{ctx.prefix}setprefix":"Change Prefix of Tornax According to your Choice",f"{ctx.prefix}join":"Let Tornax Join a Voice Channel With You",f"{ctx.prefix}leave":"Let Tornax Leave a Voice Channel",f"{ctx.prefix}lock":"Lock any Channel or Whole Server to Disallow Members to Send Messages in it",f"{ctx.prefix}unlock":"Unlock a Locked Channel or Whole Server",f"{ctx.prefix}slowmode":"Set Slowmode for a Channel of Your Server",f"{ctx.prefix}setnick":"Set or Change Nick of YourSelf or any Member",f"{ctx.prefix}resetnick":"Reset/Remove Your or SomeBodies Nick"}
         managementcmd = []
         for cmd in list(managementList.keys()):
             managementcmd.append(f"• {cmd} {sign}  {managementList[cmd]}.")
