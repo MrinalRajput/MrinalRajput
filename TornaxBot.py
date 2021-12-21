@@ -310,12 +310,13 @@ async def ban(ctx, member: Optional[discord.Member]=None, days: Optional[int]=No
 banhelp = f"ban <member> [days] [reason]"
 
 @bot.command()
-async def unban(ctx, memberid: Optional[int]=None):
+async def unban(ctx, memberid: Optional[discord.Member]=None):
     global embedContent
     try:
         if memberid is not None:
             if ctx.author.guild_permissions.ban_members:
-                user = await bot.fetch_user(memberid)
+                # user = await bot.fetch_user(memberid)
+                user = memberid.id
                 await ctx.guild.unban(user)
                 embedContent = f"Unbanned : Successfully Unbanned {user} from {ctx.guild.name}"
                 embed = discord.Embed(description=embedContent, color=embedTheme)
