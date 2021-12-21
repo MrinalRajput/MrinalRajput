@@ -272,7 +272,7 @@ async def on_message(message):
 
 @bot.command()
 @commands.has_permissions(ban_members=True)
-async def ban(ctx, member: Optional[discord.Member]=None, days: Optional[int]=None, *, reason:Optional[str]=None):
+async def ban(ctx, member: Optional[discord.User]=None, days: Optional[int]=None, *, reason:Optional[str]=None):
     if ctx.author.guild_permissions.ban_members:
         if member is not None:
             if days is not None:
@@ -281,8 +281,7 @@ async def ban(ctx, member: Optional[discord.Member]=None, days: Optional[int]=No
                     embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} for `{days}` Days **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} for `{days}` Days \n\t With the Reason of :\t{reason}**",color=embedTheme)
                     dmuser = discord.Embed(description = f"** You are Banned by {ctx.author} from {ctx.guild.name} for `{days}` Days **" if reason is None else f"** You are Banned by {ctx.author} from {ctx.guild.name} for `{days}` Days \n\t With the Reason of :\t{reason}**",color=embedTheme)
                     await ctx.send(embed=embed)
-                    member = await bot.fetch_user(member.id)
-                    await member.ban(reason=reason)
+                    await ctx.guild.ban(member)
                     await member.send(embed=dmuser)
                     await modlogs(ctx, "Ban", member, ctx.author, f"{days} Day(s)" , reason, "Banned")
                     await asyncio.sleep(wait)
@@ -296,9 +295,8 @@ async def ban(ctx, member: Optional[discord.Member]=None, days: Optional[int]=No
                     embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} \n\t With the Reason of :\t{reason}**",color=embedTheme)
                     dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.name} **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.name} \n\t With the Reason of :\t{reason}**",color=embedTheme)
                     await ctx.send(embed=embed)
-                    member = await bot.fetch_user(member.id)
                     await member.send(embed=dmuser)
-                    await member.ban(reason=reason)
+                    await ctx.guild.ban(member)
                     await modlogs(ctx, "Ban", member, ctx.author, None , reason, "Banned")
                 except Exception as e:
                     print(f"Exception - {e}")
@@ -482,7 +480,7 @@ async def softban(ctx, member: Optional[discord.Member]=None, *, reason: Optiona
         if member is not None:
             if ctx.author.guild_permissions.ban_members:
                 if not member.guild_permissions.administrator:
-                    await member.ban(reason=reason)
+                    await ctx.guild.ban(member)
                     await ctx.send(embed= discord.Embed(description=f"✅ Successfully gave Softban to {member.mention}" if reason is None else f"✅ Successfully gave Softban to {member.mention} \n\t Reason: {reason}",color=embedTheme))
                     await member.send(embed= discord.Embed(description=f"You Got a Softban in {ctx.guild} Server from {ctx.author}" if reason is None else f"You Got a Softban in {ctx.guild} Server from {ctx.author} \n\t Reason: {reason}",color=embedTheme))
                     await ctx.guild.unban(member)
