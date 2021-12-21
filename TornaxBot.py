@@ -2668,7 +2668,7 @@ async def on_message(message):
         pass
 
 @bot.command()
-async def redirect(ctx, category: Optional[str]=None, *,channel: Optional[discord.TextChannel]=None):
+async def redirect(ctx, category: Optional[str]=None, *,channel: Optional[str]=None):
     if ctx.author.guild_permissions.manage_channels:
         if ctx.guild.me.guild_permissions.manage_roles:
             if category is None:
@@ -2677,14 +2677,16 @@ async def redirect(ctx, category: Optional[str]=None, *,channel: Optional[discor
             if channel is None:
                 await ctx.reply(embed=discord.Embed(description=f"Please Mention the Channel(s) Where you want to Allow the Commands!", color=embedTheme))
                 return
-            # channels = channel.split()
+            channels = channel.split()
             fixchannel = []
             for ch in channels:
-                print(type(ch))
-                if type(ch) == discord.TextChannel:
-                    fixchannel.append(ch.name)
-                else:
-                    fixchannel.append(ch)
+                print(ch)
+                if "<#" in ch:
+                    ch.replace("<#","")
+                    ch.replace(">","")
+                    print(ch)
+                    find = await bot.fetch_channel(ch)
+                    fixchannel.append(find.name)
 
             if "mini" in category.lower() or "game" in category.lower():
                 for role in ctx.guild.me.roles:
