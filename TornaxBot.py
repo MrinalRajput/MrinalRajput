@@ -448,15 +448,17 @@ async def warn_error(error, ctx):
 async def kick(ctx, member: Optional[discord.Member]=None, *, reason=None):
     if member is not None:
         if member == ctx.author:
-            await ctx.send(f":exclamation: You cannot Kick yourself {ctx.author.mention}")
+            await ctx.reply(embed=discord.Embed(description=f":exclamation: You Cannot Kick Yourself!", color=embedTheme))
+            return
         else:
-            if not member.guild_permissions.administrator:
+            try:
                 await member.kick(reason=reason)
                 await ctx.send(embed= discord.Embed(description=f"✅ Successfully Kicked {member.mention} from the Server" if reason is None else f"✅ Successfully Kicked {member.mention} from the Server \n\t Reason: {reason}",color=embedTheme))
                 await member.send(embed=discord.Embed(description=f"You are Kicked by {ctx.author} from {ctx.guild.name}"if reason is None else f"You are Kicked by {ctx.author} from {ctx.guild.name} \n\t With the Reason of :\t{reason}", color=embedTheme))
                 await modlogs(ctx, "Kick", member, ctx.author, None, reason, "Kicked")
-            else:
-                await ctx.reply(f":exclamation: Failed to Kick that User Because that User is Mod or Admin in this Server")
+            except Exception as e:
+                print(e)
+                await ctx.reply(embed=discord.Embed(description=f":exclamation: Failed to Kick that User Because that User is Mod or Admin in this Server", color=embedTheme))
     else:
         await ctx.send(f"You must Specify the User whom you want to Kick from the Server")
 
