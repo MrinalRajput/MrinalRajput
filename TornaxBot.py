@@ -51,7 +51,7 @@ bot = commands.Bot(command_prefix = load_prefix, case_insensitive=True, intents=
 
 TOKEN = "ODMyODk3NjAyNzY4MDc2ODE2.YHqeVg.yfzVgB8hHizDFH7hSMTORIv5weg"
 
-restricted_words = ["harami","wtf","fuck","fuk","baap ","stfu"]
+restricted_words = ["fuck","fuk","stfu"]
 
 embedTheme = discord.Color.from_rgb(255, 255, 0)
 
