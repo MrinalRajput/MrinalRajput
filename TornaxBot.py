@@ -2677,9 +2677,9 @@ async def redirect(ctx, category: Optional[str]=None, *,channel: Optional[str]=N
             if channel is None:
                 await ctx.reply(embed=discord.Embed(description=f"Please Mention the Channel(s) Where you want to Allow the Commands!", color=embedTheme))
                 return
-            channel = channel.split()
+            channels = channel.split()
             fixchannel = []
-            for ch in channel:
+            for ch in channels:
                 if type(ch) == discord.TextChannel:
                     fixchannel.append(ch.name)
                 else:
@@ -2689,7 +2689,7 @@ async def redirect(ctx, category: Optional[str]=None, *,channel: Optional[str]=N
                 for role in ctx.guild.me.roles:
                     if role.name.startswith("play"):
                         await role.delete()
-                therole = await ctx.guild.create_role(name=f"play {channel}")
+                therole = await ctx.guild.create_role(name=f"play {' '.join(fixchannel)}")
                 await ctx.guild.me.add_roles(therole)
                 await ctx.send(embed=discord.Embed(description=f"Now Listening MiniGames Commands Only in {channel}", color=embedTheme))
         else:
