@@ -2688,8 +2688,9 @@ async def redirect(ctx, category: Optional[str]=None, channel1: Optional[discord
                         channelconfirm.append(chn.mention)
             else:
                 if otherwise is not None:
-                    if otherwise == "play" or otherwise == "all":
-                        fixchannel.append(otherwise.lower())
+                    otherwise = otherwise.lower()
+                    if otherwise == "every" or otherwise == "all" or otherwise == "server":
+                        fixchannel.append("all")
 
             if "mini" in category.lower() or "game" in category.lower():
                 for role in ctx.guild.me.roles:
