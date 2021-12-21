@@ -2707,6 +2707,8 @@ async def redirect(ctx, category: Optional[str]=None, channel1: Optional[discord
     else:
         await ctx.reply(embed=discord.Embed(description=":exclamation: You don't have Permissions to do that!", color=embedTheme))
 
+redirecthelp = f"redirect <commands category> <channels maximum 5>"
+
 @bot.command()
 async def poll(ctx, question:Optional[str]=None, option1: Optional[str]=None, option2: Optional[str]=None, option3: Optional[str]=None, option4: Optional[str]=None, option5: Optional[str]=None, option6: Optional[str]=None, option7: Optional[str]=None, option8: Optional[str]=None, option9: Optional[str]=None, option10: Optional[str]=None):
     try:
@@ -3167,7 +3169,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         myEmbed = discord.Embed(color = embedTheme)
         myEmbed.add_field(name=f"{randomGreet} There! I'm Tornax",value="A Multi-Talented and Friendly Bot, Use Tornax for Moderation, Server Managements, Streaming and Giveaways now!\n \n \t-> [Invite Tornax to your Server Now!](https://discord.com/api/oauth2/authorize?client_id=832897602768076816&permissions=536870911991&scope=bot)")
         myEmbed.add_field(name=f"Commands — {int(totalCommands)-2}",value="----------------------\n",inline=False)
-        myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, clearreacts, rule, rules, solve, time, timerstart, timerstop, choose", inline=False)
+        myEmbed.add_field(name="Miscellaneous",value=" tell, poll, ping, afk, thought, vote, avatar, react, clearreacts, rule, rules, solve, time, timerstart, timerstop, choose, redirect", inline=False)
         myEmbed.add_field(name="Management",value=" createrole, deleterole, addrole, removerole, clean, allcommands, gstart, gstatus, gstop, greroll, setprefix, whois, emojis, roles, serverinfo, info, invite, about, support, join, leave, lock, slowmode, resetnick, setnick, unlock ", inline=False)
         myEmbed.add_field(name="Moderation",value=" kick, mute, warn, unmute, ban, unban, softban, voicekick, restrict, unrestrict, restricts ", inline=False)
         myEmbed.add_field(name="Fun",value=" slap, kill, punch, wanted, tictactoe, tttstop, guess, atlas, pokegame, triviamc, mcserver, wikipedia, google, youtube, meaning, pokemon, country \n----------------------\n", inline=False)
@@ -3247,6 +3249,7 @@ async def help(ctx, anycommand: Optional[str]=None):
         elif anycommand == "mcserver": content=mcserverhelp
         elif anycommand == "pokemon": content=pokemonhelp
         elif anycommand == "country": content=countryhelp
+        elif anycommand == "redirect": content=redirecthelp
         elif anycommand == "allcommands": content=allcommandshelp
         elif anycommand == "help": content=helphelp
         else:
@@ -3286,7 +3289,7 @@ async def allcommands(ctx):
 
         sign = "→"
 
-        toolsList = {f"{ctx.prefix}tell":"Send Your Message From Tornax for Announcements and Fun",f"{ctx.prefix}poll":"Easily Host Reaction Based Polls",f"{ctx.prefix}ping":"Get the Current Latency in ms value",f"{ctx.prefix}afk":"Let Others Know Your Status and What are You Doing Currently",f"{ctx.prefix}thought":"Show your Current Thinking in a Different & Higlighted Way",f"{ctx.prefix}avatar":"See Someone's Profile Picture/Avatar in Large Size",f"{ctx.prefix}whois":"Get All Details About an User of a Server",f"{ctx.prefix}react":"Let Tornax React on a Message for You",f"{ctx.prefix}clearreacts":"Remove/Clear All Reactions from a Message",f"{ctx.prefix}solve":"Use Tornax for Simple to Difficult Calculations",f"{ctx.prefix}timerstart":"Let Tornax Start Countdown for You",f"{ctx.prefix}timerstop":"Stop The Countdown in Between Started by Tornax",f"{ctx.prefix}choose":"Let Tornax Choose One Thing for You"}
+        toolsList = {f"{ctx.prefix}tell":"Send Your Message From Tornax for Announcements and Fun",f"{ctx.prefix}poll":"Easily Host Reaction Based Polls",f"{ctx.prefix}ping":"Get the Current Latency in ms value",f"{ctx.prefix}afk":"Let Others Know Your Status and What are You Doing Currently",f"{ctx.prefix}thought":"Show your Current Thinking in a Different & Higlighted Way",f"{ctx.prefix}avatar":"See Someone's Profile Picture/Avatar in Large Size",f"{ctx.prefix}whois":"Get All Details About an User of a Server",f"{ctx.prefix}react":"Let Tornax React on a Message for You",f"{ctx.prefix}clearreacts":"Remove/Clear All Reactions from a Message",f"{ctx.prefix}solve":"Use Tornax for Simple to Difficult Calculations",f"{ctx.prefix}timerstart":"Let Tornax Start Countdown for You",f"{ctx.prefix}timerstop":"Stop The Countdown in Between Started by Tornax",f"{ctx.prefix}choose":"Let Tornax Choose One Thing for You",f"{ctx.prefix}redirect":"Redirect a Category of Commands to Specific Channel(s)"}
         toolscmd = []
         for cmd in list(toolsList.keys()):
             toolscmd.append(f"• {cmd} {sign}  {toolsList[cmd]}.")
