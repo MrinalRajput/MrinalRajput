@@ -2670,7 +2670,7 @@ async def on_message(message):
 @bot.command()
 async def redirect(ctx, category: Optional[str]=None, *,channel: Optional[discord.TextChannel]=None):
     if ctx.author.guild_permissions.manage_channels:
-        if ctx.guild.me.guild_permissions.create_roles:
+        if ctx.guild.me.guild_permissions.manage_roles:
             if category is None:
                 await ctx.reply(embed=discord.Embed(description=f"Please Specify the Category Name of Commands you want to Redirect!", color=embedTheme))
                 return
