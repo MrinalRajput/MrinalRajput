@@ -108,7 +108,7 @@ async def on_guild_join(guild):
                     return
                     break
                 except Exception as e:
-                    print(e)
+                    print(f"Exception - {e}")
                     await channel.send(f"**Hey There! I'm Tornax**\nThanks for Adding me in {guild.name}, Type `{custom_prefix[0]}help` to get All about me!\n\n__**My Features & Stuff I Can do for You!**__\n🔸 Moderation\n🔸 Management\n🔸 Giveaways\n🔸 Fun\n🔸 Mini Games\n🔸 Auto Moderation\n🔸 Informational\n🔸 Welcome and Bye Messages\n\nYes, I am Multi Talented Discord Bot 🤗")
                     return
                     break
@@ -152,7 +152,7 @@ async def on_member_join(member):
                 for channel in member.guild.channels:
                     await channel.set_permissions(mutedRole, speak=False, send_messages=False, add_reactions=False)
             except Exception as e:
-                print(e)
+                print(f"Exception - {e}")
                 pass
 
 @bot.event
@@ -273,7 +273,7 @@ async def on_message(message):
 @bot.command()
 @commands.has_permissions(ban_members=True)
 async def ban(ctx, member: Optional[discord.User]=None, days: Optional[int]=None, *, reason:Optional[str]=None):
-    try:
+    if ctx.author.guild_permissions.ban_members:
         if member is not None:
             if days is not None:
                 wait = days * 86400
@@ -288,22 +288,22 @@ async def ban(ctx, member: Optional[discord.User]=None, days: Optional[int]=None
                     await ctx.guild.unban(member)
                     await modlogs(ctx, "Unban", member, bot.user, None, "Auto", "Unbanned")
                 except Exception as e:
-                    print(e)
+                    print(f"Exception - {e}")
                     await ctx.reply(f":exclamation: Failed to Ban {member} From {ctx.guild}")
             else:
-                if not member.guild_permissions.administrator:
+                try:
                     embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} \n\t With the Reason of :\t{reason}**",color=embedTheme)
                     dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.name} **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.name} \n\t With the Reason of :\t{reason}**",color=embedTheme)
                     await ctx.send(embed=embed)
                     await member.send(embed=dmuser)
                     await member.ban(reason=reason)
                     await modlogs(ctx, "Ban", member, ctx.author, None , reason, "Banned")
-                else:
-                    await ctx.reply(f":exclamation: You Cannot Ban an Admin")
+                except Exception as e:
+                    print(f"Exception - {e}")
+                    await ctx.reply(f":exclamation: I Cannot Ban that User Because The User is a Mod/Admin in this Server")
         else:
             await ctx.reply(f"You must Specify the User to Ban")
-    except Exception as e:
-        print(e)
+    else:
         await ctx.reply(f":exclamation: You don't have Permissions to do that!")
 
 banhelp = f"ban <member> [days] [reason]"
@@ -461,7 +461,7 @@ async def kick(ctx, member: Optional[discord.Member]=None, *, reason=None):
                 await modlogs(ctx, "Kick", member, ctx.author, None, reason, "Kicked")
                 return
             except Exception as e:
-                print(e)
+                print(f"Exception - {e}")
                 await ctx.reply(embed=discord.Embed(description=f":exclamation: Failed to Kick that User Because that User is Mod or Admin in this Server", color=embedTheme))
                 return
     else:
@@ -688,7 +688,7 @@ async def slowmode(ctx, seconds: Optional[str]=None):
         else:
             await ctx.send(f":exclamation: {ctx.author.mention} Please Specify the delay of the Slowmode")
     except Exception as e:
-        print(e)
+        print(f"Exception - {e}")
         await ctx.send(f":exclamation: {ctx.author.mention} You don't have Permissions to do that")
 
 slowmodehelp = f"slowmode <seconds>"
@@ -722,7 +722,7 @@ slowmodehelp = f"slowmode <seconds>"
 #     await ctx.guild.create_custom_emoji(name = (name), image = emoji.content)
 #     # except Exception as e:
 #     #     await ctx.send(embed=discord.Embed(description=f":exclamation: **Failed to Upload that as a Emoji Please Check that;**\n\t- Server has Space to Upload an Emoji, \n\t- The file that you uploaded is an image/gif, \n\t- File is not above 256kb in size.", color=embedTheme))
-#     #     print(e)
+#     #     print(f"Exception - {e}")
 #     #     return False
 #     await ctx.send(f"Successfully Added - {emoji}")
 
@@ -789,7 +789,7 @@ async def gstart(ctx, gchannel: Optional[discord.TextChannel]=None, duration: Op
                     endtime = int(getperiod(duration)[0])
                     endunit = getperiod(duration)[1]
                 except Exception as e:
-                    print(e)
+                    print(f"Exception - {e}")
                     await ctx.reply(f"You are Using the Command Wrong, Please Use `>help gstart` for help!")
                     return
                 thisactive = str(len(gActive[ctx.guild.id].keys())+1)
@@ -1161,7 +1161,7 @@ async def solve(ctx, *, equation: Optional[str]=None):
     try:
         await ctx.send(f"{ctx.author.mention} The Answer is {eval(equation)}")
     except Exception as e:
-        print(e)
+        print(f"Exception - {e}")
         await ctx.reply(embed=discord.Embed(description=f"Please Use Valid Characters!", color=embedTheme))
 
 solvehelp = f"solve <equation>"
@@ -1253,7 +1253,7 @@ async def mcserver(ctx, server: Optional[str]=None):
         else:
             await ctx.reply("You Must Specify the Server Whose Detail You want to See")
     except Exception as e:
-        print(e)
+        print(f"Exception - {e}")
         await ctx.reply(f"The Server You are Looking For Does Not Exist or is Currently Down, Recheck The Server IP")
 
 mcserverhelp = f"mcserver <Minecaft Java Server Ip>"
@@ -1362,7 +1362,7 @@ async def youtube(ctx, *, searching):
                         try:
                             await videoCount[ctx.guild.id][ctx.author.id]["video"].clear_reactions()
                         except Exception as e:
-                            print(e)
+                            print(f"Exception - {e}")
                             pass
                         del videoCount[ctx.guild.id][ctx.author.id]
                         validResults.clear()
@@ -1470,7 +1470,7 @@ async def pokemon(ctx, pokename=None, wantmove: Optional[str]=None):
                 if ctx.guild:
                     await ctx.send(embed=discord.Embed(description="Successfully Sent All Moves List, Please Check Your DM", color=embedTheme))
         except Exception as e:
-            print(e)
+            print(f"Exception - {e}")
             await ctx.reply(embed=discord.Embed(description=f"Pokemon {pokename} Not Found! Please Recheck the Name",color=embedTheme))
     elif pokename is None:
         await ctx.send(embed=discord.Embed(description=f"Please Specify the Pokemon you are Looking For!",color=embedTheme))
@@ -1502,7 +1502,7 @@ async def country(ctx, *, thecountry: Optional[str]=None):
             countryEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
             await ctx.send(embed=countryEmbed)
         except Exception as e:
-            print(e)
+            print(f"Exception - {e}")
             await ctx.reply(embed=discord.Embed(description=f"Country {thecountry} Doesn't Exist, Please Recheck the Spelling", color=embedTheme))
     else:
         await ctx.reply(f"Please Specify the Country You are Looking For!")
@@ -1519,7 +1519,7 @@ async def Time(ctx, region: Optional[str]=None):
             getinfo = CountryInfo(country)
             timezonee = str(pytz.country_timezones[str(getinfo.iso()['alpha2'])][0])
         except Exception as e:
-            print(e)
+            print(f"Exception - {e}")
             await ctx.reply(f"That is not a Valid Country or Region, Use `>help time` for Help")
             return
         IST = pytz.timezone(timezonee)
@@ -1659,7 +1659,7 @@ async def on_message(message):
                                             serverque[message.guild.id]["points"] -= 1
                                         print("correct")
                                 except Exception as e:
-                                    print(e)
+                                    print(f"Exception - {e}")
                                     for x in question[serverque[message.guild.id]["que"]]:
                                         if x.lower() in message.content.lower():
                                             participants[message.guild.id][message.author] += serverque[message.guild.id]["points"]
@@ -1797,7 +1797,7 @@ async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[d
                             atlasgames[ctx.guild.id].remove(player4.id)
                         break
                 except Exception as e:
-                    print(e)
+                    print(f"Exception - {e}")
                     await ctx.send(f"{turn.mention} Your Chance Timeout!")
                     playersare.remove(turn.mention)
                     await ctx.send(f"Loser - {turn.mention}\nWinners - {', '.join(playersare)}")
@@ -1933,7 +1933,7 @@ async def pokegame(ctx, player1: Optional[discord.Member]=None, player2: Optiona
                         break
 
                 except Exception as e:
-                    print(e)
+                    print(f"Exception - {e}")
                     await ctx.send(f"{turn.mention} Your Chance Timeout!")
                     playersare.remove(turn.mention)
                     await ctx.send(f"Loser - {turn.mention}\nWinners - {', '.join(playersare)}")
@@ -2039,7 +2039,7 @@ async def on_message(message):
                             active[message.guild.id] = False
                             del gamingChannel[message.guild.id]
         except Exception as e:
-            print(e)
+            print(f"Exception - {e}")
             pass
 
 matches = {}
@@ -2178,7 +2178,7 @@ async def tttstop(ctx):
         else:
             await ctx.send(f":exclamation: {ctx.author.mention} You are Not in any TicTacToe Match in this Server")
     except Exception as e:
-        print(e)
+        print(f"Exception - {e}")
         pass
     
 
@@ -2670,7 +2670,7 @@ async def on_message(message):
         else:
             pass
     except Exception as e:
-        print(e)
+        print(f"Exception - {e}")
         pass
 
 @bot.command()
@@ -2768,7 +2768,7 @@ async def poll(ctx, question:Optional[str]=None, option1: Optional[str]=None, op
         else:
             await ctx.send(f':exclamation: {ctx.author.mention} The Question/Statement Should be Between Double Quotes, Example - `"<question>"`',delete_after=12)
     except Exception as e:
-        print(e)
+        print(f"Exception - {e}")
         await ctx.send(f":exclamation: {ctx.author.mention} You are Doing Mistake in Using the Command, Use `>help poll` to get help for this Command",delete_after=12)
 
 pollhelp = 'poll <question between ""> <options between "">'
@@ -2965,7 +2965,7 @@ async def on_message(message):
                 del username[message.author.id]
                 del reasontopic[message.author.id]
     except Exception as e:
-        print(e)
+        print(f"Exception - {e}")
         pass
 
 @bot.command()
@@ -2974,7 +2974,7 @@ async def support(ctx):
         embed = discord.Embed(title="Support", description="To get Support, Join our Official Server Where you are Free to Report Bugs, Get Help, Give Suggestions, Ask Problems and Doubts, tell about Crashes and Many More involving Fun With Our Team \:)\n\n[Get Support Now](https://discord.gg/H3688EEpWr)", color=embedTheme)
         await ctx.send(embed=embed)
     except Exception as e:
-        print(e)
+        print(f"Exception - {e}")
         pass
 
 supporthelp = f"support"
@@ -3283,7 +3283,7 @@ async def allcommands(ctx):
             try:
                 await activecmd[ctx.guild.id][code]["message"].clear_reactions()
             except Exception as e:
-                print(e)
+                print(f"Exception - {e}")
                 pass
 
         genCode = random.randint(000000, 999999)
@@ -3442,7 +3442,7 @@ async def on_reaction_add(reaction, user):
                     if activecmd[reaction.message.guild.id][thecode]["message"].id == reaction.message.id:
                         await reaction.remove(user)
     except Exception as e:
-        print(e)
+        print(f"Exception - {e}")
         pass
                 
 count = {}
