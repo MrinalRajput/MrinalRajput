@@ -2668,7 +2668,7 @@ async def on_message(message):
         pass
 
 @bot.command()
-async def redirect(ctx, category: Optional[str]=None, *,channel: Optional[discord.TextChannel]=None):
+async def redirect(ctx, category: Optional[str]=None, *,channel: Optional[str]=None):
     if ctx.author.guild_permissions.manage_channels:
         if ctx.guild.me.guild_permissions.manage_roles:
             if category is None:
