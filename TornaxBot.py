@@ -272,10 +272,9 @@ async def on_message(message):
 
 @bot.command()
 @commands.has_permissions(ban_members=True)
-async def ban(ctx, member: Optional[discord.Member]=None, days: Optional[int]=None, *, reason:Optional[str]=None):
+async def ban(ctx, member: Optional[discord.User]=None, days: Optional[int]=None, *, reason:Optional[str]=None):
     try:
         if member is not None:
-            memberId = member.id
             if days is not None:
                 wait = days * 86400
                 try:
@@ -286,7 +285,7 @@ async def ban(ctx, member: Optional[discord.Member]=None, days: Optional[int]=No
                     await member.send(embed=dmuser)
                     await modlogs(ctx, "Ban", member, ctx.author, f"{days} Day(s)" , reason, "Banned")
                     await asyncio.sleep(wait)
-                    await ctx.guild.unban(memberId)
+                    await ctx.guild.unban(member)
                     await modlogs(ctx, "Unban", member, bot.user, None, "Auto", "Unbanned")
                 except Exception as e:
                     print(e)
