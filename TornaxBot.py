@@ -272,7 +272,7 @@ async def on_message(message):
 
 @bot.command()
 @commands.has_permissions(ban_members=True)
-async def ban(ctx, member: Optional[discord.User]=None, days: Optional[int]=None, *, reason:Optional[str]=None):
+async def ban(ctx, member: Optional[discord.Member]=None, days: Optional[int]=None, *, reason:Optional[str]=None):
     if ctx.author.guild_permissions.ban_members:
         if member is not None:
             if days is not None:
