@@ -2681,10 +2681,11 @@ async def redirect(ctx, category: Optional[str]=None, channel1: Optional[discord
             channels = [channel1, channel2, channel3, channel4, channel5]
             fixchannel = []
             if channel1 is not None:
-                channelconfirm = [channel1.mention, channel2.mention, channel3.mention, channel4.mention, channel5.mention]
+                channelconfirm = []
                 for chn in channels:
                     if chn is not None:
                         fixchannel.append(chn.name)
+                        channelconfirm.append(chn.mention)
             else:
                 if otherwise is not None:
                     if otherwise == "play" or otherwise == "all":
