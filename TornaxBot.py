@@ -310,7 +310,7 @@ async def ban(ctx, member: Optional[discord.Member]=None, days: Optional[int]=No
 banhelp = f"ban <member> [days] [reason]"
 
 @bot.command()
-async def unban(ctx, memberid: Optional[discord.Member]=None):
+async def unban(ctx, memberid: Optional[discord.User]=None):
     global embedContent
     try:
         if memberid is not None:
