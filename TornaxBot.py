@@ -2670,14 +2670,20 @@ async def on_message(message):
 @bot.command()
 async def redirect(ctx, category: Optional[str]=None, *,channel: Optional[discord.TextChannel]=None):
     if ctx.author.guild_permissions.manage_channels:
-        if ctx.guild.me.guild_permissions.create_role:
-            for role in ctx.guild.me.roles:
-                if role.name.startswith("play"):
-                    await role.delete()
-            therole = await ctx.guild.create_role(name=f"play {channel}")
-            await ctx.guild.me.add_roles(therole)
-            await ctx.send(embed=discord.Embed(description=f"Now Listening Mini Games Commands Only in {channel}"))
-            
+        if ctx.guild.me.guild_permissions.create_roles:
+            if category is None:
+                await ctx.reply(embed=discord.Embed(description=f"Please Specify the Category Name of Commands you want to Redirect!", color=embedTheme))
+                return
+            if channel is None:
+                await ctx.reply(embed=discord.Embed(description=f"Please Mention the Channel(s) Where you want to Allow {category} Commands!", color=embedTheme))
+                return
+            if "mini" in category.lower() or "game" in category.lower():
+                for role in ctx.guild.me.roles:
+                    if role.name.startswith("play"):
+                        await role.delete()
+                therole = await ctx.guild.create_role(name=f"play {channel}")
+                await ctx.guild.me.add_roles(therole)
+                await ctx.send(embed=discord.Embed(description=f"Now Listening {category} Commands Only in {channel}", color=embedTheme))
         else:
             await ctx.reply(embed=discord.Embed(description=":exclamation: I Need `Manage Roles` Permissions to do that!", color=embedTheme))
     else:
