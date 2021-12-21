@@ -456,9 +456,11 @@ async def kick(ctx, member: Optional[discord.Member]=None, *, reason=None):
                 await ctx.send(embed= discord.Embed(description=f"✅ Successfully Kicked {member.mention} from the Server" if reason is None else f"✅ Successfully Kicked {member.mention} from the Server \n\t Reason: {reason}",color=embedTheme))
                 await member.send(embed=discord.Embed(description=f"You are Kicked by {ctx.author} from {ctx.guild.name}"if reason is None else f"You are Kicked by {ctx.author} from {ctx.guild.name} \n\t With the Reason of :\t{reason}", color=embedTheme))
                 await modlogs(ctx, "Kick", member, ctx.author, None, reason, "Kicked")
+                return
             except Exception as e:
                 print(e)
                 await ctx.reply(embed=discord.Embed(description=f":exclamation: Failed to Kick that User Because that User is Mod or Admin in this Server", color=embedTheme))
+                return
     else:
         await ctx.send(f"You must Specify the User whom you want to Kick from the Server")
 
