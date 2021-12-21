@@ -2697,7 +2697,10 @@ async def redirect(ctx, category: Optional[str]=None, channel1: Optional[discord
                         await role.delete()
                 therole = await ctx.guild.create_role(name=f"play {' '.join(fixchannel)}")
                 await ctx.guild.me.add_roles(therole)
-                await ctx.send(embed=discord.Embed(description=f"Now Listening MiniGames Commands Only in {' '.join(channelconfirm)}", color=embedTheme))
+                try:
+                    await ctx.send(embed=discord.Embed(description=f"Now Listening MiniGames Commands Only in {' '.join(channelconfirm)}", color=embedTheme))
+                except Exception as e:
+                    await ctx.send(embed=discord.Embed(description=f"Now Listening MiniGames Commands in All Channels", color=embedTheme))
         else:
             await ctx.reply(embed=discord.Embed(description=":exclamation: I Need `Manage Roles` Permissions to do that!", color=embedTheme))
     else:
