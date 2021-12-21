@@ -2668,7 +2668,7 @@ async def on_message(message):
         pass
 
 @bot.command()
-async def redirect(ctx, category: Optional[str]=None, *,channel: Optional[str]=None):
+async def redirect(ctx, category: Optional[str]=None, *,channel: Optional[discord.TextChannel.name]=None):
     if ctx.author.guild_permissions.manage_channels:
         if ctx.guild.me.guild_permissions.manage_roles:
             if category is None:
@@ -2680,6 +2680,7 @@ async def redirect(ctx, category: Optional[str]=None, *,channel: Optional[str]=N
             channels = channel.split()
             fixchannel = []
             for ch in channels:
+                print(type(ch))
                 if type(ch) == discord.TextChannel:
                     fixchannel.append(ch.name)
                 else:
