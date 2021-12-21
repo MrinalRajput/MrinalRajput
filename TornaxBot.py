@@ -2677,7 +2677,7 @@ async def redirect(ctx, category: Optional[str]=None, *,channel: Optional[discor
             if channel is None:
                 await ctx.reply(embed=discord.Embed(description=f"Please Mention the Channel(s) Where you want to Allow the Commands!", color=embedTheme))
                 return
-            channels = channel.split()
+            # channels = channel.split()
             fixchannel = []
             for ch in channels:
                 print(type(ch))
