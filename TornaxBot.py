@@ -272,7 +272,7 @@ async def on_message(message):
 
 @bot.command()
 @commands.has_permissions(ban_members=True)
-async def ban(ctx, member: Optional[discord.User]=None, days: Optional[int]=None, *, reason:Optional[str]=None):
+async def ban(ctx, member: Optional[discord.Member]=None, days: Optional[int]=None, *, reason:Optional[str]=None):
     if ctx.author.guild_permissions.ban_members:
         if member is not None:
             if days is not None:
@@ -281,6 +281,7 @@ async def ban(ctx, member: Optional[discord.User]=None, days: Optional[int]=None
                     embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} for `{days}` Days **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} for `{days}` Days \n\t With the Reason of :\t{reason}**",color=embedTheme)
                     dmuser = discord.Embed(description = f"** You are Banned by {ctx.author} from {ctx.guild.name} for `{days}` Days **" if reason is None else f"** You are Banned by {ctx.author} from {ctx.guild.name} for `{days}` Days \n\t With the Reason of :\t{reason}**",color=embedTheme)
                     await ctx.send(embed=embed)
+                    member = await bot.fetch_user(member.id)
                     await member.ban(reason=reason)
                     await member.send(embed=dmuser)
                     await modlogs(ctx, "Ban", member, ctx.author, f"{days} Day(s)" , reason, "Banned")
@@ -295,6 +296,7 @@ async def ban(ctx, member: Optional[discord.User]=None, days: Optional[int]=None
                     embed = discord.Embed(description = f"** {member.mention} has been Banned Successfully by {ctx.author.mention} **" if reason is None else f"** {member.mention} has been Banned Successfully by {ctx.author.mention} \n\t With the Reason of :\t{reason}**",color=embedTheme)
                     dmuser = discord.Embed(description = f"** You are Banned by an Admin from {ctx.guild.name} **" if reason is None else f"** You are Banned by an Admin from {ctx.guild.name} \n\t With the Reason of :\t{reason}**",color=embedTheme)
                     await ctx.send(embed=embed)
+                    member = await bot.fetch_user(member.id)
                     await member.send(embed=dmuser)
                     await member.ban(reason=reason)
                     await modlogs(ctx, "Ban", member, ctx.author, None , reason, "Banned")
