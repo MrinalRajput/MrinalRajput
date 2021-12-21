@@ -25,6 +25,7 @@ from PyDictionary import PyDictionary
 import pypokedex
 from countryinfo.countryinfo import CountryInfo
 import pycountry
+from pokelist import pokelist
 
 from discord.ext.commands import BadArgument, MissingPermissions,MissingRole,CommandInvokeError, MissingAnyRole, BotMissingPermissions
 from discord.member import Member
@@ -1883,8 +1884,7 @@ async def pokegame(ctx, player1: Optional[discord.Member]=None, player2: Optiona
                 try:
                     pokename = await bot.wait_for("message", check=check, timeout=15)
                     if pokename.content.lower() not in toldpoke:
-                        try:
-                            pokemon = pypokedex.get(name=str(pokename.content.lower()))
+                        if pokename.content.lower() in pokelist:
                             await pokename.reply(f"You Told Correct {pokename.content} is a Valid Pokemon Starts With `{letter}`")
                             toldpoke.append(pokename.content.lower())
                             if turn == player1:
@@ -1901,8 +1901,7 @@ async def pokegame(ctx, player1: Optional[discord.Member]=None, player2: Optiona
                                     turn = player1
                             elif turn == player4:
                                 turn = player1
-                        except Exception as e:
-                            print(e)
+                        else:
                             await pokename.reply(f"You Told Wrong, {pokename.content} is not a Pokemon")
                             playersare.remove(turn.mention)
                             await ctx.send(f"Loser - {turn.mention}\nWinners - {', '.join(playersare)}")
