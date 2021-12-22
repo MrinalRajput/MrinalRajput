@@ -595,7 +595,12 @@ async def setnick(ctx, member: Optional[discord.Member]=None, *, newname):
     if member is None:
         member = ctx.author
     membername = member.name
-    await member.edit(nick=newname)
+    try:
+        await member.edit(nick=newname)
+    except Exception as e:
+        print(f"Exception - {e}")
+        await ctx.reply(embed=discord.Embed(description="Failed Because That User Have Higher Role than me!", color=embedTheme))
+        return
     embed = discord.Embed(description=f"<a:checked:899643253882769530>  Changed {membername}'s Nickname to {newname}! ", color=embedTheme)
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=embed)
@@ -613,7 +618,12 @@ async def resetnick(ctx, member: Optional[discord.Member]=None):
     if member is None:
         member = ctx.author
     membername = member.name
-    await member.edit(nick=None)
+    try:
+        await member.edit(nick=None)
+    except Exception as e:
+        print(f"Exception - {e}")
+        await ctx.reply(embed=discord.Embed(description="Failed Because That User Have Higher Role than me!", color=embedTheme))
+        return
     embed = discord.Embed(description=f"<a:checked:899643253882769530>  Removed {membername}'s Nickname Successfully! ", color=embedTheme)
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
     await ctx.send(embed=embed)
@@ -1117,7 +1127,12 @@ async def addrole(ctx, member: Optional[discord.Member]=None, role: discord.Role
             embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
             await ctx.send(embed=embed, delete_after=8)
         else:
-            await member.add_roles(role)
+            try:
+                await member.add_roles(role)
+            except Exception as e:
+                print(f"Exception - {e}")
+                await ctx.reply(embed=discord.Embed(description="Failed to do that! The Role is Higher than My Role", color=embedTheme))
+                return
             embed = discord.Embed(description=f"** Successfully Added {role.mention} Role to {member.mention} **", color=embedTheme)
             embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
             await ctx.send(embed=embed)
@@ -1133,7 +1148,12 @@ async def removerole(ctx, member: Optional[discord.Member]=None, role: discord.R
         if member is None:
             member = ctx.author
         if role in member.roles:
-            await member.remove_roles(role)
+            try:
+                await member.remove_roles(role)
+            except Exception as e:
+                print(f"Exception - {e}")
+                await ctx.reply(embed=discord.Embed(description="Failed to do that! The Role is Higher than My Role", color=embedTheme))
+                return
             embed = discord.Embed(description=f"** Successfully Removed {role.mention} Role from {member.mention} **", color=embedTheme)
             embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested By {ctx.author.name}")
             await ctx.send(embed=embed)
