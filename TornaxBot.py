@@ -56,7 +56,7 @@ restricted_words = ["fuck","fuk","stfu"]
 embedTheme = discord.Color.from_rgb(255, 255, 0)
 
 async def create_db_pool():
-    bot.pg_con = await asyncpg.create_pool(dsn="postgres://pviyygdvnjlmui:2c0c9f20c3b10ada68498cea6cf2ba341bed7aba3f6eae799835c23569e9bfb5@ec2-23-21-25-48.compute-1.amazonaws.com:5432/d9q9f9ad1v6goa")
+    bot.pg_con = await asyncpg.create_pool(dsn="postgres://xgfysibfuaqcuj:e227e14ec5ee008b07f634d2a8573fa6f909db5fc5b7b9ce1668fdbabc4411f5@ec2-54-235-79-88.compute-1.amazonaws.com:5432/d4vr912ahco7k5")
     await bot.pg_con.execute("CREATE TABLE IF NOT EXISTS prefixes(guild_id bigint, prefix text)") 
     print("Connected Successfully To DataBase")
 
