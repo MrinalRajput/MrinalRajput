@@ -260,7 +260,12 @@ async def on_message(message):
                 if message.author.id not in ignore:
                     if ":/" in message.content or ">:/" in message.content or "<:/" in message.content:
                         await asyncio.sleep(1)
-                        await message.reply(f"{message.content}")
+                        if "@here" not in message.content.lower() and "@everyone" not in message.content.lower():
+                            death = [":/",">:/","<:/"]
+                            await message.reply(random.choice(death))
+                        else:
+                            mot = ["Popat? >:/", "Aukaat me >:/", "Nikal Nubde >:/"]
+                            await message.reply(random.choice(mot))
                         ignore.append(message.author.id)
                         await asyncio.sleep(2500)
                         if message.author.id in ignore:
@@ -1603,6 +1608,9 @@ async def triviamc(ctx):
                 elif seperate[0] == 'all':
                     rolehaving=True
                     break
+                elif seperate[0] == "None":
+                    await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Server!", color=embedTheme))
+                    return
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
                     return
@@ -1707,6 +1715,9 @@ async def atlas(ctx, player1: Optional[discord.Member]=None, player2: Optional[d
                 elif seperate[0] == 'all':
                     rolehaving=True
                     break
+                elif seperate[0] == "None":
+                    await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Server!", color=embedTheme))
+                    return
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
                     return
@@ -1851,6 +1862,9 @@ async def pokegame(ctx, player1: Optional[discord.Member]=None, player2: Optiona
                 elif seperate[0] == 'all':
                     rolehaving=True
                     break
+                elif seperate[0] == "None":
+                    await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Server!", color=embedTheme))
+                    return
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
                     return
@@ -1992,6 +2006,9 @@ async def guess(ctx):
                 elif seperate[0] == 'all':
                     rolehaving=True
                     break
+                elif seperate[0] == "None":
+                    await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Server!", color=embedTheme))
+                    return
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
                     return
@@ -2090,6 +2107,9 @@ async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Option
                 elif seperate[0] == 'all':
                     rolehaving=True
                     break
+                elif seperate[0] == "None":
+                    await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Server!", color=embedTheme))
+                    return
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
                     return
@@ -2125,7 +2145,7 @@ async def tictactoe(ctx, member1: Optional[discord.Member]=None, member2: Option
                     if rolehaving == False:
                         choosefirst = random.choice(['yes','no'])
                         if choosefirst == 'yes':
-                            await ctx.send(f"Hey! Currently You are Allowing your Server Members to Play MiniGames in Any Channel, You Can Move Mini Games to Specific Channels with the help of `{ctx.prefix}redirect` Command, For Example-`{ctx.prefix}redirect minigames #game-area #minigames` or `{ctx.prefix}redirect mini-games all` to Allow in All Channels", delete_after=20)
+                            await ctx.send(embed=discord.Embed(description=f"Hey! Currently You are Allowing your Server Members to Play MiniGames in Any Channel, You Can Move Mini Games to Specific Channels with the help of `{ctx.prefix}redirect` Command, For Example-`{ctx.prefix}redirect minigames #game-area #minigames` or `{ctx.prefix}redirect mini-games all` to Allow in All Channels", color=embedTheme).set_author(name="🗒️Important"), delete_after=20)
 
                     matches[ctx.guild.id][member1.id] = member2.id
                     gameBoards[ctx.guild.id][codeGenerator]["blocks"] = {"block1" : False, "block2": False, "block3" : False, "block4": False, "block5" : False,"block6": False, "block7": False, "block8": False, "block9": False}
@@ -2165,6 +2185,9 @@ async def tttstop(ctx):
                 elif seperate[0] == 'all':
                     rolehaving=True
                     break
+                elif seperate[0] == "None":
+                    await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Server!", color=embedTheme))
+                    return
                 else:
                     await ctx.reply(embed=discord.Embed(description=f"🚫 MiniGames Commands are Not Allowed in this Channel!", color=embedTheme))
                     return
@@ -2697,8 +2720,9 @@ async def on_message(message):
 async def redirect(ctx, category: Optional[str]=None, channel1: Optional[discord.TextChannel]=None, channel2: Optional[discord.TextChannel]=None, channel3: Optional[discord.TextChannel]=None, channel4: Optional[discord.TextChannel]=None, channel5: Optional[discord.TextChannel]=None, otherwise: Optional[str]=None):
     if ctx.author.guild_permissions.manage_channels:
         if ctx.guild.me.guild_permissions.manage_roles:
-            if category is None:
-                await ctx.reply(embed=discord.Embed(description=f"Please Specify the Category Name of Commands you want to Redirect!", color=embedTheme))
+            allcategories = ["mini","game","minigames","mini-games","mini-game","minigame"]
+            if category.lower() not in allcategories:
+                await ctx.reply(embed=discord.Embed(description=f"Please Specify a Valid Category Name of Commands you want to Redirect!", color=embedTheme))
                 return
             if channel1 is None and otherwise is None:
                 await ctx.reply(embed=discord.Embed(description=f"Please Mention the Channel(s) Where you want to Allow the Commands!", color=embedTheme))
@@ -2715,8 +2739,10 @@ async def redirect(ctx, category: Optional[str]=None, channel1: Optional[discord
             else:
                 if otherwise is not None:
                     otherwise = otherwise.lower()
-                    if otherwise == "every" or otherwise == "all" or otherwise == "server":
+                    if otherwise == "every" or otherwise == "all" or otherwise == "server" or otherwise == "any":
                         fixchannel.append("all")
+                    elif otherwise == "none" or otherwise == "not" or otherwise == "neither":
+                        fixchannel.append("None")
 
             if "mini" in category.lower() or "game" in category.lower():
                 for role in ctx.guild.me.roles:
@@ -2727,7 +2753,10 @@ async def redirect(ctx, category: Optional[str]=None, channel1: Optional[discord
                 try:
                     await ctx.send(embed=discord.Embed(description=f"Now Listening MiniGames Commands Only in {' '.join(channelconfirm)}", color=embedTheme))
                 except Exception as e:
-                    await ctx.send(embed=discord.Embed(description=f"Now Listening MiniGames Commands in All Channels", color=embedTheme))
+                    if "all" in fixchannel:
+                        await ctx.send(embed=discord.Embed(description=f"Now Listening MiniGames Commands in All Channels", color=embedTheme))
+                    elif "None" in fixchannel:
+                        await ctx.send(embed=discord.Embed(description=f"Now Not Listening MiniGames Commands in Any Channel", color=embedTheme))
         else:
             await ctx.reply(embed=discord.Embed(description=":exclamation: I Need `Manage Roles` Permissions to do that!", color=embedTheme))
     else:
@@ -3510,32 +3539,35 @@ async def on_message(message):
         if message.content is not None:
             if not message.author.bot:
                 if not message.author.guild_permissions.administrator:
+                    for roles in message.guild.me.roles:
+                        if "mod" in roles.name:
+                            if count[message.guild.id][message.author.id]["counting"] == True:
+                                count[message.guild.id][message.author.id]["strikes"] += 1
+                            if count[message.guild.id][message.author.id]["strikes"] > 3:
+                                if count[message.guild.id][message.author.id]["warnings"] != 3:
+                                    await message.channel.send(f":exclamation: {message.author.mention} You are Sending Message So Quickly, Slowdown your Speed")
+                                count[message.guild.id][message.author.id]["warnings"] += 1
+                                if count[message.guild.id][message.author.id]["warnings"] >= 3:
+                                    try:
+                                        mutedRole = discord.utils.get(message.guild.roles, name="Muted")
+                                        if not mutedRole:
+                                            mutedRole = await message.guild.create_role(name="Muted")
+
+                                            for channel in message.guild.channels:
+                                                await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False, add_reactions=False)
+                                        await message.author.add_roles(mutedRole)
+                                        embed = discord.Embed(description = f"** {message.author.mention} has been Muted by {bot.user.mention} for `15` Seconds \n\t With the Reason of :\t Spamming**",color=embedTheme)
+                                        await message.channel.send(embed=embed)
+                                        count[message.guild.id][message.author.id]["warnings"] = 0
+                                        await asyncio.sleep(15)
+                                        await message.author.remove_roles(mutedRole)
+                                    except:
+                                        count[message.guild.id][message.author.id]["warnings"] = 0
+                                        pass
+
+                                count[message.guild.id][message.author.id]["strikes"] = 0
+                            break
                     
-                    if count[message.guild.id][message.author.id]["counting"] == True:
-                        count[message.guild.id][message.author.id]["strikes"] += 1
-                    if count[message.guild.id][message.author.id]["strikes"] > 3:
-                        if count[message.guild.id][message.author.id]["warnings"] != 3:
-                            await message.channel.send(f":exclamation: {message.author.mention} You are Sending Message So Quickly, Slowdown your Speed")
-                        count[message.guild.id][message.author.id]["warnings"] += 1
-                        if count[message.guild.id][message.author.id]["warnings"] >= 3:
-                            try:
-                                mutedRole = discord.utils.get(message.guild.roles, name="Muted")
-                                if not mutedRole:
-                                    mutedRole = await message.guild.create_role(name="Muted")
-
-                                    for channel in message.guild.channels:
-                                        await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False, add_reactions=False)
-                                await message.author.add_roles(mutedRole)
-                                embed = discord.Embed(description = f"** {message.author.mention} has been Muted by {bot.user.mention} for `15` Seconds \n\t With the Reason of :\t Spamming**",color=embedTheme)
-                                await message.channel.send(embed=embed)
-                                count[message.guild.id][message.author.id]["warnings"] = 0
-                                await asyncio.sleep(15)
-                                await message.author.remove_roles(mutedRole)
-                            except:
-                                count[message.guild.id][message.author.id]["warnings"] = 0
-                                pass
-
-                        count[message.guild.id][message.author.id]["strikes"] = 0    
 
 @bot.listen()
 async def on_message(message):
@@ -3550,32 +3582,38 @@ async def on_message(message):
     if message.guild:
         if not message.author.bot:
             if not message.author.guild_permissions.administrator:
-                if message.attachments:
-                    return
-                characters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-                thechat = message.content
-                if len(thechat) > 7:
-                    chances = 0
-                    for ch in thechat:
-                        if ch.lower() in characters:
-                            if ch == ch.upper():
-                                chances += 1
-                        elif ch == "\n":
+                for roles in message.guild.me.roles:
+                    if "mod" in roles.name:
+                        if message.attachments:
+                            return
+                        characters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+                        thechat = message.content
+                        if len(thechat) > 7:
                             chances = 0
-                        else:
-                            chances -= 2
-                    if chances > 6:
-                        await message.channel.send(f"{message.author.mention} Please Don't Use Too Many Caps!", delete_after=15)
+                            for ch in thechat:
+                                if ch.lower() in characters:
+                                    if ch == ch.upper():
+                                        chances += 1
+                                elif ch == "\n":
+                                    chances = 0
+                                else:
+                                    chances -= 2
+                            if chances > 6:
+                                await message.channel.send(f"{message.author.mention} Please Don't Use Too Many Caps!", delete_after=15)
+                                return
 
 @bot.listen()
 async def on_message(message):
     if message.guild:
         if not message.author.bot:
             if not message.author.guild_permissions.administrator:
-                for word in restricted_words:
-                    if word in message.content.lower():
-                        await message.delete()
-                        await message.channel.send(f":exclamation: The Word you are Using is Not Allowed in this Server {message.author.mention}",delete_after=8)
+                for roles in message.guild.me.roles:
+                    if "mod" in roles.name:
+                        for word in restricted_words:
+                            if word in message.content.lower():
+                                await message.delete()
+                                await message.channel.send(f":exclamation: The Word you are Using is Not Allowed in this Server {message.author.mention}",delete_after=8)
+                                return
                 
 bot.loop.run_until_complete(create_db_pool())
 bot.run(TOKEN)
