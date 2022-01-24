@@ -49,7 +49,7 @@ intents.members = True
 
 bot = commands.Bot(command_prefix = load_prefix, case_insensitive=True, intents=intents,help_command=None)
 
-TOKEN = "ODMyODk3NjAyNzY4MDc2ODE2.YHqeVg.yfzVgB8hHizDFH7hSMTORIv5weg"
+TOKEN = open("secret.db", "r").read()
 
 restricted_words = ["fuck","fuk","stfu"]
 
